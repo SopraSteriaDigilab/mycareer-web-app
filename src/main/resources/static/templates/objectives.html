@@ -1,89 +1,86 @@
 <link rel="stylesheet" href="../css/objectives.css">
 <script type="text/javascript" src="../js/objectives.js"></script>
 
+
 <!--Containter for full page -->
 <div class="container">
 
 
 	<!-- My objectives half  -->
     <div class='col-sm-12 col-md-6'>
-        <!--Page Header -->
-        <div class="row">
-            <div class="pull-left">
-                <h2>My Objectives</h2>
-            </div>
-            <div class="pull-right">
-                <!--Enter code for ADD objective button in here --> 
-            </div>
-            <div class="clearfix"></div>
+
+      <!--Page Header -->
+      <div class="row"> 
+        <div class="col-md-6">
+          <h2>My objectives</h2>
         </div>
-        <br>
+        <div class="col-md-2 col-md-offset-4">
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#objectiveModal">Add objective</button>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <br><br>
+       
     <!-- -->
-    <ul class="nav nav-pills">
-            <li class="active"><a href="#">All<span class="badge">9</span></a></li>
-            <li><a href="#">Awaiting<span class="badge">3</span></a></li>
-            <li><a href="#">InFlight<span class="badge">4</span></a></li>
-            <li><a href="#">Done<span class="badge">2</span></a></li>
-            <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By 
-                <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Duration</a></li>
-                        <li><a href="#">Progress</a></li>
-                    </ul>
-            </li>
-        </ul>
+      <ul class="nav nav-pills">
+          <li class="active"><a href="#">All<span class="badge">9</span></a></li>
+          <li><a href="#">Awaiting<span class="badge">3</span></a></li>
+          <li><a href="#">InFlight<span class="badge">4</span></a></li>
+          <li><a href="#">Done<span class="badge">2</span></a></li>
+          <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By 
+              <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="#">Duration</a></li>
+                      <li><a href="#">Progress</a></li>
+                  </ul>
+          </li>
+      </ul>
         
         
-            
-        
-        
-        
-        
-        <div class="panel-group" id="accordion1">
-            <div class="panel panel-default" id="panel1">
-                    <div class="panel-heading">
-                        <h5 class="panel-title pull-left" id="objective">Objective 1</h5>
-                            <h6 class="panel-title pull-right" id="date">Week 1</h6>
-                                <div class="clearfix"></div>
-                                <br><br>
-                        
-                        
-                        
-                        
-                    
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h5 class="panel-title" id="title">Improve communication skills when based in teams</h5>
-                            </div>
-                                <div class="col-sm-4">
-                                    <div class="progress">
-                                        <div class="one"></div>
-                                        <div class="two"></div>
-                                        <div class="three"></div>
-                                        <div class="progress-bar progress-striped" width="50%"></div>     
-                                    </div>
+      <div class="panel-group" id="accordion1">
+        <div class="panel panel-default" id="panel1">
+          <div class="panel-heading">
+              <h5 class="panel-title pull-left" id="objective">Objective 1</h5>
+                  <h6 class="panel-title pull-right" id="date">Week 1</h6>
+                      <div class="clearfix"></div>
+                      <br><br>
+          
+              <div class="row">
+                  <div class="col-sm-6">
+                      <h5 class="panel-title" id="title">Improve communication skills when based in teams</h5>
+                  </div>
+                      <div class="col-sm-4">
+                          <div class="progress">
+                              <div class="one"></div>
+                              <div class="two"></div>
+                              <div class="three"></div>
+                              <div class="progress-bar progress-striped" width="50%"></div>     
+                          </div>
+                      </div>
+                      <div class="col-sm-2">
+                          <a data-toggle="collapse" data-target="#collapseOne" href="#" class="collapsed"></a>    
+                      </div>   
+               </div>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body"><h5>Description</h5>
+                  <textarea class="form-control" rows="4" disabled id="description">When having to talk to team members, management and the client within a project, I have a tendency to shy away as I'm never sure what I can say or fear dissaproval. There are communication modules and training that I will commit to.</textarea>
+                      <div class="row">
+                          <div class="col-md-12">
+                                <div class="btn-group btn-group-justified">
+                                      <a href="#" class="btn btn-default">View Feedback</a>
+                                      <a href="#" class="btn btn-default">Edit</a>  
                                 </div>
-                                <div class="col-sm-2">
-                                    <a data-toggle="collapse" data-target="#collapseOne" href="#" class="collapsed"></a>    
-                                </div>   
-                         </div>
-                    </div>
-                        <div id="collapseOne" class="panel-collapse collapse">
-                            <div class="panel-body"><h5>Description</h5>
-                                <textarea class="form-control" rows="4" disabled id="description">When having to talk to team members, management and the client within a project, I have a tendency to shy away as I'm never sure what I can say or fear dissaproval. There are communication modules and training that I will commit to.</textarea>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                              <div class="btn-group btn-group-justified">
-                                                    <a href="#" class="btn btn-default">View Feedback</a>
-                                                    <a href="#" class="btn btn-default">Edit</a>  
-                                              </div>
-                                        </div>
-                                    </div>    
-                            </div>
-                        </div>
-            </div>
+                          </div>
+                      </div>    
+              </div>
+          </div>
         </div>
+      </div>
     </div>
+
+
+
 
 
 
@@ -94,4 +91,50 @@
 	</div>
 
 
+</div>
+
+
+<!-- Add Objective Modal -->
+<div id="objectiveModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add objective</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group" id="text-validate">
+            <label for="objective-text" class="control-label">Objective:</label>
+            <textarea class="form-control" id="objective-text" maxlength="1000" rows="8"></textarea>
+          </div>
+
+          <div class="form-group" id="date-validate">
+            <label for="due-date" class="control-label">Time Frame:</label>
+            <div class="row">
+              <div class='col-sm-6'>
+                  <div class="form-group">
+                      <div class='input-group date' id='objective-date-picker'>
+                          <input type='text' class="form-control" id='objective-date' />
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-calendar"></span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="clickAddObjective()">Add objective</button>
+      </div>
+    </div>
+
+  </div>
 </div>
