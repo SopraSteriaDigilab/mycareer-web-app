@@ -1,0 +1,56 @@
+.btn-circle.btn-lg {
+    
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: grey;
+}
+.panel-heading a.collapsed:after {
+    content:"\e080";
+}
+    .one, .two, .three{
+    position:absolute;
+	margin-top:-7.5px;
+	z-index:1;
+	height:35px;
+	width:35px;
+	border-radius:25px;
+}
+.one{
+	left:5%;
+    background-color:#4989bd;
+}
+.two{
+	left:50%;
+    background-color:#4989bd;
+}
+.three{
+	left:90%;
+    background-color:#4989bd;
+}
+
+.list-group-horizontal .list-group-item {
+    display: inline-block;
+}
+.list-group-horizontal .list-group-item {
+	margin-bottom: 0;
+	margin-left:-4px;
+	margin-right: 0;
+}
+.list-group-horizontal .list-group-item:first-child {
+	border-top-right-radius:0;
+	border-bottom-left-radius:4px;
+}
+.list-group-horizontal .list-group-item:last-child {
+	border-top-right-radius:4px;
+	border-bottom-left-radius:0;
+}
