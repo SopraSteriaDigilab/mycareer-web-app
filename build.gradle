@@ -13,7 +13,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'gs-serving-web-content'
+    baseName = 'mycareer-web-app'
     version =  '0.1.0'
 }
 

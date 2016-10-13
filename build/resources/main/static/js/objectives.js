@@ -105,7 +105,7 @@ function addObjective(objTitle, objText, objDate){
 //Method that shows modal and default button to enabled/disabled
 function showModal(enabledButton){
 	$('#submit-obj').prop("disabled", enabledButton);
-	$('#objectiveModal').modal('show');
+	$('#objectiveModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 //Method to close and clear modal

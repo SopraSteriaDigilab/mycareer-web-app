@@ -26,7 +26,7 @@
 }
 
 .one,.two,.three{
-    position:absolute;
+  position:absolute;
 	margin-top:-10px;
 	z-index:1;
 	height:30px;
@@ -57,4 +57,45 @@
 
 .primary-color{
 	background-color:#4989bd;
+}
+
+.btn-link{
+	border-radius: 4px;
+}
+
+.btn-link:hover{
+	background-color: #eee;
+}
+
+.glyphicon-chevron-up {
+	font-size: xx-small;
+	width: 10%;
+	float:left;
+
+}
+
+
+#inner-left-chevron {
+	width: 20%;
+	text-align: right;
+}
+
+#inner-right-chevron {
+	width: 20%;
+	text-align: left;
+}
+
+#center-chevron{
+	width: 40%;
+	text-align: center;
+}
+
+#right-chevron {
+	text-align: right;
+}
+
+
+
+.bottomless{
+	margin-bottom: 0px;
 }
