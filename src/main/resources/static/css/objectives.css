@@ -74,7 +74,6 @@
 
 }
 
-
 #inner-left-chevron {
 	width: 20%;
 	text-align: right;
@@ -98,4 +97,8 @@
 
 .bottomless{
 	margin-bottom: 0px;
+}
+
+.progress-middle{
+	margin-left: 50%;
 }

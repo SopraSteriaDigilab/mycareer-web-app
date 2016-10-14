@@ -29,6 +29,7 @@ $(function() {
 	//function when clicked View Feedback, Feedback shows
 	$("#fee").click(function() { });
 
+	updateNewProgressBar(-25);
 });
 
 
@@ -61,7 +62,7 @@ function openAddModal(currentDate){
 function openEditModal(){
 	var objTitle = $('#obj-title-1').text().trim();
 	var objText = $('#obj-text-1').text().trim();
-	var objDate = $('#obj-date-1').text().trim();
+	var objDate = $('#obj-date-1 h4').text().trim();
 
 	setModal(objTitle, objText, objDate);
 
@@ -149,4 +150,21 @@ function setModal(title, text, date){
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
+}
+
+function updateNewProgressBar(score){
+
+	if(score > 0){
+		$('#feedback-progress-1').removeClass("progress-bar-danger");
+		$('#feedback-progress-1').addClass("progress-bar-success");
+		$('#feedback-progress-1').css('margin-left', (50 +'%'));
+		$('#feedback-progress-1').width(score + '%')
+	}else{
+		$('#feedback-progress-1').removeClass("progress-bar-success");
+		$('#feedback-progress-1').addClass("progress-bar-danger");
+		$('#feedback-progress-1').css('margin-left', (50 + score) + '%');
+		$('#feedback-progress-1').width(-score + '%')
+	}
+
+
 }
