@@ -14,7 +14,7 @@
           <h2>My Objectives</h2>
         </div>
         <div class="col-sm-4">
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#objectiveModal">Add Objective</button>
+          <button type="button" class="btn btn-link" id="add-obj"><u>Add Objective</u></button>
         </div>
         <div class="clearfix"></div>
       </div><!--End of Page Header -->
@@ -41,9 +41,9 @@
         <div class="panel panel-default" id="panel">
           <div class="panel-heading">
             <div class="row">
-              <div class="col-sm-6" id="objTitle"><h4>Improve communication skills when based in teams</h4></div>
-              <div class="col-sm-5" id="date">
-                <h4>Week 1</h4>
+              <div class="col-sm-6" id="obj-title-1"><h4>Improve communication skills when based in teams</h4></div>
+              <div class="col-sm-5" id="obj-date-1">
+                <h4>Oct 2016</h4>
                   <br><br>
                 <div class="progress progress-striped">
                     <div class="one primary-color" style="cursor:pointer"><h5 class="progress-label">Awaiting</h5></div>
@@ -60,34 +60,54 @@
             
           <div id="collapse" class="panel-collapse collapse">
               <div class="panel-body">
+                <div class="row">
                   <div class="col-md-4">
                     <h4>Description</h4>
                   </div>
-                    <div class="col-md-4">
-                        <div class="progress progress-striped">
-                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                <span class="sr-only">60% Complete</span>
-                            </div>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="bottomless progress progress-striped">
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
                         </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="bottomless progress progress-striped">
+                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <div class="progress progress-striped">
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                            <span class="sr-only">20% Complete</span>
-                        </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
+                        <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
+                      </div>
                     </div>
                   </div>
-                  
-                  
-                  
-                  <textarea class="form-control" rows="4" disabled id="description">When having to talk to team members, management and the client within a project, I have a tendency to shy away as I'm never sure what I can say or fear dissaproval. There are communication modules and training that I will commit to.</textarea>
+                </div>
+            
+              <div class="row">
+                <div class="col-md-12" id="obj-text-1">
+                  <p id="obj-text-1">When having to talk to team members, management and the client within a project, I have a tendency to shy away as I'm never sure what I can say or fear dissaproval. There are communication modules and training that I will commit to.</p>
+                </div>
+              </div>
                   <br>
                       <div class="col-md-12">
                           <div class="col-sm-6">
                             <button type="button" class="btn btn-block btn-default" id="fee">View Feedback</button>
                           </div>            
                           <div class="col-sm-6">
-                              <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#objectiveModal">Edit</button>  
+                              <button type="button" class="btn btn-block btn-default" id="edit-obj" >Edit</button>  
                           </div>
                       </div>    
               </div>
@@ -95,6 +115,46 @@
         </div>
       </div><!-- End of Objective accordion -->
         
+
+
+<!--       <div class="row">
+        <div class="col-md-4">
+          <h4>Description</h4>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bottomless progress progress-striped">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bottomless progress progress-striped">
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <span class="glyphicon glyphicon-chevron-up"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
+            </div>
+            <div class="col-md-6">
+              <span class="glyphicon glyphicon-chevron-up"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
+              <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+
     </div><!--End of My Objectives haf -->
 
 
@@ -124,18 +184,23 @@
       <div class="modal-body">
         <form>
 
+          <div class="form-group" id="title-validate">
+            <label for="objective-title">Title*:</label>
+            <input type="text" class="modal-validate form-control" id="objective-title" />
+          </div>
+
           <div class="form-group" id="text-validate">
-            <label for="objective-text" class="control-label">Objective:</label>
-            <textarea class="form-control" id="objective-text" maxlength="1000" rows="8"></textarea>
+            <label for="objective-text" class="control-label">Objective*:</label>
+            <textarea class="modal-validate form-control" id="objective-text" maxlength="1000" rows="8"></textarea>
           </div>
 
           <div class="form-group" id="date-validate">
-            <label for="due-date" class="control-label">Time Frame:</label>
+            <label for="due-date" class="control-label">Time Frame*:</label>
             <div class="row">
               <div class='col-sm-6'>
                   <div class="form-group">
                       <div class='input-group date' id='objective-date-picker'>
-                          <input type='text' class="form-control" id='objective-date' />
+                          <input type='text' class="modal-validate form-control" id='objective-date' />
                           <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                           </span>
@@ -149,8 +214,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="clickAddObjective()">Add objective</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" id="submit-obj" disabled>Submit</button>
       </div>
     </div>
 

@@ -1,69 +1,152 @@
 $(function() {
-    
-    //3 onclicks to change the progress of the status bar of an objective
-    //status goes from Awaiting, InFlight, Done
-    $('.one').click(function(e){
-        var val = 0;
-        $('#objStatus').width(val);
-    });
-    
-    $(".two").click(function(){
-         var val = 100;
-        $('#objStatus').width(val);
-    });
-    
-    $(".three").click(function(){
-         var val = 200;
-        $('#objStatus').width(val);
-    });
-    
-    //function when clicked View Feedback, Feedback shows
-    $("#fee").click(function() {
-        
-	});
-    
 
-	$("#objective-date-picker").datepicker({
-		daysOfWeekDisabled: [0, 6],
-    format: "mm-yyyy",
-    // todayHighlight: true,
-    // todayBtn: true,
-    startView: "months", 
-    minViewMode: "months",
-    startDate:new Date(),
-	});
+	//Get todays date an currentDate in the format of mm-yyyy
+	var today = new Date();
+	var currentDate = adjustMonth((today.getMonth()+1)) + '-' + today.getFullYear();
+
+	//Initialising the date picker
+	initDatePicker(today, currentDate);
+
+	//onClick for Submit modal
+	$('#submit-obj').click(function(){ clickAddObjective(currentDate); })
+
+	//modal validation.
+	$('.modal-validate').keyup(function() { validateModal(currentDate); });
+
+	//onClick for Edit button
+	$('#edit-obj').click(function() { openEditModal(); });
+
+	$('#add-obj').click(function() { openAddModal(currentDate); });
+
+
+
+	//3 onclicks to change the progress of the status bar of an objective
+	//status goes from Awaiting, InFlight, Done
+	$('.one').click(function(){ updateProgressBar(0); });
+	$(".two").click(function(){ updateProgressBar(100); });
+	$(".three").click(function(){ updateProgressBar(200); });
+
+	//function when clicked View Feedback, Feedback shows
+	$("#fee").click(function() { });
+
 });
 
-// });
 
-function clickAddObjective(){
-	var objText = $("#objective-text").val();
-	var objDate = $("#objective-date").val()
 
-	if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
-		return;
-	}
-	addObjective(objText, objDate);
-	clearModal()
+//Initialising the date picker
+function initDatePicker(today, currentDate){
+	//Set up date picker
+	
+	// $("#objective-date").val(currentDate);
+
+	$("#objective-date-picker").datepicker({
+		// defaultDate: '01-10-2016',
+		daysOfWeekDisabled: [0, 6],
+	  format: "mm-yyyy",
+	  // todayHighlight: true,
+	  // todayBtn: true,
+	  startView: "months", 
+	  minViewMode: "months",
+	  startDate: today,
+	});
 }
 
+function openAddModal(currentDate){
+	var emptyString = '';
+	setModal(emptyString, emptyString, currentDate);
 
-function addObjective(objText, objDate){
-	alert("Objective is: " + objText + " | Date is: " + objDate);
+	showModal(true);
 }
 
-function isEmpty(value, className){
-	if(!value){
-		$('#' + className).addClass("has-error");
-		return true;
-	}else{
-		$('#' + className).removeClass("has-error");
-		return false;
-	}
+function openEditModal(){
+	var objTitle = $('#obj-title-1').text().trim();
+	var objText = $('#obj-text-1').text().trim();
+	var objDate = $('#obj-date-1').text().trim();
+
+	setModal(objTitle, objText, objDate);
+
+	showModal(false);
 }
 
-function clearModal(){
+//Method for updating progress bar wth a value
+function updateProgressBar(value){
+	$('#objStatus').width(value);
+}
+
+//Method to handle the submit objective button
+//call the addobjective method then clear the modal
+function clickAddObjective(currentDate){
+	var objTitle = $("#objective-title").val().trim();
+	var objText = $("#objective-text").val().trim();
+	var objDate = $("#objective-date").val().trim();
+
+	// if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
+	// 	return;
+	// }
+	addObjective(objTitle, objText, objDate);
+	clearModal(currentDate)
+}
+
+//Place holder for the http request for adding an objective
+function addObjective(objTitle, objText, objDate){
+	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
+}
+
+// function isEmpty(value, className){
+// 	if(!value){
+// 		$('#' + className).addClass("has-error");
+// 		return true;
+// 	}else{
+// 		$('#' + className).removeClass("has-error");
+// 		return false;
+// 	}
+// }
+
+//Method that shows modal and default button to enabled/disabled
+function showModal(enabledButton){
+	$('#submit-obj').prop("disabled", enabledButton);
+	$('#objectiveModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+//Method to close and clear modal
+function clearModal(currentDate){
 	$('#objectiveModal').modal('hide');
-	$("#objective-text").val('');
-	$("#objective-date").val('');
+	var emptyString = '';
+	setModal(emptyString, emptyString, currentDate)
+	$('#submit-obj').prop("disabled", true);
+}
+
+//Method to adjust month format (add '0' for single digit months)
+function adjustMonth(month){
+	if (month < 10){
+		return '0' + month;
+	}
+	return month;
+}
+
+//method that enables the submit button only when all inputs in the modal have content
+function validateModal(){
+	var isEmpty = false;
+
+	$('.modal-validate').each(function(i) {
+		value = $(this).val().trim();
+		if(!value){
+			isEmpty = true;
+			return;
+		}
+
+	});
+
+	if(isEmpty){
+		$('#submit-obj').prop("disabled", true);
+	}else{
+		$('#submit-obj').prop("disabled", false);
+	}
+}
+
+//Method to set content of modal
+function setModal(title, text, date){
+	$("#objective-title").val(title);
+	$("#objective-text").val(text);
+	$("#objective-date").val(date);
 }
