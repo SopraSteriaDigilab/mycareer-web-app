@@ -2,7 +2,7 @@ $(function() {
 
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
-	var currentDate = adjustMonth((today.getMonth()+1)) + '-' + today.getFullYear();
+	var currentDate = adjustMonth(today.getFullYear() + '-' + (today.getMonth()+1));
 
 	//Initialising the date picker
 	initDatePicker(today, currentDate);
@@ -52,31 +52,31 @@ function initDatePicker(today, currentDate){
 	// $("#objective-date").val(currentDate);
 
 	$("#objective-date-picker").datepicker({
+		disabled: true,
 		// defaultDate: '01-10-2016',
 		daysOfWeekDisabled: [0, 6],
-	  format: "mm-yyyy",
-	  // todayHighlight: true,
-	  // todayBtn: true,
-	  startView: "months", 
-	  minViewMode: "months",
-	  startDate: today,
-	});
+		format: "yyyy-mm",
+		// todayHighlight: true,
+		// todayBtn: true,
+		startView: "months", 
+		minViewMode: "months",
+		startDate: today,
+		});
 }
 
+//Function to set up adn open add modal
 function openAddModal(currentDate){
 	var emptyString = '';
 	setModal(emptyString, emptyString, currentDate);
-
 	showModal(true);
 }
 
+//Function to set up adn open add modal
 function openEditModal(){
 	var objTitle = $('#obj-title-1').text().trim();
 	var objText = $('#obj-text-1').text().trim();
 	var objDate = $('#obj-date-1 h6').text().trim();
-
 	setModal(objTitle, objText, objDate);
-
 	showModal(false);
 }
 
@@ -88,6 +88,7 @@ function updateProgressBar(value){
 //Method to handle the submit objective button
 //call the addobjective method then clear the modal
 function clickAddObjective(currentDate){
+	var userID = 2312;
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
@@ -95,13 +96,30 @@ function clickAddObjective(currentDate){
 	// if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
 	// 	return;
 	// }
-	addObjective(objTitle, objText, objDate);
+	addObjective(userID, objTitle, objText, objDate);
 	clearModal(currentDate)
 }
 
 //Place holder for the http request for adding an objective
-function addObjective(objTitle, objText, objDate){
-	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
+function addObjective(userID, objTitle, objText, objDate){
+	var url = "http://localhost:8080/addObjective/"+userID;
+	var data = {};
+	data["title"] = objTitle;
+	data["description"] = objText;
+	data["completedBy"] = objDate;
+    data["progress"] = 0;
+    
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  alert(response);
+	});
+//	
+//	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
 }
 
 // function isEmpty(value, className){
