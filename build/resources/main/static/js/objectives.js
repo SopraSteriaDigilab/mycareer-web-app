@@ -36,7 +36,7 @@ $(function() {
     });
     
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
-    $("#navPills").click(function(){
+    $("#navTab").click(function(){
                       
     });
 
