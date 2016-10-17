@@ -6,261 +6,178 @@
     
     <!-- Accordion sort half - added a test one, setting out layout -->
     <div class="container">
-    <h2>My Feedback</h2>
-    <div class="row">
+        <h2>My Feedback</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel-group" id="accordion-Date">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Date</a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <div class="dropdown">
+                                            <button class="btn btn-default center-block dropdown-toggle" type="button" data-toggle="dropdown">
+                                                Month<span class="caret"></span></button>
+                                                <ul class="dropdown-menu scrollable-menu">
+                                                   <li><a href="#">January</a></li>
+                                                   <li><a href="#">February</a></li>
+                                                   <li><a href="#">March</a></li>
+                                                   <li><a href="#">April</a></li>
+                                                   <li><a href="#">May</a></li>
+                                                   <li><a href="#">June</a></li>
+                                                   <li><a href="#">July</a></li>
+                                                   <li><a href="#">August</a></li>
+                                                   <li><a href="#">September</a></li>
+                                                   <li><a href="#">October</a></li>
+                                                   <li><a href="#">November</a></li>
+                                                   <li><a href="#">December</a></li>                              
+                                                </ul>
+                                        </div> 
+                                    </div><!--end of div class col-md-6 -->
+                                    <div class="col-md-6">
+                                        <div class="dropdown">
+                                            <button class="btn btn-default center-block dropdown-toggle" type="button" data-toggle="dropdown">
+                                                Year<span class="caret"></span></button>
+                                                <ul class="dropdown-menu scrollable-menu">
+                                                   <li><a href="#">2016</a></li>
+                                                   <li><a href="#">2017</a></li>
+                                                   <li><a href="#">2018</a></li>
+                                                   <li><a href="#">2019</a></li>
+                                                   <li><a href="#">2020</a></li>
+                                                </ul>
+                                        </div>
+                                    </div><!--end of div class col-md-6 -->
+                                </div><!--end of row -->
+                            </div><!--end of panel body -->
+                        </div><!--end of collapse panel -->
+                    </div><!-- end of panel-default-->
+                </div><!-- end of accordion Date-->
+                <div class="panel-group" id="accordion-Linked-Obj">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Linked Objectives</a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       
+                                    </div><!--end of div class col-md-6 -->
+                                </div><!--end of row -->
+                            </div><!--end of panel body -->
+                        </div><!--end of collapse panel -->
+                    </div><!-- end of panel-default-->
+                </div><!-- end of accordion Linked Objectives -->
+                <div class="panel-group" id="accordion-Linked-Competencies">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Linked Competencies</a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       
+                                    </div><!--end of div class col-md-6 -->
+                                </div><!--end of row -->
+                            </div><!--end of panel body -->
+                        </div><!--end of collapse panel -->
+                    </div><!-- end of panel-default-->
+                </div><!-- end of accordion Linked Competencies -->
+                <div class="panel-group" id="accordion-Reviewer">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Reviewer</a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       
+                                    </div><!--end of div class col-md-6 -->
+                                </div><!--end of row -->
+                            </div><!--end of panel body -->
+                        </div><!--end of collapse panel -->
+                    </div><!-- end of panel-default-->
+                </div><!-- end of accordion Reviewer -->
+            </div><!--end of col-md-3 -->
+
+        
+        
+        <!-- List of Feedback -->
         <div class="col-md-3">
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-file">
-                            </span>Date</a>
-                        </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Content" rows="5" required></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="category">
-                                            Category</label>
-                                        <select class="form-control" id="category">
-                                            <option>Articles</option>
-                                            <option>Tutorials</option>
-                                            <option>Freebies</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="tags">
-                                            Tags</label>
-                                        <input type="text" class="form-control" id="tags" placeholder="Tags" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="well well-sm">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"></span>
-                                            <input type="text" class="form-control" placeholder="Custom url" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="well well-sm well-primary">
-                                        <form class="form form-inline " role="form">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="" placeholder="Date" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control">
-                                                <option>Draft</option>
-                                                <option>Published</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                <span class="glyphicon glyphicon-eye-open"></span>Preview</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th-list">
-                            </span>Linked Objectives</a>
-                        </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Description" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Keywords" required></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="well well-sm well-primary">
-                                        <form class="form form-inline " role="form">
-                                        <div class="form-group">
-                                            <a href="http://www.jquery2dotnet.com" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-floppy-disk">
-                                            </span>Save</a>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="panel panel-default" id="feedback1">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View feedback</h6></button>
+                    <h5 class="feedback-author"><b>Chris McIntyre</b></h5>
+                    <h5 class="feedback-date"><b>Oct 2016</b></h5>
+                </div>                      
             </div>
-        </div>
-        
-        
-        
-        
-                <div class="col-md-3">
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-file">
-                            </span>Date and From</a>
-                        </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Content" rows="5" required></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="category">
-                                            Category</label>
-                                        <select class="form-control" id="category">
-                                            <option>Articles</option>
-                                            <option>Tutorials</option>
-                                            <option>Freebies</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="tags">
-                                            Tags</label>
-                                        <input type="text" class="form-control" id="tags" placeholder="Tags" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="well well-sm">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"></span>
-                                            <input type="text" class="form-control" placeholder="Custom url" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="well well-sm well-primary">
-                                        <form class="form form-inline " role="form">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="" placeholder="Date" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control">
-                                                <option>Draft</option>
-                                                <option>Published</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                <span class="glyphicon glyphicon-eye-open"></span>Preview</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th-list">
-                            </span>Date and From</a>
-                        </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Description" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Keywords" required></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="well well-sm well-primary">
-                                        <form class="form form-inline " role="form">
-                                        <div class="form-group">
-                                            <a href="http://www.jquery2dotnet.com" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-floppy-disk">
-                                            </span>Save</a>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="panel panel-default" id="feedback2">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>Ridhwan Nacef</b></h5>
+                    <h5 class="feedback-date"><b>November 2016</b></h5>
+                </div>                      
             </div>
-        </div>
-        
+            <div class="panel panel-default" id="feedback3">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>Michael Piccoli</b></h5>
+                    <h5 class="feedback-date"><b>December 2016</b></h5>
+                </div>                      
+            </div>
+            <div class="panel panel-default" id="feedback4">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>William Kenny</b></h5>
+                    <h5 class="feedback-date"><b>Jan 2017</b></h5>
+                </div>                      
+            </div>
+            <div class="panel panel-default" id="feedback4">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>Ben Cassidy</b></h5>
+                    <h5 class="feedback-date"><b>Feb 2017</b></h5>
+                </div>                      
+            </div>
+            <div class="panel panel-default" id="feedback4">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>Luca Ferraresi</b></h5>
+                    <h5 class="feedback-date"><b>March 2017</b></h5>
+                </div>                      
+            </div>
+            <div class="panel panel-default" id="feedback4">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-link pull-right" id="view-feedback"><h6>View all</h6></button>
+                    <h5 class="feedback-author"><b>Chris McIntyre</b></h5>
+                    <h5 class="feedback-date"><b>April 2017</b></h5>
+                </div>                      
+            </div>
+        </div><!--end of col-md-3 -->
+                
+        <!-- Section that will show the feedback -->
          <div class="col-md-6">
-            <div class="jumbotron">
-                <h1>Feedback</h1>
-                <p>BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH</p>
+            <div id="jumbotron" class="jumbotron jumbotron-slim">
+                <h1>I'm a Feedback</h1>
             </div>
         </div> 
         
-    </div>
+    </div><!--end of initial row -->
         
-          
-            
-</div><!-- Test accordion -->
+   
     
-    
-    <!--List of Feeback half -->
-    <div class="col-md-8">
-    
-    
-    
-    
-    </div>    
-    
+    </div>
 </div>

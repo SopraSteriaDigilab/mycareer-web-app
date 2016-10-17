@@ -22,10 +22,10 @@
        
     <!-- Nav Pills header -->
       <ul class="nav nav-pills">
-          <li class="active"><a href="#">All<span class="badge">9</span></a></li>
-          <li><a href="#">Awaiting<span class="badge">3</span></a></li>
-          <li><a href="#">InFlight<span class="badge">4</span></a></li>
-          <li><a href="#">Done<span class="badge">2</span></a></li>
+          <li class="active"><a href="objectives.html" data-toggle="tab">All<span class="badge"></span></a></li>
+          <li><a href="#awaiting-progress" data-toggle="tab">Awaiting<span class="badge"></span></a></li>
+          <li><a href="#inflight-progress" data-toggle="tab">InFlight<span class="badge"></span></a></li>
+          <li><a href="#done-progress" data-toggle="tab">Done<span class="badge">2</span></a></li>
           <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By 
               <span class="caret"></span></a>
                   <ul class="dropdown-menu">
@@ -37,32 +37,35 @@
       <br>
         
     <!-- Objective details in an accordion -->
-      <div class="panel-group" id="accordion1">
+      <div class="panel-group" id="accordion">
         <div class="panel panel-default" id="panel">
           <div class="panel-heading">
             <div class="row">
-              <div class="col-sm-6" id="obj-title-1"><h4>Improve communication skills when based in teams</h4></div>
-              <div class="col-sm-5" id="obj-date-1">
-                <h4>Oct 2016</h4>
-                  <br><br>
-                <div class="progress progress-striped">
-                    <div class="one primary-color" style="cursor:pointer"><h5 class="progress-label">Awaiting</h5></div>
-                    <div class="two primary-color" style="cursor:pointer"><h5 class="progress-label">InFlight</h5></div>
-                    <div class="three primary-color" style="cursor:pointer"><h5 class="progress-label">Done</h5></div>
-                    <div class="progress-bar" id="objStatus" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                </div>
-              </div>
-              <div class="col-sm-1">
-                <a data-toggle="collapse" data-target="#collapse" href="#" class="collapsed"></a>    
-              </div>       
+              <div class="col-sm-6" id="obj-no"><h6><b>Objective 1</b></h6></div>
+                <div class="col-sm-6" id="obj-date-1"><h6><b>Oct 2016</b></h6></div>
             </div>
+              <br>
+              <div class="row">
+                  <div class="col-sm-5" id="obj-title-1"><h5>Improve communication skills when based in teams</h5></div>
+                  <div class="col-sm-5"><br>
+                    <div class="progress progress-striped">
+                        <div class="one primary-color" style="cursor:pointer" id="awaiting-progress"><h5 class="progress-label">Awaiting</h5></div>
+                        <div class="two primary-color" style="cursor:pointer" id="inflight-progress"><h5 class="progress-label">InFlight</h5></div>
+                        <div class="three primary-color" style="cursor:pointer" id="done-progress"><h5 class="progress-label">Done</h5></div>
+                        <div class="progress-bar" id="objStatus" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                <div class="col-sm-2">
+                    <a data-toggle="collapse" data-target="#collapse" href="#" class="collapsed"></a>    
+                </div>       
+              </div>
           </div>
             
           <div id="collapse" class="panel-collapse collapse">
               <div class="panel-body">
                 <div class="row">
                   <div class="col-md-4">
-                    <h4>Description</h4>
+                    <h5><b>Description</b></h5>
                   </div>
                   <div class="col-md-8">
                     <div class="row">
@@ -73,7 +76,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="bottomless progress progress-striped">
-                          <div class="progress-bar progress-bar-success progress-middle" id="feedback-progress-1" role="progressbar" aria-valuemin="0" aria-valuemax="100""></div>
+                          <div class="progress-bar progress-bar-success progress-middle" id="feedback-progress-1" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
@@ -104,7 +107,7 @@
                   <br>
                       <div class="col-md-12">
                           <div class="col-sm-6">
-                            <button type="button" class="btn btn-block btn-default" id="fee">View Feedback</button>
+                            <button type="button" class="btn btn-block btn-default" id="view-fee">View Feedback</button>
                           </div>            
                           <div class="col-sm-6">
                               <button type="button" class="btn btn-block btn-default" id="edit-obj" >Edit</button>  
