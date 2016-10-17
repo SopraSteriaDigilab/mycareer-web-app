@@ -26,8 +26,19 @@ $(function() {
 	$(".two").click(function(){ updateProgressBar(50); });
 	$(".three").click(function(){ updateProgressBar(100); });
 
-	//function when clicked View Feedback, Feedback shows
-	$("#view-fee").click(function() { });
+	//function when clicked View Feedback, My Feedback shows
+	$("#view-fee").click(function() {
+        $("#fee").addClass("selected");
+		$("#obj").removeClass("selected");
+        $("#feedback").show();
+		$("#objectives").hide();
+    
+    });
+    
+    //Navigation Pills to show All/Awaiting/InFlight/Done objectives
+    $("#navTab").click(function(){
+                      
+    });
 
 	updateNewProgressBar(-25);
 });
@@ -62,7 +73,7 @@ function openAddModal(currentDate){
 function openEditModal(){
 	var objTitle = $('#obj-title-1').text().trim();
 	var objText = $('#obj-text-1').text().trim();
-	var objDate = $('#obj-date-1 h4').text().trim();
+	var objDate = $('#obj-date-1 h6').text().trim();
 
 	setModal(objTitle, objText, objDate);
 
