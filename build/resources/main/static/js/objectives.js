@@ -23,11 +23,11 @@ $(function() {
 	//3 onclicks to change the progress of the status bar of an objective
 	//status goes from Awaiting, InFlight, Done
 	$('.one').click(function(){ updateProgressBar(0); });
-	$(".two").click(function(){ updateProgressBar(100); });
-	$(".three").click(function(){ updateProgressBar(200); });
+	$(".two").click(function(){ updateProgressBar(50); });
+	$(".three").click(function(){ updateProgressBar(100); });
 
 	//function when clicked View Feedback, Feedback shows
-	$("#fee").click(function() { });
+	$("#view-fee").click(function() { });
 
 	updateNewProgressBar(-25);
 });
@@ -71,7 +71,7 @@ function openEditModal(){
 
 //Method for updating progress bar wth a value
 function updateProgressBar(value){
-	$('#objStatus').width(value);
+	$('#objStatus').width(value + "%");
 }
 
 //Method to handle the submit objective button
