@@ -1,4 +1,39 @@
 $(function() {
+    //Gets the List of Objectives from the DB 
+    //reds db: http://ukl5cg6195g1q:8080/
+    //michaels db: http://item-s31509.dhcp.edin.uk.sopra:8080/
+    $.ajax({
+        url: 'http://ukl5cg6195g1q:8080/getObjectives/2312',
+        method: 'GET',
+        success: function(data){
+            console.log('success', data);
+            $.each(data, function(key, val){
+                console.log(val.id);
+                console.log(val.timeToCompleteBy);
+                console.log(val.title);
+                console.log(val.progress);
+                console.log(val.description);
+                
+                
+               $("#objList").append();
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+        
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+        }
+        
+        
+        
+    });
 
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
@@ -17,7 +52,6 @@ $(function() {
 	$('#edit-obj').click(function() { openEditModal(); });
 
 	$('#add-obj').click(function() { openAddModal(currentDate); });
-
 
 
 	//3 onclicks to change the progress of the status bar of an objective
