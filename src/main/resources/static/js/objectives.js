@@ -8,13 +8,13 @@ $(function() {
 	initDatePicker(today, currentDate);
 
 	//onClick for Submit modal
-	$('#submit-obj').click(function(){ clickAddObjective(currentDate); })
+	$('#submit-obj').click(function(){ clickSubmitObjective(currentDate); })
 
 	//modal validation.
 	$('.modal-validate').keyup(function() { validateModal(currentDate); });
 
 	//onClick for Edit button
-	$('#edit-obj').click(function() { openEditModal(); });
+	$('.edit-obj').click( function() { openEditModal(this.id); });
 
 	$('#add-obj').click(function() { openAddModal(currentDate); });
 
@@ -66,13 +66,15 @@ function initDatePicker(today, currentDate){
 
 //Function to set up adn open add modal
 function openAddModal(currentDate){
+	$("#modalType").val('add');
 	var emptyString = '';
 	setModal(emptyString, emptyString, currentDate);
 	showModal(true);
 }
 
 //Function to set up adn open add modal
-function openEditModal(){
+function openEditModal(id){
+	$("#modalType").val('edit');
 	var objTitle = $('#obj-title-1').text().trim();
 	var objText = $('#obj-text-1').text().trim();
 	var objDate = $('#obj-date-1 h6').text().trim();
@@ -87,7 +89,9 @@ function updateProgressBar(value){
 
 //Method to handle the submit objective button
 //call the addobjective method then clear the modal
-function clickAddObjective(currentDate){
+function clickSubmitObjective(currentDate){
+	var type = $("#modalType").val();
+	
 	var userID = 2312;
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
@@ -96,11 +100,15 @@ function clickAddObjective(currentDate){
 	// if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
 	// 	return;
 	// }
-	addObjective(userID, objTitle, objText, objDate);
+	if(type == 'add'){
+		addObjective(userID, objTitle, objText, objDate);
+	}else{
+		editObjective(userID, objTitle, objText, objDate);
+	}
 	clearModal(currentDate)
 }
 
-//Place holder for the http request for adding an objective
+//HTTP request for adding an objective
 function addObjective(userID, objTitle, objText, objDate){
 	var url = "http://localhost:8080/addObjective/"+userID;
 	var data = {};
@@ -122,15 +130,11 @@ function addObjective(userID, objTitle, objText, objDate){
 //	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
 }
 
-// function isEmpty(value, className){
-// 	if(!value){
-// 		$('#' + className).addClass("has-error");
-// 		return true;
-// 	}else{
-// 		$('#' + className).removeClass("has-error");
-// 		return false;
-// 	}
-// }
+//Placeholder for http request to EDIT an objective!!
+function editObjective(userID, objTitle, objText, objDate){
+	alert("EDIT!")
+}
+
 
 //Method that shows modal and default button to enabled/disabled
 function showModal(enabledButton){
@@ -197,3 +201,16 @@ function updateNewProgressBar(score){
 
 
 }
+
+
+
+
+//function isEmpty(value, className){
+//	if(!value){
+//		$('#' + className).addClass("has-error");
+//		return true;
+//	}else{
+//		$('#' + className).removeClass("has-error");
+//		return false;
+//	}
+//}
