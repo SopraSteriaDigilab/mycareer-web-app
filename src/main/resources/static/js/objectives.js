@@ -37,19 +37,19 @@ $(function() {
 
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
-	var currentDate = adjustMonth((today.getMonth()+1)) + '-' + today.getFullYear();
+	var currentDate = adjustMonth(today.getFullYear() + '-' + (today.getMonth()+1));
 
 	//Initialising the date picker
 	initDatePicker(today, currentDate);
 
 	//onClick for Submit modal
-	$('#submit-obj').click(function(){ clickAddObjective(currentDate); })
+	$('#submit-obj').click(function(){ clickSubmitObjective(currentDate); })
 
 	//modal validation.
 	$('.modal-validate').keyup(function() { validateModal(currentDate); });
 
 	//onClick for Edit button
-	$('#edit-obj').click(function() { openEditModal(); });
+	$('.edit-obj').click( function() { openEditModal(this.id); });
 
 	$('#add-obj').click(function() { openAddModal(currentDate); });
 
@@ -86,31 +86,33 @@ function initDatePicker(today, currentDate){
 	// $("#objective-date").val(currentDate);
 
 	$("#objective-date-picker").datepicker({
+		disabled: true,
 		// defaultDate: '01-10-2016',
 		daysOfWeekDisabled: [0, 6],
-	  format: "mm-yyyy",
-	  // todayHighlight: true,
-	  // todayBtn: true,
-	  startView: "months", 
-	  minViewMode: "months",
-	  startDate: today,
-	});
+		format: "yyyy-mm",
+		// todayHighlight: true,
+		// todayBtn: true,
+		startView: "months", 
+		minViewMode: "months",
+		startDate: today,
+		});
 }
 
+//Function to set up adn open add modal
 function openAddModal(currentDate){
+	$("#modalType").val('add');
 	var emptyString = '';
 	setModal(emptyString, emptyString, currentDate);
-
 	showModal(true);
 }
 
-function openEditModal(){
+//Function to set up adn open add modal
+function openEditModal(id){
+	$("#modalType").val('edit');
 	var objTitle = $('#obj-title-1').text().trim();
 	var objText = $('#obj-text-1').text().trim();
 	var objDate = $('#obj-date-1 h6').text().trim();
-
 	setModal(objTitle, objText, objDate);
-
 	showModal(false);
 }
 
@@ -121,7 +123,10 @@ function updateProgressBar(value){
 
 //Method to handle the submit objective button
 //call the addobjective method then clear the modal
-function clickAddObjective(currentDate){
+function clickSubmitObjective(currentDate){
+	var type = $("#modalType").val();
+	
+	var userID = 2312;
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
@@ -129,24 +134,41 @@ function clickAddObjective(currentDate){
 	// if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
 	// 	return;
 	// }
-	addObjective(objTitle, objText, objDate);
+	if(type == 'add'){
+		addObjective(userID, objTitle, objText, objDate);
+	}else{
+		editObjective(userID, objTitle, objText, objDate);
+	}
 	clearModal(currentDate)
 }
 
-//Place holder for the http request for adding an objective
-function addObjective(objTitle, objText, objDate){
-	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
+//HTTP request for adding an objective
+function addObjective(userID, objTitle, objText, objDate){
+	var url = "http://localhost:8080/addObjective/"+userID;
+	var data = {};
+	data["title"] = objTitle;
+	data["description"] = objText;
+	data["completedBy"] = objDate;
+    data["progress"] = 0;
+    
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  alert(response);
+	});
+//	
+//	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
 }
 
-// function isEmpty(value, className){
-// 	if(!value){
-// 		$('#' + className).addClass("has-error");
-// 		return true;
-// 	}else{
-// 		$('#' + className).removeClass("has-error");
-// 		return false;
-// 	}
-// }
+//Placeholder for http request to EDIT an objective!!
+function editObjective(userID, objTitle, objText, objDate){
+	alert("EDIT!")
+}
+
 
 //Method that shows modal and default button to enabled/disabled
 function showModal(enabledButton){
@@ -213,3 +235,16 @@ function updateNewProgressBar(score){
 
 
 }
+
+
+
+
+//function isEmpty(value, className){
+//	if(!value){
+//		$('#' + className).addClass("has-error");
+//		return true;
+//	}else{
+//		$('#' + className).removeClass("has-error");
+//		return false;
+//	}
+//}

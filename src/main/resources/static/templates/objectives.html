@@ -111,7 +111,7 @@
                             <button type="button" class="btn btn-block btn-default" id="view-fee">View Feedback</button>
                           </div>            
                           <div class="col-sm-6">
-                              <button type="button" class="btn btn-block btn-default" id="edit-obj" >Edit</button>  
+                              <button type="button" class="btn btn-block btn-default edit-obj" id="1" >Edit</button>  
                           </div>
                       </div>    
               </div>
@@ -147,7 +147,7 @@
       </div>
       <div class="modal-body">
         <form>
-
+		<input type="hidden" id="modalType" value="add">
           <div class="form-group" id="title-validate">
             <label for="objective-title">Title*:</label>
             <input type="text" class="modal-validate form-control" id="objective-title" />
@@ -164,7 +164,7 @@
               <div class='col-sm-6'>
                   <div class="form-group">
                       <div class='input-group date' id='objective-date-picker'>
-                          <input type='text' class="modal-validate form-control" id='objective-date' />
+                          <input type='text' class="modal-validate form-control" id='objective-date' readonly="readonly" />
                           <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                           </span>
