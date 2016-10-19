@@ -7,3 +7,9 @@
 .col-md-6:not(:last-child) {
     border-right: 1px solid #ccc;
 }
+
+.feeList{
+    max-height: 420px;
+    overflow-y:scroll; 
+}
+}
