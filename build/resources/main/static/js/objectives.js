@@ -5,7 +5,7 @@ $(function() {
     //reds db: http://ukl5cg6195g1q:8080/
     //michaels db: http://item-s31509.dhcp.edin.uk.sopra:8080/
     $.ajax({
-        url: 'http://ukl5cg6195g1q:8080/getObjectives/2312',
+        url: 'http://ukl5cg61956zz:8080/getObjectives/2312',
         method: 'GET',
         success: function(data){
             console.log('success', data);
@@ -21,7 +21,7 @@ $(function() {
                                         "<div class='panel panel-default' id='panel'>"+
                                             "<div class='panel-heading'>"+
                                                 "<div class='row'>"+
-                                                    "<div class='col-sm-6' id='obj-no'><h6><b>Objective " + val.id + "</b></h6></div>"+
+                                                    "<div class='col-sm-6' id='obj-no'><h6><b>#" + val.id + "</b></h6></div>"+
                                                         "<div class='col-sm-6' id='obj-date-"+val.id+"'><h6><b>" + val.timeToCompleteBy + "</b></h6></div>"+
                                             "</div><br>"+
                                             "<div class='row'>"+
@@ -109,11 +109,9 @@ $(function() {
 
 	//modal validation.
 	$('.modal-validate').keyup(function() { validateModal(currentDate); });
-    alert("WTD");
+   
 	//onClick for Edit button
 	$('#edit-1').click(function(){ 
-        
-        alert("clicked");
         openEditModal(this.id); });
 
 	$('#add-obj').click(function() { openAddModal(currentDate); });
