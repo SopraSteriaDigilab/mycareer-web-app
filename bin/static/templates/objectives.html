@@ -6,132 +6,56 @@
 <div class="container">
 
 	<!-- My Objectives half  -->
-    <div class='col-sm-12 col-md-6'>
+	<div class='col-sm-12 col-md-6'>
 
-      <!--Page Header -->
-      <div class="row"> 
-        <div class="col-sm-8">
-          <h2>My Objectives</h2>
-        </div>
-        <div class="col-sm-4">
-          <button type="button" class="btn btn-link" id="add-obj"><u>Add Objective</u></button>
-        </div>
-        <div class="clearfix"></div>
-      </div><!--End of Page Header -->
-      
-       
-    <!-- Nav Pills header -->
-      <ul class="nav nav-tabs nav-justified" id="navTab">
-          <li class="active"><a href="objectives.html" data-toggle="tab">All <span class="badge"></span></a></li>
-          <li><a href="#awaiting-progress" data-toggle="tab">Awaiting <span class="badge"></span></a></li>
-          <li><a href="#inflight-progress" data-toggle="tab">InFlight <span class="badge"></span></a></li>
-          <li><a href="#done-progress" data-toggle="tab">Done <span class="badge"> 2 </span></a></li>
-          <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By 
-              <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                      <li><a href="#">Duration</a></li>
-                      <li><a href="#">Progress</a></li>
-                  </ul>
-          </li>
-      </ul><!-- End of Nav Pills header -->
-      <br>
+		<!--Page Header -->
+		<div class="row">
+			<div class="col-sm-8">
+				<h2>My Objectives</h2>
+			</div>
+			<div class="col-sm-4">
+				<button type="button" class="btn btn-link" id="add-obj">
+					<u>Add Objective</u>
+				</button>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<!--End of Page Header -->
+
+
+		<!-- Nav Pills header -->
+		<ul class="nav nav-tabs nav-justified" id="navTab">
+			<li class="active"><a href="objectives.html" data-toggle="tab">All
+					<span class="badge"></span>
+			</a></li>
+			<li><a href="#awaiting-progress" data-toggle="tab">Awaiting
+					<span class="badge"></span>
+			</a></li>
+			<li><a href="#inflight-progress" data-toggle="tab">InFlight
+					<span class="badge"></span>
+			</a></li>
+			<li><a href="#done-progress" data-toggle="tab">Done <span
+					class="badge"> 2 </span></a></li>
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false">Sort By <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Duration</a></li>
+					<li><a href="#">Progress</a></li>
+				</ul></li>
+		</ul>
+		<!-- End of Nav Pills header -->
+		<br>
+
+		<!-- Objective details in an accordion -->
+		<div class="objList"></div><!-- End of objList container -->
         
-    <!-- Objective details in an accordion -->
-      <div class="panel-group" id="accordion">
-        <div class="panel panel-default" id="panel">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-sm-6" id="obj-no"><h6><b>Objective 1</b></h6></div>
-                <div class="col-sm-6" id="obj-date-1"><h6><b>Oct 2016</b></h6></div>
-            </div>
-              <br>
-              <div class="row">
-                  <div class="col-sm-5" id="obj-title-1"><h5>Improve communication skills when based in teams</h5></div>
-                  <div class="col-sm-5"><br>
-                    <div class="progress progress-striped">
-                        <div class="one primary-color" style="cursor:pointer" id="awaiting-progress"><h5 class="progress-label">Awaiting</h5></div>
-                        <div class="two primary-color" style="cursor:pointer" id="inflight-progress"><h5 class="progress-label">InFlight</h5></div>
-                        <div class="three primary-color" style="cursor:pointer" id="done-progress"><h5 class="progress-label">Done</h5></div>
-                        <div class="progress-bar" id="objStatus" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                <div class="col-sm-2">
-                    <a data-toggle="collapse" data-target="#collapse" href="#" class="collapsed"></a>    
-                </div>       
-              </div>
-          </div>
-            
-          <div id="collapse" class="panel-collapse collapse">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h5><b>Description</b></h5>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="bottomless progress progress-striped">
-                          <div class="progress-bar progress-bar-success progress-middle" id="personal-progress-1" role="progressbar" aria-valuemin="0" aria-valuemax="100" ></div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="bottomless progress progress-striped">
-                          <div class="progress-bar progress-bar-success progress-middle" id="feedback-progress-1" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
-                      </div>
-                      <div class="col-md-6">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="inner-left-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="center-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="inner-right-chevron"></span>
-                        <span class="glyphicon glyphicon-chevron-up" id="right-chevron"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            
-              <div class="row">
-                <div class="col-md-12" id="obj-text-1">
-                  <p id="obj-text-1">When having to talk to team members, management and the client within a project, I have a tendency to shy away as I'm never sure what I can say or fear dissaproval. There are communication modules and training that I will commit to.</p>
-                </div>
-              </div>
-                  <br>
-                      <div class="col-md-12">
-                          <div class="col-sm-6">
-                            <button type="button" class="btn btn-block btn-default" id="view-fee">View Feedback</button>
-                          </div>            
-                          <div class="col-sm-6">
-                              <button type="button" class="btn btn-block btn-default edit-obj" id="1" >Edit</button>  
-                          </div>
-                      </div>    
-              </div>
-           </div>
-        </div>
-      </div><!-- End of Objective accordion -->
-
-
-
-    </div><!--End of My Objectives haf -->
-
-
-
-
+</div><!--End of My Objectives haf -->
 
 
 
 	<!-- Competency/Notes half -->
-	<div class='col-md-6'>
-
-	</div>
+	<div class='col-md-6'></div>
 
 
 </div>
@@ -139,50 +63,54 @@
 
 <!-- Add Objective Modal -->
 <div id="objectiveModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add objective</h4>
-      </div>
-      <div class="modal-body">
-        <form>
-		<input type="hidden" id="modalType" value="add">
-          <div class="form-group" id="title-validate">
-            <label for="objective-title">Title*:</label>
-            <input type="text" class="modal-validate form-control" id="objective-title" />
-          </div>
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Add objective</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="modalType" value="add">
+					<div class="form-group" id="title-validate">
+						<label for="objective-title">Title*:</label> <input type="text"
+							class="modal-validate form-control" id="objective-title" />
+					</div>
 
-          <div class="form-group" id="text-validate">
-            <label for="objective-text" class="control-label">Objective*:</label>
-            <textarea class="modal-validate form-control" id="objective-text" maxlength="1000" rows="8"></textarea>
-          </div>
+					<div class="form-group" id="text-validate">
+						<label for="objective-text" class="control-label">Objective*:</label>
+						<textarea class="modal-validate form-control" id="objective-text"
+							maxlength="1000" rows="8"></textarea>
+					</div>
 
-          <div class="form-group" id="date-validate">
-            <label for="due-date" class="control-label">Time Frame*:</label>
-            <div class="row">
-              <div class='col-sm-6'>
-                  <div class="form-group">
-                      <div class='input-group date' id='objective-date-picker'>
-                          <input type='text' class="modal-validate form-control" id='objective-date' readonly="readonly" />
-                          <span class="input-group-addon">
-                              <span class="glyphicon glyphicon-calendar"></span>
-                          </span>
-                      </div>
-                  </div>
-              </div>
-            </div>
-          </div>
+					<div class="form-group" id="date-validate">
+						<label for="due-date" class="control-label">Time Frame*:</label>
+						<div class="row">
+							<div class='col-sm-6'>
+								<div class="form-group">
+									<div class='input-group date' id='objective-date-picker'>
+										<input type='text' class="modal-validate form-control"
+											id='objective-date' readonly="readonly" /> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-        </form>
+				</form>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-default" id="submit-obj" disabled>Submit</button>
-      </div>
-    </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left"
+					data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-obj"
+					disabled>Submit</button>
+			</div>
+		</div>
 
-  </div>
+	</div>
 </div>
