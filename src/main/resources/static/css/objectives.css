@@ -1,0 +1,109 @@
+.panel-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
+}
+
+.panel-heading a.collapsed:after {
+	content: "\e080";
+}
+
+.list-group-horizontal .list-group-item {
+	display: inline-block;
+}
+
+.list-group-horizontal .list-group-item {
+	margin-bottom: 0;
+	margin-left: -4px;
+	margin-right: 0;
+}
+
+.list-group-horizontal .list-group-item:first-child {
+	border-top-right-radius: 0;
+	border-bottom-left-radius: 4px;
+}
+
+.list-group-horizontal .list-group-item:last-child {
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 0;
+}
+
+.one, .two, .three {
+	position: absolute;
+	margin-top: -10px;
+	z-index: 1;
+	height: 30px;
+	width: 30px;
+	border-radius: 25px;
+}
+
+.one {
+	left: 0%;
+}
+
+.two {
+	left: 50%;
+}
+
+.three {
+	left: 90%;
+}
+
+.progress-label {
+	position: absolute;
+	top: -30px;
+}
+
+.progress {
+	height: 10px;
+}
+
+.primary-color {
+	background-color: #4989bd;
+}
+
+.btn-link {
+	border-radius: 4px;
+}
+
+.btn-link:hover {
+	background-color: #eee;
+}
+
+.glyphicon-chevron-up {
+	font-size: xx-small;
+	width: 10%;
+	float: left;
+}
+
+#inner-left-chevron {
+	width: 20%;
+	text-align: right;
+}
+
+#inner-right-chevron {
+	width: 20%;
+	text-align: left;
+}
+
+#center-chevron {
+	width: 40%;
+	text-align: center;
+}
+
+#right-chevron {
+	text-align: right;
+}
+
+.bottomless {
+	margin-bottom: 0px;
+}
+
+.progress-middle {
+	margin-left: 50%;
+}
+
+#objective-date {
+	background-color: white;
+}

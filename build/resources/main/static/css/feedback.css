@@ -1,0 +1,9 @@
+.scrollable-menu {
+	height: auto;
+	max-height: 200px;
+	overflow-x: hidden;
+}
+
+.col-md-6:not (:last-child ) {
+	border-right: 1px solid #ccc;
+}
