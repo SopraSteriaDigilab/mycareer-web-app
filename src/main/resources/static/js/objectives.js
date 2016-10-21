@@ -26,7 +26,7 @@ $(function() {
 
     
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
-    $("#navTab").click(function(){ });
+    $("#navTab").click(function(){});
 
 	//updateNewProgressBar(-25);
 });
@@ -37,7 +37,7 @@ $(function() {
 //michaels db: http://item-s31509.dhcp.edin.uk.sopra:8080/
 function getObjectivesList(){
     $.ajax({
-        url: 'http://ukl5cg6195g1q:8080/getObjectives/2312',
+        url: 'http://127.0.0.1:8080/getObjectives/2312',
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -62,6 +62,7 @@ function initDatePicker(today, currentDate){
 	// $("#objective-date").val(currentDate);
 
 	$("#objective-date-picker").datepicker({
+		forceParse: false,
 		disabled: true,
 		// defaultDate: '01-10-2016',
 		daysOfWeekDisabled: [0, 6],
@@ -120,7 +121,7 @@ function clickSubmitObjective(currentDate){
 
 //HTTP request for adding an objective
 function addObjective(userID, objTitle, objText, objDate){
-	var url = "http://item-s31509.dhcp.edin.uk.sopra:8080/addObjective/"+userID;
+	var url = "http://127.0.0.1:8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
 	data["description"] = objText;
