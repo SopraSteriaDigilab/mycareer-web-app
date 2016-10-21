@@ -1,4 +1,4 @@
 /target/
 /build/libs/
-/.gradle/
+/.gradle/*
 /build/
