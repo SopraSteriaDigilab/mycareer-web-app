@@ -62,6 +62,7 @@ function initDatePicker(today, currentDate){
 	// $("#objective-date").val(currentDate);
 
 	$("#objective-date-picker").datepicker({
+		forceParse: false,
 		disabled: true,
 		// defaultDate: '01-10-2016',
 		daysOfWeekDisabled: [0, 6],

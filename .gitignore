@@ -1,4 +1,7 @@
 /target/
 /build/libs/
+/.gradle/2.13/
+/.gradle/2.13/*
+/.gradle/
 /.gradle/*
 /build/
