@@ -3,12 +3,12 @@ $(function() {
     //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/2312
     //Gets the List of Feedback from the DB 
     $.ajax({
-        url: 'http://ukl5cg61956zz:8080/getFeedback/2312',
+        url: 'http://ukl5cg6195g1q:8080/getFeedback/2312',
         method: 'GET',
         success: function(data){
             console.log('success', data);
             $.each(data, function(key, val){
-           console.log(val.id);
+//                console.log(val.id);
 //                console.log(val.fromWho);
 //                console.log(val.description);
 //                console.log(val.timeStamp);

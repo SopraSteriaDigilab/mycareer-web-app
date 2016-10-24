@@ -24,7 +24,6 @@ $(function() {
 	$(".two").click(function(){ updateProgressBar(50); });
 	$(".three").click(function(){ updateProgressBar(100); });
 
-    
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
 
@@ -37,13 +36,17 @@ $(function() {
 //michaels db: http://item-s31509.dhcp.edin.uk.sopra:8080/
 function getObjectivesList(){
     $.ajax({
-        url: 'http://ukl5cg6195g1q:8080/getObjectives/2312',
+        url: 'http://127.0.0.1:8080/getObjectives/675590',
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
             	$(".objList").append(objectiveListHTML(val.id, val.timeToCompleteBy, val.title, val.description));
             });
-        } 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            alert("Sorry, there was a problem getting objectives, please try again later.");
+        }
     });	
 }
 
@@ -77,19 +80,20 @@ function initDatePicker(today, currentDate){
 
 //Function to set up adn open add modal
 function openAddModal(currentDate){
-	$("#modalType").val('add');
+	$("#modal-type").val('add');
 	var emptyString = '';
-	setModal(emptyString, emptyString, currentDate);
+	setModal(emptyString, emptyString, emptyString, currentDate);
 	showModal(true);
 }
 
 //Function to set up adn open add modal
 function openEditModal(id){
-	$("#modalType").val('edit');
+	$("#modal-type").val('edit');
+	var objID = id;
 	var objTitle = $('#obj-title-'+id).text().trim();
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
-	setModal(objTitle, objText, objDate);
+	setModal(objID, objTitle, objText, objDate);
 	showModal(false);
 }
 
@@ -101,9 +105,10 @@ function updateProgressBar(value){
 //Method to handle the submit objective button
 //call the addobjective method then clear the modal
 function clickSubmitObjective(currentDate){
-	var type = $("#modalType").val();
+	var type = $("#modal-type").val();
 	
-	var userID = 2312;
+	var userID = 675590;
+	var objID = $("#objective-id").val();
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
@@ -114,14 +119,14 @@ function clickSubmitObjective(currentDate){
 	if(type == 'add'){
 		addObjective(userID, objTitle, objText, objDate);
 	}else{
-		editObjective(userID, objTitle, objText, objDate);
+		editObjective(userID, objID, objTitle, objText, objDate);
 	}
 	clearModal(currentDate)
 }
 
 //HTTP request for adding an objective
 function addObjective(userID, objTitle, objText, objDate){
-	var url = "http://ukl5cg6195g1q:8080/addObjective/"+userID;
+	var url = "http://127.0.0.1:8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
 	data["description"] = objText;
@@ -142,8 +147,24 @@ function addObjective(userID, objTitle, objText, objDate){
 }
 
 //Placeholder for http request to EDIT an objective!!
-function editObjective(userID, objTitle, objText, objDate){
-	alert("EDIT!")
+function editObjective(userID, objID, objTitle, objText, objDate){
+	var url = "http://127.0.0.1:8080/editObjective/"+userID;
+	var data = {};
+	data["objectiveID"] = objID;
+	data["title"] = objTitle;
+	data["description"] = objText;
+	data["completedBy"] = objDate;
+    data["progress"] = 0;
+    
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  alert(response);
+	});
 }
 
 
@@ -179,9 +200,8 @@ function validateModal(){
 			isEmpty = true;
 			return;
 		}
-
 	});
-
+	
 	if(isEmpty){
 		$('#submit-obj').prop("disabled", true);
 	}else{
@@ -190,7 +210,8 @@ function validateModal(){
 }
 
 //Method to set content of modal
-function setModal(title, text, date){
+function setModal(id, title, text, date){
+	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
