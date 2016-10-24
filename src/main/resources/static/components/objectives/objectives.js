@@ -42,7 +42,11 @@ function getObjectivesList(){
             $.each(data, function(key, val){
             	$(".objList").append(objectiveListHTML(val.id, val.timeToCompleteBy, val.title, val.description));
             });
-        } 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            alert("Sorry, there was a problem getting objectives, please try again later.");
+        }
     });	
 }
 
@@ -196,9 +200,8 @@ function validateModal(){
 			isEmpty = true;
 			return;
 		}
-
 	});
-
+	
 	if(isEmpty){
 		$('#submit-obj').prop("disabled", true);
 	}else{

@@ -1,5 +1,14 @@
 $(function() {
     
+	getFeedbackList();
+    
+    
+    
+    
+});//End of Document Function
+
+
+function getFeedbackList(){
     //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/2312
     //Gets the List of Feedback from the DB 
     $.ajax({
@@ -41,12 +50,8 @@ $(function() {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
+            alert("Sorry, there was a problem getting feedback, please try again later.");
         }
         
     });//End of Ajax request
-    
-    
-    
-    
-});//End of Document Function
-
+}
