@@ -65,6 +65,7 @@ function initDatePicker(today, currentDate){
 	// $("#objective-date").val(currentDate);
 
 	$("#objective-date-picker").datepicker({
+		useCurrent: true,
 		forceParse: false,
 		disabled: true,
 		// defaultDate: '01-10-2016',
@@ -218,68 +219,69 @@ function setModal(id, title, text, date){
 }
 
 function objectiveListHTML(id, timeToCompleteBy, title, description){
-	var html = `
-    <div class='panel-group' id='accordion'>
-        <div class='panel panel-default' id='panel'>
-            <div class='panel-heading'>
-                <div class='row'>
-                    <div class='col-sm-6' id='obj-no-`+id+`'> # `+id+` </div>
-                    <div class='col-sm-6' id='obj-date-`+id+`'><h6><b>`+timeToCompleteBy+`</b></h6></div>
-                </div><br>
-                <div class='row'>
-                    <div class='col-sm-5' id='obj-title-`+id+`'><h5> `+title+` </h5></div>
-                        <div class='col-sm-5'><br>
-                            <div class='progress progress-striped'>
-                                <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div>
-                                <div class='two primary-color' style='cursor:pointer' id='inflight-progress'><h5 class='progress-label'>InFlight</h5></div>
-                                <div class='three primary-color' style='cursor:pointer' id='done-progress'><h5 class='progress-label'>Done</h5></div>
-                                <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div>
-                            </div>
-                        </div>
-                        <div class='col-sm-2'>
-                            <a data-toggle='collapse' href='#collapse-`+id+`' class='collapsed'></a>
-                        </div>
-                </div>
-            </div>
-        
-            <div id='collapse-`+id+`' class='panel-collapse collapse'>
-                <div class='panel-body'>
-                    <div class='row'>
-                        <div class='col-md-4'>
-                            <h5><b>Description</b></h5>
-                        </div>
-                        <div class='col-md-8'>
-                            <div class='row'>
-                                <div class='col-md-6'>
-                                    <div class='bottomless progress progress-striped'>
-                                        <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div>
-                                    </div>
-                                </div>
-                                <div class='col-md-6'>
-                                    <div class='bottomless progress progress-striped'>
-                                        <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='row'>   
-                        <div class='col-md-12'>
-                            <p id='obj-text-`+id+`'> `+description+` </p>
-                        </div>
-                    </div><br>
-                    <div class='col-md-12'>
-                        <div class='col-sm-6'>
-                           <button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback(`+id+`)'>View Feedback</button>
-                        </div>
-                        <div class='col-sm-6'>
-                            <button type='button' class='btn btn-block btn-default' onClick='openEditModal(`+id+`)'>Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>                               
-    </div>`
+	var html = " \
+    <div class='panel-group' id='accordion'> \
+        <div class='panel panel-default' id='panel'> \
+            <div class='panel-heading'> \
+                <div class='row'> \
+                    <div class='col-sm-6' id='obj-no-"+id+"'> # "+id+" </div> \
+                    <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>"+timeToCompleteBy+"</b></h6></div> \
+                </div><br> \
+                <div class='row'> \
+                    <div class='col-sm-5' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
+                        <div class='col-sm-5'><br> \
+                            <div class='progress progress-striped'> \
+                                <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div> \
+                                <div class='two primary-color' style='cursor:pointer' id='inflight-progress'><h5 class='progress-label'>InFlight</h5></div> \
+                                <div class='three primary-color' style='cursor:pointer' id='done-progress'><h5 class='progress-label'>Done</h5></div> \
+                                <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+                            </div> \
+                        </div> \
+                        <div class='col-sm-2'> \
+                            <a data-toggle='collapse' href='#collapse-"+id+"' class='collapsed'></a> \
+                        </div> \
+                </div> \
+            </div> \
+        \
+            <div id='collapse-"+id+"' class='panel-collapse collapse'> \
+                <div class='panel-body'> \
+                    <div class='row'> \
+                        <div class='col-md-4'> \
+                            <h5><b>Description</b></h5> \
+                        </div> \
+                        <div class='col-md-8'> \
+                            <div class='row'> \
+                                <div class='col-md-6'> \
+                                    <div class='bottomless progress progress-striped'> \
+                                        <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+                                    </div> \
+                                </div> \
+                                <div class='col-md-6'> \
+                                    <div class='bottomless progress progress-striped'> \
+                                        <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+                                    </div> \
+                                </div> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    <div class='row'> \
+                        <div class='col-md-12'> \
+                            <p id='obj-text-"+id+"'> "+description+" </p> \
+                        </div> \
+                    </div><br> \
+                    <div class='col-md-12'> \
+                        <div class='col-sm-6'> \
+                           <button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
+                        </div> \
+                        <div class='col-sm-6'> \
+                            <button type='button' class='btn btn-block btn-default' onClick='openEditModal("+id+")'>Edit</button> \
+                        </div> \
+                    </div> \
+                </div> \
+            </div> \
+        </div> \
+    </div> \
+    "
                             
     return html;
 }
