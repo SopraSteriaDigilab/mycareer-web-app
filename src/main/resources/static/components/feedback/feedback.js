@@ -7,6 +7,7 @@ $(function() {
     
 });//End of Document Function
 
+var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 
 function getFeedbackList(){
     //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/2312
@@ -24,11 +25,11 @@ function getFeedbackList(){
                 
                 
                 var feeTime = new Date(val.timeStamp);
-                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
                 var year = feeTime.getFullYear();
-                var month = months[feeTime.getMonth()];
+                var month = shortMonths[feeTime.getMonth()];
                 var day = feeTime.getDate();
                 var feedbackDate = day + ' ' + month + ' ' + year;
+                
                 
                 $('.feeList').append(" \
 	                <div class='panel panel-default' id='view-fee-"+val.id+"'> \
