@@ -30,6 +30,8 @@ $(function() {
 	//updateNewProgressBar(-25);
 });
 
+//List of months for conversion
+var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 
 //Gets the List of Objectives from the DB 
 //reds db: http://ukl5cg6195g1q:8080/
@@ -40,7 +42,8 @@ function getObjectivesList(){
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
-            	$(".objList").append(objectiveListHTML(val.id, val.timeToCompleteBy, val.title, val.description));
+            	excpectedBy = formatDate(val.timeToCompleteBy);
+            	$(".objList").append(objectiveListHTML(val.id, excpectedBy, val.title, val.description));
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -48,6 +51,16 @@ function getObjectivesList(){
             alert("Sorry, there was a problem getting objectives, please try again later.");
         }
     });	
+}
+
+
+function formatDate(date){
+	var originalDate = new Date(date);
+    var year = originalDate.getFullYear();
+    var month = fullMonths[originalDate.getMonth()];
+    var formattedDate = month + ' ' + year;
+	
+	return formattedDate;
 }
 
 //onclick to view feedback
