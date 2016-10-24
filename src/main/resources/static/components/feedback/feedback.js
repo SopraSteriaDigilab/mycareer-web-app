@@ -27,9 +27,9 @@ function getFeedbackList(){
                 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
                 var year = feeTime.getFullYear();
                 var month = months[feeTime.getMonth()];
-                var day = feeTime.getDay();
+                var day = feeTime.getDate();
                 var feedbackDate = day + ' ' + month + ' ' + year;
-               
+                
                 $('.feeList').append(" \
 	                <div class='panel panel-default' id='view-fee-"+val.id+"'> \
 	                    <div class='panel-heading'> \
