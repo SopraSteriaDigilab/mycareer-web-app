@@ -15,7 +15,8 @@ $(function() {
 	
 });
 
-function addNote(userID, from, body ){
+//Method to make ajax call to add note to database
+function addNoteToDB(userID, from, body ){
 	var url = "http://localhost:8080/addNote/"+userID;
 	var data = {};
 	data["from"] = from;
@@ -32,45 +33,50 @@ function addNote(userID, from, body ){
 	});
 }
 
+//Method to 
 function getNotesList(){
     $.ajax({
         url: 'http://127.0.0.1:8080/getNotes/2312',
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
-//            	alert(val.id);
-//            	alert(val.body);
-//            	alert(val.timeStamp);
-//            	alert(val.fromWho);
    
-            	var d = new Date(val.timeStamp);
-            	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
             	
-            	$("#general-notes-list").append(notesListHTML(val.body, date, val.fromWho));
+            	var date = timeStampToDate(new Date(val.timeStamp));
+
+            	addNoteToList(val.fromWho, val.body, date);
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            alert("Sorry, there was a problem getting objectives, please try again later.");
+            alert("Sorry, there was a problem getting notes, please try again later.");
         }
     });
 }
 
 
-
+//Method to get data and submit data
 function clickSubmitNote(){
 	var userID = 2312;
 	var note = $('#note-text').val().trim();
 	var from = 'Redhwan';
+	var date = timeStampToDate(new Date());
 	
-	addNote(userID, from, note);
+	addNoteToList(from, note, date);
+	addNoteToDB(userID, from, note);
 		
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
 }
 
+//Method to add note to list directly
+function addNoteToList(fromWho, body, date){
+	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
+}
+    
+//Method to return html
+function notesListHTML(fromWho, body, date){
 
-function notesListHTML(body, date, fromWho){
 	var html = " \
 	  <li class='list-group-item'> \
 	  	<div class='row'> \
@@ -82,8 +88,15 @@ function notesListHTML(body, date, fromWho){
 		</div> \
 	  </li> \
 	  ";
-	return html;
-	
+	return html;	
 }
-    
+
+//TimeStamp to dd/mm/yyyy
+function timeStampToDate(date){
+	var d = new Date(date);
+	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+	
+	return date;
+}
+
     
