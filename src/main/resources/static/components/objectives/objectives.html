@@ -5,48 +5,52 @@
 <!--Containter for full page -->
 <div class="container">
 
-	<!-- My Objectives half  -->
-	<div class='col-sm-12 col-md-6'>
-
 		<!--Page Header -->
 		<div class="row">
-			<div class="col-sm-8">
-				<h2>My Objectives</h2>
+			<div class="col-md-6" >
+				<div class="col-md-6">
+					<h2 >My Objectives</h2>
+				</div>
+				<div class="col-md-6 vertical-centre">
+					<button type="button" class="btn btn-link pull-right" id="add-obj">
+						<u>Add Objective</u>
+					</button>
+				</div>
 			</div>
-			<div class="col-sm-4">
-				<button type="button" class="btn btn-link" id="add-obj">
-					<u>Add Objective</u>
-				</button>
-			</div>
-			<div class="clearfix"></div>
 		</div>
 		<!--End of Page Header -->
-
-
+		
 		<!-- Nav Pills header -->
-		<ul class="nav nav-tabs nav-justified" id="navTab">
-			<li class="active"><a href="objectives.html" data-toggle="tab">All
-					<span class="badge"></span>
-			</a></li>
-			<li><a href="#awaiting-progress" data-toggle="tab">Awaiting
-					<span class="badge"></span>
-			</a></li>
-			<li><a href="#inflight-progress" data-toggle="tab">InFlight
-					<span class="badge"></span>
-			</a></li>
-			<li><a href="#done-progress" data-toggle="tab">Done <span
-					class="badge"> 2 </span></a></li>
-			<li class="dropdown"><a href="#" class="dropdown-toggle"
-				data-toggle="dropdown" role="button" aria-haspopup="true"
-				aria-expanded="false">Sort By <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li><a href="#">Duration</a></li>
-					<li><a href="#">Progress</a></li>
-				</ul></li>
-		</ul>
+		<div class="row">
+			<div class="col-md-6">
+				<ul class="nav nav-tabs nav-justified" id="navTab">
+					<li class="active"><a href="objectives.html" data-toggle="tab">All
+							<span class="badge"></span>
+					</a></li>
+					<li><a href="#awaiting-progress" data-toggle="tab">Awaiting
+							<span class="badge"></span>
+					</a></li>
+					<li><a href="#inflight-progress" data-toggle="tab">InFlight
+							<span class="badge"></span>
+					</a></li>
+					<li><a href="#done-progress" data-toggle="tab">Done <span
+							class="badge"> 2 </span></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Sort By <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Duration</a></li>
+							<li><a href="#">Progress</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
 		<!-- End of Nav Pills header -->
 		<br>
-
+		
+		
+	<!-- My Objectives half  -->
+	<div class='col-sm-12 col-md-6'>
 		<!-- Objective details in an accordion -->
 		<div class="objList"></div><!-- End of objList container -->
         
@@ -55,7 +59,7 @@
 
 
 	<!-- Competency/Notes half -->
-	<div class='col-md-6'></div>
+	<div class='col-md-6' id='competencies'></div>
 
 
 </div>

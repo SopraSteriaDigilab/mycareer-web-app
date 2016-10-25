@@ -3,6 +3,9 @@ $(function() {
 	//Get list of objectives
 	getObjectivesList();
     
+	//Load competencies section
+	$( "#competencies" ).load( "../components/objectives/competencies/competencies.html" );
+	
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
 	var currentDate = adjustMonth(today.getFullYear() + '-' + (today.getMonth()+1));
