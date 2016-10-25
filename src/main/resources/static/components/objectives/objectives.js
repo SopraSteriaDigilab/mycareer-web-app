@@ -17,7 +17,7 @@ $(function() {
 	$('#submit-obj').click(function(){ clickSubmitObjective(currentDate); });
 
 	//modal validation.
-	$('.modal-validate').keyup(function() { validateModal(currentDate); });
+	$('.modal-validate').keyup(function() { validateForm('modal-validate', 'submit-obj'); });
 
 	$('#add-obj').click(function() { openAddModal(currentDate); });
 
@@ -33,6 +33,7 @@ $(function() {
 	//updateNewProgressBar(-25);
 });
 
+
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 
@@ -46,7 +47,7 @@ function getObjectivesList(){
         success: function(data){
             $.each(data, function(key, val){
             	excpectedBy = formatDate(val.timeToCompleteBy);
-            	$(".objList").append(objectiveListHTML(val.id, excpectedBy, val.title, val.description));
+            	$("#obj-list").append(objectiveListHTML(val.id, excpectedBy, val.title, val.description));
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -56,7 +57,7 @@ function getObjectivesList(){
     });	
 }
 
-
+//Formatting from date to 'MMM/YYYY' e.g 'December 2016'
 function formatDate(date){
 	var originalDate = new Date(date);
     var year = originalDate.getFullYear();
@@ -64,6 +65,15 @@ function formatDate(date){
     var formattedDate = month + ' ' + year;
 	
 	return formattedDate;
+}
+
+//formatting from 'MMM/YYYY' format to 'MM/YYYY' e.g. 12/2016
+function reveseDateFormat(date){
+	var year = date.slice(-4, date.length);
+	var monthFull = date.slice(0, -5);
+	var monthIndex = (fullMonths.indexOf(monthFull)) +1;
+	var reversedDate = year+'-'+monthIndex;
+	return reversedDate;
 }
 
 //onclick to view feedback
@@ -110,6 +120,7 @@ function openEditModal(id){
 	var objTitle = $('#obj-title-'+id).text().trim();
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
+	objDate = reveseDateFormat(objDate);
 	setModal(objID, objTitle, objText, objDate);
 	showModal(false);
 }
@@ -208,10 +219,10 @@ function adjustMonth(month){
 }
 
 //method that enables the submit button only when all inputs in the modal have content
-function validateModal(){
+function validateForm(inputClass, submitButtonID){
 	var isEmpty = false;
 
-	$('.modal-validate').each(function(i) {
+	$('.'+inputClass).each(function(i) {
 		value = $(this).val().trim();
 		if(!value){
 			isEmpty = true;
@@ -219,10 +230,11 @@ function validateModal(){
 		}
 	});
 	
+	
 	if(isEmpty){
-		$('#submit-obj').prop("disabled", true);
+		$('#'+submitButtonID).prop("disabled", true);
 	}else{
-		$('#submit-obj').prop("disabled", false);
+		$('#'+submitButtonID).prop("disabled", false);
 	}
 }
 
