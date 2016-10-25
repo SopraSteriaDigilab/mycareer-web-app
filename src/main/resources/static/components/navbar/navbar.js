@@ -1,29 +1,35 @@
 $(function() {
 
-	$("#obj").click(function() {
-			highlight('obj');
+	$("#objectives").click(function() {
+			highlight('objectives');
 	});
 
-	$("#fee").click(function() {
-		highlight('fee');
+	$("#feedback").click(function() {
+		highlight('feedback');
 	});
+	
+	$("#development-needs").click(function() {
+		highlight('development-needs');
+	});
+
 
 });
 
 
 function highlight(value) {
+	$('.nav-bar-item').each(function(i) {
+		var sectionValue = this.id + "-section";
+		if(value === this.id) {
 
-	if(value == 'obj'){
-		$("#obj").addClass("selected");
-		$("#fee").removeClass("selected");
-		$("#objectives").show();
-		$("#feedback").hide();
-	}else{
-		$("#fee").addClass("selected");
-		$("#obj").removeClass("selected");
-		$("#feedback").show();
-		$("#objectives").hide();
-	}
+			$("#"+this.id).addClass("selected");
+			$("#"+sectionValue).show();
+
+		}else{
+			$("#"+this.id).removeClass("selected");
+			$("#"+sectionValue).hide();
+		}
+		
+	});
 
 }
 
