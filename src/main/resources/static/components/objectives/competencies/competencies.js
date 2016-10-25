@@ -10,6 +10,22 @@ $(function() {
 	
 });
 
+function addNote(userID, from, body ){
+	var url = "http://localhost:8080/addNote/"+userID;
+	var data = {};
+	data["from"] = from;
+	data["body"] = body;
+    
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  alert(response);
+	});
+}
 
 function getNotesList(){
     $.ajax({
@@ -38,7 +54,12 @@ function getNotesList(){
 
 
 function clickSubmitNote(){
-	alert($('#note-text').val().trim());
+	var userID = 2312;
+	var note = $('#note-text').val().trim();
+	var from = 'Redhwan';
+	
+	addNote(userID, from, note);
+		
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
 }
