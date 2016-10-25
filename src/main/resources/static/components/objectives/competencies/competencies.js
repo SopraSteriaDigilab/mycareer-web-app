@@ -5,8 +5,13 @@ $(function() {
 	
 	//Validate note
 	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
-
+	
+	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });
+	
+	//Link to competenct framework
+    $("#view-competency").click(function(){ window.location.href='http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx'; });
+    
 	
 });
 
@@ -80,3 +85,5 @@ function notesListHTML(body, date, fromWho){
 	return html;
 	
 }
+    
+    
