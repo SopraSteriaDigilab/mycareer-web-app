@@ -18,7 +18,7 @@ function getDevelopmentNeedsList(){
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
-        	  nextID = val.id;
+        	  nextDevID = val.id;
           	excpectedBy = formatDate(val.timeToCompleteBy);
           	categoryText = categoryList[val.category];
           	addDevelopmentNeedToList(val.id, val.title, val.description, categoryText, excpectedBy);
@@ -37,7 +37,6 @@ function getDevelopmentNeedsList(){
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
 	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
-
 
 
 
@@ -89,8 +88,8 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                         </div> \
                     </div> \
                     <div class='row'> \
-                        <div class='col-md-12'> \
-                            <p id='obj-text-"+id+"'> "+description+" </p> \
+                        <div class='col-md-12 wrap-text'> \
+                            <pre><p id='obj-text-"+id+"'> "+description+" </p></pre> \
                         </div> \
                     </div><br> \
                     <div class='col-md-12'> \
@@ -98,7 +97,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                            \
                         </div> \
                         <div class='col-sm-6'> \
-                            <button type='button' class='btn btn-block btn-default' onClick='openEditModal("+id+")'>Edit</button> \
+                            <button type='button' class='btn btn-block btn-default' onClick='openEditModalDevNeeds("+id+")'>Edit</button> \
                         </div> \
                     </div> \
                 </div> \
