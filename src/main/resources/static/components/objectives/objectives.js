@@ -325,7 +325,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                     </div> \
                     <div class='row'> \
                         <div class='col-md-12 wrap-text'> \
-                            <p id='obj-text-"+id+"'> "+description+" </p> \
+                            <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div><br> \
                     <div class='col-md-12'> \
