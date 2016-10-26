@@ -33,7 +33,7 @@ $(function() {
 	//updateNewProgressBar(-25);
 });
 
-
+var nextID = 0;
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 
@@ -46,8 +46,9 @@ function getObjectivesList(){
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
+            	nextID = val.id;
             	excpectedBy = formatDate(val.timeToCompleteBy);
-            	$("#obj-list").append(objectiveListHTML(val.id, excpectedBy, val.title, val.description));
+            	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -145,15 +146,29 @@ function clickSubmitObjective(currentDate){
 	// 	return;
 	// }
 	if(type == 'add'){
-		addObjective(userID, objTitle, objText, objDate);
+		addObjectiveToDB(userID, objTitle, objText, objDate);
+		addObjectiveToList((++nextID), objTitle, objText, objDate);
 	}else{
-		editObjective(userID, objID, objTitle, objText, objDate);
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
+		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
 	}
 	clearModal(currentDate)
 }
 
+//Function to add objective to list
+function addObjectiveToList(id, title, description, expectedBy){
+	$("#obj-list").append(objectiveListHTML(id, title, description, expectedBy));
+}
+
+//Function to update objective on list
+function editObjectiveOnList(userID, objID, title, text, date){
+	$('#obj-title-'+objID).text(title);
+	$('#obj-text-'+objID).text(text);
+	$('#obj-date-'+objID).text(date);
+}
+
 //HTTP request for adding an objective
-function addObjective(userID, objTitle, objText, objDate){
+function addObjectiveToDB(userID, objTitle, objText, objDate){
 	var url = "http://127.0.0.1:8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
@@ -175,7 +190,7 @@ function addObjective(userID, objTitle, objText, objDate){
 }
 
 //Placeholder for http request to EDIT an objective!!
-function editObjective(userID, objID, objTitle, objText, objDate){
+function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 	var url = "http://127.0.0.1:8080/editObjective/"+userID;
 	var data = {};
 	data["objectiveID"] = objID;
@@ -246,7 +261,7 @@ function setModal(id, title, text, date){
 	$("#objective-date").val(date);
 }
 
-function objectiveListHTML(id, timeToCompleteBy, title, description){
+function objectiveListHTML(id, title, description, timeToCompleteBy){
 	var html = " \
     <div class='panel-group' id='accordion'> \
         <div class='panel panel-default' id='panel'> \
