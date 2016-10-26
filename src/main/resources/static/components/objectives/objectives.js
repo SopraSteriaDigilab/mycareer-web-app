@@ -14,7 +14,9 @@ $(function() {
 	initDatePicker(today, currentDate);
 
 	//onClick for Submit modal
-	$('#submit-obj').click(function(){ clickSubmitObjective(currentDate); });
+	$('#submit-obj').click(function(){ 
+        clickSubmitObjective(currentDate); 
+    });
 
 	//modal validation.
 	$('.modal-validate').keyup(function() { validateForm('modal-validate', 'submit-obj'); });
@@ -53,7 +55,7 @@ function getObjectivesList(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            alert("Sorry, there was a problem getting objectives, please try again later.");
+            toastr.error("Sorry, there was a problem getting objectives, please try again later.");
         }
     });	
 }
@@ -198,9 +200,9 @@ function addObjectiveToDB(userID, objTitle, objText, objDate){
 	}
 
 	$.ajax(settings).done(function (response) {
-	  alert(response);
+	  toastr.success(response);
 	});
-//	
+    
 //	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
 }
 
@@ -221,7 +223,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 	}
 
 	$.ajax(settings).done(function (response) {
-	  alert(response);
+	  toastr.success(response);
 	});
 }
 
