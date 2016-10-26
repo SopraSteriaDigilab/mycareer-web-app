@@ -111,3 +111,8 @@
 .vertical-centre{
 	transform: translateY(70%);
 }
+
+.wrap-text {
+	word-break:break-all;
+	white-space: pre-wrap;
+}
