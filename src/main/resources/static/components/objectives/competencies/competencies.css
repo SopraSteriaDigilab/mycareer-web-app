@@ -5,8 +5,10 @@
 
 .wrap-text {
 	word-break:break-all;
+    white-space: pre-wrap;
 }
 
 .toast {
   opacity: 1 !important;
 }
+

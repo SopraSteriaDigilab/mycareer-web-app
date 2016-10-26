@@ -8,7 +8,7 @@ $(function() {
 	
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
-	var currentDate = adjustMonth(today.getFullYear() + '-' + (today.getMonth()+1));
+	var currentDate = addZero(today.getFullYear() + '-' + (today.getMonth()+1));
 
 	//Initialising the date picker
 	initDatePicker(today, currentDate);
@@ -35,7 +35,7 @@ $(function() {
 	//updateNewProgressBar(-25);
 });
 
-var nextID = 0;
+var nextObjID = 0;
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 
@@ -48,7 +48,7 @@ function getObjectivesList(){
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
-            	nextID = val.id;
+            	nextObjID = val.id;
             	excpectedBy = formatDate(val.timeToCompleteBy);
             	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
             });
@@ -79,7 +79,7 @@ function reveseDateFormat(date){
 	var year = date.slice(-4, date.length);
 	var monthFull = date.slice(0, -5);
 	var monthIndex = (fullMonths.indexOf(monthFull)) +1;
-	var reversedDate = year+'-'+ adjustMonth(monthIndex);
+	var reversedDate = year+'-'+ addZero(monthIndex);
 	return reversedDate;
 }
 
@@ -96,10 +96,7 @@ function formatEditDate(date){
 
 //onclick to view feedback
 function clickObjectiveFeedback(id){
-    $("#fee").addClass("selected");
-	$("#obj").removeClass("selected");
-    $("#feedback").show();
-	$("#objectives").hide();
+	highlight('feedback');
 }
 
 //Initialising the date picker
@@ -164,7 +161,7 @@ function clickSubmitObjective(currentDate){
 	// }
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextID), objTitle, objText, formatEditDate(objDate));
+		addObjectiveToList((++nextObjID), objTitle, objText, formatEditDate(objDate));
 	}else{
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
@@ -243,7 +240,7 @@ function clearModal(currentDate){
 }
 
 //Method to adjust month format (add '0' for single digit months)
-function adjustMonth(month){
+function addZero(month){
 	if (month < 10){
 		return '0' + month;
 	}
@@ -326,8 +323,8 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                         </div> \
                     </div> \
                     <div class='row'> \
-                        <div class='col-md-12'> \
-                            <p id='obj-text-"+id+"'> "+description+" </p> \
+                        <div class='col-md-12 wrap-text'> \
+                            <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div><br> \
                     <div class='col-md-12'> \

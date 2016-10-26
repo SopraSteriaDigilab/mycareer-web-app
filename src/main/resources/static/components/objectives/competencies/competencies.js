@@ -48,9 +48,8 @@ function getNotesList(){
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
-   
             	
-            	var date = timeStampToDate(new Date(val.timeStamp));
+            	var date = timeStampToDateTime(new Date(val.timeStamp));
 
             	addNoteToList(val.fromWho, val.body, date);
             });
@@ -68,7 +67,7 @@ function clickSubmitNote(){
 	var userID = 2312;
 	var note = $('#note-text').val().trim();
 	var from = 'Redhwan';
-	var date = timeStampToDate(new Date());
+	var date = timeStampToDateTime(new Date());
 	
 	addNoteToDB(userID, from, note);
 	addNoteToList(from, note, date);
@@ -99,10 +98,10 @@ function notesListHTML(fromWho, body, date){
 	return html;	
 }
 
-//TimeStamp to dd/mm/yyyy
-function timeStampToDate(date){
+//TimeStamp to dd/mm/yyyy hh:mm
+function timeStampToDateTime(date){
 	var d = new Date(date);
-	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
 	
 	return date;
 }
