@@ -2,6 +2,9 @@ $(function() {
 	
 	//Get general-notes
 	getNotesList();
+    
+    //Get competencies
+    getCompetencyList();
 	
 	//Validate note
 	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
@@ -12,8 +15,10 @@ $(function() {
 	//Link to competency framework
     $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
     
-    //Click listener to submit competency
-    $('.glyphicon-star-empty').click(function(){ selectedCompetency(); });
+    //change status of competency
+    $(".competency-Details").click(function(){
+        $(this).find('span').toggleClass('glyphicon-star-empty').toggleClass('glyphicon-star');
+    })
     
 	
 });
@@ -36,7 +41,7 @@ function addNoteToDB(userID, from, body ){
 	});
 }
 
-//Method to 
+//Method to get the Notes list
 function getNotesList(){
     $.ajax({
         url: 'http://127.0.0.1:8080/getNotes/2312',
@@ -102,8 +107,48 @@ function timeStampToDate(date){
 	return date;
 }
 
-function selectedCompetency(){
-    $('.glyphicon-star-empty').append("<span class='glyphicon glyphicon-star'></span>");
+//Gets the list of Competencies from the DB
+function getCompetencyList(){
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getCompetencies/2312',
+        method: 'GET',
+        success: function(data){
+            $.each(data, function(key, val){
+                addCompetencyToList(val.id,val.title,val.description,val.status);  
+            });
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            alert("Sorry, there was a problem getting competencies, please try again later.");
+        }
+    });
+}
+
+//Method to return competency html
+function competenciesListHTML(id,title,description,status){
+    
+    var html = " \
+        <div class='panel panel-default'> \
+            <div class='panel-heading panel-heading-sm'> \
+                <div class='panel-title'> \
+                    <span class='glyphicon glyphicon-star-empty'></span>" + title + " \
+                        <a class='collapsed' data-toggle='collapse' href='#collapse-" + id + "'></a> \
+                </div> \
+            </div> \
+            <div id='collapse-"+id+"' class='panel-collapse collapse'> \
+                <div class='panel-body'> \
+                    <h5><b>"+description+"</b></h5> \
+                    <p></p> \
+                </div> \
+            </div> \
+        </div><!--End of panel --> \
+    "
+    return html;
+}
+
+//Method to add competencies to list display
+function addCompetencyToList(id,title,description,status){
+    $(".competency-Details").append(competenciesListHTML(id,title,description,status));
 }
 
     
