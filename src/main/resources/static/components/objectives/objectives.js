@@ -60,12 +60,16 @@ function getObjectivesList(){
 
 //Formatting from JS date to 'MMM YYYY' e.g 'December 2016'
 function formatDate(date){
+	if(date === 'Ongoing'){
+		return 'Ongoing';
+	}else{
 	var originalDate = new Date(date);
     var year = originalDate.getFullYear();
     var month = fullMonths[originalDate.getMonth()];
     var formattedDate = month + ' ' + year;
 	
 	return formattedDate;
+	}
 }
 
 //formatting from 'MMM-YYYY' format to 'MM-YYYY' e.g. December-2016 to 12-2016
@@ -272,6 +276,7 @@ function setModal(id, title, text, date){
 	$("#objective-date").val(date);
 }
 
+//Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy){
 	var html = " \
     <div class='panel-group' id='accordion'> \
@@ -292,12 +297,12 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                             </div> \
                         </div> \
                         <div class='col-sm-2'> \
-                            <a data-toggle='collapse' href='#collapse-"+id+"' class='collapsed'></a> \
+                            <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
                         </div> \
                 </div> \
             </div> \
         \
-            <div id='collapse-"+id+"' class='panel-collapse collapse'> \
+            <div id='collapse-obj-"+id+"' class='panel-collapse collapse'> \
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-4'> \
