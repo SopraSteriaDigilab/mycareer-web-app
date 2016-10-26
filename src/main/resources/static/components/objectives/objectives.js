@@ -158,7 +158,7 @@ function clickSubmitObjective(currentDate){
 	// }
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextID), objTitle, objText, objDate);
+		addObjectiveToList((++nextID), objTitle, objText, formatEditDate(objDate));
 	}else{
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
