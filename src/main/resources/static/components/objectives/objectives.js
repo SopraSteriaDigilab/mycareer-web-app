@@ -58,7 +58,7 @@ function getObjectivesList(){
     });	
 }
 
-//Formatting from date to 'MMM/YYYY' e.g 'December 2016'
+//Formatting from JS date to 'MMM YYYY' e.g 'December 2016'
 function formatDate(date){
 	var originalDate = new Date(date);
     var year = originalDate.getFullYear();
@@ -68,13 +68,24 @@ function formatDate(date){
 	return formattedDate;
 }
 
-//formatting from 'MMM/YYYY' format to 'MM/YYYY' e.g. 12/2016
+//formatting from 'MMM-YYYY' format to 'MM-YYYY' e.g. December-2016 to 12-2016
 function reveseDateFormat(date){
 	var year = date.slice(-4, date.length);
 	var monthFull = date.slice(0, -5);
 	var monthIndex = (fullMonths.indexOf(monthFull)) +1;
-	var reversedDate = year+'-'+monthIndex;
+	var reversedDate = year+'-'+ adjustMonth(monthIndex);
 	return reversedDate;
+}
+
+//formatting from yyyy/MM to MMM yyyy e.g. '2016/12' to 'December 2016'
+function formatEditDate(date){
+	
+	var month = date.slice(-2, date.length);
+	var year = date.slice(0, 4);
+	var formattedDate = fullMonths[(month-1)] + ' ' + year;
+	
+	return formattedDate;
+	
 }
 
 //onclick to view feedback
@@ -147,7 +158,7 @@ function clickSubmitObjective(currentDate){
 	// }
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextID), objTitle, objText, objDate);
+		addObjectiveToList((++nextID), objTitle, objText, formatEditDate(objDate));
 	}else{
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
@@ -164,7 +175,7 @@ function addObjectiveToList(id, title, description, expectedBy){
 function editObjectiveOnList(userID, objID, title, text, date){
 	$('#obj-title-'+objID).text(title);
 	$('#obj-text-'+objID).text(text);
-	$('#obj-date-'+objID).text(date);
+	$('#obj-date-'+objID).text('').append('<h6><b>' + formatEditDate(date) + '</b></h6>');
 }
 
 //HTTP request for adding an objective
