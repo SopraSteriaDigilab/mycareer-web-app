@@ -9,8 +9,11 @@ $(function() {
 	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });
 	
-	//Link to competenct framework
-    $("#view-competency").click(function(){ window.location.href='http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx'; });
+	//Link to competency framework
+    $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
+    
+    //Click listener to submit competency
+    $('.glyphicon-star-empty').click(function(){ selectedCompetency(); });
     
 	
 });
@@ -62,9 +65,9 @@ function clickSubmitNote(){
 	var from = 'Redhwan';
 	var date = timeStampToDate(new Date());
 	
-	addNoteToList(from, note, date);
 	addNoteToDB(userID, from, note);
-		
+	addNoteToList(from, note, date);
+	
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
 }
@@ -97,6 +100,10 @@ function timeStampToDate(date){
 	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
 	
 	return date;
+}
+
+function selectedCompetency(){
+    $('.glyphicon-star-empty').append("<span class='glyphicon glyphicon-star'></span>");
 }
 
     
