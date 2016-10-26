@@ -70,7 +70,7 @@ function getFeedbackList(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            alert("Sorry, there was a problem getting feedback, please try again later.");
+            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
         }
         
     });//End of Ajax request
