@@ -33,7 +33,7 @@ $(function() {
 	//updateNewProgressBar(-25);
 });
 
-var nextID = 0;
+var nextObjID = 0;
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 
@@ -46,7 +46,7 @@ function getObjectivesList(){
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
-            	nextID = val.id;
+            	nextObjID = val.id;
             	excpectedBy = formatDate(val.timeToCompleteBy);
             	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
             });
@@ -162,7 +162,7 @@ function clickSubmitObjective(currentDate){
 	// }
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextID), objTitle, objText, formatEditDate(objDate));
+		addObjectiveToList((++nextObjID), objTitle, objText, formatEditDate(objDate));
 	}else{
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
@@ -324,7 +324,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                         </div> \
                     </div> \
                     <div class='row'> \
-                        <div class='col-md-12'> \
+                        <div class='col-md-12 wrap-text'> \
                             <p id='obj-text-"+id+"'> "+description+" </p> \
                         </div> \
                     </div><br> \
