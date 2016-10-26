@@ -62,9 +62,9 @@ function clickSubmitNote(){
 	var from = 'Redhwan';
 	var date = timeStampToDate(new Date());
 	
-	addNoteToList(from, note, date);
 	addNoteToDB(userID, from, note);
-		
+	addNoteToList(from, note, date);
+	
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
 }
