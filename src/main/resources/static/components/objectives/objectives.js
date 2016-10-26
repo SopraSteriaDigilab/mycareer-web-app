@@ -8,7 +8,7 @@ $(function() {
 	
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
-	var currentDate = adjustMonth(today.getFullYear() + '-' + (today.getMonth()+1));
+	var currentDate = addZero(today.getFullYear() + '-' + (today.getMonth()+1));
 
 	//Initialising the date picker
 	initDatePicker(today, currentDate);
@@ -77,7 +77,7 @@ function reveseDateFormat(date){
 	var year = date.slice(-4, date.length);
 	var monthFull = date.slice(0, -5);
 	var monthIndex = (fullMonths.indexOf(monthFull)) +1;
-	var reversedDate = year+'-'+ adjustMonth(monthIndex);
+	var reversedDate = year+'-'+ addZero(monthIndex);
 	return reversedDate;
 }
 
@@ -94,10 +94,7 @@ function formatEditDate(date){
 
 //onclick to view feedback
 function clickObjectiveFeedback(id){
-    $("#fee").addClass("selected");
-	$("#obj").removeClass("selected");
-    $("#feedback").show();
-	$("#objectives").hide();
+	highlight('feedback');
 }
 
 //Initialising the date picker
@@ -241,7 +238,7 @@ function clearModal(currentDate){
 }
 
 //Method to adjust month format (add '0' for single digit months)
-function adjustMonth(month){
+function addZero(month){
 	if (month < 10){
 		return '0' + month;
 	}
