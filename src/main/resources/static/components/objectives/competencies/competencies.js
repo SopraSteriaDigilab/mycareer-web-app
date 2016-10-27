@@ -37,7 +37,7 @@ function addNoteToDB(userID, from, body ){
 	}
 
 	$.ajax(settings).done(function (response) {
-	  alert(response);
+	  toastr.success(response);
 	});
 }
 
@@ -56,7 +56,7 @@ function getNotesList(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            alert("Sorry, there was a problem getting notes, please try again later.");
+            toastr.error("Sorry, there was a problem getting notes, please try again later.");
         }
     });
 }
@@ -118,7 +118,7 @@ function getCompetencyList(){
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            alert("Sorry, there was a problem getting competencies, please try again later.");
+            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
 }
@@ -149,5 +149,8 @@ function competenciesListHTML(id,title,description,status){
 function addCompetencyToList(id,title,description,status){
     $(".competency-Details").append(competenciesListHTML(id,title,description,status));
 }
+
+//Method to make Ajax call and return clicked competencies to DB
+
 
     
