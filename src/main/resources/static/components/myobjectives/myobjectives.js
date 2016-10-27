@@ -1,10 +1,11 @@
 $(function() {
 	
+	
 	//Get list of objectives
 	getObjectivesList();
     
 	//Load competencies section
-	$( "#competencies" ).load( "../components/objectives/competencies/competencies.html" );
+	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
 	//Get todays date an currentDate in the format of mm-yyyy
 	var today = new Date();
@@ -326,7 +327,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                         <div class='col-md-12 wrap-text'> \
                             <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
-                    </div><br> \
+                    </div> \
                     <div class='col-md-12'> \
                         <div class='col-sm-6'> \
                            <button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
