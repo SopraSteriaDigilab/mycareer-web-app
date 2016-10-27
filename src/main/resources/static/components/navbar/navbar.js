@@ -20,7 +20,8 @@ $(function() {
 //	
 //
 	highlight($("#section").text());
-
+    
+    $('#request-feedback').click(function(){ openRequestFeedbackModal() });
 });
 //
 //function loadPage(section){
@@ -42,5 +43,9 @@ function highlight(value) {
 		}
 	});
 
+}
+
+function openRequestFeedbackModal(){
+    $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
