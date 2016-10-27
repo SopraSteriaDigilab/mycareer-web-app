@@ -7,22 +7,16 @@ $(function() {
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
-	//Get todays date an currentDate in the format of mm-yyyy
-	var today = new Date();
-	var currentDate = addZero(today.getFullYear() + '-' + (today.getMonth()+1));
-
 	//Initialising the date picker
-	initDatePicker(today, currentDate);
+	initDatePicker('objective', new Date());
 
 	//onClick for Submit modal
-	$('#submit-obj').click(function(){ 
-        clickSubmitObjective(currentDate); 
-    });
+	$('#submit-obj').click(function(){ clickSubmitObjective(getToday()); });
 
 	//modal validation.
 	$('.modal-validate').keyup(function() { validateForm('modal-validate', 'submit-obj'); });
 
-	$('#add-obj').click(function() { openAddModal(currentDate); });
+	$('#add-obj').click(function() { openAddObjectiveModal(getToday()); });
 
 	//3 onclicks to change the progress of the status bar of an objective
 	//status goes from Awaiting, InFlight, Done
@@ -34,15 +28,13 @@ $(function() {
     $("#navTab").click(function(){});
 
 	//updateNewProgressBar(-25);
+
 });
 
 var nextObjID = 0;
-//List of months for conversion
-var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+
 
 //Gets the List of Objectives from the DB 
-//reds db: http://ukl5cg6195g1q:8080/
-//michaels db: http://item-s31509.dhcp.edin.uk.sopra:8080/
 function getObjectivesList(){
     $.ajax({
         url: 'http://127.0.0.1:8080/getObjectives/2312',
@@ -61,27 +53,11 @@ function getObjectivesList(){
     });	
 }
 
-//Formatting from JS date to 'MMM YYYY' e.g 'December 2016'
-function formatDate(date){
-	if(date === 'Ongoing'){
-		return 'Ongoing';
-	}else{
-	var originalDate = new Date(date);
-    var year = originalDate.getFullYear();
-    var month = fullMonths[originalDate.getMonth()];
-    var formattedDate = month + ' ' + year;
-	
-	return formattedDate;
-	}
-}
-
 //formatting from 'MMM-YYYY' format to 'MM-YYYY' e.g. December-2016 to 12-2016
 function reveseDateFormat(date){
 	var year = date.slice(-4, date.length);
-	var monthFull = date.slice(0, -5);
-	var monthIndex = (fullMonths.indexOf(monthFull)) +1;
-	var reversedDate = year+'-'+ addZero(monthIndex);
-	return reversedDate;
+	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
+	return year+'-'+ addZero(monthIndex);
 }
 
 //formatting from yyyy/MM to MMM yyyy e.g. '2016/12' to 'December 2016'
@@ -100,29 +76,10 @@ function clickObjectiveFeedback(id){
 	highlight('feedback');
 }
 
-//Initialising the date picker
-function initDatePicker(today, currentDate){
-	//Set up date picker
-	
-	// $("#objective-date").val(currentDate);
 
-	$("#objective-date-picker").datepicker({
-		useCurrent: true,
-		forceParse: false,
-		disabled: true,
-		// defaultDate: '01-10-2016',
-		daysOfWeekDisabled: [0, 6],
-		format: "yyyy-mm",
-		// todayHighlight: true,
-		// todayBtn: true,
-		startView: "months", 
-		minViewMode: "months",
-		startDate: today,
-		});
-}
 
-//Function to set up adn open add modal
-function openAddModal(currentDate){
+//Function to set up and open add modal
+function openAddObjectiveModal(currentDate){
 	$("#modal-type").val('add');
 	var emptyString = '';
 	setModal(emptyString, emptyString, emptyString, currentDate);
@@ -130,7 +87,7 @@ function openAddModal(currentDate){
 }
 
 //Function to set up adn open add modal
-function openEditModal(id){
+function openEditObjectiveModal(id){
 	$("#modal-type").val('edit');
 	var objID = id;
 	var objTitle = $('#obj-title-'+id).text().trim();
@@ -236,37 +193,12 @@ function showModal(enabledButton){
 function clearModal(currentDate){
 	$('#objectiveModal').modal('hide');
 	var emptyString = '';
-	setModal(emptyString, emptyString, currentDate)
+	setModal(emptyString, emptyString, emptyString, currentDate)
 	$('#submit-obj').prop("disabled", true);
 }
 
-//Method to adjust month format (add '0' for single digit months)
-function addZero(month){
-	if (month < 10){
-		return '0' + month;
-	}
-	return month;
-}
 
-//method that enables the submit button only when all inputs in the modal have content
-function validateForm(inputClass, submitButtonID){
-	var isEmpty = false;
 
-	$('.'+inputClass).each(function(i) {
-		value = $(this).val().trim();
-		if(!value){
-			isEmpty = true;
-			return;
-		}
-	});
-	
-	
-	if(isEmpty){
-		$('#'+submitButtonID).prop("disabled", true);
-	}else{
-		$('#'+submitButtonID).prop("disabled", false);
-	}
-}
 
 //Method to set content of modal
 function setModal(id, title, text, date){
@@ -333,7 +265,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                            <button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
                         </div> \
                         <div class='col-sm-6'> \
-                            <button type='button' class='btn btn-block btn-default' onClick='openEditModal("+id+")'>Edit</button> \
+                            <button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
                         </div> \
                     </div> \
                 </div> \
