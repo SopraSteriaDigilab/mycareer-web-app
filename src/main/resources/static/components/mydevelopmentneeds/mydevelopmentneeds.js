@@ -3,12 +3,9 @@ $(function() {
 	getDevelopmentNeedsList();
 	
 	
-	
-	
-	
-	
 });
 
+var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 var categoryList = ['Training', 'Coaching', 'Other'];
 
 //Gets the List of Objectives from the DB
@@ -26,12 +23,24 @@ function getDevelopmentNeedsList(){
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
-          alert("Sorry, there was a problem getting development needs, please try again later.");
+          toastr.error("Sorry, there was a problem getting development needs, please try again later.");
       }
   });	
 }
 
 
+function formatDate(date){
+	if(date === 'Ongoing'){
+		return 'Ongoing';
+	}else{
+	var originalDate = new Date(date);
+    var year = originalDate.getFullYear();
+    var month = fullMonths[originalDate.getMonth()];
+    var formattedDate = month + ' ' + year;
+	
+	return formattedDate;
+	}
+}
 
 //Function to add objective to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
@@ -89,9 +98,9 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                     </div> \
                     <div class='row'> \
                         <div class='col-md-12 wrap-text'> \
-                            <pre><p id='obj-text-"+id+"'> "+description+" </p></pre> \
+                            <p id='obj-text-"+id+"'> "+description+" </p> \
                         </div> \
-                    </div><br> \
+                    </div> \
                     <div class='col-md-12'> \
                         <div class='col-sm-6'> \
                            \
