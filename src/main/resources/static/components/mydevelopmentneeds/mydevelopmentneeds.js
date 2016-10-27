@@ -1,11 +1,15 @@
 $(function() {
 	
+	//Get list of development needs
 	getDevelopmentNeedsList();
 	
+	//Get todays date an currentDate in the format of mm-yyyy
+	var today = new Date();
+	var currentDate = addZero(today.getFullYear() + '-' + (today.getMonth()+1));
 	
 });
 
-var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+
 var categoryList = ['Training', 'Coaching', 'Other'];
 
 //Gets the List of Objectives from the DB
@@ -16,7 +20,7 @@ function getDevelopmentNeedsList(){
       success: function(data){
           $.each(data, function(key, val){
         	  nextDevID = val.id;
-          	excpectedBy = formatDate(val.timeToCompleteBy);
+          	excpectedBy = checkIfOngoing(val.timeToCompleteBy);
           	categoryText = categoryList[val.category];
           	addDevelopmentNeedToList(val.id, val.title, val.description, categoryText, excpectedBy);
           });
@@ -28,26 +32,20 @@ function getDevelopmentNeedsList(){
   });	
 }
 
-
-function formatDate(date){
-	if(date === 'Ongoing'){
-		return 'Ongoing';
-	}else{
-	var originalDate = new Date(date);
-    var year = originalDate.getFullYear();
-    var month = fullMonths[originalDate.getMonth()];
-    var formattedDate = month + ' ' + year;
-	
-	return formattedDate;
-	}
-}
-
 //Function to add objective to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
 	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
 
-
+//Function to check if development need is ongoing or has an end date
+function checkIfOngoing(date){
+	if(date === 'Ongoing'){
+		return 'Ongoing';
+	}else{
+		return formatDate(date);
+	}
+	
+}
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy){
