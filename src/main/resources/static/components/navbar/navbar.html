@@ -25,8 +25,9 @@
 				<li class="nav-bar-item" id="myfeedback"><a href="myfeedback"> My Feedback </a></li>
 				<li class="nav-bar-item" id="mydevelopmentneeds"><a href="mydevelopmentneeds"> My Development Needs </a></li>
 			</ul>
+            <button type="button" class="btn btn-default navbar-btn pull-right" id="request-feedback">Request Feedback</button>
 		</div>
-		<!-- /.navbar-collapse -->
+		<!-- /.navbar-collapse --> 
 	</div>
 
 </nav>
@@ -35,3 +36,48 @@
 <br>
 <br>
 <br>
+
+<!-- Request Feedback Modal -->
+<div id="requestFeedbackModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Request feedback</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="modal-type" value="add">
+					<input type="hidden" id="request-feedback-id" value="0">
+					<div class="form-group" id="to-validate">
+						<label for="requesting-to">To...</label>
+						<input type="text" class="modal-validate form-control" id="requesting-to" maxlength="150" />
+					</div>
+                    
+                    <div class="form-group" id="cc-validate">
+                        <label for="requesting-cc">Cc...</label>
+                        <input type="text" class="modal-validate form-control" id="requesting-cc" maxlength="150" disabled />
+                    </div>
+                    
+                    <div class="form-group" id="subject-validate">
+                        <label for="requesting-subject">Subject: </label>
+                        <input type="text" class="modal-validate form-control" id="requesting-subject" maxlength="150"/>
+                    </div>
+                    
+					<div class="form-group" id="text-validate">
+						<label for="requesting-text" class="control-label">Message:</label>
+						<textarea class="modal-validate form-control" id="requesting-text" maxlength="1000" rows="8"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left"
+					data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-request-feedback"
+					disabled>Submit</button>
+			</div>
+		</div>
+
+	</div>
+</div>
