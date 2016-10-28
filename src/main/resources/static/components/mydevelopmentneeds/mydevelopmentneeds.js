@@ -3,13 +3,25 @@ $(function() {
 	//Get list of development needs
 	getDevelopmentNeedsList();
 	
-	//Get todays date an currentDate in the format of mm-yyyy
-	var today = new Date();
-	var currentDate = addZero(today.getFullYear() + '-' + (today.getMonth()+1));
+	//Initialising the date picker
+	initDatePicker('development-need', new Date());
+	
+	//onClick for opening modal
+	$('#add-dev-need').click(function() { openAddDevelopmentNeedModal(); });
+	
+	//modal validation.
+	$('.development-need-modal-validate').keyup(function() { validateForm('development-need-modal-validate', 'submit-dev-need'); });
+	
+	//hide/show date field
+	$('#timeframe-radio').change(function(){ toggleInputeDate($('#timeframe-radio input:radio:checked').val()); });
+	
+	//onClick for Submit modal
+	$('#submit-dev-need').click(function(){ clickSubmitDevelopmentNeed(); });
+	
 	
 });
 
-
+var nextdevID = 0;
 var categoryList = ['Training', 'Coaching', 'Other'];
 
 //Gets the List of Objectives from the DB
@@ -19,8 +31,8 @@ function getDevelopmentNeedsList(){
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
-        	  nextDevID = val.id;
-          	excpectedBy = checkIfOngoing(val.timeToCompleteBy);
+        	nextdevID = val.id;
+          	excpectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
           	categoryText = categoryList[val.category];
           	addDevelopmentNeedToList(val.id, val.title, val.description, categoryText, excpectedBy);
           });
@@ -32,20 +44,91 @@ function getDevelopmentNeedsList(){
   });	
 }
 
+//HTTP request for INSERTING an development need to DB
+function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
+	var url = "http://127.0.0.1:8080/addDevelopmentNeed/"+userID;
+	var data = {};
+	data["title"] = devNeedTitle;
+	data["description"] = devNeedText;
+	data["cateogry"] = devNeedCategory;
+	data["timeToCompleteBy"] = devNeedDate;
+  
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
+  
+}
+
+//Function to set up and open ADD objective modal
+function openAddDevelopmentNeedModal(){
+	$("#dev-need-modal-type").val('add');
+	setObjectiveModalContent('', '', '', getToday(), true);
+	showDevelopmentNeedModal(true);
+}
+
+
+function clickSubmitDevelopmentNeed(){
+	var type = $("#dev-need-modal-type").val();
+	
+	var userID = 2312;
+	var devNeedID = $("#development-need-id").val();
+	var devNeedTitle = $("#development-need-title").val().trim();
+	var devNeedText = $("#development-need-text").val().trim();
+	var devNeedCategory = $('#category-radio input:radio:checked').val();
+	var devNeedDate =  $("#development-need-date").val().trim();
+	
+	if(type == 'add'){
+		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
+		addDevelopmentNeedToList((++nextdevID), devNeedTitle, devNeedText, categoryList[devNeedCategory], formatDate(devNeedDate));
+	}else{
+//		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
+//		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
+	}
+	
+	showDevelopmentNeedModal(false);
+}
+
 //Function to add objective to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
 	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
 
-//Function to check if development need is ongoing or has an end date
-function checkIfOngoing(date){
-	if(date === 'Ongoing'){
-		return 'Ongoing';
-	}else{
-		return formatDate(date);
-	}
-	
+//Method to set and show content of modal
+function setObjectiveModalContent(id, title, text, date, disabledButton){
+	$("#development-need-id").val(id);
+	$("#development-need-title").val(title);
+	$("#development-need-text").val(text);
+	$('#training-radio').prop('checked', true);
+	$("#development-need-date").val(date);
+	$('#submit-obj').prop("disabled", disabledButton);
 }
+
+
+//Method to show/hide development need modal
+function showDevelopmentNeedModal(show){
+	if(show){
+		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		setObjectiveModalContent('', '', '', getToday(), true);
+		$('#development-need-modal').modal('hide');
+	}
+}
+
+//Function to check if development need is ongoing or has an end date
+function isOngoing(date){
+	if(date === 'Ongoing'){
+		return true;
+	}else{
+		return false;
+	}	
+}
+
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy){

@@ -104,19 +104,11 @@
 	margin-left: 50%;
 }
 
-#objective-date {
+
+#development-need-date {
 	background-color: white;
 }
 
 .vertical-centre{
 	transform: translateY(70%);
-}
-
-.wrap-text {
-	word-wrap: break-word;
-}
-
-textarea {
-    max-width: 100%; 
-    max-height: 100%;
 }
