@@ -30,10 +30,26 @@ function getToday(){
 	return date.getFullYear() + '-' + addZero(date.getMonth()+1);
 }
 
-//Formatting from YYYY-MM date to 'MMM YYYY' e.g 'December 2016'
+//Formatting from YYYY-MM date to 'MMM YYYY' (e.g '2016-12' to 'December 2016')
 function formatDate(date) {
 	var d = new Date(date);
 	return fullMonths[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+////formatting from yyyy/MM to MMM yyyy e.g. '2016/12' to 'December 2016'
+//function formatEditDate(date){	
+//	var month = date.slice(-2, date.length);
+//	var year = date.slice(0, 4);
+//	var formattedDate = fullMonths[(month-1)] + ' ' + year;	
+//	return formattedDate;
+//	
+//}
+
+//Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
+function reverseDateFormat(date){
+	var year = date.slice(-4, date.length);
+	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
+	return year+'-'+ addZero(monthIndex);
 }
 
 
