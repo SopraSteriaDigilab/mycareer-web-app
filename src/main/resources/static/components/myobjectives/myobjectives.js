@@ -9,14 +9,16 @@ $(function() {
 	
 	//Initialising the date picker
 	initDatePicker('objective', new Date());
-
+	
+	//onClick for oppening modal
+	$('#add-obj').click(function() { openAddObjectiveModal(); });
+	
 	//onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(getToday()); });
 
 	//modal validation.
-	$('.modal-validate').keyup(function() { validateForm('modal-validate', 'submit-obj'); });
+	$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
 
-	$('#add-obj').click(function() { openAddObjectiveModal(getToday()); });
 
 	//3 onclicks to change the progress of the status bar of an objective
 	//status goes from Awaiting, InFlight, Done
@@ -27,84 +29,95 @@ $(function() {
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
 
-	//updateNewProgressBar(-25);
-
 });
+
 
 var nextObjID = 0;
 
-
-//Gets the List of Objectives from the DB 
+//HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(){
-    $.ajax({
-        url: 'http://127.0.0.1:8080/getObjectives/2312',
-        method: 'GET',
-        success: function(data){
-            $.each(data, function(key, val){
-            	nextObjID = val.id;
-            	excpectedBy = formatDate(val.timeToCompleteBy);
-            	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting objectives, please try again later.");
-        }
-    });	
+  $.ajax({
+      url: 'http://127.0.0.1:8080/getObjectives/2312',
+      method: 'GET',
+      success: function(data){
+          $.each(data, function(key, val){
+          	nextObjID = val.id;
+          	excpectedBy = formatDate(val.timeToCompleteBy);
+          	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
+          });
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+          console.log('error', errorThrown);
+          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
+      }
+  });	
 }
 
-//formatting from 'MMM-YYYY' format to 'MM-YYYY' e.g. December-2016 to 12-2016
-function reveseDateFormat(date){
-	var year = date.slice(-4, date.length);
-	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
-	return year+'-'+ addZero(monthIndex);
+//HTTP request for INSERTING an objective to DB
+function addObjectiveToDB(userID, objTitle, objText, objDate){
+	var url = "http://127.0.0.1:8080/addObjective/"+userID;
+	var data = {};
+	data["title"] = objTitle;
+	data["description"] = objText;
+	data["completedBy"] = objDate;
+  data["progress"] = 0;
+  
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
+  
 }
 
-//formatting from yyyy/MM to MMM yyyy e.g. '2016/12' to 'December 2016'
-function formatEditDate(date){
-	
-	var month = date.slice(-2, date.length);
-	var year = date.slice(0, 4);
-	var formattedDate = fullMonths[(month-1)] + ' ' + year;
-	
-	return formattedDate;
-	
+
+//HTTP request for UPDATING an objective in DB
+function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
+	var url = "http://127.0.0.1:8080/editObjective/"+userID;
+	var data = {};
+	data["objectiveID"] = objID;
+	data["title"] = objTitle;
+	data["description"] = objText;
+	data["completedBy"] = objDate;
+  data["progress"] = 0;
+  
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
 }
 
-//onclick to view feedback
-function clickObjectiveFeedback(id){
-	highlight('feedback');
-}
 
-
-
-//Function to set up and open add modal
-function openAddObjectiveModal(currentDate){
+//Function to set up and open ADD objective modal
+function openAddObjectiveModal(){
 	$("#modal-type").val('add');
-	var emptyString = '';
-	setModal(emptyString, emptyString, emptyString, currentDate);
+	setObjectiveModal('', '', '', getToday());
 	showModal(true);
 }
 
-//Function to set up adn open add modal
+//Function to set up and open EDIT objective modal
 function openEditObjectiveModal(id){
 	$("#modal-type").val('edit');
 	var objID = id;
 	var objTitle = $('#obj-title-'+id).text().trim();
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
-	objDate = reveseDateFormat(objDate);
-	setModal(objID, objTitle, objText, objDate);
+	objDate = reverseDateFormat(objDate);
+	setObjectiveModal(objID, objTitle, objText, objDate);
 	showModal(false);
 }
 
-//Method for updating progress bar wth a value
-function updateProgressBar(value){
-	$('#objStatus').width(value + "%");
-}
 
 //Method to handle the submit objective button
-//call the addobjective method then clear the modal
 function clickSubmitObjective(currentDate){
 	var type = $("#modal-type").val();
 	
@@ -113,18 +126,16 @@ function clickSubmitObjective(currentDate){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-
-	// if(isEmpty(objText,"text-validate") | isEmpty(objDate, "date-validate")){
-	// 	return;
-	// }
+	
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextObjID), objTitle, objText, formatEditDate(objDate));
+		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate));
 	}else{
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
 	}
-	clearModal(currentDate)
+	
+	clearObjectiveModal();
 }
 
 //Function to add objective to list
@@ -136,50 +147,7 @@ function addObjectiveToList(id, title, description, expectedBy){
 function editObjectiveOnList(userID, objID, title, text, date){
 	$('#obj-title-'+objID).text(title);
 	$('#obj-text-'+objID).text(text);
-	$('#obj-date-'+objID).text('').append('<h6><b>' + formatEditDate(date) + '</b></h6>');
-}
-
-//HTTP request for adding an objective
-function addObjectiveToDB(userID, objTitle, objText, objDate){
-	var url = "http://127.0.0.1:8080/addObjective/"+userID;
-	var data = {};
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-    data["progress"] = 0;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-    
-//	alert("Title is : " + objTitle + " | Objective is: " + objText + " | Date is: " + objDate);
-}
-
-//Placeholder for http request to EDIT an objective!!
-function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
-	var url = "http://127.0.0.1:8080/editObjective/"+userID;
-	var data = {};
-	data["objectiveID"] = objID;
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-    data["progress"] = 0;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+	$('#obj-date-'+objID).text('').append('<h6><b>' + formatDate(date) + '</b></h6>');
 }
 
 
@@ -190,23 +158,26 @@ function showModal(enabledButton){
 }
 
 //Method to close and clear modal
-function clearModal(currentDate){
+function clearObjectiveModal(){
 	$('#objectiveModal').modal('hide');
-	var emptyString = '';
-	setModal(emptyString, emptyString, emptyString, currentDate)
+	setObjectiveModal('', '', '', getToday())
 	$('#submit-obj').prop("disabled", true);
 }
 
 
-
-
 //Method to set content of modal
-function setModal(id, title, text, date){
+function setObjectiveModal(id, title, text, date){
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
 }
+
+//onclick to view feedback
+function clickObjectiveFeedback(id){
+	window.location.replace("http://localhost:8000/mycareer/feedback"); 
+}
+
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy){
@@ -276,6 +247,16 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                             
     return html;
 }
+
+
+
+
+
+//Method for updating progress bar wth a value
+function updateProgressBar(value){
+	$('#objStatus').width(value + "%");
+}
+
 
 // Progress bar not in first sprint
 //function updateNewProgressBar(score){
