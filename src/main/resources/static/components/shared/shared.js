@@ -36,15 +36,6 @@ function formatDate(date) {
 	return fullMonths[d.getMonth()] + ' ' + d.getFullYear();
 }
 
-////formatting from yyyy/MM to MMM yyyy e.g. '2016/12' to 'December 2016'
-//function formatEditDate(date){	
-//	var month = date.slice(-2, date.length);
-//	var year = date.slice(0, 4);
-//	var formattedDate = fullMonths[(month-1)] + ' ' + year;	
-//	return formattedDate;
-//	
-//}
-
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
 function reverseDateFormat(date){
 	var year = date.slice(-4, date.length);
@@ -62,8 +53,7 @@ function addZero(value){
 }
 
 
-
-//method that enables the submit button only when all inputs in the modal have content
+//method that enables the submit button only when all inputs in the form have content
 function validateForm(inputClass, submitButtonID) {
 	var isEmpty = false;
 
@@ -74,7 +64,6 @@ function validateForm(inputClass, submitButtonID) {
 			return;
 		}
 	});
-	
 	
 	if(isEmpty){
 		$('#'+submitButtonID).prop("disabled", true);

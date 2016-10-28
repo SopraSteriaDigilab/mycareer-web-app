@@ -1,6 +1,5 @@
 $(function() {
 	
-	
 	//Get list of objectives
 	getObjectivesList();
     
@@ -10,14 +9,14 @@ $(function() {
 	//Initialising the date picker
 	initDatePicker('objective', new Date());
 	
-	//onClick for oppening modal
+	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
 	
-	//onClick for Submit modal
-	$('#submit-obj').click(function(){ clickSubmitObjective(getToday()); });
-
 	//modal validation.
 	$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
+	
+	//onClick for Submit modal
+	$('#submit-obj').click(function(){ clickSubmitObjective(); });
 
 
 	//3 onclicks to change the progress of the status bar of an objective
@@ -74,7 +73,6 @@ function addObjectiveToDB(userID, objTitle, objText, objDate){
   
 }
 
-
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 	var url = "http://127.0.0.1:8080/editObjective/"+userID;
@@ -99,27 +97,27 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
-	$("#modal-type").val('add');
-	setObjectiveModal('', '', '', getToday());
-	showModal(true);
+	$("#obj-modal-type").val('add');
+	setObjectiveModalContent('', '', '', getToday(), true);
+	showObjectiveModal(true);
 }
 
 //Function to set up and open EDIT objective modal
 function openEditObjectiveModal(id){
-	$("#modal-type").val('edit');
+	$("#obj-modal-type").val('edit');
 	var objID = id;
 	var objTitle = $('#obj-title-'+id).text().trim();
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
 	objDate = reverseDateFormat(objDate);
-	setObjectiveModal(objID, objTitle, objText, objDate);
-	showModal(false);
+	setObjectiveModalContent(objID, objTitle, objText, objDate, false);
+	showObjectiveModal(true);
 }
 
 
 //Method to handle the submit objective button
-function clickSubmitObjective(currentDate){
-	var type = $("#modal-type").val();
+function clickSubmitObjective(){
+	var type = $("#obj-modal-type").val();
 	
 	var userID = 2312;
 	var objID = $("#objective-id").val();
@@ -135,7 +133,7 @@ function clickSubmitObjective(currentDate){
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
 	}
 	
-	clearObjectiveModal();
+	showObjectiveModal(false);
 }
 
 //Function to add objective to list
@@ -150,27 +148,23 @@ function editObjectiveOnList(userID, objID, title, text, date){
 	$('#obj-date-'+objID).text('').append('<h6><b>' + formatDate(date) + '</b></h6>');
 }
 
-
-//Method that shows modal and default button to enabled/disabled
-function showModal(enabledButton){
-	$('#submit-obj').prop("disabled", enabledButton);
-	$('#objectiveModal').modal({backdrop: 'static', keyboard: false, show: true});
-}
-
-//Method to close and clear modal
-function clearObjectiveModal(){
-	$('#objectiveModal').modal('hide');
-	setObjectiveModal('', '', '', getToday())
-	$('#submit-obj').prop("disabled", true);
-}
-
-
-//Method to set content of modal
-function setObjectiveModal(id, title, text, date){
+//Method to set and show content of modal
+function setObjectiveModalContent(id, title, text, date, disabledButton){
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
+	$('#submit-obj').prop("disabled", disabledButton);
+}
+
+//Method to show/hide objective modal
+function showObjectiveModal(show){
+	if(show){
+		$('#objective-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		setObjectiveModalContent('', '', '', getToday(), true);
+		$('#objective-modal').modal('hide');
+	}
 }
 
 //onclick to view feedback
@@ -275,8 +269,6 @@ function updateProgressBar(value){
 //
 //
 //}
-
-
 
 
 //function isEmpty(value, className){
