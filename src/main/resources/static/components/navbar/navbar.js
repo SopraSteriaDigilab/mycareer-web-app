@@ -22,6 +22,9 @@ $(function() {
 	highlight($("#section").text());
     
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
+    
+    //modal validation.
+//	$('.request-feedback-validate').keyup(function() { validateForm('request-feedback-validate', 'submit-request-feedback'); });
 });
 //
 //function loadPage(section){
@@ -48,4 +51,30 @@ function highlight(value) {
 function openRequestFeedbackModal(){
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
+
+//validates to ensure email format entered in request feedback "To:"
+function validateEmail(){
+    
+    
+}
+
+//Email details sent through back-end.
+//function submitFeedbackRequest(){
+//	var url = "http://127.0.0.1:8080/generateFeedbackRequest/"+userID;
+//	var data = {};
+//	data["emailTo"] = requestingTo;
+//	data["cc"] = requestingCc;
+//	data["notes"] = requestingText;
+//  
+//	var settings = {
+//	  "url": url,
+//	  "method": "POST",
+//	  "data": data
+//	}
+//
+//	$.ajax(settings).done(function (response) {
+//	  toastr.success(response);
+//	});
+//  
+//}
 
