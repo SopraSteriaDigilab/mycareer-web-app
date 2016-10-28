@@ -2,9 +2,6 @@ $(function() {
     
 	getFeedbackList();
     
-    
-    
-    
 });//End of Document Function
 
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
@@ -17,12 +14,7 @@ function getFeedbackList(){
         method: 'GET',
         success: function(data){
             console.log('success', data);
-            $.each(data, function(key, val){
-//                console.log(val.id);
-//                console.log(val.fromWho);
-//                console.log(val.description);
-//                console.log(val.timeStamp);
-                
+            $.each(data, function(key, val){                
                 
                 var feeTime = new Date(val.timeStamp);
                 var year = feeTime.getFullYear();
