@@ -24,7 +24,7 @@ $(function() {
 var nextdevID = 0;
 var categoryList = ['Training', 'Coaching', 'Other'];
 
-//Gets the List of Objectives from the DB
+//Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(){
   $.ajax({
       url: 'http://127.0.0.1:8080/getDevelopmentNeeds/2312',
@@ -50,7 +50,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 	var data = {};
 	data["title"] = devNeedTitle;
 	data["description"] = devNeedText;
-	data["cateogry"] = devNeedCategory;
+	data["category"] = devNeedCategory;
 	data["timeToCompleteBy"] = devNeedDate;
   
 	var settings = {
@@ -65,11 +65,46 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
   
 }
 
-//Function to set up and open ADD objective modal
+//HTTP request for INSERTING an development need to DB
+function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
+	var url = "http://localhost:8080/editDevelopmentNeed/"+userID;
+	var data = {};
+	data["devNeedID"] = devNeedID;
+	data["title"] = devNeedTitle;
+	data["description"] = devNeedText;
+	data["category"] = devNeedCategory;
+	data["timeToCompleteBy"] = devNeedDate;
+  
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
+  
+}
+
+//Function to set up and open ADD development-need modal
 function openAddDevelopmentNeedModal(){
 	$("#dev-need-modal-type").val('add');
-	setObjectiveModalContent('', '', '', getToday(), true);
+	setDevelopmentNeedModalContent('', '', '', categoryList[0], getToday(), true);
 	showDevelopmentNeedModal(true);
+}
+
+//Function to set up and open EDIT development-need modal
+function openEditModalDevNeeds(id){
+	$("#dev-need-modal-type").val('edit');
+	var devNeedID = id;
+	var devNeedTitle = $('#dev-need-title-'+id).text().trim();
+	var devNeedText = $('#dev-need-text-'+id).text().trim();
+	var devNeedCategory = $('#dev-need-category-'+id).text().trim();
+	var devNeedDate =  $('#dev-need-date-'+id).text().trim();
+	devNeedDate = reverseDateFormat(devNeedDate);
+	setDevelopmentNeedModalContent(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, false);
+	showDevelopmentNeedModal(true);	
 }
 
 
@@ -87,26 +122,34 @@ function clickSubmitDevelopmentNeed(){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
 		addDevelopmentNeedToList((++nextdevID), devNeedTitle, devNeedText, categoryList[devNeedCategory], formatDate(devNeedDate));
 	}else{
-//		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
-//		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
+		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
+		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, categoryList[devNeedCategory], devNeedDate);
 	}
 	
 	showDevelopmentNeedModal(false);
 }
 
-//Function to add objective to list
+//Function to add development need to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
 	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
 
+//Function to update objective on list
+function editDevelopmentNeedOnList(id, title, description, category, expectedBy){
+	$('#dev-need-title-'+id).text(title);
+	$('#dev-need-text-'+id).text(description);
+	$('#dev-need-category-'+id).text(category);
+	$('#dev-need-date-'+id).text('').append('<h6><b>' + formatDate(expectedBy) + '</b></h6>');
+}
+
 //Method to set and show content of modal
-function setObjectiveModalContent(id, title, text, date, disabledButton){
+function setDevelopmentNeedModalContent(id, title, text, radioValue, date, disabledButton){
 	$("#development-need-id").val(id);
 	$("#development-need-title").val(title);
 	$("#development-need-text").val(text);
-	$('#training-radio').prop('checked', true);
+	$('#'+radioValue.toLowerCase()+'-radio').prop('checked', true);
 	$("#development-need-date").val(date);
-	$('#submit-obj').prop("disabled", disabledButton);
+	$('#submit-dev-need').prop("disabled", disabledButton);
 }
 
 
@@ -115,7 +158,7 @@ function showDevelopmentNeedModal(show){
 	if(show){
 		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
 	}else{
-		setObjectiveModalContent('', '', '', getToday(), true);
+		setDevelopmentNeedModalContent('', '', '', categoryList[0], getToday(), true);
 		$('#development-need-modal').modal('hide');
 	}
 }
@@ -137,17 +180,17 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
         <div class='panel panel-default' id='panel'> \
             <div class='panel-heading'> \
                 <div class='row'> \
-                    <div class='col-sm-6' id='obj-no-"+id+"'> # "+id+" </div> \
-                    <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>" + timeToCompleteBy + ' | ' + category + "</b></h6></div> \
+                    <div class='col-sm-6' id='dev-need-no-"+id+"'> # "+id+" </div> \
+                    <div class='col-sm-6' id='dev-need-date-"+id+"'><h6><b>" + timeToCompleteBy + "</b></h6></div> \
                 </div><br> \
                 <div class='row'> \
-                    <div class='col-sm-5' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
+                    <div class='col-sm-5 wrap-text' id='dev-need-title-"+id+"' ><h5> "+title+" </h5></div> \
                         <div class='col-sm-5'><br> \
                             <div class='progress progress-striped'> \
                                 <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div> \
                                 <div class='two primary-color' style='cursor:pointer' id='inflight-progress'><h5 class='progress-label'>InFlight</h5></div> \
                                 <div class='three primary-color' style='cursor:pointer' id='done-progress'><h5 class='progress-label'>Done</h5></div> \
-                                <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+                                <div class='progress-bar' id='devNeedStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
                             </div> \
                         </div> \
                         <div class='col-sm-2'> \
@@ -179,17 +222,17 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                     </div> \
                     <div class='row'> \
                         <div class='col-md-12 wrap-text'> \
-                            <p id='obj-text-"+id+"'> "+description+" </p> \
+                            <h5 id='dev-need-text-"+id+"'> "+description+" </h5> \
                         </div> \
                     </div> \
-                    <div class='col-md-12'> \
-                        <div class='col-sm-6'> \
-                           \
-                        </div> \
-                        <div class='col-sm-6'> \
-                            <button type='button' class='btn btn-block btn-default' onClick='openEditModalDevNeeds("+id+")'>Edit</button> \
-                        </div> \
-                    </div> \
+                    <div class='row'> \
+	                        <div class='col-md-6' > \
+	                           <h6><b> Category: </b><span id='dev-need-category-"+id+"'>" + category + "</span></h6>\
+	                        </div> \
+	                        <div class='col-md-6'> \
+	                            <button type='button' class='btn btn-block btn-default' onClick='openEditModalDevNeeds("+id+")'>Edit</button> \
+	                        </div> \
+	                <div>\
                 </div> \
             </div> \
         </div> \
