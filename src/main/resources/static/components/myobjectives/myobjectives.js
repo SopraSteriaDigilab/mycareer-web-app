@@ -81,7 +81,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 	data["title"] = objTitle;
 	data["description"] = objText;
 	data["completedBy"] = objDate;
-  data["progress"] = 0;
+	data["progress"] = 0;
   
 	var settings = {
 	  "url": url,
@@ -184,7 +184,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                     <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>"+timeToCompleteBy+"</b></h6></div> \
                 </div><br> \
                 <div class='row'> \
-                    <div class='col-sm-5' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
+                    <div class='col-sm-5 wrap-text' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
                         <div class='col-sm-5'><br> \
                             <div class='progress progress-striped'> \
                                 <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div> \
