@@ -26,6 +26,3 @@
 .navbar-default .navbar-nav .selected:hover {
 	border-bottom: 0px;
 }
-.request-feedback-validate form-control{
-    width:  100% !important;
-}
