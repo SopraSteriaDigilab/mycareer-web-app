@@ -149,12 +149,13 @@ function editObjectiveOnList(userID, objID, title, text, date){
 }
 
 //Method to set and show content of modal
-function setObjectiveModalContent(id, title, text, date, disabledButton){
+function setObjectiveModalContent(id, title, text, date, isAdd){
+	$('#obj-modal-title-type').text(setTitleType(isAdd));
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
-	$('#submit-obj').prop("disabled", disabledButton);
+	$('#submit-obj').prop("disabled", isAdd);
 }
 
 //Method to show/hide objective modal
