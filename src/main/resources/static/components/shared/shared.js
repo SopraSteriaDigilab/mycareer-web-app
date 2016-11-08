@@ -72,4 +72,12 @@ function validateForm(inputClass, submitButtonID) {
 	}
 }
 
+//Method to set title to the correct type
+function setTitleType(isAdd){
+	if(isAdd){
+		return 'Add';
+	}else{
+		return 'Edit';
+	}
+}
 
