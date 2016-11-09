@@ -129,8 +129,9 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
         <div class='panel panel-default'> \
             <div class='panel-heading panel-heading-sm'> \
                 <div class='panel-title'> \
-                <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
-                    <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")'></span><span id='competencyTitle"+ id +"'>" + title + "</span>  \
+                    <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
+                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")'></span>
+                        <span id='competencyTitle"+ id +"'>" + title + "</span>  \
                         <a class='collapsed' data-toggle='collapse' href='#collapse-" + id + "'></a> \
                 </div> \
             </div> \
@@ -163,13 +164,6 @@ function starChanger(id){
 
 }
 
-function test(bool){
-    if(!bool){
-        return true;
-    }else{
-        return false;
-    }
-}
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
     var url = "http://127.0.0.1:8080/updateCompetency/2312";

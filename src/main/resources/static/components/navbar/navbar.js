@@ -22,18 +22,14 @@ $(function() {
 	highlight($("#section").text());
     
     //sets email addresses to use bootstrap tag input
-    //$('.request-feedback-validate').tagsinput();
+    $('.request-feedback-validate').tagsinput();
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
-    //modal validation.
-	$('.request-feedback-validate').keyup(function() { validateForm('request-feedback-validate', 'submit-request-feedback'); });
-    
-    
     //click to submit feedback request
     $('#submit-request-feedback').click(function(){ 
-        if (isValidEmailAddress($('#requestingTo').val())){
+       if (validEmails($('#requestingTo').val())){
             submitFeedbackRequest();
         }else{
             toastr.error("Error, please enter a valid email address");
@@ -72,16 +68,17 @@ function openRequestFeedbackModal(){
 function isValidEmailAddress(requestingTo){
     var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return pattern.test(requestingTo);
-
 }
 
-//validate multiple emails
-//function validateMultipleEmails(){
-//    var result = value.split(", | ;");
-//    for(var i = 0;i < result.length;i++)
-//    if(!validateEmail(result[i])) 
-// 
-//}   
+function validEmails(requestingTo){
+    var isValid = true;
+    var result = requestingTo.split(",");
+        $.each(result, function(key, val){
+            isValid = isValidEmailAddress(val);
+            return isValid;    
+        });
+    return isValid;
+}  
 
 //Email details sent through back-end.
 function submitFeedbackRequest(){
@@ -101,7 +98,7 @@ function submitFeedbackRequest(){
     
     
     $('#requestFeedbackModal').on('hidden.bs.modal', function(){
-    $(this).find('form')[0].reset();
+    $(this).find('form').val('');
     });
     
     $('#requestFeedbackModal').modal('hide');
