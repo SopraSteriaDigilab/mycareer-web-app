@@ -35,7 +35,13 @@ $(function() {
             toastr.error("Error, please enter a valid email address");
         }    
      });
-
+    
+    $(".close").click(function() {
+        $("input,textarea").val("");
+    });
+    $("#cancel").click(function() {
+        $("input,textarea").val("");
+    });
         
 });
 //
@@ -96,11 +102,5 @@ function submitFeedbackRequest(){
 	  toastr.success(response);
 	});
     
-    
-    $('#requestFeedbackModal').on('hidden.bs.modal', function(){
-    $(this).find('form').val('');
-    });
-    
     $('#requestFeedbackModal').modal('hide');
 }
-

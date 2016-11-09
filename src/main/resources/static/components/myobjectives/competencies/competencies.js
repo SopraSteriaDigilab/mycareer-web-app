@@ -130,7 +130,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
             <div class='panel-heading panel-heading-sm'> \
                 <div class='panel-title'> \
                     <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
-                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")'></span>
+                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")'></span> \
                         <span id='competencyTitle"+ id +"'>" + title + "</span>  \
                         <a class='collapsed' data-toggle='collapse' href='#collapse-" + id + "'></a> \
                 </div> \
