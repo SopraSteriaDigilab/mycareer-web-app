@@ -22,7 +22,7 @@ $(function() {
 });
 
 var nextdevID = 0;
-var categoryList = ['Training', 'Coaching', 'Other'];
+var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
 
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(){

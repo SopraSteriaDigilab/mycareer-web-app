@@ -22,13 +22,13 @@ $(function() {
 	highlight($("#section").text());
     
     //sets email addresses to use bootstrap tag input
-//    $('#requestingTo').tagsinput();
+    //$('.request-feedback-validate').tagsinput();
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
     //modal validation.
-	$('.request-feedback-validate').keyup(function() { validateForm('validateEmail', 'submit-request-feedback'); });
+	$('.request-feedback-validate').keyup(function() { validateForm('request-feedback-validate', 'submit-request-feedback'); });
     
     
     //click to submit feedback request
