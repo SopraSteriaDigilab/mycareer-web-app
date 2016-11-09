@@ -22,7 +22,7 @@ $(function() {
 	highlight($("#section").text());
     
     //sets email addresses to use bootstrap tag input
-    $('.request-feedback-validate').tagsinput();
+    $('#requestingTo').tagsinput();
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
@@ -36,11 +36,14 @@ $(function() {
         }    
      });
     
+    //when these are clicked it clears the feedback request modal - input not clearing!!
     $(".close").click(function() {
-        $("input,textarea").val("");
+        $("textarea").val("");
+        $("#requestingTo").tagsinput('removeAll');
     });
     $("#cancel").click(function() {
-        $("input,textarea").val("");
+        $("textarea").val("");
+        $("#requestingTo").tagsinput('removeAll');
     });
         
 });
@@ -102,5 +105,9 @@ function submitFeedbackRequest(){
 	  toastr.success(response);
 	});
     
+    $('#request-feedback').click(function() {
+        $("textarea").val("");
+        $("#requestingTo").tagsinput('removeAll');
+    });
     $('#requestFeedbackModal').modal('hide');
 }
