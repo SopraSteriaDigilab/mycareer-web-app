@@ -26,3 +26,11 @@
 .navbar-default .navbar-nav .selected:hover {
 	border-bottom: 0px;
 }
+
+.bootstrap-tagsinput {
+  width: 100% !important;
+}
+
+.label-info {
+    background-color: #5D839A;
+}
