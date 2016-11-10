@@ -58,7 +58,7 @@
 					<div class="form-group" id="text-validate">
 						<label for="requesting-text" class="control-label">Additional message (not required) </label>
 						<textarea class="form-control" id="requestingText" placeholder="..." maxlength="1000" rows="5"></textarea>
-                        <button type="button" class="btn btn-link pull-right" id="view-feedback-template">view feedback request template</button>
+                        <button type="button" class="btn btn-link pull-right" id="view-feedback-template" data-target="#emailTemplateModal">view feedback request template</button>
 					</div>
 				</form>
 			</div>
@@ -70,3 +70,37 @@
 
 	</div>
 </div>
+
+<!--Request feedback email template Modal -->
+<div id="emailTemplateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Email feedback request template</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Hi, </h5>
+                <h5>[FeedbackRequester_name] has requested your feedback. Sopra Steria is committed to helping its employees to be the best they can be, your feedback is a key part of helping them to know they are doing a great job and also help them to be better.</h5>
+                <h5>Simply reply to this email to provide [Feedbacker_First_name] with feedback. They supplied the following comment:</h5>
+                <h5>“[FeedbackRequest_Comments]”</h5>
+                <h5>The following headings may help you.</h5>
+                <h5>Context</h5>
+                <h5>What went well?</h5>
+                <h5>What could be improved?</h5>
+                <h5>You can find more information on the <a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/Performancemanagement/Pages/default.aspx">Performance Management page on F2F</a>.(External link required)</h5>
+                <h5>+-+-+-+-+- Please don’t edit anything below this line +-+-+-+-+-</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
