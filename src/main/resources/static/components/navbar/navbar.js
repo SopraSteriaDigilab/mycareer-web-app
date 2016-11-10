@@ -23,8 +23,10 @@ $(function() {
     
     //sets email addresses to use bootstrap tag input
     $('#requestingTo').tagsinput({
-        confirmKeys: [9,44,59],
-        delimiter:';'
+        maxTags: 20,
+        confirmKeys: [9,32,44,59],
+        delimiter:';',
+        delimiter:','
     } 
     
     );
@@ -37,7 +39,7 @@ $(function() {
        if (validEmails($('#requestingTo').val())){
             submitFeedbackRequest();
         }else{
-            toastr.error("Error, please enter a valid email address");
+            toastr.error("One or more email addresses entered are not valid");
         }    
      });
     
@@ -50,6 +52,9 @@ $(function() {
         $("textarea").val("");
         $("#requestingTo").tagsinput('removeAll');
     });
+    
+    //click to open a modal that shows the feedback email template
+    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
         
 });
 //
