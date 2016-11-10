@@ -22,7 +22,12 @@ $(function() {
 	highlight($("#section").text());
     
     //sets email addresses to use bootstrap tag input
-    $('#requestingTo').tagsinput();
+    $('#requestingTo').tagsinput({
+        confirmKeys: [9,44,59],
+        delimiter:';'
+    } 
+    
+    );
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
