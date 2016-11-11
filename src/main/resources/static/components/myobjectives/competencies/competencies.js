@@ -39,7 +39,7 @@ function addNoteToDB(userID, from, body ){
 //Method to get the Notes list
 function getNotesList(){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/2312',
+        url: 'http://127.0.0.1:8080/getNotes/1111',
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -59,9 +59,9 @@ function getNotesList(){
 
 //Method to get data and submit data
 function clickSubmitNote(){
-	var userID = 2312;
+	var userID = 1111;
 	var note = $('#note-text').val().trim();
-	var from = 'Redhwan';
+	var from = 'Ridhwan Nacef';
 	var date = timeStampToDateTime(new Date());
 	
 	addNoteToDB(userID, from, note);
@@ -104,7 +104,7 @@ function timeStampToDateTime(date){
 //Gets the list of Competencies from the DB
 function getCompetencyList(){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/2312',
+        url: 'http://127.0.0.1:8080/getCompetencies/1111',
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -130,7 +130,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
             <div class='panel-heading panel-heading-sm'> \
                 <div class='panel-title'> \
                     <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
-                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")'></span> \
+                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")' style='cursor:pointer'></span> \
                         <span id='competencyTitle"+ id +"'>" + title + "</span>  \
                         <a class='collapsed' data-toggle='collapse' href='#collapse-" + id + "'></a> \
                 </div> \
@@ -158,7 +158,7 @@ function checkSelected(isSelected){
 function starChanger(id){
     var status = ($('#starSelected'+id).val() === "true") ? false : true;
     var title = $('#competencyTitle'+id).text();
-    var userID = 2312;
+    var userID = 1111;
     
     updateCompetencyStatus(userID,id,title,status);
 
@@ -166,7 +166,7 @@ function starChanger(id){
 
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
-    var url = "http://127.0.0.1:8080/updateCompetency/2312";
+    var url = "http://127.0.0.1:8080/updateCompetency/1111";
 	var data = {};
 	data["title"] = title;
 	data["status"] = status;
@@ -178,7 +178,7 @@ function updateCompetencyStatus(userID, id, title, status){
 	}
 
 	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
+	  toastr.success("'" + title + "' competency has been updated");
         
     var className = $('#star-'+id).attr('class');
     if (className.indexOf("empty")>=0){
