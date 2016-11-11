@@ -13,7 +13,6 @@ $(function() {
 //	$( "#feedback-section" ).load( "../components/feedback/feedback.html" );
 //	$( "#development-needs-section" ).load( "../components/development-needs/development-needs.html" );
 	
-	
 });
 
 
@@ -25,6 +24,8 @@ function loadPage(section){
 		});
 
 }
+
+
 
 function init(){
 	$("#feedback-section").hide();

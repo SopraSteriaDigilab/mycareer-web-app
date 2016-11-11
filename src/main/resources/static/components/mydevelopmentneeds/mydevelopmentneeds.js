@@ -28,7 +28,7 @@ var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Tra
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getDevelopmentNeeds/2312',
+      url: 'http://127.0.0.1:8080/getDevelopmentNeeds/1111',
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
@@ -111,7 +111,7 @@ function openEditDevelopmentNeedModal(id){
 function clickSubmitDevelopmentNeed(){
 	var type = $("#dev-need-modal-type").val();
 	
-	var userID = 2312;
+	var userID = 1111;
 	var devNeedID = $("#development-need-id").val();
 	var devNeedTitle = $("#development-need-title").val().trim();
 	var devNeedText = $("#development-need-text").val().trim();
@@ -189,9 +189,9 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                     <div class='col-sm-5 wrap-text' id='dev-need-title-"+id+"' ><h5> "+title+" </h5></div> \
                         <div class='col-sm-5'><br> \
                             <div class='progress progress-striped'> \
-                                <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div> \
-                                <div class='two primary-color' style='cursor:pointer' id='inflight-progress'><h5 class='progress-label'>InFlight</h5></div> \
-                                <div class='three primary-color' style='cursor:pointer' id='done-progress'><h5 class='progress-label'>Done</h5></div> \
+                                <div class='one primary-color' style='cursor:pointer' id='proposed-dev-need-"+id+"'><h5 class='progress-label'>Proposed</h5></div> \
+                                <div class='two primary-color' style='cursor:pointer' id='started-dev-need-"+id+"'><h5 class='progress-label'>Started</h5></div> \
+                                <div class='three primary-color' style='cursor:pointer' id='completed-dev-need-"+id+"'><h5 class='progress-label'>Completed</h5></div> \
                                 <div class='progress-bar' id='devNeedStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
                             </div> \
                         </div> \
@@ -208,18 +208,6 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                             <h5><b>Description</b></h5> \
                         </div> \
                         <div class='col-md-8'> \
-                            <div class='row'> \
-                                <div class='col-md-6'> \
-                                    <div class='bottomless progress progress-striped'> \
-                                        <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                                    </div> \
-                                </div> \
-                                <div class='col-md-6'> \
-                                    <div class='bottomless progress progress-striped'> \
-                                        <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                                    </div> \
-                                </div> \
-                            </div> \
                         </div> \
                     </div> \
                     <div class='row'> \
