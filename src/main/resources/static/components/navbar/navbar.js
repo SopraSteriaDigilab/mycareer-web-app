@@ -23,13 +23,17 @@ $(function() {
     
     //sets email addresses to use bootstrap tag input
     $('#requestingTo').tagsinput({
-        maxTags: 20,
-        confirmKeys: [9,32,44,59],
-        delimiter:';',
-        delimiter:','
-    } 
-    
-    );
+       maxTags: 20,
+       confirmKeys: [9,32,44,59]
+    });
+        
+    //keypress to change ; character to ,
+   $('#requestFeedbackModal').find('input').keypress(function(evt){ 
+        if(evt.which==59){
+            $(this).val($(this).val()+',');
+            evt.preventDefault();
+        }
+    });
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
@@ -121,3 +125,5 @@ function submitFeedbackRequest(){
     });
     $('#requestFeedbackModal').modal('hide');
 }
+
+
