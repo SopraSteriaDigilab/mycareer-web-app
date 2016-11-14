@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/mycareer")
 public class RoutingController {
 	
-	 private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds");
-
+	private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds");
+	
     @RequestMapping("")
     public String myapp(Model model) {
         return "myapp";

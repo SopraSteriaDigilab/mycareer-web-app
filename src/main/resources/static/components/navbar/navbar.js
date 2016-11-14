@@ -1,25 +1,9 @@
 $(function() {
 
-//	$("#objectives").click(function() {
-//		window.history.pushState("objectives","objectives", "myobjectives");
-//		loadPage("myobjectives");
-//		highlight('objectives');
-//	});
-//
-//	$("#feedback").click(function() {
-//		window.history.pushState("feedback","feedback", "myfeedback");
-//		loadPage("myfeedback");
-//		highlight('feedback');
-//	});
-//	
-//	$("#development-needs").click(function() {
-//		window.history.pushState("developmentneeds","developmentneeds", "mydevelopmentneeds");
-//		loadPage("mydevelopmentneeds");
-//		highlight('development-needs');
-//	});
-//	
-//
+
 	highlight($("#section").text());
+	
+	loadProfile();
     
     //sets email addresses to use bootstrap tag input
     $('#requestingTo').tagsinput({
@@ -61,15 +45,11 @@ $(function() {
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
         
 });
-//
-//function loadPage(section){
-//	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
-//		  $( "#myapp" ).html( data );
-//		}).fail(function() {
-//			 toastr.error("Sorry could not load page, please try again later");
-//		});
-//
-//}
+
+//Functino to load profile section
+function loadProfile(){
+	$("#profile").load("../components/profile/profile.html");
+}
 
 
 function highlight(value) {
@@ -125,5 +105,36 @@ function submitFeedbackRequest(){
     });
     $('#requestFeedbackModal').modal('hide');
 }
+
+
+
+//$("#objectives").click(function() {
+//window.history.pushState("objectives","objectives", "myobjectives");
+//loadPage("myobjectives");
+//highlight('objectives');
+//});
+//
+//$("#feedback").click(function() {
+//window.history.pushState("feedback","feedback", "myfeedback");
+//loadPage("myfeedback");
+//highlight('feedback');
+//});
+//
+//$("#development-needs").click(function() {
+//window.history.pushState("developmentneeds","developmentneeds", "mydevelopmentneeds");
+//loadPage("mydevelopmentneeds");
+//highlight('development-needs');
+//});
+//
+//
+//
+//function loadPage(section){
+//	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
+//		  $( "#myapp" ).html( data );
+//		}).fail(function() {
+//			 toastr.error("Sorry could not load page, please try again later");
+//		});
+//
+//}
 
 
