@@ -1,5 +1,8 @@
 $(function() {
 	
+	//Load profile section
+	loadProfile();
+	
 	//Get list of development needs
 	getDevelopmentNeedsList();
 	
