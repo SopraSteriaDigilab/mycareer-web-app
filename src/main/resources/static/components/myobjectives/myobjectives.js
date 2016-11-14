@@ -1,8 +1,5 @@
 $(function() {
 	
-	//Load profile section
-	loadProfile();
-	
 	//Get list of objectives
 	getObjectivesList();
     
@@ -32,7 +29,6 @@ $(function() {
     $("#navTab").click(function(){});
 
 });
-
 
 var nextObjID = 0;
 

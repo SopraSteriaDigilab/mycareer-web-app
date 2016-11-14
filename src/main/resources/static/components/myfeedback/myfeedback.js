@@ -1,7 +1,4 @@
 $(function() {
-	
-	//Load profile section
-	loadProfile();
     
 	//Get list of feedback
 	getFeedbackList();
