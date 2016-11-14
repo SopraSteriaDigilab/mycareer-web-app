@@ -1,7 +1,12 @@
 $(function() {
-	
+
 
 });
+
+//Functino to load profile section
+function loadProfile(){
+	$("#profile").load("../components/profile/profile.html");
+}
 
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];

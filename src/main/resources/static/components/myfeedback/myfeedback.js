@@ -1,5 +1,9 @@
 $(function() {
+	
+	//Load profile section
+	loadProfile();
     
+	//Get list of feedback
 	getFeedbackList();
     
 });//End of Document Function

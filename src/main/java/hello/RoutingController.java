@@ -17,7 +17,7 @@ public class RoutingController {
 	 private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds");
 
     @RequestMapping("")
-    public String myapp() {
+    public String myapp(Model model) {
         return "myapp";
     }
     
