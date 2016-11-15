@@ -39,7 +39,7 @@ function addNoteToDB(userID, from, body ){
 //Method to get the Notes list
 function getNotesList(){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/1111',
+        url: 'http://127.0.0.1:8080/getNotes/'+getADLoginID(),
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -59,7 +59,7 @@ function getNotesList(){
 
 //Method to get data and submit data
 function clickSubmitNote(){
-	var userID = 1111;
+	var userID = getADLoginID();
 	var note = $('#note-text').val().trim();
 	var from = 'Ridhwan Nacef';
 	var date = timeStampToDateTime(new Date());
@@ -104,7 +104,7 @@ function timeStampToDateTime(date){
 //Gets the list of Competencies from the DB
 function getCompetencyList(){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/1111',
+        url: 'http://127.0.0.1:8080/getCompetencies/'+getADLoginID(),
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -158,7 +158,7 @@ function checkSelected(isSelected){
 function starChanger(id){
     var status = ($('#starSelected'+id).val() === "true") ? false : true;
     var title = $('#competencyTitle'+id).text();
-    var userID = 1111;
+    var userID = getADLoginID();
     
     updateCompetencyStatus(userID,id,title,status);
 
@@ -166,7 +166,7 @@ function starChanger(id){
 
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
-    var url = "http://127.0.0.1:8080/updateCompetency/1111";
+    var url = "http://127.0.0.1:8080/updateCompetency/"+getADLoginID();
 	var data = {};
 	data["title"] = title;
 	data["status"] = status;
