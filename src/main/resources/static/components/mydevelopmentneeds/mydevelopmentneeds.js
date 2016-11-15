@@ -28,7 +28,7 @@ var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Tra
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getDevelopmentNeeds/1111',
+      url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+getADLoginID(),
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
@@ -111,7 +111,7 @@ function openEditDevelopmentNeedModal(id){
 function clickSubmitDevelopmentNeed(){
 	var type = $("#dev-need-modal-type").val();
 	
-	var userID = 1111;
+	var userID = getADLoginID();
 	var devNeedID = $("#development-need-id").val();
 	var devNeedTitle = $("#development-need-title").val().trim();
 	var devNeedText = $("#development-need-text").val().trim();
