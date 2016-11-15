@@ -109,3 +109,8 @@
 .vertical-centre{
 	transform: translateY(70%);
 }
+
+/* added for Story 395 */
+.button-archive{
+  margin-right: 10px;
+}
