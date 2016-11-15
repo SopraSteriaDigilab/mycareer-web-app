@@ -1,5 +1,6 @@
 $(function() {
     
+	//Get list of feedback
 	getFeedbackList();
     
 });//End of Document Function
@@ -7,10 +8,10 @@ $(function() {
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 
 function getFeedbackList(){
-    //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/2312
+    //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/1111
     //Gets the List of Feedback from the DB 
     $.ajax({
-        url: 'http://127.0.0.1:8080/getFeedback/2312',
+        url: 'http://127.0.0.1:8080/getFeedback/1111',
         method: 'GET',
         success: function(data){
             console.log('success', data);
@@ -27,8 +28,8 @@ function getFeedbackList(){
 	                <div class='panel panel-default' id='view-fee-"+val.id+"'> \
 	                    <div class='panel-heading'> \
 	                        <div class='row'> \
-	                           <div class='col-md-6'><h5><b>"+ val.fromWho +"</b></h5></div> \
-	                           <div class='col-md-6'><h5 class='pull-right'><b>"+ feedbackDate +"</b></h5></div> \
+	                           <div class='col-md-7'><h5><b>"+ val.fromWho +"</b></h5></div> \
+	                           <div class='col-md-5'><h6 class='pull-right'><b>"+ feedbackDate +"</b></h6></div> \
 	                        </div> \
 	                        <div class='row'> \
 	                            <div class='col-md-offset-6 col-md-6'> \

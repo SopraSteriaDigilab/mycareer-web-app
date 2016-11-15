@@ -11,3 +11,7 @@ textarea {
 .toast {
   opacity: 1 !important;
 }
+
+.bottomless {
+	margin-bottom: 0px;
+}

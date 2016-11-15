@@ -1,35 +1,23 @@
 $(function() {
 
-//	$("#objectives").click(function() {
-//		window.history.pushState("objectives","objectives", "myobjectives");
-//		loadPage("myobjectives");
-//		highlight('objectives');
-//	});
-//
-//	$("#feedback").click(function() {
-//		window.history.pushState("feedback","feedback", "myfeedback");
-//		loadPage("myfeedback");
-//		highlight('feedback');
-//	});
-//	
-//	$("#development-needs").click(function() {
-//		window.history.pushState("developmentneeds","developmentneeds", "mydevelopmentneeds");
-//		loadPage("mydevelopmentneeds");
-//		highlight('development-needs');
-//	});
-//	
-//
+
 	highlight($("#section").text());
+	
+	loadProfile();
     
     //sets email addresses to use bootstrap tag input
     $('#requestingTo').tagsinput({
-        maxTags: 20,
-        confirmKeys: [9,32,44,59],
-        delimiter:';',
-        delimiter:','
-    } 
-    
-    );
+       maxTags: 20,
+       confirmKeys: [9,32,44,59]
+    });
+        
+    //keypress to change ; character to ,
+   $('#requestFeedbackModal').find('input').keypress(function(evt){ 
+        if(evt.which==59){
+            $(this).val($(this).val()+',');
+            evt.preventDefault();
+        }
+    });
     
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
@@ -57,15 +45,11 @@ $(function() {
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
         
 });
-//
-//function loadPage(section){
-//	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
-//		  $( "#myapp" ).html( data );
-//		}).fail(function() {
-//			 toastr.error("Sorry could not load page, please try again later");
-//		});
-//
-//}
+
+//Functino to load profile section
+function loadProfile(){
+	$("#profile").load("../components/profile/profile.html");
+}
 
 
 function highlight(value) {
@@ -101,7 +85,7 @@ function validEmails(requestingTo){
 
 //Email details sent through back-end.
 function submitFeedbackRequest(){
-	var url = "http://127.0.0.1:8080/generateFeedbackRequest/2312";
+	var url = "http://127.0.0.1:8080/generateFeedbackRequest/1111";
 	var data = {};
 	data["emailsTo"] = $('#requestingTo').val();
 	data["notes"] = $('#requestingText').val();
@@ -121,3 +105,36 @@ function submitFeedbackRequest(){
     });
     $('#requestFeedbackModal').modal('hide');
 }
+
+
+
+//$("#objectives").click(function() {
+//window.history.pushState("objectives","objectives", "myobjectives");
+//loadPage("myobjectives");
+//highlight('objectives');
+//});
+//
+//$("#feedback").click(function() {
+//window.history.pushState("feedback","feedback", "myfeedback");
+//loadPage("myfeedback");
+//highlight('feedback');
+//});
+//
+//$("#development-needs").click(function() {
+//window.history.pushState("developmentneeds","developmentneeds", "mydevelopmentneeds");
+//loadPage("mydevelopmentneeds");
+//highlight('development-needs');
+//});
+//
+//
+//
+//function loadPage(section){
+//	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
+//		  $( "#myapp" ).html( data );
+//		}).fail(function() {
+//			 toastr.error("Sorry could not load page, please try again later");
+//		});
+//
+//}
+
+

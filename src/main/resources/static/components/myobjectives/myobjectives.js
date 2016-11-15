@@ -30,13 +30,12 @@ $(function() {
 
 });
 
-
 var nextObjID = 0;
 
 //HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getObjectives/2312',
+      url: 'http://127.0.0.1:8080/getObjectives/1111',
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
@@ -119,7 +118,7 @@ function openEditObjectiveModal(id){
 function clickSubmitObjective(){
 	var type = $("#obj-modal-type").val();
 	
-	var userID = 2312;
+	var userID = 1111;
 	var objID = $("#objective-id").val();
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
@@ -188,9 +187,9 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                     <div class='col-sm-5 wrap-text' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
                         <div class='col-sm-5'><br> \
                             <div class='progress progress-striped'> \
-                                <div class='one primary-color' style='cursor:pointer' id='awaiting-progress'><h5 class='progress-label'>Awaiting</h5></div> \
-                                <div class='two primary-color' style='cursor:pointer' id='inflight-progress'><h5 class='progress-label'>InFlight</h5></div> \
-                                <div class='three primary-color' style='cursor:pointer' id='done-progress'><h5 class='progress-label'>Done</h5></div> \
+                                <div class='one primary-color' style='cursor:pointer' id='proposed-obj-"+id+"'><h5 class='progress-label'>Proposed</h5></div> \
+                                <div class='two primary-color' style='cursor:pointer' id='started-obj-"+id+"'><h5 class='progress-label'>Started</h5></div> \
+                                <div class='three primary-color' style='cursor:pointer' id='completed-obj-"+id+"'><h5 class='progress-label'>Completed</h5></div> \
                                 <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
                             </div> \
                         </div> \
@@ -207,18 +206,6 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                             <h5><b>Description</b></h5> \
                         </div> \
                         <div class='col-md-8'> \
-                            <div class='row'> \
-                                <div class='col-md-6'> \
-                                    <div class='bottomless progress progress-striped'> \
-                                        <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                                    </div> \
-                                </div> \
-                                <div class='col-md-6'> \
-                                    <div class='bottomless progress progress-striped'> \
-                                        <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                                    </div> \
-                                </div> \
-                            </div> \
                         </div> \
                     </div> \
                     <div class='row'> \
@@ -227,10 +214,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                         </div> \
                     </div> \
                     <div class='col-md-12'> \
-                        <div class='col-sm-6'> \
-                           <button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
-                        </div> \
-                        <div class='col-sm-6'> \
+                        <div class='col-sm-offset-6 col-sm-6'> \
                             <button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
                         </div> \
                     </div> \
@@ -281,3 +265,20 @@ function updateProgressBar(value){
 //		return false;
 //	}
 //}
+
+
+//<div class='row'> \
+//<div class='col-md-6'> \
+//  <div class='bottomless progress progress-striped'> \
+//      <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+//  </div> \
+//</div> \
+//<div class='col-md-6'> \
+//  <div class='bottomless progress progress-striped'> \
+//      <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+//  </div> \
+//</div> \
+//</div> \
+//<div class='col-sm-6'> \
+//<button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
+//</div> \

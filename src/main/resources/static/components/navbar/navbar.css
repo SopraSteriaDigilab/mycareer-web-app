@@ -1,9 +1,11 @@
 .nav, .nav-tabs {
 	border-bottom: 0px;
+	
 }
 
 .navbar {
 	background-color: white;
+
 }
 
 #primary {
@@ -33,4 +35,13 @@
 
 .label-info {
     background-color: #5D839A;
+}
+
+.nav-height {
+	height: 48px;
+}
+
+.profile-name-display{
+	transform: translateY(10%);
+	padding-right: 10px;
 }
