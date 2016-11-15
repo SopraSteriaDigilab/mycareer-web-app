@@ -35,7 +35,7 @@ var nextObjID = 0;
 //HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getObjectives/1111',
+      url: 'http://127.0.0.1:8080/getObjectives/2222',
       method: 'GET',
       success: function(data){
           $.each(data, function(key, val){
@@ -118,7 +118,7 @@ function openEditObjectiveModal(id){
 function clickSubmitObjective(){
 	var type = $("#obj-modal-type").val();
 	
-	var userID = 1111;
+	var userID = 2222;
 	var objID = $("#objective-id").val();
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();

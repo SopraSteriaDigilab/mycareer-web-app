@@ -6,11 +6,12 @@ $(function() {
 });
 
 var ADUserName = null;
+var ADLoginID = null;
 
 //Hardcoded for now.
 function getUserName(){
 	
-	return "rnacef";
+	return "fharris";
 }
 
 //Authenticate the user against AD
@@ -19,7 +20,8 @@ function authenticate(username){
 	      url: 'http://localhost:8080/authenticateUserProfile/'+username,
 	      method: 'GET',
 	      success: function(data){
-	    	  ADUserName = data.displayName;
+	    	  ADUserName = data.fullName;
+	    	  ADLoginID = data.employeeID;
 	    	  loadPage($("#section").text());
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -43,6 +45,10 @@ function loadPage(section){
 
 function getADUserName(){
 	return ADUserName;
+}
+
+function getADLoginID(){
+	return ADLoginID;
 }
 
 

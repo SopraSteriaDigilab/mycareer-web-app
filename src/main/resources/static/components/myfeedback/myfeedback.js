@@ -6,12 +6,12 @@ $(function() {
 });//End of Document Function
 
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+var firstFeedback = true;
 
 function getFeedbackList(){
-    //mike - http://item-s31509.dhcp.edin.uk.sopra:8080/getFeedback/1111
     //Gets the List of Feedback from the DB 
     $.ajax({
-        url: 'http://127.0.0.1:8080/getFeedback/1111',
+        url: 'http://127.0.0.1:8080/getFeedback/'+getADLoginID(),
         method: 'GET',
         success: function(data){
             console.log('success', data);
@@ -22,7 +22,6 @@ function getFeedbackList(){
                 var month = shortMonths[feeTime.getMonth()];
                 var day = feeTime.getDate();
                 var feedbackDate = day + ' ' + month + ' ' + year;
-                
                 
                 $('.feeList').append(" \
 	                <div class='panel panel-default' id='view-fee-"+val.id+"'> \
@@ -42,7 +41,7 @@ function getFeedbackList(){
                 
 //            $('#view-feedback').click(function(){
                 $('.feeDescription').append(" \
-					<div class='thumbnail hidden general-feedback' id='general-feedback-"+val.id+"'> \
+					<div class='thumbnail "+ showIfFirstFeeback() +" general-feedback' id='general-feedback-"+val.id+"'> \
 						<input type='hidden' class='general-feedback-id' value='"+val.id+"'> \
 						<div class='panel-heading'> \
 							<div class='row'> \
@@ -80,3 +79,14 @@ function showGeneralFeedback(id){
 
 	});
 }
+
+function showIfFirstFeeback(){
+	if(firstFeedback){
+		firstFeedback = false;
+		return "";
+	}else{
+		return "hidden";
+	}
+
+}
+
