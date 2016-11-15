@@ -11,7 +11,7 @@ var ADLoginID = null;
 //Hardcoded for now.
 function getUserName(){
 	
-	return "fharris";
+	return "rnacef";
 }
 
 //Authenticate the user against AD
