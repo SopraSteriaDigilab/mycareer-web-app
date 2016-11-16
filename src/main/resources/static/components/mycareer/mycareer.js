@@ -17,8 +17,9 @@ function getUserName(){
 //Authenticate the user against AD
 function authenticate(username){	
 	 $.ajax({
-	      url: 'http://localhost:8080/authenticateUserProfile/'+username,
+	      url: 'http://localhost:8080/authenticateUserProfile/',
 	      method: 'GET',
+	      data: {'userName_Email' : username},
 	      success: function(data){
 	    	  ADUserName = data.fullName;
 	    	  ADLoginID = data.employeeID;
