@@ -40,8 +40,8 @@ function getObjectivesList(){
       success: function(data){
           $.each(data, function(key, val){
           	nextObjID = val.id;
-          	excpectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, excpectedBy);
+          	var expectedBy = formatDate(val.timeToCompleteBy);
+          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived);
           });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -58,7 +58,6 @@ function addObjectiveToDB(userID, objTitle, objText, objDate){
 	data["title"] = objTitle;
 	data["description"] = objText;
 	data["completedBy"] = objDate;
-  data["progress"] = 0;
   
 	var settings = {
 	  "url": url,
@@ -73,14 +72,14 @@ function addObjectiveToDB(userID, objTitle, objText, objDate){
 }
 
 //HTTP request for UPDATING an objective in DB
-function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
+function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus){
 	var url = "http://127.0.0.1:8080/editObjective/"+userID;
 	var data = {};
 	data["objectiveID"] = objID;
 	data["title"] = objTitle;
 	data["description"] = objText;
 	data["completedBy"] = objDate;
-	data["progress"] = 0;
+	data["progress"] = objStatus;
   
 	var settings = {
 	  "url": url,
@@ -97,7 +96,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate){
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
 	$("#obj-modal-type").val('add');
-	setObjectiveModalContent('', '', '', getToday(), true);
+	setObjectiveModalContent('', '', '', getToday(), 0, true);
 	showObjectiveModal(true);
 }
 
@@ -108,8 +107,10 @@ function openEditObjectiveModal(id){
 	var objTitle = $('#obj-title-'+id).text().trim();
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
+	var objStatus = $('#obj-status-'+id).val();
+//	var objIsArchived = $('#obj-is-archived-'+id).val();
 	objDate = reverseDateFormat(objDate);
-	setObjectiveModalContent(objID, objTitle, objText, objDate, false);
+	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, false);
 	showObjectiveModal(true);
 }
 
@@ -123,37 +124,57 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-	
+	var objStatus = parseInt($("#objective-status").val());
+	var objIsArchived = $("#objective-is-archived").val()
+
 	if(type == 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate));
+		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived);
 	}else{
-		editObjectiveOnDB(userID, objID, objTitle, objText, objDate);
-		editObjectiveOnList(userID, objID, objTitle, objText, objDate);
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
+		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
 	}
 	
 	showObjectiveModal(false);
 }
 
 //Function to add objective to list
-function addObjectiveToList(id, title, description, expectedBy){
-	$("#obj-list").append(objectiveListHTML(id, title, description, expectedBy));
+function addObjectiveToList(id, title, description, expectedBy, status, isArchived){
+	var listID = "";
+		if(isArchived){
+			listID = "obj-archived";
+		}else{
+		switch(status){
+			case 0: 
+				listID = statusListDivIDs[status];
+				break;
+			case 1: 
+				listID = statusListDivIDs[status];
+				break;
+			case 2: 
+				listID = statusListDivIDs[status];
+				break;
+		}
+	}
+	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived));
 }
 
 //Function to update objective on list
-function editObjectiveOnList(userID, objID, title, text, date){
+function editObjectiveOnList(userID, objID, title, text, date, status){
 	$('#obj-title-'+objID).text(title);
 	$('#obj-text-'+objID).text(text);
 	$('#obj-date-'+objID).text('').append('<h6><b>' + formatDate(date) + '</b></h6>');
+	$('#obj-status-'+objID).val(status);
 }
 
 //Method to set and show content of modal
-function setObjectiveModalContent(id, title, text, date, isAdd){
+function setObjectiveModalContent(id, title, text, date, status, isAdd){
 	$('#obj-modal-title-type').text(setTitleType(isAdd));
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
+	$("#objective-status").val(status);
 	$('#submit-obj').prop("disabled", isAdd);
 }
 
@@ -167,6 +188,45 @@ function showObjectiveModal(show){
 	}
 }
 
+//Method to handle the archive objective button
+function clickArchiveObjective(objID){
+	var archive = !!$("#obj-is-archived-"+objID).val();
+	editObjectiveArchiveOnDB(objID, archive);
+	updateObjectiveList(objID);
+}
+
+function editObjectiveArchiveOnDB(objID, archive){
+	var url = "http://127.0.0.1:8080/changeStatusObjective/"+getADLoginID();;
+	var data = {};
+	data["objectiveID"] = objID;
+	data["isArchived"] = archive;
+  
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+		toastr.success(response);
+	});
+}
+
+function updateObjectiveList(objID){
+//	alert(objID);
+	var title = $('#obj-title-'+objID).text();
+	var description = $('#obj-text-'+objID).text();
+	var expectedBy = $('#obj-date-'+objID).text();
+	var status = $('#obj-status-'+objID).val();
+	var archive = !!$('#obj-is-archived-'+objID).val();
+	
+	$("#objective-item-"+objID).remove();
+	addObjectiveToList(objID, title, description, expectedBy, status, archive);
+	
+}
+
+
+
 //onclick to view feedback
 function clickObjectiveFeedback(id){
 	window.location.replace("http://localhost:8000/mycareer/feedback"); 
@@ -174,12 +234,14 @@ function clickObjectiveFeedback(id){
 
 
 //Function that returns objective list in html format with the parameters given
-function objectiveListHTML(id, title, description, timeToCompleteBy){
+function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
 	var html = " \
-    <div class='panel-group' id='accordion'> \
+    <div class='panel-group' id='objective-item-" + id + "'> \
         <div class='panel panel-default' id='panel'> \
             <div class='panel-heading'> \
                 <div class='row'> \
+                	<input type='hidden' id='obj-status-"+id+"' value='" + status + "'> \
+                	<input type='hidden' id='obj-is-archived-"+id+"' value='" + isArchived + "'> \
                     <div class='col-sm-6' id='obj-no-"+id+"'> # "+id+" </div> \
                     <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>"+timeToCompleteBy+"</b></h6></div> \
                 </div><br> \
@@ -213,11 +275,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
                             <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    <div class='col-md-12'> \
-                        <div class='col-sm-offset-6 col-sm-6'> \
-                            <button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
-                        </div> \
-                    </div> \
+                    " + objectivesButtonsHTML(id, isArchived); + " \
                 </div> \
             </div> \
         </div> \
@@ -225,6 +283,24 @@ function objectiveListHTML(id, title, description, timeToCompleteBy){
     "
                             
     return html;
+}
+
+function objectivesButtonsHTML(id, isArchived){
+	var HTML = " \
+    <div class='col-md-12'> \
+		<div class='col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+")' id='archive-obj'>Archive</button> \
+        </div> \
+        <div class=' col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
+        </div> \
+    </div> \
+"
+//        	alert(isArchived);
+	if(isArchived === Boolean('true')){
+		return("");
+	}
+	return(HTML);
 }
 
 
