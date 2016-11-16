@@ -49,6 +49,11 @@ $(function() {
 //Functino to load profile section
 function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
+	if(isUserManager() == Boolean('true')){
+		alert("yes");
+		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>")
+		
+	}
 }
 
 
