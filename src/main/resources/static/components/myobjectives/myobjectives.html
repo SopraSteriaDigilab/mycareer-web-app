@@ -26,10 +26,11 @@
 		<div class="row">
 			<div class="col-md-6">
 				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a href="objectives.html" data-toggle="tab"> All (3) </a></li>
-				<li><a href="#proposed-obj" data-toggle="tab"> Proposed (0) </a></li>
-				<li><a href="#started-obj" data-toggle="tab"> Started (0) </a></li>
-				<li><a href="#completed-obj" data-toggle="tab"> Completed (0) </a></li>
+					<li class="active"><a href="#obj-in-use" data-target="#proposed-obj, #started-obj, #completed-obj" data-toggle="tab"> All (3) </a></li>
+					<li><a href="#proposed-obj" data-toggle="tab"> Proposed (0) </a></li>
+					<li><a href="#started-obj" data-toggle="tab"> Started (0) </a></li>
+					<li><a href="#completed-obj" data-toggle="tab"> Completed (0) </a></li>
+					<li><a href="#obj-archived" data-toggle="tab"> Archived (0)</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By
 							<span class="caret"></span>
@@ -43,9 +44,9 @@
 			</div>
 			<div class="col-md-6">
 			  <ul class="nav nav-tabs  nav-justified">
-    <li class="active"><a data-toggle="tab" href="#competencies-tab">Competencies</a></li>
-    <li><a data-toggle="tab" href="#general-notes-tab">General Notes</a></li>
-  </ul>
+			    <li class="active"><a data-toggle="tab" href="#competencies-tab">Competencies</a></li>
+			    <li><a data-toggle="tab" href="#general-notes-tab">General Notes</a></li>
+			  </ul>
 			</div>
 		</div>
 		<!-- End of Nav Pills header -->
@@ -54,18 +55,56 @@
 		
 	<!-- My Objectives half  -->
 	<div class='col-sm-12 col-md-6'>
-		<!-- Objective details in an accordion -->
-		<div id="obj-list"></div><!-- End of objList container -->
+		<div class="tab-content">
+		
+			<div id="obj-list"></div><!-- End of objList container -->
+			 <!-- Competencies Section  -->
+			 	 
+			 	<div id="completed-obj" class="tab-pane fade in active"></div>
+			    <div id="started-obj" class="tab-pane fade in active"></div>
+			    <div id="proposed-obj" class="tab-pane fade in active"></div>
+			    <div id="obj-archived" class="tab-pane fade in"></div>
+
+		</div>
         
-	</div><!--End of My Objectives haf -->
+	</div><!--End of My Objectives half -->
 
 
 
 	<!-- Competency/Notes half -->
 	<div class='col-md-6' id='competencies'></div>
+	
+
 
 
 </div>
+
+
+		
+<!-- <div class="row bs-wizard">
+     
+     <div class="col-xs-1 bs-wizard-step">
+       <div class="text-center bs-wizard-stepnum">Proposed</div>
+       <div class="progress"><div class="progress-bar"></div></div>
+       <a  class="bs-wizard-dot" style='cursor:pointer'></a>
+     </div>
+     
+     <div class="col-xs-1 bs-wizard-step">
+       <div class="text-center bs-wizard-stepnum">Started</div>
+       <div class="progress"><div class="progress-bar"></div></div>
+       <a  class="bs-wizard-dot" style='cursor:pointer'></a>
+     </div>
+     
+     <div class="col-xs-1 bs-wizard-step">
+       <div class="text-center bs-wizard-stepnum">Completed</div>
+       <div class="progress"><div class="progress-bar"></div></div>
+       <a  class="bs-wizard-dot" style='cursor:pointer'></a>
+     </div>
+     
+  </div>
+           -->     
+
+
 
 
 <!-- Add Objective Modal -->
@@ -79,8 +118,11 @@
 			</div>
 			<div class="modal-body">
 				<form>
+					<input type="hidden" id="archive" value="true"> <!-- added for Story 395 -->
 					<input type="hidden" id="obj-modal-type" value="add">
 					<input type="hidden" id="objective-id" value="0">
+					<input type="hidden" id="objective-status" value="proposed">
+				<!-- 	<input type="hidden" id="objective-is-archived" value="false"> -->
 					<div class="form-group">
 						<label for="objective-title">Title*:</label>
 						<input type="text" class="objective-modal-validate form-control" id="objective-title" maxlength="150" />
@@ -111,10 +153,9 @@
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left"
-					data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-default" id="submit-obj"
-					disabled>Submit</button>
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+				
+				<button type="button" class="btn btn-default" id="submit-obj" disabled>Submit</button>
 			</div>
 		</div>
 
