@@ -7,7 +7,8 @@ $(function() {
 
 //List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
-
+var statusList = ['proposed', 'started', 'completed'];
+var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 //Initialising the date picker
 function initDatePicker(id, today){
 	
