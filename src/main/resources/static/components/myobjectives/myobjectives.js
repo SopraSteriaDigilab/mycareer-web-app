@@ -124,6 +124,7 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
+	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val()
 
@@ -163,7 +164,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 function editObjectiveOnList(userID, objID, title, text, date, status){
 	$('#obj-title-'+objID).text(title);
 	$('#obj-text-'+objID).text(text);
-	$('#obj-date-'+objID).text('').append('<h6><b>' + formatDate(date) + '</b></h6>');
+	$('#obj-date-'+objID).text('').append('<h6 class="pull-right"><b>' + formatDate(date) + '</b></h6>');
 	$('#obj-status-'+objID).val(status);
 }
 
@@ -236,32 +237,47 @@ function clickObjectiveFeedback(id){
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
 	var html = " \
-    <div class='panel-group' id='objective-item-" + id + "'> \
+    <div class='panel-group' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
-            <div class='panel-heading'> \
-                <div class='row'> \
-                	<input type='hidden' id='obj-status-"+id+"' value='" + status + "'> \
-                	<input type='hidden' id='obj-is-archived-"+id+"' value='" + isArchived + "'> \
-                    <div class='col-sm-6' id='obj-no-"+id+"'> # "+id+" </div> \
-                    <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>"+timeToCompleteBy+"</b></h6></div> \
-                </div><br> \
-                <div class='row'> \
-                    <div class='col-sm-5 wrap-text' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
-                        <div class='col-sm-5'><br> \
-                            <div class='progress progress-striped'> \
-                                <div class='one primary-color' style='cursor:pointer' id='proposed-obj-"+id+"'><h5 class='progress-label'>Proposed</h5></div> \
-                                <div class='two primary-color' style='cursor:pointer' id='started-obj-"+id+"'><h5 class='progress-label'>Started</h5></div> \
-                                <div class='three primary-color' style='cursor:pointer' id='completed-obj-"+id+"'><h5 class='progress-label'>Completed</h5></div> \
-                                <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                            </div> \
-                        </div> \
-                        <div class='col-sm-2'> \
-                            <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
-                        </div> \
-                </div> \
+        <input type='hidden' id='obj-status-"+id+"' value='"+status+"'> \
+        <input type='hidden' id='obj-is-archived-"+id+"' value='"+isArchived+"'> \
+        	<div class='panel-heading'> \
+            	<div class='row'> \
+            		<div class='col-sm-6'> \
+	            		<div class='row'> \
+		            		<div class='col-sm-6' id='obj-no-"+id+"'><h6><b>#"+id+"</b></h6></div> \
+		            		<div class='col-sm-6' id='obj-date-"+id+"'><h6 class='pull-right'><b>"+timeToCompleteBy+"</b></h6></div> \
+	            		</div> \
+	            		<div class='row'> \
+		            		<div class='col-sm-12 wrap-text' id='obj-title-"+id+"'>"+title+"</div> \
+	            		</div> \
+            		</div> \
+            		<div class='col-sm-5 bs-wizard'> \
+            			 <div class='col-xs-4 bs-wizard-step complete'> \
+					      <div class='text-center '><h6>Proposed</h6></div> \
+					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					     </div> \
+					     <div class='col-xs-4 bs-wizard-step '> \
+					       <div class='text-center'><h6>Started</h6></div> \
+					       <div class='progress'><div class='progress-bar'></div></div> \
+					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+					     </div> \
+					     <div class='col-xs-4 bs-wizard-step '> \
+					       <div class='text-center'><h6>Completed</h6></div> \
+					       	 <div class='progress'><div class='progress-bar'></div></div> \
+					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+					     </div> \
+            		</div> \
+            		<div class='col-sm-1 chev-height'> \
+					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
+					</div> \
+            	</div> \
             </div> \
         \
             <div id='collapse-obj-"+id+"' class='panel-collapse collapse'> \
+    \
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-4'> \
@@ -278,6 +294,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                     " + objectivesButtonsHTML(id, isArchived); + " \
                 </div> \
             </div> \
+         \
         </div> \
     </div> \
     "

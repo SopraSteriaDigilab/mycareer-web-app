@@ -25,7 +25,6 @@ function authenticate(username){
 	    	  ADUserName = data.fullName;
 	    	  ADLoginID = data.employeeID;
 	    	  isManager = Boolean(data.isManager);
-	    	  alert(isManager);
 	    	  loadPage($("#section").text());
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
