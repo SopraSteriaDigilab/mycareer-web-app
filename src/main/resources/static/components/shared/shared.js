@@ -9,6 +9,7 @@ $(function() {
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
+var modalStatusList = ['Add', 'Edit', 'Proposed'];
 //Initialising the date picker
 function initDatePicker(id, today){
 	
@@ -76,11 +77,32 @@ function validateForm(inputClass, submitButtonID) {
 }
 
 //Method to set title to the correct type
-function setTitleType(isAdd){
-	if(isAdd){
-		return 'Add';
-	}else{
-		return 'Edit';
-	}
+
+    
+function enableSubmit(type){
+    if (type === 1){
+        return false;
+    }
+    return true;
+}
+
+function tags(id){
+
+    //sets email addresses to use bootstrap tag input
+    $('#'+id).tagsinput({
+       maxTags: 20,
+       confirmKeys: [9,32,44,59]
+    });
+}
+
+function keypress(modalID){
+        
+    //keypress to change ; character to ,
+   $('#'+modalID).keypress(function(evt){ 
+        if(evt.which==59){
+            $(this).val($(this).val()+',');
+            evt.preventDefault();
+        }
+    });
 }
 
