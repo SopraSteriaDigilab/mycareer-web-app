@@ -351,7 +351,7 @@ function objectivesButtonsHTML(id, isArchived){
     </div> \
 "
 //        	alert(isArchived);
-	if(isArchived === Boolean('true')){
+	if(isArchived == true || isArchived === 'true'){
 		return("");
 	}
 	return(HTML);
