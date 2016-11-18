@@ -20,15 +20,6 @@ $(function() {
         }    
      });
     
-//    //click to submit feedback request
-//    $('#submit-obj').click(function(){ 
-//       if (validEmails($('#proposedTo').val())){
-//            submitFeedbackRequest();
-//        }else{
-//            toastr.error("One or more email addresses entered are not valid");
-//        }    
-//     });
-    
     //when these are clicked it clears the feedback request modal
     $(".close").click(function() {
         $("textarea").val("");
@@ -47,11 +38,10 @@ $(function() {
         
 });
 
-//Functino to load profile section
+//Function to load profile section
 function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
 	if(isUserManager() == Boolean('true')){
-		alert("yes");
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>")
 		
 	}

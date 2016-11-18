@@ -17,12 +17,6 @@ $(function() {
 	
 	//onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
-    
-	//3 onclicks to change the progress of the status bar of an objective
-	//status goes from Awaiting, InFlight, Done
-	$('.one').click(function(){ updateProgressBar(0); });
-	$(".two").click(function(){ updateProgressBar(50); });
-	$(".three").click(function(){ updateProgressBar(100); });
 
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
@@ -41,6 +35,7 @@ function getObjectivesList(){
           	nextObjID = val.id;
           	var expectedBy = formatDate(val.timeToCompleteBy);
           	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived);
+//          	updateStatusOnList(val.id, val.progress);
           });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -107,7 +102,6 @@ function openEditObjectiveModal(id){
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
 	var objStatus = $('#obj-status-'+id).val();
-//	var objIsArchived = $('#obj-is-archived-'+id).val();
 	objDate = reverseDateFormat(objDate);
 	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, 1);
 	showObjectiveModal(true);
@@ -123,6 +117,7 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
+//	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
 
@@ -146,16 +141,15 @@ function clickSubmitObjective(){
        
     }
 	
-	//showObjectiveModal(false);
 }
 
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived){
 	var listID = "";
-		if(isArchived){
+		if(isArchived === true || isArchived === 'true'){
 			listID = "obj-archived";
 		}else{
-		switch(status){
+		switch(parseInt(status)){
 			case 0: 
 				listID = statusListDivIDs[status];
 				break;
@@ -174,7 +168,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 function editObjectiveOnList(userID, objID, title, text, date, status){
 	$('#obj-title-'+objID).text(title);
 	$('#obj-text-'+objID).text(text);
-	$('#obj-date-'+objID).text('').append('<h6><b>' + formatDate(date) + '</b></h6>');
+	$('#obj-date-'+objID).text('').append('<h6 class="pull-right"><b>' + formatDate(date) + '</b></h6>');
 	$('#obj-status-'+objID).val(status);
 }
 
@@ -210,6 +204,8 @@ function showObjectiveModal(show){
 //Method to handle the archive objective button
 function clickArchiveObjective(objID){
 	var archive = !!$("#obj-is-archived-"+objID).val();
+	$('#obj-is-archived-'+objID).val(archive);
+//	alert(archive);
 	editObjectiveArchiveOnDB(objID, archive);
 	updateObjectiveList(objID);
 }
@@ -232,15 +228,16 @@ function editObjectiveArchiveOnDB(objID, archive){
 }
 
 function updateObjectiveList(objID){
-//	alert(objID);
 	var title = $('#obj-title-'+objID).text();
 	var description = $('#obj-text-'+objID).text();
 	var expectedBy = $('#obj-date-'+objID).text();
 	var status = $('#obj-status-'+objID).val();
-	var archive = !!$('#obj-is-archived-'+objID).val();
+	var archive = $('#obj-is-archived-'+objID).val();
+//	alert(title + " : " + status + " : " + archive);
 	
-	$("#objective-item-"+objID).remove();
+	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive);
+	
 	
 }
 
@@ -251,36 +248,92 @@ function clickObjectiveFeedback(id){
 	window.location.replace("http://localhost:8000/mycareer/feedback"); 
 }
 
+function updateStatusOnDB(objID, objStatus){
+	if($('#obj-is-archived-'+objID).val() === 'true' || $('#obj-is-archived-'+objID).val() == true
+			|| objStatus === parseInt($('#obj-status-'+objID).val())){
+		return false;
+	}
+
+	var userID = getADLoginID();
+	var objTitle = $('#obj-title-'+objID).text();
+	var objText = $('#obj-text-'+objID).text();
+	var objDate = $('#obj-date-'+objID).text();
+	objDate = reverseDateFormat(objDate);
+	$('#obj-status-'+objID).val(parseInt(objStatus));
+	
+	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
+//	updateStatusOnList(objID, objStatus);
+	updateObjectiveList(objID);
+}
+//
+//function updateStatusOnList(objID, objStatus){
+//	switch(parseInt(objStatus)){
+//		case 0:
+//			$('#started-obj-dot-'+objID).removeClass('complete');
+//			$('#complete-obj-dot-'+objID).removeClass('complete');
+//			break;
+//		case 1:
+//			$('#started-obj-dot-'+objID).addClass('complete');
+//			$('#complete-obj-dot-'+objID).removeClass('complete');
+//			break;
+//		case 2:
+//			$('#started-obj-dot-'+objID).addClass('complete');
+//			$('#complete-obj-dot-'+objID).addClass('complete');
+//	}
+//	
+//	
+//}
+
+function checkComplete(status, item){
+	if(status >= item){
+		return 'complete';
+	}
+}
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
 	var html = " \
-    <div class='panel-group' id='objective-item-" + id + "'> \
+    <div class='panel-group' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
-            <div class='panel-heading'> \
-                <div class='row'> \
-                	<input type='hidden' id='obj-status-"+id+"' value='" + status + "'> \
-                	<input type='hidden' id='obj-is-archived-"+id+"' value='" + isArchived + "'> \
-                    <div class='col-sm-6' id='obj-no-"+id+"'> # "+id+" </div> \
-                    <div class='col-sm-6' id='obj-date-"+id+"'><h6><b>"+timeToCompleteBy+"</b></h6></div> \
-                </div><br> \
-                <div class='row'> \
-                    <div class='col-sm-5 wrap-text' id='obj-title-"+id+"'><h5> "+title+" </h5></div> \
-                        <div class='col-sm-5'><br> \
-                            <div class='progress progress-striped'> \
-                                <div class='one primary-color' style='cursor:pointer' id='proposed-obj-"+id+"'><h5 class='progress-label'>Proposed</h5></div> \
-                                <div class='two primary-color' style='cursor:pointer' id='started-obj-"+id+"'><h5 class='progress-label'>Started</h5></div> \
-                                <div class='three primary-color' style='cursor:pointer' id='completed-obj-"+id+"'><h5 class='progress-label'>Completed</h5></div> \
-                                <div class='progress-bar' id='objStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-                            </div> \
-                        </div> \
-                        <div class='col-sm-2'> \
-                            <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
-                        </div> \
-                </div> \
+        <input type='hidden' id='obj-status-"+id+"' value='"+status+"'> \
+        <input type='hidden' id='obj-is-archived-"+id+"' value='"+isArchived+"'> \
+        	<div class='panel-heading'> \
+            	<div class='row'> \
+            		<div class='col-sm-6'> \
+	            		<div class='row'> \
+		            		<div class='col-sm-6' id='obj-no-"+id+"'><h6><b>#"+id+"</b></h6></div> \
+		            		<div class='col-sm-6' id='obj-date-"+id+"'><h6 class='pull-right'><b>"+timeToCompleteBy+"</b></h6></div> \
+	            		</div> \
+	            		<div class='row'> \
+		            		<div class='col-sm-12 wrap-text' id='obj-title-"+id+"'>"+title+"</div> \
+	            		</div> \
+            		</div> \
+            		<div class='col-sm-5 bs-wizard'> \
+            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 0)'> \
+					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
+					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					     </div> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 1)'> \
+					       <div class='text-center'><h6>Started</h6></div> \
+					       <div class='progress'><div class='progress-bar'></div></div> \
+					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+					     </div> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 2)'> \
+					       <div class='text-center'><h6>Completed</h6></div> \
+					       	 <div class='progress'><div class='progress-bar'></div></div> \
+					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+					     </div> \
+            		</div> \
+            		<div class='col-sm-1 chev-height'> \
+					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
+					</div> \
+            	</div> \
             </div> \
         \
             <div id='collapse-obj-"+id+"' class='panel-collapse collapse'> \
+    \
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-4'> \
@@ -297,6 +350,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                     " + objectivesButtonsHTML(id, isArchived); + " \
                 </div> \
             </div> \
+         \
         </div> \
     </div> \
     "
@@ -316,7 +370,7 @@ function objectivesButtonsHTML(id, isArchived){
     </div> \
 "
 //        	alert(isArchived);
-	if(isArchived === Boolean('true')){
+	if(isArchived == true || isArchived === 'true'){
 		return("");
 	}
 	return(HTML);
@@ -327,9 +381,9 @@ function objectivesButtonsHTML(id, isArchived){
 
 
 //Method for updating progress bar wth a value
-function updateProgressBar(value){
-	$('#objStatus').width(value + "%");
-}
+//function updateProgressBar(value){
+//	$('#objStatus').width(value + "%");
+//}
 
 
 // Progress bar not in first sprint
