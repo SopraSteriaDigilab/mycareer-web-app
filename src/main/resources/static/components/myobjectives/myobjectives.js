@@ -215,7 +215,8 @@ function updateObjectiveList(objID){
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
 //	alert(title + " : " + status + " : " + archive);
-	$("#objective-item-"+objID).remove();
+	
+	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive);
 	
 	
@@ -229,6 +230,11 @@ function clickObjectiveFeedback(id){
 }
 
 function updateStatusOnDB(objID, objStatus){
+	if($('#obj-is-archived-'+objID).val() === 'true' || $('#obj-is-archived-'+objID).val() == true
+			|| objStatus === parseInt($('#obj-status-'+objID).val())){
+		return false;
+	}
+
 	var userID = getADLoginID();
 	var objTitle = $('#obj-title-'+objID).text();
 	var objText = $('#obj-text-'+objID).text();
