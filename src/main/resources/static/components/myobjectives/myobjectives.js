@@ -203,8 +203,6 @@ function showObjectiveModal(show){
 
 //Method to handle the archive objective button
 function clickArchiveObjective(objID, archive){
-	alert($("#obj-is-archived-"+objID).val());
-	alert(archive);
 	$('#obj-is-archived-'+objID).val(archive);
 	editObjectiveArchiveOnDB(objID, archive);
 	updateObjectiveList(objID);
