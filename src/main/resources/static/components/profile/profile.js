@@ -1,13 +1,13 @@
 $(function() {
 	
-	populateProfile(getUserName(), getADUserName());
+	populateProfile(getUserName(), getADfullName());
 
 	
 });
 
-function populateProfile(userName, ADUserName){
-	$("#userProfileName").append("<h4 class='profile-centre'>" + ADUserName + "</h4>");
-	$("#userProfilePicture").append(getProfilePicture(ADUserName, 48));
+function populateProfile(userName, fullName){
+	$("#userProfileName").append("<h4 class='profile-centre'>" + fullName + "</h4>");
+	$("#userProfilePicture").append(getProfilePicture(userName, 48));
 }
 
 
