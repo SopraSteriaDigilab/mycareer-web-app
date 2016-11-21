@@ -106,3 +106,30 @@ function keypress(modalID){
     });
 }
 
+function imgError(image, size){
+	image.onerror=false;
+	image.src = "http://teams.duns.uk.sopra/_layouts/15/images/PersonPlaceholder.42x42x32.png?";
+	image.style = "min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px";
+	return true;
+}
+
+function getProfilePicture(userName, size){
+	var imageURL = " \
+			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?t=1479114656424' alt='' \
+	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'>";
+	return imageURL;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

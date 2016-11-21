@@ -2,14 +2,13 @@ $(function() {
 	
 	authenticate(getUserName());
 	
-	
 });
 
 var ADUserName = null;
 var ADLoginID = null;
 var isManager = null;
 
-//Hardcoded for now.
+//Hardcoded for now
 function getUserName(){
 	
 	return "rnacef";
