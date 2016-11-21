@@ -11,7 +11,7 @@ var isManager = null;
 //Hardcoded for now
 function getUserName(){
 	
-	return "ssharif";
+	return "rnacef";
 }
 
 //Authenticate the user against AD

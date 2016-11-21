@@ -202,10 +202,10 @@ function showObjectiveModal(show){
 }
 
 //Method to handle the archive objective button
-function clickArchiveObjective(objID){
-	var archive = !!$("#obj-is-archived-"+objID).val();
+function clickArchiveObjective(objID, archive){
+	alert($("#obj-is-archived-"+objID).val());
+	alert(archive);
 	$('#obj-is-archived-'+objID).val(archive);
-//	alert(archive);
 	editObjectiveArchiveOnDB(objID, archive);
 	updateObjectiveList(objID);
 }
@@ -362,7 +362,7 @@ function objectivesButtonsHTML(id, isArchived){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+")' id='archive-obj'>Archive</button> \
+        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div> \
         <div class=' col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
@@ -370,8 +370,18 @@ function objectivesButtonsHTML(id, isArchived){
     </div> \
 "
 //        	alert(isArchived);
-	if(isArchived == true || isArchived === 'true'){
-		return("");
+//	if(isArchived == true || isArchived === 'true'){
+//		return("");
+//	}
+	if(isArchived === true || isArchived ==='true'){
+		var unArchiveButton = " \
+		    <div class='col-md-12'> \
+		        <div class=' col-sm-6 pull-right'> \
+		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Unarchive</button> \
+		        </div> \
+		    </div> \
+		"
+		return(unArchiveButton);
 	}
 	return(HTML);
 }
