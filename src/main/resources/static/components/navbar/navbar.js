@@ -5,20 +5,9 @@ $(function() {
 	
 	loadProfile();
     
-    //sets email addresses to use bootstrap tag input
-    $('#requestingTo').tagsinput({
-       maxTags: 20,
-       confirmKeys: [9,32,44,59]
-    });
-        
-    //keypress to change ; character to ,
-   $('#requestFeedbackModal').find('input').keypress(function(evt){ 
-        if(evt.which==59){
-            $(this).val($(this).val()+',');
-            evt.preventDefault();
-        }
-    });
-    
+    tags('requestingTo');
+    keypress('requestFeedbackModal');
+
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
@@ -31,7 +20,7 @@ $(function() {
         }    
      });
     
-    //when these are clicked it clears the feedback request modal - input not clearing!!
+    //when these are clicked it clears the feedback request modal
     $(".close").click(function() {
         $("textarea").val("");
         $("#requestingTo").tagsinput('removeAll');
@@ -43,6 +32,9 @@ $(function() {
     
     //click to open a modal that shows the feedback email template
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    
+    //click to open modal that shows the proposed objective modal
+    $('#proposed-objective').click(function(){ openProposedObjectiveModal() });
         
 });
 
@@ -54,7 +46,6 @@ function loadProfile(){
 		
 	}
 }
-
 
 function highlight(value) {
 	$('.nav-bar-item').each(function(i) {
@@ -110,6 +101,24 @@ function submitFeedbackRequest(){
     $('#requestFeedbackModal').modal('hide');
 }
 
+//function to open Proposed objective modal
+
+function openProposedObjectiveModal(){
+    $("#obj-modal-type").val('propose');
+	setObjectiveModalContent('', '', '', getToday(), 0, 2);
+	showObjectiveModal(true);
+}
+
+function proposedToHTML(){
+    var HTML= " \
+        <label for='proposed-obj-to'>To*:</label> \
+            <input type='text' class='objective-modal-validate form-control' id='proposed-obj-to' maxlength='150' />";
+    return HTML;
+}
+
+function proposeObjective(email){
+    alert(email);
+}
 
 
 //$("#objectives").click(function() {

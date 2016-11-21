@@ -37,28 +37,7 @@
 	width: 30px;
 	border-radius: 25px;
 }
-/*
-.one {
-	left: 0%;
-}
 
-.two {
-	left: 50%;
-}
-
-.three {
-	left: 90%;
-}*/
-/*
-.progress-label {
-	position: absolute;
-	top: -30px;
-}
-
-.progress {
-	height: 10px;
-}
-*/
 .primary-color {
 	background-color: #4989bd;
 }
@@ -96,12 +75,6 @@
 	text-align: right;
 }
 
-
-/*
-.progress-middle {
-	margin-left: 50%;
-}
-*/
 #objective-date {
 	background-color: white;
 }
@@ -110,11 +83,6 @@
 	transform: translateY(70%);
 }
 
-/* added for Story 395 
-.button-archive{
-  margin-right: 10px;
-}
-*/
 .progress{
 	background-color: #D4D1D1;
 }

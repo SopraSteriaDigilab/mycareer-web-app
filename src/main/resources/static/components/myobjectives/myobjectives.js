@@ -90,7 +90,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus)
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
 	$("#obj-modal-type").val('add');
-	setObjectiveModalContent('', '', '', getToday(), 0, true);
+	setObjectiveModalContent('', '', '', getToday(), 0, 0);
 	showObjectiveModal(true);
 }
 
@@ -103,7 +103,7 @@ function openEditObjectiveModal(id){
 	var objDate = $('#obj-date-'+id).text().trim();
 	var objStatus = $('#obj-status-'+id).val();
 	objDate = reverseDateFormat(objDate);
-	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, false);
+	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, 1);
 	showObjectiveModal(true);
 }
 
@@ -111,7 +111,7 @@ function openEditObjectiveModal(id){
 //Method to handle the submit objective button
 function clickSubmitObjective(){
 	var type = $("#obj-modal-type").val();
-	
+    
 	var userID = getADLoginID();
 	var objID = $("#objective-id").val();
 	var objTitle = $("#objective-title").val().trim();
@@ -119,17 +119,28 @@ function clickSubmitObjective(){
 	var objDate = $("#objective-date").val().trim();
 //	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
-	var objIsArchived = $("#objective-is-archived").val()
+	var objIsArchived = $("#objective-is-archived").val();
 
-	if(type == 'add'){
+	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
 		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived);
-	}else{
+        showObjectiveModal(false);
+	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
 		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
-	}
+        showObjectiveModal(false);
+	}else{
+        var proposedTo = $("#proposed-obj-to").val().trim(); 
+         if (validEmails(proposedTo)){
+             proposeObjective(proposedTo);
+             showObjectiveModal(false);
+        }else{
+          toastr.error("One or more email addresses entered are not valid");
+          showObjectiveModal(true);
+        }  
+       
+    }
 	
-	showObjectiveModal(false);
 }
 
 //Function to add objective to list
@@ -162,14 +173,21 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 }
 
 //Method to set and show content of modal
-function setObjectiveModalContent(id, title, text, date, status, isAdd){
-	$('#obj-modal-title-type').text(setTitleType(isAdd));
+function setObjectiveModalContent(id, title, text, date, status, type){
+    if (type == 2){
+        $('#proposedTo').html(proposedToHTML());
+         tags('proposed-obj-to');
+         keypress('objective-modal');
+    }else{
+        $('#proposedTo').html("");
+    }
+	$('#obj-modal-title-type').text(modalStatusList[type]);
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
 	$("#objective-date").val(date);
 	$("#objective-status").val(status);
-	$('#submit-obj').prop("disabled", isAdd);
+	$('#submit-obj').prop("disabled", enableSubmit(type));
 }
 
 //Method to show/hide objective modal
@@ -177,16 +195,17 @@ function showObjectiveModal(show){
 	if(show){
 		$('#objective-modal').modal({backdrop: 'static', keyboard: false, show: true});
 	}else{
-		setObjectiveModalContent('', '', '', getToday(), true);
+		setObjectiveModalContent('', '', '', getToday(), 0 , 0);
+        $('#proposed-obj-to').val("");
 		$('#objective-modal').modal('hide');
 	}
 }
 
 //Method to handle the archive objective button
-function clickArchiveObjective(objID){
-	var archive = !!$("#obj-is-archived-"+objID).val();
+function clickArchiveObjective(objID, archive){
+	alert($("#obj-is-archived-"+objID).val());
+	alert(archive);
 	$('#obj-is-archived-'+objID).val(archive);
-//	alert(archive);
 	editObjectiveArchiveOnDB(objID, archive);
 	updateObjectiveList(objID);
 }
@@ -343,7 +362,7 @@ function objectivesButtonsHTML(id, isArchived){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+")' id='archive-obj'>Archive</button> \
+        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div> \
         <div class=' col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
@@ -351,8 +370,18 @@ function objectivesButtonsHTML(id, isArchived){
     </div> \
 "
 //        	alert(isArchived);
-	if(isArchived == true || isArchived === 'true'){
-		return("");
+//	if(isArchived == true || isArchived === 'true'){
+//		return("");
+//	}
+	if(isArchived === true || isArchived ==='true'){
+		var unArchiveButton = " \
+		    <div class='col-md-12'> \
+		        <div class=' col-sm-6 pull-right'> \
+		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Unarchive</button> \
+		        </div> \
+		    </div> \
+		"
+		return(unArchiveButton);
 	}
 	return(HTML);
 }
@@ -362,9 +391,9 @@ function objectivesButtonsHTML(id, isArchived){
 
 
 //Method for updating progress bar wth a value
-function updateProgressBar(value){
-	$('#objStatus').width(value + "%");
-}
+//function updateProgressBar(value){
+//	$('#objStatus').width(value + "%");
+//}
 
 
 // Progress bar not in first sprint

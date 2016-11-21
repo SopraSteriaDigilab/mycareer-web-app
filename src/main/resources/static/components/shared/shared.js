@@ -9,6 +9,7 @@ $(function() {
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
+var modalStatusList = ['Add', 'Edit', 'Proposed'];
 //Initialising the date picker
 function initDatePicker(id, today){
 	
@@ -76,11 +77,59 @@ function validateForm(inputClass, submitButtonID) {
 }
 
 //Method to set title to the correct type
-function setTitleType(isAdd){
-	if(isAdd){
-		return 'Add';
-	}else{
-		return 'Edit';
-	}
+
+    
+function enableSubmit(type){
+    if (type === 1){
+        return false;
+    }
+    return true;
 }
+
+function tags(id){
+
+    //sets email addresses to use bootstrap tag input
+    $('#'+id).tagsinput({
+       maxTags: 20,
+       confirmKeys: [9,32,44,59]
+    });
+}
+
+function keypress(modalID){
+        
+    //keypress to change ; character to ,
+   $('#'+modalID).keypress(function(evt){ 
+        if(evt.which==59){
+            $(this).val($(this).val()+',');
+            evt.preventDefault();
+        }
+    });
+}
+
+function imgError(image, size){
+	image.onerror=false;
+	image.src = "http://teams.duns.uk.sopra/_layouts/15/images/PersonPlaceholder.42x42x32.png?";
+	image.style = "min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px";
+	return true;
+}
+
+function getProfilePicture(userName, size){
+	var imageURL = " \
+			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?t=1479114656424' alt='' \
+	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'>";
+	return imageURL;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
