@@ -1,7 +1,7 @@
 $(function() {
 	
 	//Get list of development needs
-	getDevelopmentNeedsList();
+	getDevelopmentNeedsList(getADLoginID());
 	
 	//Initialising the date picker
 	initDatePicker('development-need', new Date());
@@ -21,28 +21,8 @@ $(function() {
 	
 });
 
-var nextdevID = 0;
-var categoryIDs = ['on-job-radio', 'classroom-radio', 'cbt-radio', 'online-radio', 'self-study-radio', 'other-radio'];
-var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
+var lastDevID = 0;
 
-//Gets the List of Development Needs from the DB
-function getDevelopmentNeedsList(){
-  $.ajax({
-      url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+getADLoginID(),
-      method: 'GET',
-      success: function(data){
-          $.each(data, function(key, val){
-        	nextdevID = val.id;
-          	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-          	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy);
-          });
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log('error', errorThrown);
-          toastr.error("Sorry, there was a problem getting development needs, please try again later.");
-      }
-  });	
-}
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
@@ -120,7 +100,7 @@ function clickSubmitDevelopmentNeed(){
 	
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-		addDevelopmentNeedToList((++nextdevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate));
+		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate));
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
 		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
@@ -131,6 +111,7 @@ function clickSubmitDevelopmentNeed(){
 
 //Function to add development need to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy){
+	lastDevID = id;
 	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
 
@@ -163,15 +144,6 @@ function showDevelopmentNeedModal(show){
 		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), true);
 		$('#development-need-modal').modal('hide');
 	}
-}
-
-//Function to check if development need is ongoing or has an end date
-function isOngoing(date){
-	if(date === 'Ongoing'){
-		return true;
-	}else{
-		return false;
-	}	
 }
 
 

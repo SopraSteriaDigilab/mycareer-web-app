@@ -49,7 +49,7 @@ function getReporteeCareer(id) {
 	getObjectivesList(id);
 	getCompetencyList(id);
 	getFeedbackList(id);
-//	getReporteeDevelopmentNeeds(id);
+	getDevelopmentNeedsList(id);
 	getNotesList(id);
 }
 
@@ -63,6 +63,12 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 //Method to add competencies to list display
 function addCompetencyToList(id,title,compentencyDescription,isSelected){
     $("#reportee-comp-list").append(competenciesListHTML(id,title,compentencyDescription,isSelected));
+}
+
+//Method to add development needs to list display
+function addDevelopmentNeedToList(id, title, description, category, expectedBy){
+	lastDevID = id;
+	$("#reportee-dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
 }
 
 //Method to add feedback descriptions to list
@@ -138,7 +144,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
          \
         </div> \
     </div> \
-    "
+    ";
                             
     return html;
 }
@@ -168,8 +174,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
 
 function feedbackDescriptionListHTML(id, sender, description, date){
 	var HTML = " \
-	<div class='panel panel-default'> \
-		<div class='panel-body'> \
+	<li class='list-group-item'> \
 			<div class='row'> \
 				<div class='col-md-6'><h6><b>"+ sender +"</b></h6></div> \
 				<div class='col-md-6'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
@@ -177,10 +182,67 @@ function feedbackDescriptionListHTML(id, sender, description, date){
 			<div class='row'> \
 				<div class='col-md-12'><h5>"+ description +"</h5></div> \
 			</div> \
-		 </div> \
-	</div> ";
+	</li> ";
 	
 	return HTML
+}
+
+//Function that returns dev needs list in html format with the parameters given
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy){
+	var html = " \
+    <div class='panel-group' id='accordion'> \
+        <div class='panel panel-default' id='panel'> \
+            <div class='panel-heading'> \
+                <div class='row'> \
+                    <div class='col-sm-6' id='dev-need-no-"+id+"'> # "+id+" </div> \
+                    <div class='col-sm-6' id='dev-need-date-"+id+"'><h6><b>" + timeToCompleteBy + "</b></h6></div> \
+                </div><br> \
+                <div class='row'> \
+                    <div class='col-sm-5 wrap-text' id='dev-need-title-"+id+"' ><h5> "+title+" </h5></div> \
+                        <div class='col-sm-5'><br> \
+                            <div class='progress progress-striped'> \
+                                <div class='one primary-color' style='cursor:pointer' id='proposed-dev-need-"+id+"'><h5 class='progress-label'>Proposed</h5></div> \
+                                <div class='two primary-color' style='cursor:pointer' id='started-dev-need-"+id+"'><h5 class='progress-label'>Started</h5></div> \
+                                <div class='three primary-color' style='cursor:pointer' id='completed-dev-need-"+id+"'><h5 class='progress-label'>Completed</h5></div> \
+                                <div class='progress-bar' id='devNeedStatus' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
+                            </div> \
+                        </div> \
+                        <div class='col-sm-2'> \
+                            <a data-toggle='collapse' href='#collapse-dev-"+id+"' class='collapsed'></a> \
+                        </div> \
+                </div> \
+            </div> \
+        \
+            <div id='collapse-dev-"+id+"' class='panel-collapse collapse'> \
+                <div class='panel-body'> \
+                    <div class='row'> \
+                        <div class='col-md-4'> \
+                            <h5><b>Description</b></h5> \
+                        </div> \
+                        <div class='col-md-8'> \
+                        </div> \
+                    </div> \
+                    <div class='row'> \
+                        <div class='col-md-12 wrap-text'> \
+                            <h5 id='dev-need-text-"+id+"'> "+description+" </h5> \
+                        </div> \
+                    </div> \
+                    <div class='row'> \
+	                        <div class='col-md-6' > \
+                               <input type='hidden' id='dev-need-category-id-"+id+"' value='" + category + "'> \
+	                           <h6><b> Category: </b><span id='dev-need-category-"+id+"'>" + categoryList[category] + "</span></h6>\
+	                        </div> \
+	                        <div class='col-md-6'> \
+	                            <button type='button' class='btn btn-block btn-default' onClick='openEditDevelopmentNeedModal("+id+")'>Edit</button> \
+	                        </div> \
+	                <div>\
+                </div> \
+            </div> \
+        </div> \
+    </div> \
+    "
+                            
+    return html;
 }
 
 

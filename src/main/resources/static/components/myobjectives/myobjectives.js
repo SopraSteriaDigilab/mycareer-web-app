@@ -23,6 +23,8 @@ $(function() {
 
 });
 
+var lastObjID = 0;
+
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 	var url = "http://127.0.0.1:8080/addObjective/"+userID;

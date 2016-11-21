@@ -9,7 +9,9 @@ var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct',
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Proposed'];
-var lastObjID = 0;
+var categoryIDs = ['on-job-radio', 'classroom-radio', 'cbt-radio', 'online-radio', 'self-study-radio', 'other-radio'];
+var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
+
 
 //------------------------------------- Objectives -------------------------------------
 
@@ -96,6 +98,38 @@ function getFeedbackList(userID){
         }
         
     });//End of Ajax request
+}
+
+//------------------------------------------------------------------------------------
+
+//-------------------------------- Development Needs ---------------------------------
+
+//Gets the List of Development Needs from the DB
+function getDevelopmentNeedsList(userID){
+	$.ajax({
+	    url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+userID,
+	    method: 'GET',
+	    success: function(data){
+	        $.each(data, function(key, val){
+	
+	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy);
+	        });
+	    },
+	    error: function(XMLHttpRequest, textStatus, errorThrown){
+	        console.log('error', errorThrown);
+	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
+	    }
+	});	
+}
+
+//Function to check if development need is ongoing or has an end date
+function isOngoing(date){
+	if(date === 'Ongoing'){
+		return true;
+	}else{
+		return false;
+	}	
 }
 
 //------------------------------------------------------------------------------------
