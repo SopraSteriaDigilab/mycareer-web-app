@@ -1,7 +1,7 @@
 $(function() {
 	
 	//Get list of objectives
-	getObjectivesList();
+	getObjectivesList(getADLoginID());
     
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
@@ -23,27 +23,7 @@ $(function() {
 
 });
 
-var nextObjID = 0;
-
-//HTTP request for RETRIEVING list of objectives from DB
-function getObjectivesList(){
-  $.ajax({
-      url: 'http://127.0.0.1:8080/getObjectives/'+getADLoginID(),
-      method: 'GET',
-      success: function(data){
-          $.each(data, function(key, val){
-          	nextObjID = val.id;
-          	var expectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
-//          	updateStatusOnList(val.id, val.progress);
-          });
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log('error', errorThrown);
-          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
-      }
-  });	
-}
+var lastObjID = 0;
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
@@ -124,7 +104,7 @@ function clickSubmitObjective(){
 
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived);
+		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived);
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
@@ -146,22 +126,25 @@ function clickSubmitObjective(){
 
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
+
 	var listID = "";
 		if(isArchived === true || isArchived === 'true'){
 			listID = "obj-archived";
 		}else{
-		switch(parseInt(status)){
-			case 0: 
-				listID = statusListDivIDs[status];
-				break;
-			case 1: 
-				listID = statusListDivIDs[status];
-				break;
-			case 2: 
-				listID = statusListDivIDs[status];
-				break;
+			switch(parseInt(status)){
+				case 0: 
+					listID = statusListDivIDs[status];
+					break;
+				case 1: 
+					listID = statusListDivIDs[status];
+					break;
+				case 2: 
+					listID = statusListDivIDs[status];
+					break;
+			}
 		}
-	}
+
+	lastObjID = id;
 	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 }
 
@@ -283,11 +266,7 @@ function updateStatusOnDB(objID, objStatus){
 //	
 //}
 
-function checkComplete(status, item){
-	if(status >= item){
-		return 'complete';
-	}
-}
+
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
@@ -379,7 +358,7 @@ function objectivesButtonsHTML(id, isArchived){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
 		        <div class=' col-sm-6 pull-right'> \
-		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Unarchive</button> \
+		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Restore</button> \
 		        </div> \
 		    </div> \
 		"

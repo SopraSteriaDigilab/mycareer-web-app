@@ -1,71 +1,52 @@
 $(function() {
     
 	//Get list of feedback
-	getFeedbackList();
+	getFeedbackList(getADLoginID());
     
 });//End of Document Function
 
-var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+
 var firstFeedback = true;
 
-function getFeedbackList(){
-    //Gets the List of Feedback from the DB 
-    $.ajax({
-        url: 'http://127.0.0.1:8080/getFeedback/'+getADLoginID(),
-        method: 'GET',
-        success: function(data){
-            console.log('success', data);
-            $.each(data, function(key, val){                
-                
-                var feeTime = new Date(val.timeStamp);
-                var year = feeTime.getFullYear();
-                var month = shortMonths[feeTime.getMonth()];
-                var day = feeTime.getDate();
-                var feedbackDate = day + ' ' + month + ' ' + year;
-                
-                $('.feeList').append(" \
-	                <div class='panel panel-default' id='view-fee-"+val.id+"'> \
-	                    <div class='panel-heading'> \
-	                        <div class='row'> \
-	                           <div class='col-md-7'><h5><b>"+ val.fromWho +"</b></h5></div> \
-	                           <div class='col-md-5'><h6 class='pull-right'><b>"+ feedbackDate +"</b></h6></div> \
-	                        </div> \
-	                        <div class='row'> \
-	                            <div class='col-md-offset-6 col-md-6'> \
-	                            	<button type='button' class='btn btn-link pull-right' onClick='showGeneralFeedback("+val.id+")'><h6>View</h6></button> \
-	                            </div> \
-	                        </div> \
-	                    </div> \
-	                  </div> \
-                "); //End of feeList append
-                
-//            $('#view-feedback').click(function(){
-                $('.feeDescription').append(" \
-					<div class='thumbnail "+ showIfFirstFeeback() +" general-feedback' id='general-feedback-"+val.id+"'> \
-						<input type='hidden' class='general-feedback-id' value='"+val.id+"'> \
-						<div class='panel-heading'> \
-							<div class='row'> \
-								<div class='col-md-6'><h6 id='from-"+val.id+"'><b>"+ val.fromWho +"</b></h6></div> \
-								<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+val.id+"'><b>"+ feedbackDate +"</b></h6></div> \
-							</div> \
-						</div> \
-						<div class='panel-body'> \
-							<div class='row'> \
-								<div class='col-md-12'><h5>"+ val.description +"</h5></div> \
-							</div> \
-						 </div> \
-					</div> \
-                ");
-        
-//        });//end of view-feedback click function 
-        });//end of for each loop
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
-        }
-        
-    });//End of Ajax request
+function addFeedbackToList(id, sender, description, date){
+	  $('#feeList').append(feedbackSendersListHTML(id, sender, date)); //End of feeList append
+      $('#feeDescription').append(feedbackDescriptionListHTML(id, sender, description, date));
+}
+
+function feedbackSendersListHTML(id, sender, date){
+	var HTML = " \
+	        <div class='panel panel-default' id='view-fee-"+id+"'> \
+	        <div class='panel-heading'> \
+	            <div class='row'> \
+	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
+	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
+	            </div> \
+	            <div class='row'> \
+	                <div class='col-md-offset-6 col-md-6'> \
+	                	<button type='button' class='btn btn-link pull-right' onClick='showGeneralFeedback("+id+")'><h6>View</h6></button> \
+	                </div> \
+	            </div> \
+	        </div> \
+	      </div> ";
+	return HTML;
+}
+
+function feedbackDescriptionListHTML(id, sender, description, date){
+	var HTML = " \
+	<div class='panel panel-default "+ showIfFirstFeeback() +" general-feedback' id='general-feedback-"+id+"'> \
+		<input type='hidden' class='general-feedback-id' value='"+id+"'> \
+		<div class='panel-body'> \
+			<div class='row'> \
+				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
+				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
+			</div> \
+			<div class='row'> \
+				<div class='col-md-12'><h5>"+ description +"</h5></div> \
+			</div> \
+		 </div> \
+	</div> ";
+	
+	return HTML
 }
 
 function showGeneralFeedback(id){
