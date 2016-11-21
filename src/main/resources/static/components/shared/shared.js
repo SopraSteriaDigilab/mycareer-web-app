@@ -4,12 +4,126 @@ $(function() {
 });
 
 
-
-//List of months for conversion
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Proposed'];
+var lastObjID = 0;
+
+//------------------------------------- Objectives -------------------------------------
+
+//HTTP request for RETRIEVING list of objectives from DB
+function getObjectivesList(userID){
+  $.ajax({
+      url: 'http://127.0.0.1:8080/getObjectives/'+userID,
+      method: 'GET',
+      success: function(data){
+          $.each(data, function(key, val){
+          	var expectedBy = formatDate(val.timeToCompleteBy);
+          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived);
+          });
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+          console.log('error', errorThrown);
+          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
+      }
+  });	
+}
+
+function checkComplete(status, item){
+	if(status >= item){
+		return 'complete';
+	}
+}
+
+//------------------------------------------------------------------------------------
+
+//------------------------------------- Competencies -----------------------------------
+
+//Gets the list of Competencies from the DB
+function getCompetencyList(userID){
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        method: 'GET',
+        success: function(data){
+            $.each(data, function(key, val){
+                addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
+            });
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
+        }
+    });
+}
+
+
+//Method to change star icon to selected or not
+function checkSelected(isSelected){
+    if(isSelected){
+        return "";
+    }else{
+        return "-empty";
+    }
+}
+
+//------------------------------------------------------------------------------------
+
+//------------------------------------- Feedback -------------------------------------
+function getFeedbackList(userID){
+    //Gets the List of Feedback from the DB 
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getFeedback/'+userID,
+        method: 'GET',
+        success: function(data){
+            console.log('success', data);
+            $.each(data, function(key, val){                
+                
+                var feeTime = new Date(val.timeStamp);
+                var year = feeTime.getFullYear();
+                var month = shortMonths[feeTime.getMonth()];
+                var day = feeTime.getDate();
+                var feedbackDate = day + ' ' + month + ' ' + year;
+                
+                addFeedbackToList(val.id, val.fromWho, val.description, feedbackDate);
+                
+        });//end of for each loop
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
+        }
+        
+    });//End of Ajax request
+}
+
+//------------------------------------------------------------------------------------
+
+//--------------------------------------- Notes --------------------------------------
+
+//Method to get the Notes list
+function getNotesList(userID){
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getNotes/'+userID,
+        method: 'GET',
+        success: function(data){
+            $.each(data, function(key, val){
+            	
+            	var date = timeStampToDateTime(new Date(val.timeStamp));
+
+            	addNoteToList(val.fromWho, val.body, date);
+            });
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting notes, please try again later.");
+        }
+    });
+}
+
+//------------------------------------------------------------------------------------
+
 //Initialising the date picker
 function initDatePicker(id, today){
 	
@@ -38,6 +152,14 @@ function getToday(){
 function formatDate(date) {
 	var d = new Date(date);
 	return fullMonths[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+//TimeStamp to dd/mm/yyyy hh:mm
+function timeStampToDateTime(date){
+	var d = new Date(date);
+	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
+	
+	return date;
 }
 
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')

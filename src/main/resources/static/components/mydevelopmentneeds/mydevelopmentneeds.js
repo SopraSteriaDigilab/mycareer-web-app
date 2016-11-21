@@ -33,8 +33,8 @@ function getDevelopmentNeedsList(){
       success: function(data){
           $.each(data, function(key, val){
         	nextdevID = val.id;
-          	excpectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-          	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, excpectedBy);
+          	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
+          	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy);
           });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
