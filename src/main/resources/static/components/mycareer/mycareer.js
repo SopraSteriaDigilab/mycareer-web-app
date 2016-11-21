@@ -4,7 +4,7 @@ $(function() {
 	
 });
 
-var ADUserName = null;
+var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 
@@ -21,7 +21,7 @@ function authenticate(username){
 	      method: 'GET',
 	      data: {'userName_Email' : username},
 	      success: function(data){
-	    	  ADUserName = data.fullName;
+	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
 	    	  isManager = Boolean(data.isManager);
 	    	  loadPage($("#section").text());
@@ -45,8 +45,8 @@ function loadPage(section){
 
 }
 
-function getADUserName(){
-	return ADUserName;
+function getADfullName(){
+	return ADfullName;
 }
 
 function getADLoginID(){

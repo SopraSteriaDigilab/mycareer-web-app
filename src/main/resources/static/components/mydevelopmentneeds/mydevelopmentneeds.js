@@ -144,14 +144,14 @@ function editDevelopmentNeedOnList(id, title, description, category, expectedBy)
 }
 
 //Method to set and show content of modal
-function setDevelopmentNeedModalContent(id, title, text, radioValue, date, isAdd){
-	$('#dev-need-modal-title-type').text(setTitleType(isAdd));
+function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type){
+	$('#dev-need-modal-title-type').text(modalStatusList[type]);
 	$("#development-need-id").val(id);
 	$("#development-need-title").val(title);
 	$("#development-need-text").val(text);
 	$('#'+radioValue).prop('checked', true);
 	$("#development-need-date").val(date);
-	$('#submit-dev-need').prop("disabled", isAdd);
+	$('#submit-dev-need').prop("disabled", enableSubmit(type));
 }
 
 

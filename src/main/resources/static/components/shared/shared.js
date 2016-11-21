@@ -21,7 +21,7 @@ function getObjectivesList(userID){
       success: function(data){
           $.each(data, function(key, val){
           	var expectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived);
+          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
           });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){

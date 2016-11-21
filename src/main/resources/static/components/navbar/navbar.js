@@ -116,8 +116,24 @@ function proposedToHTML(){
     return HTML;
 }
 
-function proposeObjective(email){
-    alert(email);
+function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
+    alert(proposedTo);
+    var url = "http://127.0.0.1:8080/addProposedObjective/"+userID;
+    var data = {};
+    data["title"] = objTitle;
+    data["description"] = objText;
+    data["completedBy"] = objDate;
+    data["emails"] = proposedTo;
+
+    var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
+    
 }
 
 
