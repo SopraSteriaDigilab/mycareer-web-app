@@ -116,13 +116,14 @@ function proposedToHTML(){
     return HTML;
 }
 
-function proposeObjective(email){
-    var url = "http://127.0.0.1:8080/addProposedObjective/"+getADLoginID();
+function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
+    alert(proposedTo);
+    var url = "http://127.0.0.1:8080/addProposedObjective/"+userID;
     var data = {};
-    data["title"] = $('#objective-title').val();
-    data["description"] = $('#objective-text').val();
-    data["completedBy"] = $('objective-date').val();
-    data["emails"] = email;
+    data["title"] = objTitle;
+    data["description"] = objText;
+    data["completedBy"] = objDate;
+    data["emails"] = proposedTo;
 
     var settings = {
 	  "url": url,

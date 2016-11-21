@@ -34,7 +34,7 @@ function getObjectivesList(){
           $.each(data, function(key, val){
           	nextObjID = val.id;
           	var expectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived);
+          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
 //          	updateStatusOnList(val.id, val.progress);
           });
       },
@@ -46,12 +46,13 @@ function getObjectivesList(){
 }
 
 //HTTP request for INSERTING an objective to DB
-function addObjectiveToDB(userID, objTitle, objText, objDate){
+function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 	var url = "http://127.0.0.1:8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
 	data["description"] = objText;
 	data["completedBy"] = objDate;
+    data["proposedBy"] = proposedBy;
   
 	var settings = {
 	  "url": url,
@@ -132,7 +133,7 @@ function clickSubmitObjective(){
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
          if (validEmails(proposedTo)){
-             proposeObjective(proposedTo);
+             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);
         }else{
           toastr.error("One or more email addresses entered are not valid");
@@ -144,7 +145,7 @@ function clickSubmitObjective(){
 }
 
 //Function to add objective to list
-function addObjectiveToList(id, title, description, expectedBy, status, isArchived){
+function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
 	var listID = "";
 		if(isArchived === true || isArchived === 'true'){
 			listID = "obj-archived";
@@ -161,7 +162,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 				break;
 		}
 	}
-	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived));
+	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 }
 
 //Function to update objective on list
@@ -289,7 +290,7 @@ function checkComplete(status, item){
 }
 
 //Function that returns objective list in html format with the parameters given
-function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
+function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
 	var html = " \
     <div class='panel-group' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -337,7 +338,10 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                         <div class='col-md-4'> \
                             <h5><b>Description</b></h5> \
                         </div> \
-                        <div class='col-md-8'> \
+                        <div class='col-md-3'> \
+                        </div> \
+                        <div class='col-md-5 pull-right'> \
+                            <h6><b>Proposed by: </b>"+proposedBy+"</h6> \
                         </div> \
                     </div> \
                     <div class='row'> \
