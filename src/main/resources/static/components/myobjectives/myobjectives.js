@@ -99,7 +99,6 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-//	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
 
@@ -128,25 +127,26 @@ function clickSubmitObjective(){
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
 
-	var listID = "";
+	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-			listID = "obj-archived";
+			objListID = "obj-archived";
 		}else{
 			switch(parseInt(status)){
 				case 0: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 1: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 2: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 			}
+			objListID += "-obj";
 		}
 
-	lastObjID = id;
-	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+		lastObjID = id;
+		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 }
 
 //Function to update objective on list
@@ -191,6 +191,7 @@ function updateObjectiveList(objID){
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
 //	alert(title + " : " + status + " : " + archive);
+	
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive);

@@ -46,7 +46,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 }
 
 //HTTP request for INSERTING an development need to DB
-function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
+function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
 	var url = "http://localhost:8080/editDevelopmentNeed/"+userID;
 	var data = {};
 	data["devNeedID"] = devNeedID;
@@ -54,6 +54,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 	data["description"] = devNeedText;
 	data["category"] = devNeedCategory;
 	data["timeToCompleteBy"] = devNeedDate;
+	data["progress"] = devNeedStatus;
   
 	var settings = {
 	  "url": url,
@@ -70,7 +71,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 //Function to set up and open ADD development-need modal
 function openAddDevelopmentNeedModal(){
 	$("#dev-need-modal-type").val('add');
-	setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0);
+	setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
 	showDevelopmentNeedModal(true);
 }
 
@@ -82,8 +83,9 @@ function openEditDevelopmentNeedModal(id){
 	var devNeedText = $('#dev-need-text-'+id).text().trim();
 	var devNeedCategory = categoryIDs[$('#dev-need-category-id-'+id).val()];
 	var devNeedDate =  $('#dev-need-date-'+id).text().trim();
+	var devNeedStatus = $('#dev-need-status-'+id).val();
 	devNeedDate = reverseDateFormat(devNeedDate);
-	setDevelopmentNeedModalContent(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, 1);
+	setDevelopmentNeedModalContent(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, 1, devNeedStatus);
 	showDevelopmentNeedModal(true);	
 }
 
@@ -97,41 +99,57 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedText = $("#development-need-text").val().trim();
 	var devNeedCategory = $('#category-radio input:radio:checked').val();
 	var devNeedDate =  $("#development-need-date").val().trim();
-	
+	var devNeedStatus =  parseInt($("#development-need-status").val());
+
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate));
+		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
 	}else{
-		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
+		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
 	
 	showDevelopmentNeedModal(false);
 }
 
 //Function to add development need to list
-function addDevelopmentNeedToList(id, title, description, category, expectedBy){
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
+	var devListID = "";
+	switch(parseInt(status)){
+		case 0: 
+			devListID = statusList[0];
+			break;
+		case 1: 
+			devListID = statusList[1];
+			break;
+		case 2: 
+			devListID = statusList[2];
+			break;
+	}
+	devListID += "-dev-needs";
 	lastDevID = id;
-	$("#dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
+	$("#"+devListID).append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
 //Function to update development need on list
-function editDevelopmentNeedOnList(id, title, description, category, expectedBy){
+function editDevelopmentNeedOnList(id, title, description, category, expectedBy, status){
 	$('#dev-need-title-'+id).text(title);
 	$('#dev-need-text-'+id).text(description);
 	$('#dev-need-category-'+id).text(categoryList[category]);
 	$('#dev-need-category-id-'+id).val(category);
-	$('#dev-need-date-'+id).text('').append('<h6><b>' + formatDate(expectedBy) + '</b></h6>');
+	$('#dev-need-date-'+id).text('').append("<h6 class='pull-right'><b>" + formatDate(expectedBy) + "</b></h6>");
+	$('#dev-need-status-'+objID).val(status);
 }
 
 //Method to set and show content of modal
-function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type){
+function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
 	$('#dev-need-modal-title-type').text(modalStatusList[type]);
 	$("#development-need-id").val(id);
 	$("#development-need-title").val(title);
 	$("#development-need-text").val(text);
 	$('#'+radioValue).prop('checked', true);
 	$("#development-need-date").val(date);
+	$("#development-need-status").val(status);
 	$('#submit-dev-need').prop("disabled", enableSubmit(type));
 }
 
@@ -141,19 +159,48 @@ function showDevelopmentNeedModal(show){
 	if(show){
 		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
 	}else{
-		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0);
+		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
 		$('#development-need-modal').modal('hide');
 	}
 }
 
-function updateDevelopmentNeedStatusOnDB(objID, status){
-	alert("I am not implemented yet... :s");
+function updateDevelopmentNeedList(devNeedID){
+	var title = $('#dev-need-title-'+devNeedID).text();
+	var description = $('#dev-need-text-'+devNeedID).text();
+	var expectedBy = $('#dev-need-date-'+devNeedID).text();
+	var category = $('#dev-need-category-id-'+devNeedID).val();
+	var status = $('#dev-need-status-'+devNeedID).val();
+//	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
+	
+	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
+	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
+	
+	
+}
+
+
+function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
+
+	if(devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
+		return false;
+	}
+
+	var userID = getADLoginID();
+	var devNeedTitle = $('#dev-need-title-'+devNeedID).text();
+	var devNeedText = $('#dev-need-text-'+devNeedID).text();
+	var devNeedCategory = $('#dev-need-category-id-'+devNeedID).val();
+	var devNeedDate = $('#dev-need-date-'+devNeedID).text();
+	devNeedDate = reverseDateFormat(devNeedDate);
+	$('#dev-need-status-'+devNeedID).val(parseInt(devNeedStatus));
+	
+	editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+	updateDevelopmentNeedList(devNeedID);
 }
 
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy){
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
 	var html = " \
-    <div class='panel-group' id='dev-need-item-"+id+"'> \
+    <div class='panel-group' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
 	        <input type='hidden' id='dev-need-status-"+id+"' value='"+status+"'> \
 	        <input type='hidden' id='dev-need-category-id-"+id+"' value='"+category+"'> \
