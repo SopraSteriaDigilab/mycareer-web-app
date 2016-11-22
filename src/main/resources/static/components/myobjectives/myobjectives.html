@@ -25,8 +25,8 @@
 		<!-- Nav Pills header -->
 		<div class="row">
 			<div class="col-md-6">
-				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a href="#obj-in-use" data-target="#proposed-obj, #started-obj, #completed-obj" data-toggle="tab"> All (3) </a></li>
+				<ul class="nav nav-tabs nav-justified">
+					<li class="active"><a data-target="#proposed-obj, #started-obj, #completed-obj" data-toggle="tab"> All (3) </a></li>
 					<li><a href="#proposed-obj" data-toggle="tab"> Proposed (0) </a></li>
 					<li><a href="#started-obj" data-toggle="tab"> Started (0) </a></li>
 					<li><a href="#completed-obj" data-toggle="tab"> Completed (0) </a></li>
@@ -58,15 +58,14 @@
 	<div class='col-sm-12 col-md-6'>
 		<div class="tab-content">
 		
-			<div id="obj-list">
-			</div><!-- End of objList container -->
+			<div id="obj-list"></div><!-- End of objList container -->
 			 <!-- Competencies Section  -->
 			 	 
-			 	<div id="completed-obj" class="tab-pane fade in active"></div>
-			    <div id="started-obj" class="tab-pane fade in active"></div>
-			    <div id="proposed-obj" class="tab-pane fade in active"></div>
-			    <div id="obj-archived" class="tab-pane fade in"></div>
-    
+		 	<div id="completed-obj" class="tab-pane fade in active"></div>
+		    <div id="started-obj" class="tab-pane fade in active"></div>
+		    <div id="proposed-obj" class="tab-pane fade in active"></div>
+		    <div id="obj-archived" class="tab-pane fade in"></div>
+   
 
 
 		</div>
@@ -102,7 +101,7 @@
 					<input type="hidden" id="archive" value="true"> <!-- added for Story 395 -->
 					<input type="hidden" id="obj-modal-type" value="add">
 					<input type="hidden" id="objective-id" value="0">
-					<input type="hidden" id="objective-status" value="proposed">
+					<input type="hidden" id="objective-status" value="0">
 				<!-- 	<input type="hidden" id="objective-is-archived" value="false"> -->
                     <div class="form-group" id="proposedTo">
                                             
