@@ -1,9 +1,9 @@
 $(function() {
 
 
-	highlight($("#section").text());
-	
 	loadProfile();
+	
+	highlight($("#section").text());
     
     tags('requestingTo');
     keypress('requestFeedbackModal');
