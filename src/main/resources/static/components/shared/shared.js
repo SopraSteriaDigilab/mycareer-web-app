@@ -39,6 +39,37 @@ function checkComplete(status, item){
 	}
 }
 
+
+//Method to set and show content of modal
+function setObjectiveModalContent(id, title, text, date, status, type){
+    if (type == 2){
+        $('#proposedTo').html(proposedToHTML());
+         tags('proposed-obj-to');
+         keypress('objective-modal');
+    }else{
+        $('#proposedTo').html("");
+    }
+	$('#obj-modal-title-type').text(modalStatusList[type]);
+	$("#objective-id").val(id);
+	$("#objective-title").val(title);
+	$("#objective-text").val(text);
+	$("#objective-date").val(date);
+	$("#objective-status").val(status);
+	$('#submit-obj').prop("disabled", enableSubmit(type));
+}
+
+//Method to show/hide objective modal
+function showObjectiveModal(show){
+	if(show){
+		$('#objective-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		setObjectiveModalContent('', '', '', getToday(), 0 , 0);
+        $('#proposed-obj-to').val("");
+		$('#objective-modal').modal('hide');
+	}
+}
+
+
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Competencies -----------------------------------
