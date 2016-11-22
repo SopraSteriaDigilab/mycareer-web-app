@@ -105,7 +105,7 @@ function clickSubmitObjective(){
 
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
-		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
+		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
@@ -157,34 +157,8 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 	$('#obj-status-'+objID).val(status);
 }
 
-//Method to set and show content of modal
-function setObjectiveModalContent(id, title, text, date, status, type){
-    if (type == 2){
-        $('#proposedTo').html(proposedToHTML());
-         tags('proposed-obj-to');
-         keypress('objective-modal');
-    }else{
-        $('#proposedTo').html("");
-    }
-	$('#obj-modal-title-type').text(modalStatusList[type]);
-	$("#objective-id").val(id);
-	$("#objective-title").val(title);
-	$("#objective-text").val(text);
-	$("#objective-date").val(date);
-	$("#objective-status").val(status);
-	$('#submit-obj').prop("disabled", enableSubmit(type));
-}
 
-//Method to show/hide objective modal
-function showObjectiveModal(show){
-	if(show){
-		$('#objective-modal').modal({backdrop: 'static', keyboard: false, show: true});
-	}else{
-		setObjectiveModalContent('', '', '', getToday(), 0 , 0);
-        $('#proposed-obj-to').val("");
-		$('#objective-modal').modal('hide');
-	}
-}
+
 
 //Method to handle the archive objective button
 function clickArchiveObjective(objID, archive){
