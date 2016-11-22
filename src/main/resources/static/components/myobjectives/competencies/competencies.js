@@ -1,10 +1,10 @@
 $(function() {
 	
 	//Get general-notes
-	getNotesList();
+	getNotesList(getADLoginID());
     
     //Get competencies
-    getCompetencyList();
+    getCompetencyList(getADLoginID());
 	
 	//Validate note
 	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
@@ -34,26 +34,6 @@ function addNoteToDB(userID, from, body ){
 	$.ajax(settings).done(function (response) {
 	  toastr.success(response);
 	});
-}
-
-//Method to get the Notes list
-function getNotesList(){
-    $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/'+getADLoginID(),
-        method: 'GET',
-        success: function(data){
-            $.each(data, function(key, val){
-            	
-            	var date = timeStampToDateTime(new Date(val.timeStamp));
-
-            	addNoteToList(val.fromWho, val.body, date);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting notes, please try again later.");
-        }
-    });
 }
 
 
@@ -93,34 +73,9 @@ function notesListHTML(fromWho, body, date){
 	return html;	
 }
 
-//TimeStamp to dd/mm/yyyy hh:mm
-function timeStampToDateTime(date){
-	var d = new Date(date);
-	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
-	
-	return date;
-}
-
-//Gets the list of Competencies from the DB
-function getCompetencyList(){
-    $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/'+getADLoginID(),
-        method: 'GET',
-        success: function(data){
-            $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
-            });
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
-}
-
 //Method to add competencies to list display
 function addCompetencyToList(id,title,compentencyDescription,isSelected){
-    $(".competency-Details").append(competenciesListHTML(id,title,compentencyDescription,isSelected));
+    $("#competency-list").append(competenciesListHTML(id,title,compentencyDescription,isSelected));
 }
 
 //Method to return competency html
@@ -145,14 +100,6 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
     return html;
 }
 
-//Method to change star icon to selected or not
-function checkSelected(isSelected){
-    if(isSelected){
-        return "";
-    }else{
-        return "-empty";
-    }
-}
 
 //send request to backend to update star to be selected or de-selected
 function starChanger(id){
