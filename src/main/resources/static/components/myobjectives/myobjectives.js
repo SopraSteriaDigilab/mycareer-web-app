@@ -215,10 +215,11 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	var objTitle = $('#obj-title-'+objID).text();
 	var objText = $('#obj-text-'+objID).text();
 	var objDate = $('#obj-date-'+objID).text();
+    var proposedBy = $('#obj-proposedBy-'+objID).text();
 	objDate = reverseDateFormat(objDate);
 	$('#obj-status-'+objID).val(parseInt(objStatus));
 	
-	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
+	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
 //	updateStatusOnList(objID, objStatus);
 	updateObjectiveList(objID);
 }
@@ -295,7 +296,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                         <div class='col-md-3'> \
                         </div> \
                         <div class='col-md-5 pull-right'> \
-                            <h6><b>Proposed by: </b>"+proposedBy+"</h6> \
+                            <h6><b>Proposed by: </b><span id='obj-proposedBy-"+id+"'>"+proposedBy+"</span></h6> \
                         </div> \
                     </div> \
                     <div class='row'> \
