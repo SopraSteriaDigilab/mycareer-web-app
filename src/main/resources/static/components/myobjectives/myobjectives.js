@@ -99,7 +99,6 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-//	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
 
@@ -128,25 +127,26 @@ function clickSubmitObjective(){
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
 
-	var listID = "";
+	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-			listID = "obj-archived";
+			objListID = "obj-archived";
 		}else{
 			switch(parseInt(status)){
 				case 0: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 1: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 2: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 			}
+			objListID += "-obj";
 		}
 
-	lastObjID = id;
-	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+		lastObjID = id;
+		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 }
 
 //Function to update objective on list
@@ -192,6 +192,7 @@ function updateObjectiveList(objID){
 	var archive = $('#obj-is-archived-'+objID).val();
 //	alert(title + " : " + status + " : " + archive);
 	
+	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive);
 	
@@ -215,10 +216,11 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	var objTitle = $('#obj-title-'+objID).text();
 	var objText = $('#obj-text-'+objID).text();
 	var objDate = $('#obj-date-'+objID).text();
+    var proposedBy = $('#obj-proposedBy-'+objID).text();
 	objDate = reverseDateFormat(objDate);
 	$('#obj-status-'+objID).val(parseInt(objStatus));
 	
-	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
+	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
 //	updateStatusOnList(objID, objStatus);
 	updateObjectiveList(objID);
 }
@@ -295,7 +297,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                         <div class='col-md-3'> \
                         </div> \
                         <div class='col-md-5 pull-right'> \
-                            <h6><b>Proposed by: </b>"+proposedBy+"</h6> \
+                            <h6><b>Proposed by: </b><span id='obj-proposedBy-"+id+"'>"+proposedBy+"</span></h6> \
                         </div> \
                     </div> \
                     <div class='row'> \
