@@ -230,7 +230,7 @@ function clickObjectiveFeedback(id){
 	window.location.replace("http://localhost:8000/mycareer/feedback"); 
 }
 
-function updateStatusOnDB(objID, objStatus){
+function updateObjectiveStatusOnDB(objID, objStatus){
 	if($('#obj-is-archived-'+objID).val() === 'true' || $('#obj-is-archived-'+objID).val() == true
 			|| objStatus === parseInt($('#obj-status-'+objID).val())){
 		return false;
@@ -287,17 +287,17 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 	            		</div> \
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
-            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 0)'> \
+            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 0)'> \
 					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 1)'> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 1)'> \
 					       <div class='text-center'><h6>Started</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateStatusOnDB("+id+", 2)'> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 2)'> \
 					       <div class='text-center'><h6>Completed</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
