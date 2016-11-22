@@ -67,7 +67,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 }
 
 //HTTP request for UPDATING an objective in DB
-function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus){
+function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
 	var url = "http://127.0.0.1:8080/editObjective/"+userID;
 	var data = {};
 	data["objectiveID"] = objID;
@@ -75,6 +75,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus)
 	data["description"] = objText;
 	data["completedBy"] = objDate;
 	data["progress"] = objStatus;
+    data["proposedBy"] = proposedBy;
   
 	var settings = {
 	  "url": url,
@@ -123,12 +124,12 @@ function clickSubmitObjective(){
 	var objIsArchived = $("#objective-is-archived").val();
 
 	if(type === 'add'){
-		addObjectiveToDB(userID, objTitle, objText, objDate);
-		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived);
+		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
+		addObjectiveToList((++nextObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
         showObjectiveModal(false);
 	}else if (type === 'edit'){
-		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
-		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
+		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus, getADfullName());
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 

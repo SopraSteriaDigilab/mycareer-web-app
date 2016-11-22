@@ -102,7 +102,6 @@ function submitFeedbackRequest(){
 }
 
 //function to open Proposed objective modal
-
 function openProposedObjectiveModal(){
     $("#obj-modal-type").val('propose');
 	setObjectiveModalContent('', '', '', getToday(), 0, 2);
@@ -117,7 +116,6 @@ function proposedToHTML(){
 }
 
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    alert(proposedTo);
     var url = "http://127.0.0.1:8080/addProposedObjective/"+userID;
     var data = {};
     data["title"] = objTitle;
