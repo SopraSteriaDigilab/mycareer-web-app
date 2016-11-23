@@ -179,7 +179,7 @@ function getDevelopmentNeedsList(userID){
 	        $.each(data, function(key, val){
 	
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
 	        });
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown){

@@ -66,9 +66,9 @@ function addCompetencyToList(id,title,compentencyDescription,isSelected){
 }
 
 //Method to add development needs to list display
-function addDevelopmentNeedToList(id, title, description, category, expectedBy){
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
 	lastDevID = id;
-	$("#reportee-dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy));
+	$("#reportee-dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
 //Method to add feedback descriptions to list
@@ -188,7 +188,7 @@ function feedbackDescriptionListHTML(id, sender, description, date){
 }
 
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy){
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
 	var html = " \
 	    <div class='panel-group' id='dev-need-item-"+id+"'> \
 	        <div class='panel panel-default' id='panel'> \
@@ -208,19 +208,19 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 	            		<div class='col-sm-5 bs-wizard'> \
 	            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"'> \
 						      <div class='text-center' id='test'><h6>Proposed</h6></div> \
-						      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
+						      <div  class='bs-wizard-dot-start'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"'> \
 						       <div class='text-center'><h6>Started</h6></div> \
 						       <div class='progress'><div class='progress-bar'></div></div> \
-						       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
-						       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+						       <div  class='bs-wizard-dot-start'></div> \
+						       <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"'> \
 						       <div class='text-center'><h6>Completed</h6></div> \
 						       	 <div class='progress'><div class='progress-bar'></div></div> \
-						        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
-						        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
+						        <div class='bs-wizard-dot-start'></div> \
+						        <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 	            		</div> \
 	            		<div class='col-sm-1 chev-height'> \

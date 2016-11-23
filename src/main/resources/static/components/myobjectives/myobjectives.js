@@ -11,12 +11,6 @@ $(function() {
 	
 	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
-	
-	//modal validation.
-	//$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
-	
-	//onClick for Submit modal
-	//$('#submit-obj').click(function(){ clickSubmitObjective(); });
 
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
@@ -89,64 +83,29 @@ function openEditObjectiveModal(id){
 	showObjectiveModal(true);
 }
 
-
-////Method to handle the submit objective button
-//function clickSubmitObjective(){
-//	var type = $("#obj-modal-type").val();
-//    
-//	var userID = getADLoginID();
-//	var objID = $("#objective-id").val();
-//	var objTitle = $("#objective-title").val().trim();
-//	var objText = $("#objective-text").val().trim();
-//	var objDate = $("#objective-date").val().trim();
-////	alert(objDate);
-//	var objStatus = parseInt($("#objective-status").val());
-//	var objIsArchived = $("#objective-is-archived").val();
-//
-//	if(type === 'add'){
-//		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
-//		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
-//        showObjectiveModal(false);
-//	}else if (type === 'edit'){
-//		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
-//		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
-//        showObjectiveModal(false);
-//	}else{
-//        var proposedTo = $("#proposed-obj-to").val().trim(); 
-//         if (validEmails(proposedTo)){
-//             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-//             showObjectiveModal(false);
-//        }else{
-//          toastr.error("One or more email addresses entered are not valid");
-//          showObjectiveModal(true);
-//        }  
-//       
-//    }
-//	
-//}
-
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
 
-	var listID = "";
+	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-			listID = "obj-archived";
+			objListID = "obj-archived";
 		}else{
 			switch(parseInt(status)){
 				case 0: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 1: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 				case 2: 
-					listID = statusListDivIDs[status];
+					objListID = statusList[status];
 					break;
 			}
+			objListID += "-obj";
 		}
 
-	lastObjID = id;
-	$("#"+listID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+		lastObjID = id;
+		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 }
 
 //Function to update objective on list
@@ -188,6 +147,7 @@ function updateObjectiveList(objID){
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
 //	alert(title + " : " + status + " : " + archive);
+	
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive);	
