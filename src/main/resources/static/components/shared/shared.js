@@ -92,6 +92,7 @@ function clickSubmitObjective(){
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
+        alert(proposedTo);
          if (validEmails(proposedTo)){
              proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);
@@ -309,16 +310,15 @@ function enableSubmit(type){
 }
 
 function tags(id){
-
     //sets email addresses to use bootstrap tag input
     $('#'+id).tagsinput({
        maxTags: 20,
-       confirmKeys: [9,32,44,59]
+       confirmKeys: [9,32,44,59],
+       trimValue: true
     });
 }
 
 function keypress(modalID){
-        
     //keypress to change ; character to ,
    $('#'+modalID).keypress(function(evt){ 
         if(evt.which==59){
