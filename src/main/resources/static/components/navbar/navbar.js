@@ -11,6 +11,12 @@ $(function() {
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
+    //modal validation.
+	$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
+    
+    //onClick for Submit modal
+	$('#submit-obj').click(function(){ clickSubmitObjective(); });
+    
     //click to submit feedback request
     $('#submit-request-feedback').click(function(){ 
        if (validEmails($('#requestingTo').val())){
@@ -111,7 +117,7 @@ function openProposedObjectiveModal(){
 function proposedToHTML(){
     var HTML= " \
         <label for='proposed-obj-to'>To*:</label> \
-            <input type='text' class='objective-modal-validate form-control' id='proposed-obj-to' maxlength='150' />";
+            <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }
 
