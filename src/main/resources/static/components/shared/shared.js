@@ -69,6 +69,41 @@ function showObjectiveModal(show){
 	}
 }
 
+//Method to handle the submit objective button
+function clickSubmitObjective(){
+	var type = $("#obj-modal-type").val();
+    
+	var userID = getADLoginID();
+	var objID = $("#objective-id").val();
+	var objTitle = $("#objective-title").val().trim();
+	var objText = $("#objective-text").val().trim();
+	var objDate = $("#objective-date").val().trim();
+//	alert(objDate);
+	var objStatus = parseInt($("#objective-status").val());
+	var objIsArchived = $("#objective-is-archived").val();
+
+	if(type === 'add'){
+		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
+		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
+        showObjectiveModal(false);
+	}else if (type === 'edit'){
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
+		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
+        showObjectiveModal(false);
+	}else{
+        var proposedTo = $("#proposed-obj-to").val().trim(); 
+         if (validEmails(proposedTo)){
+             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
+             showObjectiveModal(false);
+        }else{
+          toastr.error("One or more email addresses entered are not valid");
+          showObjectiveModal(true);
+        }  
+       
+    }
+	
+}
+
 
 //------------------------------------------------------------------------------------
 
