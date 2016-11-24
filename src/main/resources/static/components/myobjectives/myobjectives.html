@@ -25,12 +25,12 @@
 		<!-- Nav Pills header -->
 		<div class="row">
 			<div class="col-md-6">
-				<ul class="nav nav-tabs nav-justified">
-					<li class="active"><a data-target="#proposed-obj, #started-obj, #completed-obj" data-toggle="tab"> All (3) </a></li>
-					<li><a href="#proposed-obj" data-toggle="tab"> Proposed (0) </a></li>
-					<li><a href="#started-obj" data-toggle="tab"> Started (0) </a></li>
-					<li><a href="#completed-obj" data-toggle="tab"> Completed (0) </a></li>
-					<li><a href="#obj-archived" data-toggle="tab"> Archived (0)</a></li>
+				<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
+					<li id="obj-all-tab"class="active"><a data-target=".proposed, .started, .completed" data-toggle="tab"> All (3) </a></li>
+					<li id="obj-proposed-tab"><a data-target=".proposed" data-toggle="tab"> Proposed (0) </a></li>
+					<li id="obj-started-tab"><a data-target=".started" data-toggle="tab"> Started (0) </a></li>
+					<li id="obj-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed (0) </a></li>
+					<li><a data-target="#obj-archived" data-toggle="tab"> Archived (0)</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By
 							<span class="caret"></span>
@@ -56,16 +56,19 @@
 	<!-- My Objectives half  -->
 	<div class='row'>
 	<div class='col-sm-12 col-md-6'>
-		<div class="tab-content">
+		<div id="all-obj" class="tab-content">
 		
-			<div id="obj-list"></div><!-- End of objList container -->
+		<!--	<div id="all-obj" class="tab-pane fade in active"></div><!-- End of objList container -->
 			 <!-- Competencies Section  -->
 			 	 
-		 	<div id="completed-obj" class="tab-pane fade in active"></div>
-		    <div id="started-obj" class="tab-pane fade in active"></div>
-		    <div id="proposed-obj" class="tab-pane fade in active"></div>
+		 	<!--<div id="completed-obj" class="tab-pane fade in "></div>
+		    <div id="started-obj" class="tab-pane fade in "></div>
+		    <div id="proposed-obj" class="tab-pane fade in "></div> -->
+		    <div class='proposed'></div>
+  			<div class='started'></div>
+  			<div class='completed'></div>
+  			<div class='archived'></div>
 		    <div id="obj-archived" class="tab-pane fade in"></div>
-   
 
 
 		</div>
