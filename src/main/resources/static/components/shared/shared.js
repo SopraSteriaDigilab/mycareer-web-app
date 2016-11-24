@@ -11,7 +11,8 @@ var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Proposed'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'cbt-radio', 'online-radio', 'self-study-radio', 'other-radio'];
 var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
-
+var lastDevID = 0;
+var lastObjID = 0;
 
 //------------------------------------- Objectives -------------------------------------
 
@@ -21,7 +22,9 @@ function getObjectivesList(userID){
       url: 'http://127.0.0.1:8080/getObjectives/'+userID,
       method: 'GET',
       success: function(data){
+    	  lastObjID = data.length;
           $.each(data, function(key, val){
+
           	var expectedBy = formatDate(val.timeToCompleteBy);
           	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
           });
@@ -177,8 +180,8 @@ function getDevelopmentNeedsList(userID){
 	    url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+userID,
 	    method: 'GET',
 	    success: function(data){
+        	lastDevID = data.length;
 	        $.each(data, function(key, val){
-	
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
 	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
 	        });

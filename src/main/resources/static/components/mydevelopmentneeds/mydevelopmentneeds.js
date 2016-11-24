@@ -21,7 +21,7 @@ $(function() {
 	
 });
 
-var lastDevID = 0;
+
 
 
 //HTTP request for INSERTING an development need to DB
@@ -127,7 +127,6 @@ function addDevelopmentNeedToList(id, title, description, category, expectedBy, 
 			break;
 	}
 	devListID += "-dev-needs";
-	lastDevID = id;
 	$("#"+devListID).append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
@@ -138,7 +137,7 @@ function editDevelopmentNeedOnList(id, title, description, category, expectedBy,
 	$('#dev-need-category-'+id).text(categoryList[category]);
 	$('#dev-need-category-id-'+id).val(category);
 	$('#dev-need-date-'+id).text('').append("<h6 class='pull-right'><b>" + formatDate(expectedBy) + "</b></h6>");
-	$('#dev-need-status-'+objID).val(status);
+	$('#dev-need-status-'+id).val(status);
 }
 
 //Method to set and show content of modal
