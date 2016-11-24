@@ -6,8 +6,6 @@ $(function() {
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
-	//Initialising the date picker
-	initDatePicker('objective', new Date());
 	
 	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
