@@ -21,7 +21,7 @@ $(function() {
 	
 });
 
-var lastDevID = 0;
+
 
 
 //HTTP request for INSERTING an development need to DB
@@ -127,7 +127,6 @@ function addDevelopmentNeedToList(id, title, description, category, expectedBy, 
 			break;
 	}
 	devListID += "-dev-needs";
-	lastDevID = id;
 	$("#"+devListID).append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 

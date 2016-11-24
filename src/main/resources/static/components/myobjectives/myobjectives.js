@@ -23,7 +23,7 @@ $(function() {
     
 });
 
-var lastObjID = 0;
+
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
@@ -110,8 +110,6 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 			}
 			objListID += "-obj";
 		}
-
-		lastObjID = id;
 		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		
 }
