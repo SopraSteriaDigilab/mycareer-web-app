@@ -14,10 +14,16 @@ $(function() {
 
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
-
+    
+    //Ensuring all the objectives items are shown
+    $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
+    $("#obj-started-tab").click(function(){ $('.started').css({'display':''}) });
+    $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}) });
+    
+    
 });
 
-var lastObjID = 0;
+
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
@@ -90,6 +96,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 		if(isArchived === true || isArchived === 'true'){
 			objListID = "obj-archived";
 		}else{
+			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 			switch(parseInt(status)){
 				case 0: 
 					objListID = statusList[status];
@@ -103,9 +110,8 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 			}
 			objListID += "-obj";
 		}
-
-		lastObjID = id;
 		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+		
 }
 
 //Function to update objective on list
@@ -173,34 +179,46 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	$('#obj-status-'+objID).val(parseInt(objStatus));
 	
 	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
-//	updateStatusOnList(objID, objStatus);
-	updateObjectiveList(objID);
+	
+	updateStatusOnList(objID, objStatus);
+//	updateObjectiveList(objID);
 }
-//
-//function updateStatusOnList(objID, objStatus){
-//	switch(parseInt(objStatus)){
-//		case 0:
-//			$('#started-obj-dot-'+objID).removeClass('complete');
-//			$('#complete-obj-dot-'+objID).removeClass('complete');
-//			break;
-//		case 1:
-//			$('#started-obj-dot-'+objID).addClass('complete');
-//			$('#complete-obj-dot-'+objID).removeClass('complete');
-//			break;
-//		case 2:
-//			$('#started-obj-dot-'+objID).addClass('complete');
-//			$('#complete-obj-dot-'+objID).addClass('complete');
-//	}
-//	
-//	
-//}
+
+function updateStatusOnList(objID, objStatus){
+
+
+	switch(parseInt(objStatus)){
+		case 0:
+			$('#started-obj-dot-'+objID).removeClass('complete');
+			$('#complete-obj-dot-'+objID).removeClass('complete');
+			break;
+		case 1:
+			$('#started-obj-dot-'+objID).addClass('complete');
+			$('#complete-obj-dot-'+objID).removeClass('complete');
+			break;
+		case 2:
+			$('#started-obj-dot-'+objID).addClass('complete');
+			$('#complete-obj-dot-'+objID).addClass('complete');
+	}
+	
+	
+	
+	if(!($("#obj-all-tab").hasClass("active"))){
+		$("#objective-item-"+objID).fadeOut();
+	}
+	
+	$("#objective-item-"+objID).removeClass("proposed started completed");
+	$("#objective-item-"+objID).addClass(statusList[parseInt(objStatus)]);
+
+
+}
 
 
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
 	var html = " \
-    <div class='panel-group' id='objective-item-"+id+"'> \
+    <div class='panel-group tab-pane fade "+statusList[status]+" active in' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
         <input type='hidden' id='obj-status-"+id+"' value='"+status+"'> \
         <input type='hidden' id='obj-is-archived-"+id+"' value='"+isArchived+"'> \
@@ -278,11 +296,7 @@ function objectivesButtonsHTML(id, isArchived){
         	<button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
         </div> \
     </div> \
-"
-//        	alert(isArchived);
-//	if(isArchived == true || isArchived === 'true'){
-//		return("");
-//	}
+";
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
@@ -290,7 +304,7 @@ function objectivesButtonsHTML(id, isArchived){
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Restore</button> \
 		        </div> \
 		    </div> \
-		"
+		";
 		return(unArchiveButton);
 	}
 	return(HTML);

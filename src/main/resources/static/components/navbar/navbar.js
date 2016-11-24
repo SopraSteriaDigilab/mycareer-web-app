@@ -1,6 +1,5 @@
 $(function() {
 
-
 	loadProfile();
 	
 	highlight($("#section").text());
