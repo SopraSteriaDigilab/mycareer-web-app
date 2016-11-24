@@ -11,12 +11,6 @@ $(function() {
 	
 	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
-	
-	//modal validation.
-	$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
-	
-	//onClick for Submit modal
-	$('#submit-obj').click(function(){ clickSubmitObjective(); });
 
     //Navigation Pills to show All/Awaiting/InFlight/Done objectives
     $("#navTab").click(function(){});
@@ -95,41 +89,6 @@ function openEditObjectiveModal(id){
 	showObjectiveModal(true);
 }
 
-
-//Method to handle the submit objective button
-function clickSubmitObjective(){
-	var type = $("#obj-modal-type").val();
-    
-	var userID = getADLoginID();
-	var objID = $("#objective-id").val();
-	var objTitle = $("#objective-title").val().trim();
-	var objText = $("#objective-text").val().trim();
-	var objDate = $("#objective-date").val().trim();
-	var objStatus = parseInt($("#objective-status").val());
-	var objIsArchived = $("#objective-is-archived").val();
-
-	if(type === 'add'){
-		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
-		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
-        showObjectiveModal(false);
-	}else if (type === 'edit'){
-		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
-		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
-        showObjectiveModal(false);
-	}else{
-        var proposedTo = $("#proposed-obj-to").val().trim(); 
-         if (validEmails(proposedTo)){
-             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-             showObjectiveModal(false);
-        }else{
-          toastr.error("One or more email addresses entered are not valid");
-          showObjectiveModal(true);
-        }  
-       
-    }
-	
-}
-
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
 
@@ -165,9 +124,6 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 	$('#obj-status-'+objID).val(status);
 }
 
-
-
-
 //Method to handle the archive objective button
 function clickArchiveObjective(objID, archive){
 	$('#obj-is-archived-'+objID).val(archive);
@@ -202,12 +158,8 @@ function updateObjectiveList(objID){
 	
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
-	addObjectiveToList(objID, title, description, expectedBy, status, archive);
-	
-	
+	addObjectiveToList(objID, title, description, expectedBy, status, archive);	
 }
-
-
 
 //onclick to view feedback
 function clickObjectiveFeedback(id){
