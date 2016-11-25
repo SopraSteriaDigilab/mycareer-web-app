@@ -53,13 +53,28 @@ function formatFeedbackDate(date){
 }
 
 function applyDateFilter(){
+	var dateRangeList = [];
 	var startDate = formatFeedbackDate($("#feedback-start-date").val());
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
-		$(".24-11-2016").hide();
-		$('.'+timeStampToClassDate(date)).hide();
+		dateRangeList.push(timeStampToClassDate(date));
 	}
+	
+	$(".filterable-feedback").each(function(index){
+		var fullClass = $(this).attr('class');
+		var i = fullClass.indexOf('d-');
+		
+		var tempClass = fullClass.slice(i+2, i+12 );
+		
+		if(jQuery.inArray(tempClass, dateRangeList) > -1){
+			$(this).show();
+		}else{
+			$(this).hide();
+		}
+		
+	});
+	
 	
 }
 
@@ -75,7 +90,7 @@ function addFeedbackToList(id, sender, description, date, classDate){
 
 function feedbackSendersListHTML(id, sender, date, classDate){
 	var HTML = " \
-	        <div class='panel panel-default "+classDate+"' id='view-fee-"+id+" '> \
+	        <div class='panel panel-default filterable-feedback d-"+classDate+"' id='view-fee-"+id+" '> \
 	        <div class='panel-heading'> \
 	            <div class='row'> \
 	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
@@ -93,7 +108,7 @@ function feedbackSendersListHTML(id, sender, date, classDate){
 
 function feedbackDescriptionListHTML(id, sender, description, date, classDate){
 	var HTML = " \
-	<div class='panel panel-default "+ showIfFirstFeeback() +" general-feedback' id='general-feedback-"+id+"'> \
+	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" general-feedback d-"+classDate+"' id='general-feedback-"+id+"'> \
 		<input type='hidden' class='general-feedback-id' value='"+id+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
