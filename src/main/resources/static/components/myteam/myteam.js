@@ -72,8 +72,8 @@ function addDevelopmentNeedToList(id, title, description, category, expectedBy, 
 }
 
 //Method to add feedback descriptions to list
-function addFeedbackToList(id, sender, description, date){
-    $('#reportee-feed-list').append(feedbackDescriptionListHTML(id, sender, description, date));
+function addFeedbackToList(id, sender, description, date, classDate){
+    $('#reportee-feed-list').append(feedbackDescriptionListHTML(id, sender, description, date, classDate));
 }
 
 //Method to add note to list directly
@@ -172,7 +172,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
     return html;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate){
 	var HTML = " \
 	<li class='list-group-item'> \
 			<div class='row'> \

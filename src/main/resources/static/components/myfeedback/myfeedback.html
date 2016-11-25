@@ -25,106 +25,54 @@
 									href="#collapseOne">Date</a>
 							</h4>
 						</div>
+
 						<div id="collapseOne" class="panel-collapse collapse in">
 							<div class="panel-body">
 								<div class="row">
-									<div class="col-md-6">
-										<div class="dropdown">
-											<button class="btn btn-default center-block dropdown-toggle"
-												type="button" data-toggle="dropdown">
-												Month<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu scrollable-menu">
-												<li><a href="#">January</a></li>
-												<li><a href="#">February</a></li>
-												<li><a href="#">March</a></li>
-												<li><a href="#">April</a></li>
-												<li><a href="#">May</a></li>
-												<li><a href="#">June</a></li>
-												<li><a href="#">July</a></li>
-												<li><a href="#">August</a></li>
-												<li><a href="#">September</a></li>
-												<li><a href="#">October</a></li>
-												<li><a href="#">November</a></li>
-												<li><a href="#">December</a></li>
-											</ul>
+									<div class='col-sm-12'>
+										<div class="form-group">
+										<div class="row">
+										<div class='col-sm-6'>
+											<h5><b>From:</b></h5>
+										</div>
+										<div class='col-sm-6'>
+											<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearDateFilter()'><b>Clear Filter</b></h6>
+										</div>
+										</div>
+											<div class='input-group date' id='feedback-start-date-picker'>
+												<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
+												<span class="input-group-addon"> 
+													<span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
 										</div>
 									</div>
-									<!--end of div class col-md-6 -->
-									<div class="col-md-6">
-										<div class="dropdown">
-											<button class="btn btn-default center-block dropdown-toggle"
-												type="button" data-toggle="dropdown">
-												Year<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu scrollable-menu">
-												<li><a href="#">2016</a></li>
-												<li><a href="#">2017</a></li>
-												<li><a href="#">2018</a></li>
-												<li><a href="#">2019</a></li>
-												<li><a href="#">2020</a></li>
-											</ul>
-										</div>
-									</div>
-									<!--end of div class col-md-6 -->
 								</div>
-								<!--end of row -->
+								<div class="row">
+									<div class='col-sm-12'>
+										<div class="form-group">
+										<h5><b>To:</b></h5>
+											<div class='input-group date' id='feedback-end-date-picker'>
+												<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
+												<span class="input-group-addon"> 
+													<span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class='col-md-offset-6 col-md-6'>
+										<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+									</div>
+								</div>
 							</div>
-							<!--end of panel body -->
 						</div>
-						<!--end of collapse panel -->
 					</div>
-					<!-- end of panel-default-->
 				</div>
 				<!-- end of accordion Date-->
 				
-			<!--	<div class="panel-group" id="accordion-Linked-Obj">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapseTwo">Linked Objectives</a>
-							</h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse in">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-6"></div>
-									<!--end of div class col-md-6 -->
-							<!--	</div>
-								<!--end of row -->
-						<!--	</div>
-							<!--end of panel body -->
-					<!--	</div>
-						<!--end of collapse panel -->
-					<!--</div>
-					<!-- end of panel-default-->
-			<!--	</div>
-				<!-- end of accordion Linked Objectives -->
-				
-			<!--	<div class="panel-group" id="accordion-Linked-Competencies">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapseThree">Linked Competencies</a>
-							</h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse in">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-6"></div>
-									<!--end of div class col-md-6 -->
-							<!--	</div>
-								<!--end of row -->
-						<!--	</div>
-							<!--end of panel body -->
-					<!--	</div>
-						<!--end of collapse panel -->
-				<!--	</div>
-					<!-- end of panel-default-->
-			<!--	</div>
-				<!-- end of accordion Linked Competencies -->
+
 				
 				<div class="panel-group" id="accordion-Reviewer">
 					<div class="panel panel-default">
@@ -136,11 +84,7 @@
 						</div>
 						<div id="collapseFour" class="panel-collapse collapse in">
 							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-6"></div>
-									<!--end of div class col-md-6 -->
-								</div>
-								<!--end of row -->
+								
 							</div>
 							<!--end of panel body -->
 						</div>
@@ -173,6 +117,55 @@
 
 
 
+
+
+<!--	<div class="panel-group" id="accordion-Linked-Obj">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion"
+						href="#collapseTwo">Linked Objectives</a>
+				</h4>
+			</div>
+			<div id="collapseTwo" class="panel-collapse collapse in">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6"></div>
+						<!--end of div class col-md-6 -->
+				<!--	</div>
+					<!--end of row -->
+			<!--	</div>
+				<!--end of panel body -->
+		<!--	</div>
+			<!--end of collapse panel -->
+		<!--</div>
+		<!-- end of panel-default-->
+<!--	</div>
+	<!-- end of accordion Linked Objectives -->
+	
+<!--	<div class="panel-group" id="accordion-Linked-Competencies">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion"
+						href="#collapseThree">Linked Competencies</a>
+				</h4>
+			</div>
+			<div id="collapseThree" class="panel-collapse collapse in">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6"></div>
+						<!--end of div class col-md-6 -->
+				<!--	</div>
+					<!--end of row -->
+			<!--	</div>
+				<!--end of panel body -->
+		<!--	</div>
+			<!--end of collapse panel -->
+	<!--	</div>
+		<!-- end of panel-default-->
+<!--	</div>
+	<!-- end of accordion Linked Competencies -->
 
  
  
