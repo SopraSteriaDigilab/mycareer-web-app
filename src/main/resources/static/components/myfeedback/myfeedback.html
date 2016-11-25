@@ -25,12 +25,20 @@
 									href="#collapseOne">Date</a>
 							</h4>
 						</div>
+
 						<div id="collapseOne" class="panel-collapse collapse in">
 							<div class="panel-body">
 								<div class="row">
 									<div class='col-sm-12'>
 										<div class="form-group">
-										<label>From:</label>
+										<div class="row">
+										<div class='col-sm-6'>
+											<h5><b>From:</b></h5>
+										</div>
+										<div class='col-sm-6'>
+											<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearDateFilter()'><b>Clear Filter</b></h6>
+										</div>
+										</div>
 											<div class='input-group date' id='feedback-start-date-picker'>
 												<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
 												<span class="input-group-addon"> 
@@ -43,7 +51,7 @@
 								<div class="row">
 									<div class='col-sm-12'>
 										<div class="form-group">
-										<label>To:</label>
+										<h5><b>To:</b></h5>
 											<div class='input-group date' id='feedback-end-date-picker'>
 												<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
 												<span class="input-group-addon"> 

@@ -31,6 +31,49 @@ function initFeedbackDatePicker(id, start){
 		
 }
 
+var firstFeedback = true;
+
+function addFeedbackToList(id, sender, description, date, classDate){
+	  $('#feeList').append(feedbackSendersListHTML(id, sender, date, classDate)); //End of feeList append
+      $('#feeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate));
+}
+
+function feedbackSendersListHTML(id, sender, date, classDate){
+	var HTML = " \
+	        <div class='panel panel-default filterable-feedback d-"+classDate+"' id='view-fee-"+id+" '> \
+	        <div class='panel-heading'> \
+	            <div class='row'> \
+	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
+	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
+	            </div> \
+	            <div class='row'> \
+	                <div class='col-md-offset-6 col-md-6'> \
+	                	<button type='button' class='btn btn-link pull-right' onClick='showGeneralFeedback("+id+")'><h6>View</h6></button> \
+	                </div> \
+	            </div> \
+	        </div> \
+	      </div> ";
+	return HTML;
+}
+
+function feedbackDescriptionListHTML(id, sender, description, date, classDate){
+	var HTML = " \
+	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" general-feedback d-"+classDate+"' id='general-feedback-"+id+"'> \
+		<input type='hidden' class='general-feedback-id' value='"+id+"'> \
+		<div class='panel-body'> \
+			<div class='row'> \
+				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
+				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
+			</div> \
+			<div class='row'> \
+				<div class='col-md-12'><h5>"+ description +"</h5></div> \
+			</div> \
+		 </div> \
+	</div> ";
+	
+	return HTML
+}
+
 function updateEndDate(){
 	var startDate = formatFeedbackDate($("#feedback-start-date").val());
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
@@ -78,51 +121,12 @@ function applyDateFilter(){
 	
 }
 
-
-
-
-var firstFeedback = true;
-
-function addFeedbackToList(id, sender, description, date, classDate){
-	  $('#feeList').append(feedbackSendersListHTML(id, sender, date, classDate)); //End of feeList append
-      $('#feeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate));
+function clearDateFilter(){
+	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
+	$(".filterable-feedback").each(function(index){ $(this).show(); });
 }
 
-function feedbackSendersListHTML(id, sender, date, classDate){
-	var HTML = " \
-	        <div class='panel panel-default filterable-feedback d-"+classDate+"' id='view-fee-"+id+" '> \
-	        <div class='panel-heading'> \
-	            <div class='row'> \
-	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
-	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
-	            </div> \
-	            <div class='row'> \
-	                <div class='col-md-offset-6 col-md-6'> \
-	                	<button type='button' class='btn btn-link pull-right' onClick='showGeneralFeedback("+id+")'><h6>View</h6></button> \
-	                </div> \
-	            </div> \
-	        </div> \
-	      </div> ";
-	return HTML;
-}
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate){
-	var HTML = " \
-	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" general-feedback d-"+classDate+"' id='general-feedback-"+id+"'> \
-		<input type='hidden' class='general-feedback-id' value='"+id+"'> \
-		<div class='panel-body'> \
-			<div class='row'> \
-				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
-				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
-			</div> \
-			<div class='row'> \
-				<div class='col-md-12'><h5>"+ description +"</h5></div> \
-			</div> \
-		 </div> \
-	</div> ";
-	
-	return HTML
-}
 
 function showGeneralFeedback(id){
 	generalFeedbackID = "general-feedback-"+id;
