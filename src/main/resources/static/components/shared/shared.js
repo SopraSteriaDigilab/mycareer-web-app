@@ -149,16 +149,10 @@ function getFeedbackList(userID){
         url: 'http://127.0.0.1:8080/getFeedback/'+userID,
         method: 'GET',
         success: function(data){
-            console.log('success', data);
-            $.each(data, function(key, val){                
-                
-                var feeTime = new Date(val.timeStamp);
-                var year = feeTime.getFullYear();
-                var month = shortMonths[feeTime.getMonth()];
-                var day = feeTime.getDate();
-                var feedbackDate = day + ' ' + month + ' ' + year;
-                
-                addFeedbackToList(val.id, val.fromWho, val.description, feedbackDate);
+            $.each(data, function(key, val){
+                var classDate = timeStampToClassDate(val.timeStamp);
+                var longDate = timeStampToLongDate(new Date(val.timeStamp));
+                addFeedbackToList(val.id, val.fromWho, val.description, longDate, classDate);
                 
         });//end of for each loop
         },
@@ -215,7 +209,6 @@ function getNotesList(userID){
             $.each(data, function(key, val){
             	
             	var date = timeStampToDateTime(new Date(val.timeStamp));
-
             	addNoteToList(val.fromWho, val.body, date);
             });
         },
@@ -240,10 +233,15 @@ function initDatePicker(id, today){
 		startView: "months", 
 		minViewMode: "months",
 		startDate: today,
+		autoclose: true,
+
 		// defaultDate: '01-10-2016',
 		// todayHighlight: true,
 		// todayBtn: true,
 	});
+	
+	$("#"+id+"-date").val(getToday());
+	
 }
 
 //returns todays date in yyyy-mm format
@@ -266,6 +264,24 @@ function timeStampToDateTime(date){
 	return date;
 }
 
+//TimeStamp to dd mmm yyyy
+function timeStampToLongDate(date){
+	var d = new Date(date);
+	var date = d.getDate() + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
+	
+	return date;
+}
+
+//TimeStamp to'YYYY-MM-DD'
+function timeStampToClassDate(date){
+	var d = new Date(date);
+	var date =  addZero(d.getDate()) + '-' + addZero(d.getMonth()+1) + '-' +d.getFullYear();
+	
+	return date;
+}
+
+
+
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
 function reverseDateFormat(date){
 	var year = date.slice(-4, date.length);
@@ -273,6 +289,13 @@ function reverseDateFormat(date){
 	return year+'-'+ addZero(monthIndex);
 }
 
+//Method to add number of days to date
+Date.prototype.addDays = function(days)
+{
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
 
 //Method to add 0 for numbers less than 10
 function addZero(value){

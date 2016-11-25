@@ -3,6 +3,9 @@ $(function() {
 	loadProfile();
 	
 	highlight($("#section").text());
+	
+	//Initialising the date picker
+	initDatePicker('objective', new Date());
     
     tags('requestingTo');
     keypress('requestFeedbackModal');

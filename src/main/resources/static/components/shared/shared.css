@@ -12,6 +12,11 @@ textarea {
 .toast {
   opacity: 1 !important;
 }
+
+form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: white;
+    opacity: 1;
+}
 /*
 .bottomless {
 	margin-bottom: 0px;
@@ -28,10 +33,10 @@ textarea {
 .btn-link:hover {
 	background-color: #eee;
 }
-
+/*
 #objective-date {
 	background-color: white;
-}
+}*/
 
 .vertical-centre{
 	transform: translateY(70%);
