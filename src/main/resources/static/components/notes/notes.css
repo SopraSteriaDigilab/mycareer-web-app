@@ -1,0 +1,32 @@
+/*.scrollable-menu {
+    height: auto;
+   
+    
+}*/
+#notes .row{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#notes .row.header {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+  */
+}
+
+#notes .row.content {
+  flex: 1 1 auto;
+  max-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#notes {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  
+}

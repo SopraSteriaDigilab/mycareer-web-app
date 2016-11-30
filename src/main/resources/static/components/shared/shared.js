@@ -1,5 +1,6 @@
 $(function() {
-
+	
+	adjustDatePicker();
 
 });
 
@@ -13,6 +14,13 @@ var categoryIDs = ['on-job-radio', 'classroom-radio', 'cbt-radio', 'online-radio
 var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
 var lastDevID = 0;
 var lastObjID = 0;
+
+function adjustDatePicker(){
+	$.fn.datepicker.noConflict = function(){
+		   $.fn.datepicker = old;
+		   return this;
+	};
+}
 
 //------------------------------------- Objectives -------------------------------------
 
@@ -95,7 +103,7 @@ function clickSubmitObjective(){
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
-        alert(proposedTo);
+//        alert(proposedTo);
          if (validEmails(proposedTo)){
              proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);
@@ -199,9 +207,9 @@ function isOngoing(date){
 //------------------------------------------------------------------------------------
 
 //--------------------------------------- Notes --------------------------------------
-
-//Method to get the Notes list
-function getNotesList(userID){
+//
+////Method to get the Notes list
+function getReporteeNotesList(userID){
     $.ajax({
         url: 'http://127.0.0.1:8080/getNotes/'+userID,
         method: 'GET',
@@ -209,7 +217,7 @@ function getNotesList(userID){
             $.each(data, function(key, val){
             	
             	var date = timeStampToDateTime(new Date(val.timeStamp));
-            	addNoteToList(val.fromWho, val.body, date);
+            	addNoteToReporteeList(val.fromWho, val.body, date);
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -370,7 +378,16 @@ function getProfilePicture(userName, size){
 
 
 
+function openNotesBar(){
+	var screenWidth = $(document).width();
+	var sidebarWidth = $("#resizable").width();
+	$("#resizable").animate({'left':screenWidth-sidebarWidth + 'px'});
+}
 
+function closeNotesBar(){
+	var width = $("#resizable").width();
+	$("#resizable").animate({'left':'100vw'});
+}
 
 
 
