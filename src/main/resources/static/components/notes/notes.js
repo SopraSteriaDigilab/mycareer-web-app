@@ -4,6 +4,8 @@ $(function() {
 	
 	//Get general-notes
 	getNotesList(getADLoginID());
+	
+	
     	
 	$("#notes-open").click(function(e) { openNotesBar() });
 	 
@@ -15,6 +17,9 @@ $(function() {
 	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });
 	
+	
+
+	
 });
 
 function initResizable(){
@@ -22,6 +27,13 @@ function initResizable(){
 		 minWidth: 200,
 		 handles: "e, w"
 	});
+	$('.selectpicker').selectpicker({});
+	
+	$('.selectpicker').on('change', function(){
+	    var selected = $(this).find("option:selected").val();
+	    showSection(selected);
+	  });
+
 }
 
 
@@ -71,7 +83,7 @@ function notesListHTML(fromWho, body, date){
 function clickSubmitNote(){
 	var userID = getADLoginID();
 	var note = $('#note-text').val().trim();
-	var from = 'Ridhwan Nacef';
+	var from = getADfullName();
 	var date = timeStampToDateTime(new Date());
 	
 	addNoteToDB(userID, from, note);
@@ -98,4 +110,15 @@ function addNoteToDB(userID, from, body ){
 	$.ajax(settings).done(function (response) {
 	  toastr.success(response);
 	});
+}
+
+function showSection(section){
+	$(".notes-div").each(function(i){
+		$(this).fadeOut(1);
+		if($(this).hasClass(section)){
+			$(this).fadeIn(600);
+		}
+	})
+	
+	
 }

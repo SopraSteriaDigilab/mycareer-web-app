@@ -10,9 +10,20 @@
 			<div class="col-md-2">
 				<button type="button" class="btn-link pull-left" id="notes-close"><h6>Close</h6></button>
 			</div>
-			<div class="col-md-8">
-				<Center><h1>Notes</h1></Center>
+			<div class="col-md-8 text-center">
+				<h1>Notes</h1>
 			</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<select class="selectpicker ">
+			  <option class="text-center" onClick='showSection()'>General</option>
+			  <option class="text-center" >Objectives</option>
+			  <option class="text-center" >Competencies</option>
+			  <option class="text-center" >Feedback</option>
+			  <option class="text-center" >Development</option>
+			</select>
+		</div>
 	</div>
 	<div class="row">
 			<div class="form-group col-md-12" >
@@ -29,7 +40,11 @@
 <div class="row content">
 	<div class="row">
 		<div class="form-group col-md-12 scrollable-menu">
-			<ul class="list-group" id="general-notes-list"></ul>
+			<ul class="list-group notes-div General" id="general-notes-list">General</ul>
+			<ul class="list-group notes-div Objectives " id="objective-notes-list">Objectives</ul>
+			<ul class="list-group notes-div Competencies " id="competencies-notes-list">Competencies</ul>
+			<ul class="list-group notes-div Feedback " id="feedback-notes-list">Feedback</ul>
+			<ul class="list-group notes-div Development " id="development-notes-list">Development</ul>
 		</div>
 	</div>
 </div>
