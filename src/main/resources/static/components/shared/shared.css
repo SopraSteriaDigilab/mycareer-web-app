@@ -1,3 +1,7 @@
+body {
+	height: 100vh;
+}
+
 .wrap-text {
 /*
     white-space: pre-wrap;*/
@@ -84,4 +88,17 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .glyphicon-star{
     color: #F18926;
 }
+
+/*----------------------------------------------------- Notes -----------------------------------------------------*/
+#resizable {
+	z-index: 2;
+	position:fixed;
+	/*right:-400px;*/
+	left:100vw;
+	width: 400px;
+	height: 100vh;
+	background: #d5d5d5;
+}
+
+
 
