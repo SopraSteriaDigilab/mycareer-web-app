@@ -18,7 +18,7 @@ function getReportees(){
 	        },
 	        error: function(XMLHttpRequest, textStatus, errorThrown){
 	            console.log('error', errorThrown);
-	            toastr.error("Sorry, there was a problem getting notes, please try again later.");
+	            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
 	        }
 	    });
 }
@@ -50,7 +50,7 @@ function getReporteeCareer(id) {
 	getCompetencyList(id);
 	getFeedbackList(id);
 	getDevelopmentNeedsList(id);
-	getNotesList(id);
+	getReporteeNotesList(id);
 }
 
 //Function to add objective to list
@@ -77,7 +77,7 @@ function addFeedbackToList(id, sender, description, date, classDate){
 }
 
 //Method to add note to list directly
-function addNoteToList(fromWho, body, date){
+function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(notesListHTML(fromWho, body, date));
 }
 

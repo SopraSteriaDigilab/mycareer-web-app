@@ -1,77 +1,77 @@
 $(function() {
 	
-	//Get general-notes
-	getNotesList(getADLoginID());
+//	//Get general-notes
+//	getNotesList(getADLoginID());
     
     //Get competencies
     getCompetencyList(getADLoginID());
 	
-	//Validate note
-	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
-	
-	//Click listener to submit note
-	$('#submit-note').click(function(){ clickSubmitNote(); });
-	
+//	//Validate note
+//	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
+//	
+//	//Click listener to submit note
+//	$('#submit-note').click(function(){ clickSubmitNote(); });
+//	
 	//Link to competency framework
     $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
     
 
 });
 
-//Method to make ajax call to add note to database
-function addNoteToDB(userID, from, body ){
-	var url = "http://127.0.0.1:8080/addNote/"+userID;
-	var data = {};
-	data["from"] = from;
-	data["body"] = body;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  "data": data
-	}
+////Method to make ajax call to add note to database
+//function addNoteToDB(userID, from, body ){
+//	var url = "http://127.0.0.1:8080/addNote/"+userID;
+//	var data = {};
+//	data["from"] = from;
+//	data["body"] = body;
+//    
+//	var settings = {
+//	  "url": url,
+//	  "method": "POST",
+//	  "data": data
+//	}
+//
+//	$.ajax(settings).done(function (response) {
+//	  toastr.success(response);
+//	});
+//}
 
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-}
 
+////Method to get data and submit data
+//function clickSubmitNote(){
+//	var userID = getADLoginID();
+//	var note = $('#note-text').val().trim();
+//	var from = 'Ridhwan Nacef';
+//	var date = timeStampToDateTime(new Date());
+//	
+//	addNoteToDB(userID, from, note);
+//	addNoteToList(from, note, date);
+//	
+//	$('#note-text').val('');
+//	$('#submit-note').prop("disabled", true);
+//}
 
-//Method to get data and submit data
-function clickSubmitNote(){
-	var userID = getADLoginID();
-	var note = $('#note-text').val().trim();
-	var from = 'Ridhwan Nacef';
-	var date = timeStampToDateTime(new Date());
-	
-	addNoteToDB(userID, from, note);
-	addNoteToList(from, note, date);
-	
-	$('#note-text').val('');
-	$('#submit-note').prop("disabled", true);
-}
-
-//Method to add note to list directly
-function addNoteToList(fromWho, body, date){
-	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
-}
+////Method to add note to list directly
+//function addNoteToList(fromWho, body, date){
+//	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
+//}
     
 //Method to return html
-function notesListHTML(fromWho, body, date){
-
-	var html = " \
-	  <li class='list-group-item'> \
-	  	<div class='row'> \
-			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
-			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
-		</div> \
-		<div class='row'> \
-			<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
-		</div> \
-	  </li> \
-	  ";
-	return html;	
-}
+//function notesListHTML(fromWho, body, date){
+//
+//	var html = " \
+//	  <li class='list-group-item'> \
+//	  	<div class='row'> \
+//			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
+//			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
+//		</div> \
+//		<div class='row'> \
+//			<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
+//		</div> \
+//	  </li> \
+//	  ";
+//	return html;	
+//}
 
 //Method to add competencies to list display
 function addCompetencyToList(id,title,compentencyDescription,isSelected){

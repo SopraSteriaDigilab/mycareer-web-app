@@ -1,5 +1,7 @@
 $(function() {
 
+	
+	$("sidebar").resizable();
 	loadProfile();
 	
 	highlight($("#section").text());

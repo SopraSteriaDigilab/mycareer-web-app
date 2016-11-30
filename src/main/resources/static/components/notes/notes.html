@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="../components/notes/notes.css"/>
+<script type="text/javascript" src="../components/notes/notes.js"></script>
+
+
+
+<div   class="row header">
+  <br><br><br><br><br>
+
+	<div class="row" >
+			<div class="col-md-2">
+				<button type="button" class="btn-link pull-left" id="notes-close"><h6>Notes</h6></button>
+			</div>
+			<div class="col-md-8">
+				<Center><h1>Notes</h1></Center>
+			</div>
+	</div>
+	<div class="row">
+			<div class="form-group col-md-12" >
+				<label for="general-note-input">Add note*:</label>
+				<textarea class="note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
+			</div>
+	</div>
+	<div class="row">
+			<div class="form-group col-md-12">
+				<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+			</div>
+	</div>
+</div>
+<div class="row content">
+	<div class="row">
+		<div class="form-group col-md-12 scrollable-menu">
+			<ul class="list-group" id="general-notes-list"></ul>
+		</div>
+	</div>
+</div>
