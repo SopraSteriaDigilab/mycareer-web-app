@@ -10,26 +10,100 @@
 			<div class="col-md-2">
 				<button type="button" class="btn-link pull-left" id="notes-close"><h6>Close</h6></button>
 			</div>
-			<div class="col-md-8">
-				<Center><h1>Notes</h1></Center>
+			<div class="col-md-8 text-center">
+				<h1>Notes</h1>
 			</div>
 	</div>
 	<div class="row">
-			<div class="form-group col-md-12" >
-				<label for="general-note-input">Add note*:</label>
-				<textarea class="note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
-			</div>
+		<div class="col-md-12 text-center">
+			<select class="selectpicker select-note-type" id="note-type-picker">
+			  <option class="text-center" >General</option>
+			  <option class="text-center" >Objectives</option>
+			  <option class="text-center" >Competencies</option>
+			  <option class="text-center" >Feedback</option>
+			  <option class="text-center" >Development</option>
+			</select>
+		</div>
 	</div>
 	<div class="row">
-			<div class="form-group col-md-12">
-				<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+		<div class="form-group col-md-12" >
+			<label for="general-note-input">Add note*:</label>
+			<textarea class="note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-10">
+			<div class="row notes-div Objectives" style="display: none;">
+				<div class="col-md-7">
+					<h5><b>Link to Objective:</b></h5>
+				</div>
+				<div class="col-md-3">
+					<select class="selectpicker select-note-link" id="objective-links">
+						<option class="text-center" >1</option>
+						<option class="text-center" >2</option>
+						<option class="text-center" >3</option>
+						<option class="text-center" >4</option>
+						<option class="text-center" >5</option>
+					</select>
+				</div>
 			</div>
+			<div class="row notes-div Competencies" style="display: none;">
+				<div class="col-md-7">
+					<h5><b>Link to Competency:</b></h5>
+				</div>
+				<div class="col-md-3">
+					<select class="selectpicker select-note-link" id="competency-links">
+						<option class="text-center" >1</option>
+						<option class="text-center" >2</option>
+						<option class="text-center" >3</option>
+						<option class="text-center" >4</option>
+						<option class="text-center" >5</option>
+					</select>
+				</div>
+			</div>
+			<div class="row notes-div Feedback" style="display: none;">
+				<div class="col-md-7">
+					<h5><b>Link to Feedback:</b></h5>
+				</div>
+				<div class="col-md-3">
+					<select class="selectpicker select-note-link" id="feedback-links">
+						<option class="text-center" >1</option>
+						<option class="text-center" >2</option>
+						<option class="text-center" >3</option>
+						<option class="text-center" >4</option>
+						<option class="text-center" >5</option>
+					</select>
+				</div>
+			</div>
+			<div class="row notes-div Development " style="display: none;">
+				<div class="col-md-7">
+					<h5><b>Link to Development:</b></h5>
+				</div>
+				<div class="col-md-3">
+					<select class="selectpicker select-note-link" id="development-links">
+						<option class="text-center" >1</option>
+						<option class="text-center" >2</option>
+						<option class="text-center" >3</option>
+						<option class="text-center" >4</option>
+						<option class="text-center" >5</option>
+					</select>
+				</div>
+			</div>
+			
+		</div>
+		<div class="form-group col-md-2">
+			<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+		</div>
 	</div>
 </div>
 <div class="row content">
 	<div class="row">
 		<div class="form-group col-md-12 scrollable-menu">
-			<ul class="list-group" id="general-notes-list"></ul>
+			<ul class="list-group notes-div General" id="general-notes-list"></ul>
+			<ul class="list-group notes-div Objectives" style="display:none" id="objective-notes-list"></ul>
+			<ul class="list-group notes-div Competencies" style="display:none" id="competency-notes-list"></ul>
+			<ul class="list-group notes-div Feedback" style="display:none" id="feedback-notes-list"></ul>
+			<ul class="list-group notes-div Development" style="display:none" id="development-notes-list"></ul>
 		</div>
 	</div>
 </div>
