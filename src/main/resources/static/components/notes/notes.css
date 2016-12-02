@@ -30,3 +30,13 @@
   height: 100%;
   
 }
+
+.select-note-type.btn-group .dropdown-toggle .filter-option {
+	text-align: center;
+	font-size: 18px;
+}
+
+.select-note-link.btn-group .dropdown-toggle .filter-option {
+	text-align: center;
+	font-size: 14px;
+}
