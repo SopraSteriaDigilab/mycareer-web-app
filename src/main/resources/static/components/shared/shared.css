@@ -91,7 +91,7 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 
 /*----------------------------------------------------- Notes -----------------------------------------------------*/
 #resizable {
-	z-index: 2;
+	z-index: 100;
 	position:fixed;
 	/*right:-400px;*/
 	left:100vw;
@@ -99,7 +99,7 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	height: 100vh;
 	background: #f5f5f5;
 	border: 2px solid #DDD;
-	
+	box-sizing:content-box ;
 	
 }
 
