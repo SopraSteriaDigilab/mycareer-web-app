@@ -1,10 +1,11 @@
 $(function() {
 	//initialise jquery ui resizable component
 	initResizable();
-	
-	//Get general-notes
+
+	//Get general-notes and link ids
 	getNotesList(getADLoginID());
-    	
+	getNoteLinks(getADLoginID());
+	
 	$("#notes-open").click(function(e) { openNotesBar() });
 	 
     $("#notes-close").click(function(e) { closeNotesBar() });
@@ -14,19 +15,24 @@ $(function() {
 	
 	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });
-	
-	
+
 });
 
-var noteTypeList = ["General", "Objectives", "Competencies", "Feedback", "Development", "Team"];
+var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
+var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
 
 function initResizable(){
+	$('[data-toggle="tooltip"]').tooltip();
+	
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
 		 handles: "w"
 	});
 	
-	$('.selectpicker').selectpicker({ width: 'fit'});
+	$('.selectpicker').selectpicker({ 
+		dropupAuto: false,
+		width: 'fit'
+	});
 	
 	$('#note-type-picker').on('change', function(){
 	    var selected = $(this).find("option:selected").val();
@@ -46,6 +52,7 @@ function getNotesList(userID){
           	var date = timeStampToDateTime(new Date(val.timeStamp));
           	addNoteToList(val.fromWho, val.noteType, val.linkID, val.body, date);
           });
+      	
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
@@ -53,6 +60,41 @@ function getNotesList(userID){
       }
   });
 }
+
+function getNoteLinks(userID){
+	  $.ajax({
+	      url: 'http://127.0.0.1:8080/getIDTitlePairs/'+userID,
+	      method: 'GET',
+	      success: function(data){
+	          $.each(data, function(key, val){
+	          	 
+	          	 $.each(val, function(k, v){
+	          		 if(key === "Competencies"){
+	          			addLinkID(key.toLowerCase(), ("#"+(++k)+" "+v), k);
+	          		 }else{
+	          			addLinkID(key.toLowerCase(), ("#"+k), v);
+	          		 }
+	          	 });
+	          });
+	      },
+	      error: function(XMLHttpRequest, textStatus, errorThrown){
+	          console.log('error', errorThrown);
+	          toastr.error("Sorry, there was a problem getting notes, please try again later.");
+	      }
+	  });
+	
+}
+
+function addLinkID(divID, id, title){
+	$("#"+divID+"-links").append(optionHTML(id, title)).selectpicker("refresh");
+}
+
+function optionHTML(id, title){
+	var HTML = "<option>"+id+"</option>";
+	return HTML;
+}
+
+
 
 //Method to add note to list directly
 function addNoteToList(fromWho, noteType, linkID, body, date){
@@ -71,7 +113,7 @@ function addNoteToList(fromWho, noteType, linkID, body, date){
 			listID = "feedback";
 			break;
 		case 4:
-			listID = "development";
+			listID = "development-needs";
 			break;
 		case 5:
 			listID = "team";
@@ -80,10 +122,18 @@ function addNoteToList(fromWho, noteType, linkID, body, date){
 	$("#"+listID+"-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
 }
 
+
 //Method to return html
 function notesListHTML(fromWho, noteType, linkID, body, date){
 	var link="";
-	if(linkID>0) link = "#" + linkID; 
+	if(parseInt(noteType)>0){
+		link = linkID
+		if(parseInt(noteType)==2){
+			link++;
+		}
+		link = '#'+link;
+	};
+
 	
 	var html = " \
 	  <li class='list-group-item'> \
@@ -100,22 +150,29 @@ function notesListHTML(fromWho, noteType, linkID, body, date){
 	return html;	
 }
 
-function addLinkID(id){
-	if(id > 0){
-		return id;
-	}
-}
+//function addLinkID(id){
+//	if(id > 0){
+//		return id;
+//	}
+//}
 
 
 //Method to get data and submit data
 function clickSubmitNote(){
 	var userID = getADLoginID();
 	var noteTypeText = $("#note-type-picker").find("option:selected").val();
-	var noteType = noteTypeList.indexOf(noteTypeText);
-	var linkID = 0;
+	var noteType = noteTypeList.indexOf(noteTypeText.toLowerCase());	 
 	var note = $('#note-text').val().trim();
 	var from = getADfullName();
 	var date = timeStampToDateTime(new Date());
+	var linkID = linkID = $("#"+noteTypeText.toLowerCase()+"-links").find("option:selected").val();;
+	if(noteTypeText === "Competencies"){
+		linkID = competencyList.indexOf(linkID);
+	}
+	if(noteTypeText === "General"){
+		linkID = 0;
+	}
+	
 	addNoteToDB(userID, noteType, linkID, from, note);
 	addNoteToList(from, noteType, linkID, note, date);
 	

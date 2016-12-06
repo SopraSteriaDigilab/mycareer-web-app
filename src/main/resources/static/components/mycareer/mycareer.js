@@ -1,7 +1,6 @@
 $(function() {
 	
 	authenticate(getUserName());
-
 });
 
 var ADfullName = null;
