@@ -98,28 +98,30 @@ function optionHTML(id, title){
 
 //Method to add note to list directly
 function addNoteToList(fromWho, noteType, linkID, body, date){
-	var listID = "";
-	switch(parseInt(noteType)){
-		case 0:
-			listID = "general";
-			break;
-		case 1:
-			listID = "objective";
-			break;
-		case 2:
-			listID = "competency";
-			break;
-		case 3:
-			listID = "feedback";
-			break;
-		case 4:
-			listID = "development-needs";
-			break;
-		case 5:
-			listID = "team";
-			break;
-	}
-	$("#"+listID+"-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
+//	var listID = "";
+//	switch(parseInt(noteType)){
+//		case 0:
+//			listID = "general";
+//			break;
+//		case 1:
+//			listID = "objective";
+//			break;
+//		case 2:
+//			listID = "competency";
+//			break;
+//		case 3:
+//			listID = "feedback";
+//			break;
+//		case 4:
+//			listID = "development-needs";
+//			break;
+//		case 5:
+//			listID = "team";
+//			break;
+//	}
+//	$("#"+listID+"-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
+
+	$("#general-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
 }
 
 
@@ -133,13 +135,12 @@ function notesListHTML(fromWho, noteType, linkID, body, date){
 //		}
 //		link = '#'+link;
 //	};
-
 	
 	var html = " \
 	  <li class='list-group-item'> \
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
-			<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> \
+			<!--<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> --> \
 			<div class='col-md-4'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 		</div> \
 		<div class='row'> \
