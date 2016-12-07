@@ -1,5 +1,5 @@
 $(function() {
-    
+
 	//Get list of reportees
 	getReportees();
     
