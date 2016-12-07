@@ -11,14 +11,16 @@
 			<h2 >My Team</h2>
 		</div>
 		<div class="col-md-6">
-		<br/>
-			<ul class="nav nav-tabs nav-justified" id="navTab">
-				<li class="active"><a href="#reportee-obj-list" data-toggle="tab"> Objectives </a></li>
-				<li><a href="#reportee-comp-list" data-toggle="tab"> Competencies </a></li>
-				<li><a href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
-				<li><a href="#reportee-dev-needs-list" data-toggle="tab"> Needs </a></li>
-				<li><a href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
-			</ul>
+			<div class="hidden" id="reportee-header">
+				<br/>
+				<ul class="nav nav-tabs nav-justified" id="navTab">
+					<li class="active"><a href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
+					<!-- <li><a href="#reportee-comp-list" data-toggle="tab"> Competencies </a></li>-->
+					<li><a href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
+					<li><a href="#reportee-dev-needs-list" data-toggle="tab"> Needs </a></li>
+					<li><a href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
+				</ul>
+			</div>
 		</div>
 		<div class="col-md-3 vertical-centre ">
 				<button type="button" class="btn btn-link pull-right" id="notes-open">
@@ -35,15 +37,22 @@
 	<div class="col-md-3" id='reportee-list'></div>
 	
 	<div class="col-md-6">
-		<div class="tab-content">
-			<div id="reportee-obj-list" class="tab-pane fade in active"></div>
-			<div id="reportee-comp-list" class="tab-pane fade in "></div>
+		<div class="tab-content hidden" id="reportee-body">
+			<div id="reportee-obj-tab" class="tab-pane fade in active">
+				<div class="row">
+					<div class="col-md-12">
+						<h5><b>Competency Focus: </b><span id="reportee-comp-list"></span></h5>
+					</div>
+				</div>
+				<div id="reportee-obj-list"></div>
+			</div>
+			<!--<div id="reportee-comp-list" class="tab-pane fade in "></div> -->
 			<div id="reportee-feed-list" class="tab-pane fade in "></div>
 			<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
 			<div id="reportee-notes-tab" class="tab-pane fade in ">
 				<div class="row">
 					<div class="col-md-12">
-						<button type="button" class="btn btn-link pull-right" id="notes-open"><u>Add Note for Ridhwan Nacef</u></button>
+						<button type="button" class="btn btn-link pull-right" id="add-reportee-note"><u>Add Note for <span class="reportee-name"></span></u></button>
 					</div>
 				</div>
 				<div id="reportee-notes-list"></div>
@@ -56,3 +65,30 @@
 
 
 </div><!--end of container -->
+
+
+
+<!--Reportee Note Modal -->
+<div class="modal fade" id="reportee-note-modal" role="dialog">
+	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title">Adding note for <span class="reportee-name"></span></h4>
+      		</div>
+			<div class="modal-body">
+      			<div class="row">
+					<div class="form-group col-md-12" >
+						<label for="general-note-input">Note*:</label>
+						<textarea id="reportee-note-input" class="reportee-note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
+					</div>
+				</div>
+	      	</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-reportee-note" disabled>Submit</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
