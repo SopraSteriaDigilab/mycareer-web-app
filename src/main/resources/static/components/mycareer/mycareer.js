@@ -1,7 +1,6 @@
 $(function() {
 	
 	authenticate(getUserName());
-	
 });
 
 var ADfullName = null;
@@ -12,6 +11,7 @@ var isManager = null;
 function getUserName(){
 	
 	return "chmcinty";
+
 }
 
 //Authenticate the user against AD
@@ -35,7 +35,8 @@ function authenticate(username){
 
 //Load relevant page based on section in url
 function loadPage(section){
-	$( "#navbar" ).load( "../components/navbar/navbar.html" );
+	$( "#navbar" ).load( "../components/navbar/navbar.html");
+	$( "#notes" ).load( "../components/notes/notes.html");
 	
 	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
 		  $( "#myapp" ).html( data );

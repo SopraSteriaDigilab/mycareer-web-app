@@ -1,8 +1,8 @@
 $(function() {
 	
-	//Get list of objectives
+//	Get list of objectives
 	getObjectivesList(getADLoginID());
-    
+	
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
@@ -17,10 +17,9 @@ $(function() {
     $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}) });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}) });
-    
+
     
 });
-
 
 
 //HTTP request for INSERTING an objective to DB

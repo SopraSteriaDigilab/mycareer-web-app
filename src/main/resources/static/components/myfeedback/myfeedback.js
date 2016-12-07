@@ -182,6 +182,7 @@ function applyDateFilter(){
 
 function clearDateFilter(){
 	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
+	updateEndDate();
 	$(".filterable-feedback").each(function(index){ $(this).show(); });
 }
 

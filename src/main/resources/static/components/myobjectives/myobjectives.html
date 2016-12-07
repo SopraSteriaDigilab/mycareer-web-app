@@ -5,6 +5,9 @@
 <!--Containter for full page -->
 <div class="container">
 
+
+
+
 		<!--Page Header -->
 		<div class="row">
 			<div class="col-md-6" >
@@ -15,8 +18,12 @@
 					<button type="button" class="btn btn-default pull-right" id="add-obj">Add Objective</button>
 				</div>
 			</div>
-			<div id="profile"></div>
-			
+			<!--  <div id="profile"></div>-->
+			<div class="col-md-6 vertical-centre ">
+				<button type="button" class="btn btn-link pull-right" id="notes-open">
+						<u>My Notes</u>
+				</button>
+			</div>
 		</div>
 		<!--End of Page Header -->
 		<br/>
@@ -24,12 +31,12 @@
 		<div class="row">
 			<div class="col-md-6">
 				<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
-					<li id="obj-all-tab"class="active"><a data-target=".proposed, .started, .completed" data-toggle="tab"> All (3) </a></li>
-					<li id="obj-proposed-tab"><a data-target=".proposed" data-toggle="tab"> Proposed (0) </a></li>
-					<li id="obj-started-tab"><a data-target=".started" data-toggle="tab"> Started (0) </a></li>
-					<li id="obj-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed (0) </a></li>
-					<li><a data-target="#obj-archived" data-toggle="tab"> Archived (0)</a></li>
-					<li class="dropdown">
+					<li id="obj-all-tab"class="active"><a data-target=".proposed, .started, .completed" data-toggle="tab"> All </a></li>
+					<li id="obj-proposed-tab"><a data-target=".proposed" data-toggle="tab"> Proposed </a></li>
+					<li id="obj-started-tab"><a data-target=".started" data-toggle="tab"> Started  </a></li>
+					<li id="obj-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed </a></li>
+					<li><a data-target="#obj-archived" data-toggle="tab"> Archived </a></li>
+					<!--<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By
 							<span class="caret"></span>
 						</a>
@@ -37,18 +44,15 @@
 							<li><a href="#">Duration</a></li>
 							<li><a href="#">Progress</a></li>
 						</ul>
-					</li>
+					</li>-->
 				</ul>
 			</div>
 			<div class="col-md-6">
-			  <ul class="nav nav-tabs  nav-justified">
-			    <li class="active"><a data-toggle="tab" href="#competencies-tab">Competencies</a></li>
-			    <li><a data-toggle="tab" href="#general-notes-tab">General Notes</a></li>
-			  </ul>
+			    <h2 class="text-center">Competencies</h2>
 			</div>
 		</div>
 		<!-- End of Nav Pills header -->
-		<br>
+		
 		
 		
 	<!-- My Objectives half  -->
