@@ -29,7 +29,7 @@ function addReporteeToList(employeeID, fullName, userName){
 
 function reporteeListItemHTML(employeeID, fullName, userName){
 	var HTML = " \
-		<div class='panel panel-default' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+")' > \
+		<div class='panel panel-default' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\")' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -45,12 +45,17 @@ function reporteeListItemHTML(employeeID, fullName, userName){
  
 }
 
-function getReporteeCareer(id) {
+function getReporteeCareer(id, name) {
+	initView(name)
 	getObjectivesList(id);
 	getCompetencyList(id);
 	getFeedbackList(id);
 	getDevelopmentNeedsList(id);
 	getReporteeNotesList(id);
+}
+
+function initView(name){
+	$(".reportee-name").text(name);
 }
 
 //Function to add objective to list
