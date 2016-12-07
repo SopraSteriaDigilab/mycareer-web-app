@@ -141,7 +141,7 @@ function notesListHTML(fromWho, noteType, linkID, body, date){
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
 			<!--<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> --> \
-			<div class='col-md-4'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
+			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 		</div> \
 		<div class='row'> \
 			<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \

@@ -151,8 +151,8 @@ function checkSelected(isSelected){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Feedback -------------------------------------
-function getFeedbackList(userID){
-    //Gets the List of Feedback from the DB 
+function getGeneralFeedbackList(userID){
+    //Gets the List of General Feedback from the DB 
     $.ajax({
         url: 'http://127.0.0.1:8080/getFeedback/'+userID,
         method: 'GET',
@@ -160,9 +160,53 @@ function getFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                addFeedbackToList(val.id, val.fromWho, val.description, longDate, classDate);
+                addGeneralFeedbackToList(val.id, val.fromWho, val.description, longDate, classDate);
                 
         });//end of for each loop
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
+        }
+        
+    });//End of Ajax request
+}
+
+function getRequestedFeedbackList(userID){
+    //Gets the List of Requested Feedback from the DB 
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getRequestedFeedback/'+userID,
+        method: 'GET',
+        success: function(data){
+            $.each(data, function(key, val){
+                var recipientList = new Array();
+                var requestID = val.id;
+                var feedbackRequests = val.requestList;
+                
+                addGroupPlaceholder(requestID);
+                
+                for(var fbr in feedbackRequests){       
+                    var feedbackID = feedbackRequests[fbr].id;
+                    var to = feedbackRequests[fbr].recipient;
+                    var longDate = timeStampToLongDate(new Date(feedbackRequests[fbr].timeStamp));
+                    var fbs = feedbackRequests[fbr].replies;
+                    
+                    addRequestPlaceholder(requestID, feedbackID, to);
+                    
+                    for(var f in fbs){
+                        var replyID = fbs[f].id;
+                        var from = fbs[f].fromWho;
+                        var description = fbs[f].emailBody;
+                        var replyTime = timeStampToLongDate(new Date(fbs[f].timeStamp));
+                        
+                        
+                        addRequestedFeedbackDesc(feedbackID, feedbackID+"-"+replyID, from, description, replyTime);
+                    }
+                     recipientList.push(to);
+                }
+                    addRequestFeedbackSenders(requestID, recipientList, longDate);
+
+        });//end of for each loop   
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
