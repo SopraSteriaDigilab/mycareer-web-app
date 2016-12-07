@@ -56,34 +56,34 @@ function getReporteeCareer(id) {
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived){
 		if(isArchived === false || isArchived === 'false'){
-			$("#reportee-obj-list").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived));
+			$("#reportee-obj-list").append(reporteeObjectiveListHTML(id, title, description, expectedBy, status, isArchived));
 		}
 }
 
 //Method to add competencies to list display
 function addCompetencyToList(id,title,compentencyDescription,isSelected){
-    $("#reportee-comp-list").append(competenciesListHTML(id,title,compentencyDescription,isSelected));
+    $("#reportee-comp-list").append(reporteeCompetenciesListHTML(id,title,compentencyDescription,isSelected));
 }
 
 //Method to add development needs to list display
 function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
 	lastDevID = id;
-	$("#reportee-dev-needs-list").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
+	$("#reportee-dev-needs-list").append(reporteeDevelopmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
 //Method to add feedback descriptions to list
 function addFeedbackToList(id, sender, description, date, classDate){
-    $('#reportee-feed-list').append(feedbackDescriptionListHTML(id, sender, description, date, classDate));
+    $('#reportee-feed-list').append(reporteeFeedbackDescriptionListHTML(id, sender, description, date, classDate));
 }
 
 //Method to add note to list directly
 function addNoteToReporteeList(fromWho, body, date){
-	$("#reportee-notes-list").prepend(notesListHTML(fromWho, body, date));
+	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }
 
 
 //Function that returns objective list in html format with the parameters given
-function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
+function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
 	var html = " \
     <div class='panel-group' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -151,7 +151,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 
 
 //Method to return competency html
-function competenciesListHTML(id,title,compentencyDescription,isSelected){
+function reporteeCompetenciesListHTML(id,title,compentencyDescription,isSelected){
     var html = " \
         <div class='panel panel-default'> \
             <div class='panel-heading panel-heading-sm'> \
@@ -172,7 +172,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
     return html;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate){
+function reporteeFeedbackDescriptionListHTML(id, sender, description, date, classDate){
 	var HTML = " \
 	<li class='list-group-item'> \
 			<div class='row'> \
@@ -188,7 +188,7 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate){
 }
 
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
+function reporteeDevelopmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
 	var html = " \
 	    <div class='panel-group' id='dev-need-item-"+id+"'> \
 	        <div class='panel panel-default' id='panel'> \
@@ -256,7 +256,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 
 
 //Method to return html
-function notesListHTML(fromWho, body, date){
+function reporteeNotesListHTML(fromWho, body, date){
 
 	var html = " \
 	  <li class='list-group-item'> \
