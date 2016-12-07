@@ -312,6 +312,8 @@ function objectivesButtonsHTML(id, isArchived){
 
 
 
+
+
 //Method for updating progress bar wth a value
 //function updateProgressBar(value){
 //	$('#objStatus').width(value + "%");
