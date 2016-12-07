@@ -1,7 +1,10 @@
 $(function() {
     
-	//Get list of feedback
-	getFeedbackList(getADLoginID());
+	//Get list of general feedback
+    getGeneralFeedbackList(getADLoginID());
+    
+    //Get list of requested feedback
+    getRequestedFeedbackList(getADLoginID());
 	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
@@ -33,33 +36,29 @@ function initFeedbackDatePicker(id, start){
 
 var firstFeedback = true;
 
-function addFeedbackToList(id, sender, description, date, classDate){
-	  $('#feeList').append(feedbackSendersListHTML(id, sender, date, classDate)); //End of feeList append
-      $('#feeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate));
+function addGeneralFeedbackToList(id, sender, description, date, classDate){
+      $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, "general", sender, description, date, classDate));
 }
+
 
 function feedbackSendersListHTML(id, sender, date, classDate){
 	var HTML = " \
-	        <div class='panel panel-default filterable-feedback d-"+classDate+"' id='view-fee-"+id+" '> \
-	        <div class='panel-heading'> \
+	        <div class='panel panel-default filterable-feedback d-"+classDate+"' id='view-fee-"+id+"' style='cursor:pointer'> \
+	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
 	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
 	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
-	            </div> \
-	            <div class='row'> \
-	                <div class='col-md-offset-6 col-md-6'> \
-	                	<button type='button' class='btn btn-link pull-right' onClick='showGeneralFeedback("+id+")'><h6>View</h6></button> \
-	                </div> \
 	            </div> \
 	        </div> \
 	      </div> ";
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate){
+function feedbackDescriptionListHTML(id, type, sender, description, date, classDate){
 	var HTML = " \
-	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" general-feedback d-"+classDate+"' id='general-feedback-"+id+"'> \
-		<input type='hidden' class='general-feedback-id' value='"+id+"'> \
+	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" "+type+"-feedback d-"+classDate+"' id='"+type+"-feedback-"+id+"'> \
+		<input type='hidden' class='"+type+"-feedback-id' value='"+id+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
@@ -73,6 +72,66 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate){
 	
 	return HTML
 }
+
+function addRequestFeedbackSenders(groupID, to, longDate){
+     $('#requested-feedback-tab').append(feedbackRequestersListHTML(groupID, to, longDate));
+    
+}
+
+function addRequestedFeedbackDesc(feedbackID, id, sender, description, date){
+    $('#feedbackID-'+feedbackID).append(feedbackDescriptionListHTML(id, "requested", sender, description, date, ""));
+    
+}
+
+function feedbackRequestersListHTML(requestID, to, longDate){
+	var HTML = " \
+	        <div class='panel panel-default filterable-feedback' id='view-fee-"+requestID+"' style='cursor:pointer'> \
+	        <div class='panel-heading' onClick='showRequestedFeedback(\""+requestID+"\")'> \
+	            <div class='row'> \
+	               <div class='col-md-8'><h5><b>Feedback Request</b></h5></div> \
+	               <div class='col-md-4'><h6 class='pull-right'><b>"+ longDate +"</b></h6></div> \
+	            </div> \
+                <div class='row'> \
+                    <div class='col-md-12 wrap-text'><h5>Sent to: </h5><h6>"+ to +"</h6></div> \
+                </div> \
+	        </div> \
+	      </div> ";
+	return HTML;
+}
+
+function groupPlaceholderHTML(groupID){
+    var HTML = " \
+        <div id='groupID-"+groupID+"'> \
+            <div class='row'> \
+                <div class='col-md-12'> \
+                </div> \
+            </div> \
+        </div> \
+    ";
+    
+return HTML;
+}
+
+function requestPlaceholderHTML(feedbackID, recipient){
+    var HTML = " \
+            <div id='feedbackID-"+feedbackID+"'> \
+                <div class='row'> \
+                    <div class='col-md-12'> \
+                        <h5>Requested to: "+recipient+"</h5> \
+                    </div> \
+                </div> \
+            </div> \
+    ";
+    
+return HTML;
+}
+
+function addGroupPlaceholder(groupID){
+    $('#requestedFeeDescription').append(groupPlaceholderHTML(groupID));
+}
+ function addRequestPlaceholder(groupID, feedbackID, recipient){
+    $('#groupID-'+groupID).append(requestPlaceholderHTML(feedbackID, recipient));
+ }
 
 function updateEndDate(){
 	var startDate = formatFeedbackDate($("#feedback-start-date").val());
@@ -128,11 +187,22 @@ function clearDateFilter(){
 }
 
 
-
 function showGeneralFeedback(id){
 	generalFeedbackID = "general-feedback-"+id;
 	$('.general-feedback').each(function(i) {
 		if(generalFeedbackID === this.id){
+			$(this).removeClass("hidden");
+		}else{
+			$(this).addClass("hidden");
+		}
+
+	});
+}
+
+function showRequestedFeedback(requestID){
+    requestedFeedbackID = "requested-feedback-"+requestID;
+	$('.requested-feedback').each(function(i) {
+		if(requestedFeedbackID === this.id){
 			$(this).removeClass("hidden");
 		}else{
 			$(this).addClass("hidden");

@@ -9,7 +9,6 @@ var isManager = null;
 
 //Hardcoded for now
 function getUserName(){
-	
 //	return "rnacef";
 	return "dbolla";
 }

@@ -141,7 +141,7 @@ function notesListHTML(fromWho, noteType, linkID, body, date){
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
 			<!--<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> --> \
-			<div class='col-md-4'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
+			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 		</div> \
 		<div class='row'> \
 			<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
@@ -175,27 +175,6 @@ function clickSubmitNote(){
 	
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
-}
-
-
-//Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://127.0.0.1:8080/addNote/"+userID;
-	var data = {};
-	data["noteType"] = noteType;
-	data["linkID"] = linkID;
-	data["from"] = from;
-	data["body"] = body;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
 }
 
 function showSection(section){
