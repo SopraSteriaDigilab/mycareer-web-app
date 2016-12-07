@@ -2,8 +2,20 @@ $(function() {
 
 	//Get list of reportees
 	getReportees();
+	
+	//onClick for opening modal
+	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
+
+	//Validation for the add reportee modal
+	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+	
+	//onClick for Submit modal
+	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
     
 });//End of Document Function
+
+var reporteeSectionHidden = true;
+var selectedReporteeID = 0;
 
 //Method to get the Reportee list
 function getReportees(){
@@ -46,16 +58,108 @@ function reporteeListItemHTML(employeeID, fullName, userName){
 }
 
 function getReporteeCareer(id, name) {
-	initView(name)
-	getObjectivesList(id);
-	getCompetencyList(id);
-	getFeedbackList(id);
-	getDevelopmentNeedsList(id);
-	getReporteeNotesList(id);
+	if(checkSelectedUser(parseInt(id))){
+		clearReporteeLists();
+		showReporteeView(name)
+		getObjectivesList(id);
+		getReporteeCompetencyList(id);
+		getGeneralFeedbackList(id);
+		getDevelopmentNeedsList(id);
+		getReporteeNotesList(id);
+	}
 }
 
-function initView(name){
-	$(".reportee-name").text(name);
+function getReporteeCompetencyList(userID){
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        method: 'GET',
+        success: function(data){
+        	var competencyList = [];
+            $.each(data, function(key, val){
+                 if(val.isSelected){
+                	 competencyList.push(val.title);
+                 }
+            });
+            addCompetenciesToList(competencyList);
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
+        }
+    });
+}
+
+////Method to get the Notes list
+function getReporteeNotesList(userID){
+    $.ajax({
+        url: 'http://127.0.0.1:8080/getNotes/'+userID,
+        method: 'GET',
+        success: function(data){
+            $.each(data, function(key, val){
+            	
+            	var date = timeStampToDateTime(new Date(val.timeStamp));
+            	addNoteToReporteeList(val.fromWho, val.body, date);
+            });
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting notes, please try again later.");
+        }
+    });
+}
+
+function clearReporteeLists(){
+	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
+}
+
+function checkSelectedUser(id){
+	if(selectedReporteeID == id){
+		return false;
+	}
+	selectedReporteeID = id;
+	return true;
+}
+
+function showReporteeView(name){
+	$(".reportee-name").each(function(){
+		$(this).text(name);
+	});
+	
+	if(reporteeSectionHidden){
+		$("#reportee-header").removeClass("hidden");
+		$("#reportee-body").removeClass("hidden");
+		reporteeSectionHidden = false;
+	}
+}
+
+//Function to set up and open ADD objective modal
+function openAddReporteeNoteModal(){
+	$("#reportee-note-input").val("");
+	showReporteeNoteModal(true);
+}
+
+//Method to show/hide objective modal
+function showReporteeNoteModal(show){
+	if(show){
+		$('#submit-reportee-note').prop("disabled", true);
+		$('#reportee-note-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		$('#reportee-note-modal').modal('hide');
+	}
+}
+
+function clickSubmitReporteeNote(){
+	var reporteeID = selectedReporteeID;
+	var from = getADfullName();
+	var note = $("#reportee-note-input").val().trim();
+	var date = timeStampToDateTime(new Date());
+	var noteType = 0;
+	var linkID = 0;
+	
+	addNoteToDB(reporteeID, noteType, linkID, from, note);
+	addNoteToReporteeList(from, note, date);
+	
+	showReporteeNoteModal(false);
 }
 
 //Function to add objective to list
@@ -66,8 +170,8 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 }
 
 //Method to add competencies to list display
-function addCompetencyToList(id,title,compentencyDescription,isSelected){
-    $("#reportee-comp-list").append(reporteeCompetenciesListHTML(id,title,compentencyDescription,isSelected));
+function addCompetenciesToList(competencies){
+	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
 
 //Method to add development needs to list display
@@ -77,7 +181,7 @@ function addDevelopmentNeedToList(id, title, description, category, expectedBy, 
 }
 
 //Method to add feedback descriptions to list
-function addFeedbackToList(id, sender, description, date, classDate){
+function addGeneralFeedbackToList(id, sender, description, date, classDate){
     $('#reportee-feed-list').append(reporteeFeedbackDescriptionListHTML(id, sender, description, date, classDate));
 }
 
@@ -156,25 +260,17 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
 
 
 //Method to return competency html
-function reporteeCompetenciesListHTML(id,title,compentencyDescription,isSelected){
-    var html = " \
-        <div class='panel panel-default'> \
-            <div class='panel-heading panel-heading-sm'> \
-                <div class='panel-title'> \
-                    <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
-                        <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"'></span> \
-                        <span id='competencyTitle"+ id +"'>" + title + "</span>  \
-                        <a class='collapsed' data-toggle='collapse' href='#collapse-" + id + "'></a> \
-                </div> \
-            </div> \
-            <div id='collapse-"+id+"' class='panel-collapse collapse'> \
-                <div class='panel-body'> \
-                    <h5>"+compentencyDescription+"</h5> \
-                </div> \
-            </div> \
-        </div><!--End of panel --> \
-    "
-    return html;
+function reporteeCompetenciesListHTML(competencies){
+	var HTML = "";
+	for (var i = 0; i < competencies.length; i++){
+		HTML += competencies[i];
+		if(i == competencies.length-1){
+			HTML += ".";
+		}else{
+			HTML += ", ";
+		}
+	}
+    return HTML;
 }
 
 function reporteeFeedbackDescriptionListHTML(id, sender, description, date, classDate){

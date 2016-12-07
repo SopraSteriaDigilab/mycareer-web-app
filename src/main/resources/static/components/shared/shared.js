@@ -252,24 +252,27 @@ function isOngoing(date){
 
 //--------------------------------------- Notes --------------------------------------
 //
-////Method to get the Notes list
-function getReporteeNotesList(userID){
-    $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/'+userID,
-        method: 'GET',
-        success: function(data){
-            $.each(data, function(key, val){
-            	
-            	var date = timeStampToDateTime(new Date(val.timeStamp));
-            	addNoteToReporteeList(val.fromWho, val.body, date);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting notes, please try again later.");
-        }
-    });
+
+//Method to make ajax call to add note to database
+function addNoteToDB(userID, noteType, linkID, from, body ){
+	var url = "http://127.0.0.1:8080/addNote/"+userID;
+	var data = {};
+	data["noteType"] = noteType;
+	data["linkID"] = linkID;
+	data["from"] = from;
+	data["body"] = body;
+    
+	var settings = {
+	  "url": url,
+	  "method": "POST",
+	  "data": data
+	}
+
+	$.ajax(settings).done(function (response) {
+	  toastr.success(response);
+	});
 }
+
 
 //------------------------------------------------------------------------------------
 
