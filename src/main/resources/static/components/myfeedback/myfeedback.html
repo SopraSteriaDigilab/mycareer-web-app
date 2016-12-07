@@ -6,11 +6,20 @@
 
 <!--Page Header -->
 		<div class="row">
-			<div class="col-md-6" >
-				<div class="col-md-6">
-					<h2 >My Feedback</h2>
-				</div>
-			</div>
+            <div class="col-md-6">
+			     <div class="col-md-6">
+                    <h2>My Feedback</h2>
+                </div>      
+                <div class="col-md-6">
+                    <ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
+                        <li id="general-feeback-list" class="active">
+                            <a data-toggle="tab" data-target="#general-feedback-tab, #generalFeeDescription">General</a></li>
+                        <li id="requested-feeback-list">
+                            <a data-toggle="tab" data-target="#requested-feedback-tab, #requestedFeeDescription">Requested</a></li>
+                    </ul>
+                </div>
+            </div>
+
 			<div class="col-md-6 vertical-centre ">
 				<button type="button" class="btn btn-link pull-right" id="notes-open">
 						<u>My Notes</u>
@@ -104,14 +113,27 @@
 
 			<!-- List of Feedback -->
 			<div class="col-md-3">
-				<div id="feeList"></div>
-			</div>
-			<!--end of col-md-3 -->
+                <div class="tab-content">
+                    <div id="general-feedback-tab" class="tab-pane fade in active">
+                    </div><!--end of general feedback tab -->
+                    
+                    <div id="requested-feedback-tab" class="tab-pane fade in">
+                    
+                    </div><!--end of requested feedback tab -->
+                </div><!--end of tab content -->
+                
+			</div><!--end of col-md-3 -->
 
+    
 			<!-- Section that will show the feedback -->
 			<div class="col-md-6">
-				<div id="feeDescription"></div>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="generalFeeDescription"></div>
+                    <div class="tab-pane fade in" id="requestedFeeDescription"></div>
+                </div>
 			</div>
+    
+            
 
 	
 </div><!--end of container -->
