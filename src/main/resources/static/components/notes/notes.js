@@ -177,27 +177,6 @@ function clickSubmitNote(){
 	$('#submit-note').prop("disabled", true);
 }
 
-
-//Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://127.0.0.1:8080/addNote/"+userID;
-	var data = {};
-	data["noteType"] = noteType;
-	data["linkID"] = linkID;
-	data["from"] = from;
-	data["body"] = body;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-}
-
 function showSection(section){
 	$(".notes-div").each(function(i){
 		$(this).fadeOut(1);
