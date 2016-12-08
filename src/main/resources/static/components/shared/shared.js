@@ -160,7 +160,7 @@ function getGeneralFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                addGeneralFeedbackToList(val.id, val.fromWho, val.description, longDate, classDate);
+                addGeneralFeedbackToList(val.id, val.fromWho, val.emailBody, longDate, classDate);
                 
         });//end of for each loop
         },
