@@ -38,7 +38,7 @@ var firstFeedback = true;
 
 function addGeneralFeedbackToList(id, sender, description, date, classDate){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate));
-      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, "general", sender, description, date, classDate));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, "general"));
 }
 
 
@@ -55,10 +55,9 @@ function feedbackSendersListHTML(id, sender, date, classDate){
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, type, sender, description, date, classDate){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate, type){
 	var HTML = " \
-	<div class='panel panel-default filterable-feedback "+ showIfFirstFeeback() +" "+type+"-feedback d-"+classDate+"' id='"+type+"-feedback-"+id+"'> \
-		<input type='hidden' class='"+type+"-feedback-id' value='"+id+"'> \
+	<div class='panel panel-default filterable-feedback "+type+"-feedback "+hideIfGeneral(type)+" d-"+classDate+"' id='feedback-"+id+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
@@ -79,14 +78,14 @@ function addRequestFeedbackSenders(groupID, to, longDate){
 }
 
 function addRequestedFeedbackDesc(feedbackID, id, sender, description, date){
-    $('#feedbackID-'+feedbackID).append(feedbackDescriptionListHTML(id, "requested", sender, description, date, ""));
+    $('#feedback-request-'+feedbackID+'-body').append(feedbackDescriptionListHTML(id, sender, description, date, "", "requested"));
     
 }
 
 function feedbackRequestersListHTML(requestID, to, longDate){
 	var HTML = " \
 	        <div class='panel panel-default filterable-feedback' id='view-fee-"+requestID+"' style='cursor:pointer'> \
-	        <div class='panel-heading' onClick='showRequestedFeedback(\""+requestID+"\")'> \
+	        <div class='panel-heading' onClick='showGroupFeedback(\""+requestID+"\")'> \
 	            <div class='row'> \
 	               <div class='col-md-8'><h5><b>Feedback Request</b></h5></div> \
 	               <div class='col-md-4'><h6 class='pull-right'><b>"+ longDate +"</b></h6></div> \
@@ -101,26 +100,29 @@ function feedbackRequestersListHTML(requestID, to, longDate){
 
 function groupPlaceholderHTML(groupID){
     var HTML = " \
-        <div id='groupID-"+groupID+"'> \
-            <div class='row'> \
-                <div class='col-md-12'> \
-                </div> \
-            </div> \
+        <div id='groupID-"+groupID+"' class='group-feedback hidden'> \
         </div> \
     ";
     
 return HTML;
 }
 
-function requestPlaceholderHTML(feedbackID, recipient){
+function requestPlaceholderHTML(feedbackID, recipient, type){
     var HTML = " \
-            <div id='feedbackID-"+feedbackID+"'> \
-                <div class='row'> \
-                    <div class='col-md-12'> \
-                        <h5>Requested to: "+recipient+"</h5> \
-                    </div> \
+    <div class='panel-group'> \
+        <div class='panel panel-default'> \
+  	         <div class='panel-heading'> \
+                <h5 class='panel-title'> \
+                    <a data-toggle='collapse' href='#feedback-request-"+feedbackID+"'>Requested to: "+recipient+"</a> \
+                 </h5> \
+            </div> \
+            <div id='feedback-request-"+feedbackID+"'> \
+                <div class='panel-body'> \
+                    <div id='feedback-request-"+feedbackID+"-body'></div> \
                 </div> \
             </div> \
+        </div> \
+    </div> \
     ";
     
 return HTML;
@@ -188,7 +190,8 @@ function clearDateFilter(){
 
 
 function showGeneralFeedback(id){
-	generalFeedbackID = "general-feedback-"+id;
+	generalFeedbackID = "feedback-"+id;
+    
 	$('.general-feedback').each(function(i) {
 		if(generalFeedbackID === this.id){
 			$(this).removeClass("hidden");
@@ -199,11 +202,15 @@ function showGeneralFeedback(id){
 	});
 }
 
-function showRequestedFeedback(requestID){
-    requestedFeedbackID = "requested-feedback-"+requestID;
-	$('.requested-feedback').each(function(i) {
-		if(requestedFeedbackID === this.id){
+function showGroupFeedback(groupID){
+    groupFeedbackID = "groupID-"+groupID;
+	$('.group-feedback').each(function(i) {
+		if(groupFeedbackID === this.id){
 			$(this).removeClass("hidden");
+//                $('.feedback').each(function(i) {
+//                    if(replyFeedbackID === this.id){
+//			             $(this).removeClass("hidden");
+//                }});                            
 		}else{
 			$(this).addClass("hidden");
 		}
@@ -217,6 +224,15 @@ function showIfFirstFeeback(){
 		return "";
 	}else{
 		return "hidden";
+	}
+
+}
+
+function hideIfGeneral(type){
+	if(type === "general"){
+		return "hidden";
+	}else{
+		return "";
 	}
 
 }

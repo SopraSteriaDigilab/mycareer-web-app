@@ -160,8 +160,9 @@ function getGeneralFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                addGeneralFeedbackToList(val.id, val.fromWho, val.emailBody, longDate, classDate);
                 
+                if(val.isRequested == false || val.isRequested === "false"){
+                    addGeneralFeedbackToList(val.id, val.fromWho, val.emailBody, longDate, classDate);}                
         });//end of for each loop
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -200,7 +201,7 @@ function getRequestedFeedbackList(userID){
                         var replyTime = timeStampToLongDate(new Date(fbs[f].timeStamp));
                         
                         
-                        addRequestedFeedbackDesc(feedbackID, feedbackID+"-"+replyID, from, description, replyTime);
+                        addRequestedFeedbackDesc(feedbackID, replyID, from, description, replyTime);
                     }
                      recipientList.push(to);
                 }
