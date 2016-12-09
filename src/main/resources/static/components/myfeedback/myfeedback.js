@@ -41,16 +41,18 @@ function initFeedbackDatePicker(id, start){
 var firstFeedback = true;
 
 function addGeneralFeedbackToList(id, sender, description, date, classDate, email){
-      $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate));
-      $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
-      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, "general"));
+      $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, "general", email));
+      if(!reviewerExists(email)){
+    	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
+      }
 }
 
 
-function feedbackSendersListHTML(id, sender, date, classDate){
+function feedbackSendersListHTML(id, sender, date, classDate, email){
 	var HTML = " \
 	        <div class='panel panel-default filterable-feedback id='view-fee-"+id+"' style='cursor:pointer'> \
-	        <input type='hidden' class='reviewer-filter' value='"+sender+"'> \
+	        <input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
@@ -76,10 +78,10 @@ function feedbackReviewersListHTML(reviewer, email){
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate, type){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate, type, email){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback "+type+"-feedback "+hideIfGeneral(type)+"' id='feedback-"+id+"'> \
-	<input type='hidden' class='reviewer-filter' value='"+sender+"'> \
+	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
     <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
@@ -208,6 +210,7 @@ function applyDateFilter(){
 
 function applyReviewerFilter(){
 	var reviewerCheckedList = [];
+	var show = false;
 	
 	$(".reviewer-checkbox").each(function(){
 		if($(this).prop("checked") == true){
@@ -216,19 +219,28 @@ function applyReviewerFilter(){
 	});
 
 	if(reviewerCheckedList.length == 0){
-		
+		clearReviewerFilter();
 	}else{
 		$(".reviewer-filter").each(function(){
+			var reviewer = $(this).val();
+//			alert(reviewer + " | list | " + reviewerCheckedList);
+			if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
+				show = true;
+				$(this).closest('div').removeClass("filteredOutByReviewer");
+				
+			}else{
+				show = false;
+				$(this).closest('div').addClass("filteredOutByReviewer");
+			}	
+			
 			if($(this).closest('div').hasClass("filteredOutByDate")){
 				return true;
 			}
-			var reviewer = $(this).val();
 			
-			if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
-				$(this).closest('div').removeClass("filteredOutByReviewer");
+			
+			if(show){
 				$(this).closest('div').show()
 			}else{
-				$(this).closest('div').addClass("filteredOutByReviewer");
 				$(this).closest('div').hide()
 			}	
 		});
@@ -245,11 +257,17 @@ function applyReviewerFilter(){
 //	$(".filterable-feedback").each(function(index){ $(this).show(); });
 //}
 //
-//function clearReviewerFilter(){
-//	//Loop and uncheck all.
-//    $(".reviewer-checkbox").prop('checked', false);
-//	$(".reviewer-filter").each(function(index){ $(this).closest('div').show() });
-//}
+function clearReviewerFilter(){
+	//Loop and uncheck all.
+	if($(this).closest('div').hasClass("filteredOutByDate")){
+		return true;
+	}
+	$(".reviewer-filter").each(function(index){ 
+		$(this).closest('div').removeClass("filteredOutByReviewer");
+		$(this).closest('div').show() 
+		});
+	
+}
 
 function clearAllFilters(){
 	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
@@ -305,3 +323,19 @@ function hideIfGeneral(type){
 	}
 }
 
+function reviewerExists(reviewer){
+	var reviewerCheckedList = [];
+	
+	$(".reviewer-checkbox").each(function(){
+			reviewerCheckedList.push(this.value);
+	});
+	
+	if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
+//		alert(reviewer+" IS in list "+ reviewerCheckedList);
+		return true;		
+	}else{
+//		alert(reviewer+" IS NOT in list "+ reviewerCheckedList);
+		return false;
+	}
+	
+}
