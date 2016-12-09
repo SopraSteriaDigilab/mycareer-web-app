@@ -160,9 +160,9 @@ function getGeneralFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                
+                var name = (val.fromWho !== "") ? val.fullName : val.fromWho;  
                 if(val.isRequested == false || val.isRequested === "false"){
-                    addGeneralFeedbackToList(val.id, val.fromWho, val.emailBody, longDate, classDate);}                
+                    addGeneralFeedbackToList(val.id, name, val.emailBody, longDate, classDate, val.fromWho);}                
         });//end of for each loop
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){

@@ -5,133 +5,126 @@
 <div class="container">
 
 <!--Page Header -->
-		<div class="row">
-            <div class="col-md-6">
-			     <div class="col-md-6">
-                    <h2>My Feedback</h2>
-                </div>      
-                <div class="col-md-6">
-                    <ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
-                        <li id="general-feeback-list" class="active">
-                            <a data-toggle="tab" data-target="#general-feedback-tab, #generalFeeDescription">General</a></li>
-                        <li id="requested-feeback-list">
-                            <a data-toggle="tab" data-target="#requested-feedback-tab, #requestedFeeDescription">Requested</a></li>
-                    </ul>
-                </div>
-            </div>
+	<div class="row">
+           <div class="col-md-6">
+		     <div class="col-md-6">
+                   <h2>My Feedback</h2>
+               </div>      
+               <div class="col-md-6">
+                   <ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
+                       <li id="general-feeback-list" class="active">
+                           <a data-toggle="tab" data-target="#general-feedback-tab, #generalFeeDescription">General</a></li>
+                       <li id="requested-feeback-list">
+                           <a data-toggle="tab" data-target="#requested-feedback-tab, #requestedFeeDescription">Requested</a></li>
+                   </ul>
+               </div>
+           </div>
 
-			<div class="col-md-6 vertical-centre ">
-				<button type="button" class="btn btn-link pull-right" id="notes-open">
-						<u>My Notes</u>
-				</button>
-			</div>
+		<div class="col-md-6 vertical-centre ">
+			<button type="button" class="btn btn-link pull-right" id="notes-open">
+					<u>My Notes</u>
+			</button>
 		</div>
-		<!--End of Page Header -->
+	</div>
+	<!--End of Page Header -->
 <br/>
 	<!-- Accordion sort half - added a test one, setting out layout -->
 
-		 	<div class="col-md-3">
-				<div class="panel-group" id="accordion-Date">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapseOne">Date</a>
-							</h4>
-						</div>
-
-						<div id="collapseOne" class="panel-collapse collapse in">
-							<div class="panel-body">
-								<div class="row">
-									<div class='col-sm-12'>
-										<div class="form-group">
-										<div class="row">
-										<div class='col-sm-6'>
-											<h5><b>From:</b></h5>
-										</div>
-										<div class='col-sm-6'>
-											<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearDateFilter()'><b>Clear Filter</b></h6>
-										</div>
-										</div>
-											<div class='input-group date' id='feedback-start-date-picker'>
-												<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
-												<span class="input-group-addon"> 
-													<span class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class='col-sm-12'>
-										<div class="form-group">
-										<h5><b>To:</b></h5>
-											<div class='input-group date' id='feedback-end-date-picker'>
-												<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
-												<span class="input-group-addon"> 
-													<span class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class='col-md-offset-6 col-md-6'>
-										<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
-									</div>
-								</div>
+ 	<div class="col-md-3">
+ 	
+		<div class="panel-group" id="accordion-Date">
+			<div class="panel panel-default">
+				<div class="panel-heading remove-padding">
+					<div class="panel-title">
+						<div class="row">
+							<div class="col-md-6">
+								<h4 >Filters</h4>
+							</div>
+							<div class="col-md-6">	
+								<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearAllFilters()'><b>Show All</b></h6>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- end of accordion Date-->
-				
 
-				
-				<div class="panel-group" id="accordion-Reviewer">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapseFour">Reviewer</a>
-							</h4>
-						</div>
-						<div id="collapseFour" class="panel-collapse collapse in">
-							<div class="panel-body">
-								
+				<div id="collapse-filter" class="panel-collapse collapse in">
+					<div class="panel-body remove-padding" >
+						<div class="row " style="background-color:rgb(245, 245, 245);">
+							<div class="col-md-12">
+								<h5>Date</h5>
 							</div>
-							<!--end of panel body -->
 						</div>
-						<!--end of collapse panel -->
+						<div class="row">
+							<div class='col-sm-12'>
+								<div class="form-group">
+									<h6><b>From:</b></h6>
+									<div class='input-group date' id='feedback-start-date-picker'>
+										<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
+										<span class="input-group-addon"> 
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class='col-sm-12'>
+								<div class="form-group">
+									<h6><b>To:</b></h6>
+									<div class='input-group date' id='feedback-end-date-picker'>
+										<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
+										<span class="input-group-addon"> 
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class='col-md-offset-6 col-md-6'>
+								<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+							</div>
+						</div>
+						<br/>
+						<div class="row" style="background-color:rgb(245, 245, 245);">
+							<div class="col-md-12">
+								<h5>Reviewer</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="checkbox" id="general-reviewer-list"></div>
+						</div>
 					</div>
-					<!-- end of panel-default-->
 				</div>
-				<!-- end of accordion Reviewer -->
 			</div>
-		
-			<!--end of col-md-3 -->
+		</div>					
+	</div>
 
-			<!-- List of Feedback -->
-			<div class="col-md-3">
-                <div class="tab-content">
-                    <div id="general-feedback-tab" class="tab-pane fade in active">
-                    </div><!--end of general feedback tab -->
-                    
-                    <div id="requested-feedback-tab" class="tab-pane fade in">
-                    
-                    </div><!--end of requested feedback tab -->
-                </div><!--end of tab content -->
-                
-			</div><!--end of col-md-3 -->
+					
+	
+		<!--end of col-md-3 -->
 
-    
-			<!-- Section that will show the feedback -->
-			<div class="col-md-6">
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="generalFeeDescription"></div>
-                    <div class="tab-pane fade in" id="requestedFeeDescription"></div>
-                </div>
-			</div>
+		<!-- List of Feedback -->
+		<div class="col-md-3">
+               <div class="tab-content">
+                   <div id="general-feedback-tab" class="tab-pane fade in active">
+                   </div><!--end of general feedback tab -->
+                   
+                   <div id="requested-feedback-tab" class="tab-pane fade in">
+                   
+                   </div><!--end of requested feedback tab -->
+               </div><!--end of tab content -->
+               
+		</div><!--end of col-md-3 -->
+
+   
+		<!-- Section that will show the feedback -->
+		<div class="col-md-6">
+               <div class="tab-content">
+                   <div class="tab-pane fade in active" id="generalFeeDescription"></div>
+                   <div class="tab-pane fade in" id="requestedFeeDescription"></div>
+               </div>
+		</div>
     
             
 
@@ -193,13 +186,3 @@
 		<!-- end of panel-default-->
 <!--	</div>
 	<!-- end of accordion Linked Competencies -->
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
