@@ -121,19 +121,16 @@ function applyDateFilter(){
 	}
 	
 	$(".date-filter").each(function(index){
-		if($(this).closest('div').hasClass("filteredOutByReviewer")){
-			return true;
-		}
 		var date = $(this).val()
 		
 		if(jQuery.inArray(date, dateRangeList) > -1){
 			$(this).closest('div').removeClass("filteredOutByDate");
-			$(this).closest('div').show();
 		}else{
 			$(this).closest('div').addClass("filteredOutByDate");
-			$(this).closest('div').hide();
 		}
 	});
+	
+	updateFilterView();
 }
 
 function applyReviewerFilter(){
@@ -151,40 +148,34 @@ function applyReviewerFilter(){
 	}else{
 		$(".reviewer-filter").each(function(){
 			var reviewer = $(this).val();
-//			alert(reviewer + " | list | " + reviewerCheckedList);
 			if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
-				show = true;
 				$(this).closest('div').removeClass("filteredOutByReviewer");
-				
 			}else{
-				show = false;
 				$(this).closest('div').addClass("filteredOutByReviewer");
-			}	
-			
-			if($(this).closest('div').hasClass("filteredOutByDate")){
-				return true;
-			}
-			
-			if(show){
-				$(this).closest('div').show()
-			}else{
-				$(this).closest('div').hide()
 			}	
 		});
 	}	
+	updateFilterView();
+}
+
+function updateFilterView(){
+	
+	$(".filterable-feedback").each(function(index){
+		var feedback = $(this);
+		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer")){
+			feedback.hide();
+		}else{
+			feedback.show();
+		}
+	});
 	
 }
 
 function clearReviewerFilter(){
-	//Loop and uncheck all.
-	if($(this).closest('div').hasClass("filteredOutByDate")){
-		return true;
-	}
 	$(".reviewer-filter").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
-		$(this).closest('div').show() 
 		});
-	
+	updateFilterView();
 }
 
 function clearAllFilters(){
@@ -194,8 +185,8 @@ function clearAllFilters(){
 	$(".filterable-feedback").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
 		$(this).closest('div').removeClass("filteredOutByDate");
-		$(this).show(); 
 	});
+	updateFilterView();
 }
 
 function showGeneralFeedback(id){
@@ -213,16 +204,12 @@ function showGeneralFeedback(id){
 
 function reviewerExists(reviewer){
 	var reviewerCheckedList = [];
-	
 	$(".reviewer-checkbox").each(function(){
-			reviewerCheckedList.push(this.value);
+		reviewerCheckedList.push(this.value);
 	});
-	
 	if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
-//		alert(reviewer+" IS in list "+ reviewerCheckedList);
 		return true;		
 	}else{
-//		alert(reviewer+" IS NOT in list "+ reviewerCheckedList);
 		return false;
 	}
 	
