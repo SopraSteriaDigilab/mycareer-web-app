@@ -3,6 +3,9 @@ $(function() {
 	//Get list of reportees
 	getReportees();
 	
+	//Add Proposed Button
+	addProposed();
+	
 	//onClick for opening modal
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
 
@@ -171,6 +174,9 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 
 //Method to add competencies to list display
 function addCompetenciesToList(competencies){
+	if(competencies.length == 0) {
+		$("#reportee-comp-list").HTML("")
+	}
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
 
@@ -215,7 +221,7 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
 					      <div  class='bs-wizard-dot-start'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"'> \
-					       <div class='text-center'><h6>Started</h6></div> \
+					       <div class='text-center'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start'></div> \
 					       <div  class='bs-wizard-dot-complete'></div> \
@@ -262,6 +268,7 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
 //Method to return competency html
 function reporteeCompetenciesListHTML(competencies){
 	var HTML = "";
+	
 	for (var i = 0; i < competencies.length; i++){
 		HTML += competencies[i];
 		if(i == competencies.length-1){
@@ -275,15 +282,17 @@ function reporteeCompetenciesListHTML(competencies){
 
 function reporteeFeedbackDescriptionListHTML(id, sender, description, date, classDate){
 	var HTML = " \
-	<li class='list-group-item'> \
+	<ul class='list-group'> \
+		<li class='list-group-item'> \
 			<div class='row'> \
 				<div class='col-md-6'><h6><b>"+ sender +"</b></h6></div> \
 				<div class='col-md-6'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
 			</div> \
 			<div class='row'> \
-				<div class='col-md-12'><h5>"+ description +"</h5></div> \
+				<div class='col-md-12 wrap-text'><h5>"+ description +"</h5></div> \
 			</div> \
-	</li> ";
+		</li> \
+	</ul>";
 	
 	return HTML
 }
@@ -312,7 +321,7 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 						      <div  class='bs-wizard-dot-start'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><h6>Started</h6></div> \
+						       <div class='text-center'><h6>In-Progress</h6></div> \
 						       <div class='progress'><div class='progress-bar'></div></div> \
 						       <div  class='bs-wizard-dot-start'></div> \
 						       <div  class='bs-wizard-dot-complete'></div> \
@@ -360,7 +369,7 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 function reporteeNotesListHTML(fromWho, body, date){
 
 	var html = " \
-	  <li class='list-group-item'> \
+	  <ul class='list-group-item'> \
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
 			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
@@ -368,7 +377,14 @@ function reporteeNotesListHTML(fromWho, body, date){
 		<div class='row'> \
 			<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
 		</div> \
-	  </li> \
+	  </ul> \
 	  ";
 	return html;	
+}
+
+function addProposed(){
+	if(isUserManager() === "true" || isUserManager() == true){
+		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
+		
+	}
 }
