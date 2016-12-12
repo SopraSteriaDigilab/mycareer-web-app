@@ -14,6 +14,9 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
+	
+	
+	
 });//End of Document Function
 
 function initFeedbackDatePicker(id, start){
@@ -41,10 +44,9 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate, emai
       }
 }
 
-
 function feedbackSendersListHTML(id, sender, date, classDate, email){
 	var HTML = " \
-	        <div class='panel panel-default filterable-feedback id='view-fee-"+id+"' style='cursor:pointer'> \
+	        <div class='panel panel-default filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer'> \
 	        <input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
@@ -171,23 +173,38 @@ function updateFilterView(){
 	
 }
 
-function clearReviewerFilter(){
-	$(".reviewer-filter").each(function(index){ 
-		$(this).closest('div').removeClass("filteredOutByReviewer");
-		});
+function clearFilter(filter){
+	
+	if(filter === "date"){
+		clearDateFilter();
+	}else{
+		clearReviewerFilter();
+	}
+	
 	updateFilterView();
 }
 
-function clearAllFilters(){
+function clearReviewerFilter(){
+	$(".reviewer-checkbox").prop('checked', false);
+	$(".reviewer-filter").each(function(index){ 
+		$(this).closest('div').removeClass("filteredOutByReviewer");
+	});
+}
+
+function clearDateFilter(){
 	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
 	updateEndDate();
-	$(".reviewer-checkbox").prop('checked', false);
-	$(".filterable-feedback").each(function(index){ 
-		$(this).closest('div').removeClass("filteredOutByReviewer");
+	$(".filterable-feedback").each(function(index){
 		$(this).closest('div').removeClass("filteredOutByDate");
 	});
+}
+
+function clearAllFilters(){
+	clearReviewerFilter()
+	clearDateFilter();
 	updateFilterView();
 }
+
 
 function showGeneralFeedback(id){
 	generalFeedbackID = "feedback-"+id;
