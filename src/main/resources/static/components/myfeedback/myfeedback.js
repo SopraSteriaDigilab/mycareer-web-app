@@ -2,9 +2,6 @@ $(function() {
     
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-    
-    //Get list of requested feedback
-    getRequestedFeedbackList(getADLoginID());
 	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
@@ -16,9 +13,6 @@ $(function() {
 	$("#submit-date-filter").click(function (){ applyDateFilter() })
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
-	
-
-	
 	
 });//End of Document Function
 
@@ -35,14 +29,13 @@ function initFeedbackDatePicker(id, start){
 		});
 		
 		$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
-		
 }
 
 var firstFeedback = true;
 
 function addGeneralFeedbackToList(id, sender, description, date, classDate, email){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email));
-      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, "general", email));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email));
       if(!reviewerExists(email)){
     	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
       }
@@ -56,7 +49,7 @@ function feedbackSendersListHTML(id, sender, date, classDate, email){
 	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
-	               <div class='col-md-7'><h5><b>"+ sender +"</b></h5></div> \
+	               <div class='col-md-7 wrap-text'><h5><b>"+ sender +"</b></h5></div> \
 	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
 	            </div> \
 	        </div> \
@@ -67,8 +60,8 @@ function feedbackSendersListHTML(id, sender, date, classDate, email){
 function feedbackReviewersListHTML(reviewer, email){
 	var HTML = " \
 		<div class='row'> \
-			<div class='col-md-10'> \
-				<label>"+reviewer+"</label> \
+			<div class='col-md-10 wrap-only'> \
+				<label class='reviewer-label'>"+reviewer+"</label> \
 			</div> \
 			<div class='col-md-2'> \
 				 <input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"'> \
@@ -78,9 +71,9 @@ function feedbackReviewersListHTML(reviewer, email){
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate, type, email){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate, email){
 	var HTML = " \
-	<div class='panel panel-default filterable-feedback "+type+"-feedback "+hideIfGeneral(type)+"' id='feedback-"+id+"'> \
+	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
 	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
     <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
@@ -89,76 +82,13 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, t
 				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
 			</div> \
 			<div class='row'> \
-				<div class='col-md-12'><h5>"+ description +"</h5></div> \
+				<div class='col-md-12 wrap-text'><h5>"+ description +"</h5></div> \
 			</div> \
 		 </div> \
 	</div> ";
 	
 	return HTML
 }
-
-function addRequestFeedbackSenders(groupID, to, longDate){
-     $('#requested-feedback-tab').append(feedbackRequestersListHTML(groupID, to, longDate));
-    
-}
-
-function addRequestedFeedbackDesc(feedbackID, id, sender, description, date){
-    $('#feedback-request-'+feedbackID+'-body').append(feedbackDescriptionListHTML(id, sender, description, date, "", "requested"));
-    
-}
-
-function feedbackRequestersListHTML(requestID, to, longDate){
-	var HTML = " \
-	        <div class='panel panel-default filterable-feedback' id='view-fee-"+requestID+"' style='cursor:pointer'> \
-	        <div class='panel-heading' onClick='showGroupFeedback(\""+requestID+"\")'> \
-	            <div class='row'> \
-	               <div class='col-md-8'><h5><b>Feedback Request</b></h5></div> \
-	               <div class='col-md-4'><h6 class='pull-right'><b>"+ longDate +"</b></h6></div> \
-	            </div> \
-                <div class='row'> \
-                    <div class='col-md-12 wrap-text'><h5>Sent to: </h5><h6>"+ to +"</h6></div> \
-                </div> \
-	        </div> \
-	      </div> ";
-	return HTML;
-}
-
-function groupPlaceholderHTML(groupID){
-    var HTML = " \
-        <div id='groupID-"+groupID+"' class='group-feedback hidden'> \
-        </div> \
-    ";
-    
-return HTML;
-}
-
-function requestPlaceholderHTML(feedbackID, recipient, type){
-    var HTML = " \
-    <div class='panel-group'> \
-        <div class='panel panel-default'> \
-  	         <div class='panel-heading'> \
-                <h5 class='panel-title'> \
-                    <a data-toggle='collapse' href='#feedback-request-"+feedbackID+"'>Requested to: "+recipient+"</a> \
-                 </h5> \
-            </div> \
-            <div id='feedback-request-"+feedbackID+"'> \
-                <div class='panel-body'> \
-                    <div id='feedback-request-"+feedbackID+"-body'></div> \
-                </div> \
-            </div> \
-        </div> \
-    </div> \
-    ";
-    
-return HTML;
-}
-
-function addGroupPlaceholder(groupID){
-    $('#requestedFeeDescription').append(groupPlaceholderHTML(groupID));
-}
- function addRequestPlaceholder(groupID, feedbackID, recipient){
-    $('#groupID-'+groupID).append(requestPlaceholderHTML(feedbackID, recipient));
- }
 
 function updateEndDate(){
 	var startDate = formatFeedbackDate($("#feedback-start-date").val());
@@ -191,21 +121,16 @@ function applyDateFilter(){
 	}
 	
 	$(".date-filter").each(function(index){
-		if($(this).closest('div').hasClass("filteredOutByReviewer")){
-			return true;
-		}
 		var date = $(this).val()
 		
 		if(jQuery.inArray(date, dateRangeList) > -1){
 			$(this).closest('div').removeClass("filteredOutByDate");
-			$(this).closest('div').show();
 		}else{
 			$(this).closest('div').addClass("filteredOutByDate");
-			$(this).closest('div').hide();
 		}
 	});
 	
-	
+	updateFilterView();
 }
 
 function applyReviewerFilter(){
@@ -223,50 +148,34 @@ function applyReviewerFilter(){
 	}else{
 		$(".reviewer-filter").each(function(){
 			var reviewer = $(this).val();
-//			alert(reviewer + " | list | " + reviewerCheckedList);
 			if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
-				show = true;
 				$(this).closest('div').removeClass("filteredOutByReviewer");
-				
 			}else{
-				show = false;
 				$(this).closest('div').addClass("filteredOutByReviewer");
 			}	
-			
-			if($(this).closest('div').hasClass("filteredOutByDate")){
-				return true;
-			}
-			
-			
-			if(show){
-				$(this).closest('div').show()
-			}else{
-				$(this).closest('div').hide()
-			}	
 		});
-	}
-	
+	}	
+	updateFilterView();
+}
 
-		
+function updateFilterView(){
+	
+	$(".filterable-feedback").each(function(index){
+		var feedback = $(this);
+		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer")){
+			feedback.hide();
+		}else{
+			feedback.show();
+		}
+	});
 	
 }
 
-//function clearDateFilter(){
-//	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
-//	updateEndDate();
-//	$(".filterable-feedback").each(function(index){ $(this).show(); });
-//}
-//
 function clearReviewerFilter(){
-	//Loop and uncheck all.
-	if($(this).closest('div').hasClass("filteredOutByDate")){
-		return true;
-	}
 	$(".reviewer-filter").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
-		$(this).closest('div').show() 
 		});
-	
+	updateFilterView();
 }
 
 function clearAllFilters(){
@@ -276,14 +185,14 @@ function clearAllFilters(){
 	$(".filterable-feedback").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
 		$(this).closest('div').removeClass("filteredOutByDate");
-		$(this).show(); 
 	});
+	updateFilterView();
 }
 
 function showGeneralFeedback(id){
 	generalFeedbackID = "feedback-"+id;
     
-	$('.general-feedback').each(function(i) {
+	$('.feedback-description').each(function(i) {
 		if(generalFeedbackID === this.id){
 			$(this).removeClass("hidden");
 		}else{
@@ -293,48 +202,14 @@ function showGeneralFeedback(id){
 	});
 }
 
-function showGroupFeedback(groupID){
-    groupFeedbackID = "groupID-"+groupID;
-	$('.group-feedback').each(function(i) {
-		if(groupFeedbackID === this.id){
-			$(this).removeClass("hidden");                           
-		}else{
-			$(this).addClass("hidden");
-		}
-
-	});
-}
-
-function showIfFirstFeeback(){
-	if(firstFeedback){
-		firstFeedback = false;
-		return "";
-	}else{
-		return "hidden";
-	}
-
-}
-
-function hideIfGeneral(type){
-	if(type === "general"){
-		return "hidden";
-	}else{
-		return "";
-	}
-}
-
 function reviewerExists(reviewer){
 	var reviewerCheckedList = [];
-	
 	$(".reviewer-checkbox").each(function(){
-			reviewerCheckedList.push(this.value);
+		reviewerCheckedList.push(this.value);
 	});
-	
 	if(jQuery.inArray(reviewer, reviewerCheckedList) > -1){
-//		alert(reviewer+" IS in list "+ reviewerCheckedList);
 		return true;		
 	}else{
-//		alert(reviewer+" IS NOT in list "+ reviewerCheckedList);
 		return false;
 	}
 	
