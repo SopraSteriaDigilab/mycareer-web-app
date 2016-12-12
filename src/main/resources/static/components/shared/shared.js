@@ -10,8 +10,8 @@ var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct',
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Proposed'];
-var categoryIDs = ['on-job-radio', 'classroom-radio', 'cbt-radio', 'online-radio', 'self-study-radio', 'other-radio'];
-var categoryList = ['On Job Training', 'Classroom Training', 'Computer-Based Training (CBT)', 'Online or E-Learning', 'Self-Study', 'Other'];
+var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
+var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-Learning', 'Self-Study', 'Other'];
 var lastDevID = 0;
 var lastObjID = 0;
 

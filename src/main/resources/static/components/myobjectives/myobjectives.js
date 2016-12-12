@@ -236,7 +236,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 1)'> \
-					       <div class='text-center'><h6>Started</h6></div> \
+					       <div class='text-center'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \

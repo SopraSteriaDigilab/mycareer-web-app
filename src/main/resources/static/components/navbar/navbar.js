@@ -43,18 +43,16 @@ $(function() {
     //click to open a modal that shows the feedback email template
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
     
-    //click to open modal that shows the proposed objective modal
-    $('#proposed-objective').click(function(){ openProposedObjectiveModal() });
         
 });
 
 //Function to load profile section
 function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
-	if(isUserManager() == Boolean('true')){
-		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>")
-		
+	if(isUserManager() === "true" || isUserManager() == true){
+		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
 	}
+	$(".full-name").html(getADfullName);
 }
 
 function highlight(value) {
