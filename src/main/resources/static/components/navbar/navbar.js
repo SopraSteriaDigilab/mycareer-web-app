@@ -31,7 +31,7 @@ $(function() {
      });
     
     //when these are clicked it clears the feedback request modal
-    $(".close").click(function() {
+    $("#close-feedback-request-modal").click(function() {
         $("textarea").val("");
         $("#requestingTo").tagsinput('removeAll');
     });
