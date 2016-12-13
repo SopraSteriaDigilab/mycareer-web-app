@@ -14,7 +14,13 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
+	
+	
+	
 });//End of Document Function
+
+var dateFilterApplied = false;
+var reviewerFilterApplied = false;
 
 function initFeedbackDatePicker(id, start){
 		
@@ -140,7 +146,7 @@ function applyDateFilter(){
 			$(this).closest('div').addClass("filteredOutByDate");
 		}
 	});
-	
+	dateFilterApplied = true;
 	updateFilterView();
 }
 
@@ -165,7 +171,9 @@ function applyReviewerFilter(){
 				$(this).closest('div').addClass("filteredOutByReviewer");
 			}	
 		});
-	}	
+		reviewerFilterApplied = true;
+	}
+
 	updateFilterView();
 }
 
@@ -180,25 +188,52 @@ function updateFilterView(){
 		}
 	});
 	
+	var filterText = $("#filter-text");
+	if(dateFilterApplied && reviewerFilterApplied){
+		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
+	}else if(dateFilterApplied){
+		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
+	}else if(reviewerFilterApplied){
+		filterText.text("Reviewer.")
+	}else {
+		filterText.text("No Filters Applied");
+	}
+}
+
+function clearFilter(filter){
+	
+	if(filter === "date"){
+		clearDateFilter();
+	}else{
+		clearReviewerFilter();
+	}
+	
+	updateFilterView();
 }
 
 function clearReviewerFilter(){
+	$(".reviewer-checkbox").prop('checked', false);
 	$(".reviewer-filter").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
-		});
-	updateFilterView();
+	});
+	reviewerFilterApplied = false;
+}
+
+function clearDateFilter(){
+	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
+	updateEndDate();
+	$(".filterable-feedback").each(function(index){
+		$(this).closest('div').removeClass("filteredOutByDate");
+	});
+	dateFilterApplied = false;
 }
 
 function clearAllFilters(){
-	$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
-	updateEndDate();
-	$(".reviewer-checkbox").prop('checked', false);
-	$(".filterable-feedback").each(function(index){ 
-		$(this).closest('div').removeClass("filteredOutByReviewer");
-		$(this).closest('div').removeClass("filteredOutByDate");
-	});
+	clearReviewerFilter()
+	clearDateFilter();
 	updateFilterView();
 }
+
 
 function showGeneralFeedback(id){
 	generalFeedbackID = "feedback-"+id;
