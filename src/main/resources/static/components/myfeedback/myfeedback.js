@@ -19,6 +19,9 @@ $(function() {
 	
 });//End of Document Function
 
+var dateFilterApplied = false;
+var reviewerFilterApplied = false;
+
 function initFeedbackDatePicker(id, start){
 		
 		$("#"+id+"-date-picker").datepicker({
@@ -131,7 +134,7 @@ function applyDateFilter(){
 			$(this).closest('div').addClass("filteredOutByDate");
 		}
 	});
-	
+	dateFilterApplied = true;
 	updateFilterView();
 }
 
@@ -156,7 +159,9 @@ function applyReviewerFilter(){
 				$(this).closest('div').addClass("filteredOutByReviewer");
 			}	
 		});
-	}	
+		reviewerFilterApplied = true;
+	}
+
 	updateFilterView();
 }
 
@@ -171,6 +176,16 @@ function updateFilterView(){
 		}
 	});
 	
+	var filterText = $("#filter-text");
+	if(dateFilterApplied && reviewerFilterApplied){
+		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
+	}else if(dateFilterApplied){
+		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
+	}else if(reviewerFilterApplied){
+		filterText.text("Reviewer.")
+	}else {
+		filterText.text("No Filters Applied");
+	}
 }
 
 function clearFilter(filter){
@@ -189,6 +204,7 @@ function clearReviewerFilter(){
 	$(".reviewer-filter").each(function(index){ 
 		$(this).closest('div').removeClass("filteredOutByReviewer");
 	});
+	reviewerFilterApplied = false;
 }
 
 function clearDateFilter(){
@@ -197,6 +213,7 @@ function clearDateFilter(){
 	$(".filterable-feedback").each(function(index){
 		$(this).closest('div').removeClass("filteredOutByDate");
 	});
+	dateFilterApplied = false;
 }
 
 function clearAllFilters(){
