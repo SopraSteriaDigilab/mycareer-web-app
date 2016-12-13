@@ -22,3 +22,8 @@
 	
 	font-size:12px;
 }
+
+.feedback-select{
+    border-color: #66afe9;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0px, 0px, 8px rgba(102, 175, 233, 0.6);
+}
