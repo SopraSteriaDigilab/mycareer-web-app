@@ -124,6 +124,9 @@ function clickArchiveObjective(objID, archive){
 	$('#obj-is-archived-'+objID).val(archive);
 	editObjectiveArchiveOnDB(objID, archive);
 	updateObjectiveList(objID);
+	if(!archive){
+		updateArchiveTab();
+	}
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
@@ -210,12 +213,33 @@ function updateStatusOnList(objID, objStatus){
 
 }
 
+function updateAllTab(){
+	$(".unarchived-obj-item").css('display', '');
+}
+
+function updateArchiveTab(){
+	$(".panel-group").each(function(){
+		if($(this).hasClass("archived-obj-item")){
+			$(this).addClass("active in");
+		}else{
+			$(this).removeClass("active in");
+		}
+	});
+}
+
+function isArchivedItem(isArchived){
+	if(isArchived == true || isArchived === "true"){
+		return "archived-obj-item";
+	}
+	return "unarchived-obj-item"
+	
+}
 
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
 	var html = " \
-    <div class='panel-group tab-pane fade "+statusList[status]+" active in' id='objective-item-"+id+"'> \
+    <div class='panel-group tab-pane fade "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
         <input type='hidden' id='obj-status-"+id+"' value='"+status+"'> \
         <input type='hidden' id='obj-is-archived-"+id+"' value='"+isArchived+"'> \
