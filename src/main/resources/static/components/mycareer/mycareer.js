@@ -9,7 +9,8 @@ var isManager = null;
 
 //Hardcoded for now
 function getUserName(){
-	return "rnacef";
+//	return "rnacef";
+	return "dbolla";
 }
 
 //Authenticate the user against AD
