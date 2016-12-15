@@ -26,7 +26,7 @@ $(function() {
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
-	var url = "http://127.0.0.1:8080/addDevelopmentNeed/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID;
 	var data = {};
 	data["title"] = devNeedTitle;
 	data["description"] = devNeedText;
@@ -47,7 +47,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
-	var url = "http://localhost:8080/editDevelopmentNeed/"+userID;
+	var url = "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID;
 	var data = {};
 	data["devNeedID"] = devNeedID;
 	data["title"] = devNeedTitle;

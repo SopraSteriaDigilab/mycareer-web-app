@@ -28,7 +28,7 @@ public class RoutingController {
     	if(sections.contains(section)){
     		 return "mycareer";
     	}else{
-    		return "pagenotfound";
+    		return "myapp";
     	}  
     }
 
