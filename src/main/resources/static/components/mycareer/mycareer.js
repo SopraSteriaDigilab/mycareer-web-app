@@ -11,6 +11,7 @@ var isManager = null;
 function getUserName(){
 	return "chmcinty";
     //return "mvafaie";
+
 }
 
 //Authenticate the user against AD
