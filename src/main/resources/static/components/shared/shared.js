@@ -27,7 +27,7 @@ function adjustDatePicker(){
 //HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(userID){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getObjectives/'+userID,
+      url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
       method: 'GET',
       success: function(data){
     	  lastObjID = data.length;
@@ -60,7 +60,7 @@ function setObjectiveModalContent(id, title, text, date, status, type){
     }else{
         $('#proposedTo').html("");
     }
-	$('#').text(modalStatusList[type]);
+	$('#obj-modal-title-type').text(modalStatusList[type]);
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
@@ -103,7 +103,6 @@ function clickSubmitObjective(){
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
-//        alert(proposedTo);
          if (validEmails(proposedTo)){
              proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);
@@ -124,7 +123,7 @@ function clickSubmitObjective(){
 //Gets the list of Competencies from the DB
 function getCompetencyList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -154,7 +153,7 @@ function checkSelected(isSelected){
 function getGeneralFeedbackList(userID){
     //Gets the List of General Feedback from the DB 
     $.ajax({
-        url: 'http://127.0.0.1:8080/getFeedback/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -177,7 +176,7 @@ function getGeneralFeedbackList(userID){
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(userID){
 	$.ajax({
-	    url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+userID,
+	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
 	    method: 'GET',
 	    success: function(data){
         	lastDevID = data.length;
@@ -209,7 +208,7 @@ function isOngoing(date){
 
 //Method to make ajax call to add note to database
 function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://127.0.0.1:8080/addNote/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addNote/"+userID;
 	var data = {};
 	data["noteType"] = noteType;
 	data["linkID"] = linkID;

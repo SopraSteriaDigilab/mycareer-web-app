@@ -88,7 +88,7 @@ function validEmails(requestingTo){
 
 //Email details sent through back-end.
 function submitFeedbackRequest(){
-	var url = "http://127.0.0.1:8080/generateFeedbackRequest/"+getADLoginID();
+	var url = "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID();
 	var data = {};
 	data["emailsTo"] = $('#requestingTo').val();
 	data["notes"] = $('#requestingText').val();
@@ -118,13 +118,13 @@ function openProposedObjectiveModal(){
 
 function proposedToHTML(){
     var HTML= " \
-        <label for='proposed-obj-to'>To*:</label> \
+        <label for='proposed-obj-to'>Email*:</label> \
             <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }
 
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    var url = "http://127.0.0.1:8080/addProposedObjective/"+userID;
+    var url = "http://"+getEnvironment()+":8080/addProposedObjective/"+userID;
     var data = {};
     data["title"] = objTitle;
     data["description"] = objText;
@@ -164,7 +164,7 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
 //
 //
 //function loadPage(section){
-//	$.get( "http://localhost:8000/components/"+section+"/"+section+".html", function( data ) {
+//	$.get( "http://"+getEnvironment()+":8000/components/"+section+"/"+section+".html", function( data ) {
 //		  $( "#myapp" ).html( data );
 //		}).fail(function() {
 //			 toastr.error("Sorry could not load page, please try again later");

@@ -24,7 +24,7 @@ var selectedReporteeID = 0;
 function getReportees(){
 
 	    $.ajax({
-	        url: 'http://127.0.0.1:8080/getReportees/'+getADLoginID(),
+	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
 	        method: 'GET',
 	        success: function(data){
 	            $.each(data, function(key, val){
@@ -74,7 +74,7 @@ function getReporteeCareer(id, name) {
 
 function getReporteeCompetencyList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
         method: 'GET',
         success: function(data){
         	var competencyList = [];
@@ -95,7 +95,7 @@ function getReporteeCompetencyList(userID){
 ////Method to get the Notes list
 function getReporteeNotesList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){

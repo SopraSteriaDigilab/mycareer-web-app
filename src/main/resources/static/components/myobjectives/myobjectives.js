@@ -24,7 +24,7 @@ $(function() {
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
-	var url = "http://127.0.0.1:8080/addObjective/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
 	data["description"] = objText;
@@ -45,7 +45,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-	var url = "http://127.0.0.1:8080/editObjective/"+userID;
+	var url = "http://"+getEnvironment()+":8080/editObjective/"+userID;
 	var data = {};
 	data["objectiveID"] = objID;
 	data["title"] = objTitle;
@@ -130,7 +130,7 @@ function clickArchiveObjective(objID, archive){
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
-	var url = "http://127.0.0.1:8080/changeStatusObjective/"+getADLoginID();;
+	var url = "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID();;
 	var data = {};
 	data["objectiveID"] = objID;
 	data["isArchived"] = archive;
@@ -161,7 +161,7 @@ function updateObjectiveList(objID){
 
 //onclick to view feedback
 function clickObjectiveFeedback(id){
-	window.location.replace("http://localhost:8000/mycareer/feedback"); 
+	window.location.replace("http://"+getEnvironment()+":8000/mycareer/feedback"); 
 }
 
 function updateObjectiveStatusOnDB(objID, objStatus){

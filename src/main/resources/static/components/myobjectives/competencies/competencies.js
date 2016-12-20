@@ -113,7 +113,7 @@ function starChanger(id){
 
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
-    var url = "http://127.0.0.1:8080/updateCompetency/"+getADLoginID();
+    var url = "http://"+getEnvironment()+":8080/updateCompetency/"+getADLoginID();
 	var data = {};
 	data["title"] = title;
 	data["status"] = status;
