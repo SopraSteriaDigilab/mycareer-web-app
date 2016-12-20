@@ -14,14 +14,11 @@ var isManager = null;
 
 
 function getEnvironment(){
-//	return "ldunsmycareeruat01.duns.uk.sopra";
-	return "localhost";
+	return "ldunsmycareerdev01.duns.uk.sopra";
 }
 
 //Hardcoded for now
 function getUserName(){
-	//return "chmcinty";
-    //return "mvafaie";
 	return sessionStorage.getItem("username");
 }
 

@@ -60,7 +60,7 @@ function setObjectiveModalContent(id, title, text, date, status, type){
     }else{
         $('#proposedTo').html("");
     }
-	$('#').text(modalStatusList[type]);
+	$('#obj-modal-title-type').text(modalStatusList[type]);
 	$("#objective-id").val(id);
 	$("#objective-title").val(title);
 	$("#objective-text").val(text);
@@ -103,7 +103,6 @@ function clickSubmitObjective(){
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
-//        alert(proposedTo);
          if (validEmails(proposedTo)){
              proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);

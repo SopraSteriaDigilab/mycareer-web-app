@@ -118,7 +118,7 @@ function openProposedObjectiveModal(){
 
 function proposedToHTML(){
     var HTML= " \
-        <label for='proposed-obj-to'>To*:</label> \
+        <label for='proposed-obj-to'>Email*:</label> \
             <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }

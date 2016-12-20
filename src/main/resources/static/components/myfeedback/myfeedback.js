@@ -49,18 +49,17 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate, emai
 
 function selectedFeedback(element){
     $(element).each(function(){
-        if($(this).hasClass("feedback-select")){
-            $(this).removeClass("feedback-select");   
-        }else{
-           $(this).toggleClass("feedback-select"); 
+        if($(this).hasClass("feedback-unselected")){
+            $(this).removeClass("feedback-unselected");
         }
+        $(this).addClass("feedback-select"); 
     });
          
 }
 
 function feedbackSendersListHTML(id, sender, date, classDate, email){
 	var HTML = " \
-	        <div class='panel panel-default filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
+	        <div class='panel panel-default filterable-feedback feedback-unselected' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
 	        <input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
