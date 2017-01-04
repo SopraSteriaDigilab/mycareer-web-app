@@ -30,9 +30,11 @@
 				<li class="nav-bar-item" id="myfeedback"><a href="myfeedback"> My Feedback </a></li>
 				<li class="nav-bar-item" id="mydevelopmentneeds"><a href="mydevelopmentneeds"> My Development Needs </a></li>
 			</ul>
+<!--
 			<div id="nav-bar-buttons">
             	<button type="button" class="btn btn-default navbar-btn pull-right" id="request-feedback">Request Feedback</button>
             </div>
+-->
 		</div>
 		<!-- /.navbar-collapse --> 
 	</div>
@@ -44,71 +46,6 @@
 <br/>
 <br/>
 
-<!-- Request Feedback Modal -->
-<div id="requestFeedbackModal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" id="close-feedback-request-modal" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Request feedback</h4>
-			</div>
-			<div class="modal-body">
-				<form>
-					<input type="hidden" id="modal-type" value="add">
-					<input type="hidden" id="request-feedback-id" value="0">
-					<div class="form-group" id="to-validate">
-						<label for="requesting-to">Email*:</label>
-						<input type="text" class="request-feedback-validate form-control" data-role="tagsinput" placeholder="..."  id="requestingTo" maxlength="150" spellcheck="true"/>
-					</div>
-                                    
-					<div class="form-group" id="text-validate">
-						<label for="requesting-text" class="control-label">Additional message (Optional): </label>
-						<textarea class="form-control" id="requestingText" placeholder="..." maxlength="1000" rows="5" spellcheck="true"></textarea>
-                        <button type="button" class="btn btn-link pull-right" id="view-feedback-template" data-target="#emailTemplateModal">view feedback request template</button>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" id="cancel" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-default" id="submit-request-feedback">Submit</button>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-<!--Request feedback email template Modal -->
-<div id="emailTemplateModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Email feedback request template</h4>
-            </div>
-            <div class="modal-body">
-            	<div class="row">
-          			<div class="col-md-12"><h5>Hi,</h5></div>
-          			<div class="col-md-12"><h5><b><span class=full-name></span></b> has requested your feedback. MyCareer is committed to helping its employees to be the best they can be, your feedback is a key part of helping them to know they are doing a great job and also help them to be better.</h5></div>
-               		<div class="col-md-12"><h5>Simply reply to this email to provide <span class=full-name></span> with feedback. They supplied the following comment:</h5></div>
-          			<div class="col-md-12"><h5> "Optional comments will go here"</h5></div>
-          			<div class="col-md-12"><h5>The following headings may help you.</h5></div>
-          			<ol>
-	          			<li>Context</li>
-	          			<li>Time Period</li>
-	          			<li>What went well?</li>
-	          			<li>What could be improved?</li>
-          			</ol>
-          			<div class="col-md-12"><h5>You can find more information on the <a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/Performancemanagement/Pages/default.aspx" target="_blank">Performance Management page on F2F</a>.(External link required)</h5></div>
-            	</div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Add Objective Modal -->
