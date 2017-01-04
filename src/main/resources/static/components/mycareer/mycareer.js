@@ -36,7 +36,7 @@ function authenticate(username){
 	    	  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
-	    	  window.location.replace("http://"+getEnvironment()+":8000/mycareer");
+	    	  window.location.replace("http://"+getEnvironment()+"/mycareer");
 	    	  console.log("Sorry no access");
 	      }
 	  });
