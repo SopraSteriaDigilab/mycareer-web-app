@@ -9,7 +9,7 @@ This project hold the my career web app. This application uses the [MyCareer Web
 
 ## Getting Started Locally
 
-1. Clone the repository using `git clone git@slnxlrgceglab01:mycareer/mycareer-rest-api.git`
+1. Clone the repository using `git clone git@slnxlrgceglab01:mycareer/mycareer-web-app.git`
 2. `cd mycareer-web-app`
 3. `gradle bootRun`
 4. The web app should now be available at [localhost:8000](http://localhost:8000/)
