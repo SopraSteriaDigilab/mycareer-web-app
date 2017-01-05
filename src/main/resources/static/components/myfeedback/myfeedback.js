@@ -321,6 +321,7 @@ function submitFeedbackRequest(){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 	$.ajax(settings).done(function (response) {

@@ -121,6 +121,7 @@ function updateCompetencyStatus(userID, id, title, status){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 

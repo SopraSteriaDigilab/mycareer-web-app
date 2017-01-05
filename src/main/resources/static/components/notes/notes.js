@@ -46,6 +46,7 @@ function getNotesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
       method: 'GET',
+      xhrFields: {'withCredentials': true},
       success: function(data){
           $.each(data, function(key, val){
           	
