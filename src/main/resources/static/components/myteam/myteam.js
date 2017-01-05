@@ -26,6 +26,7 @@ function getReportees(){
 	    $.ajax({
 	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
 	        method: 'GET',
+	        xhrFields: {'withCredentials': true},
 	        success: function(data){
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username);
@@ -76,6 +77,7 @@ function getReporteeCompetencyList(userID){
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
         	var competencyList = [];
             $.each(data, function(key, val){
@@ -97,6 +99,7 @@ function getReporteeNotesList(userID){
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
             	
