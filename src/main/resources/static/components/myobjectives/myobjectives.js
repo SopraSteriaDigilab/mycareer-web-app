@@ -155,11 +155,11 @@ function updateObjectiveList(objID){
 	var expectedBy = $('#obj-date-'+objID).text();
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
-//	alert(title + " : " + status + " : " + archive);
+	var proposedBy = $('#obj-proposedBy-'+objID).text();
 	
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
-	addObjectiveToList(objID, title, description, expectedBy, status, archive);	
+	addObjectiveToList(objID, title, description, expectedBy, status, archive, proposedBy);	
 }
 
 //onclick to view feedback

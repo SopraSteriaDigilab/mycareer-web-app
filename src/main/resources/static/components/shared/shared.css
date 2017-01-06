@@ -2,6 +2,10 @@ body {
 	height: 100vh;
 }
 
+.nav >li > a{
+	text-decoration: none;
+} 
+
 .wrap-text {
     white-space: pre-wrap;
 	word-wrap: break-word;
