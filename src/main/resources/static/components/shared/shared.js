@@ -28,6 +28,7 @@ function adjustDatePicker(){
 function getObjectivesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
+      cache: false,
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
@@ -125,6 +126,7 @@ function clickSubmitObjective(){
 function getCompetencyList(userID){
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
         success: function(data){
@@ -156,6 +158,7 @@ function getGeneralFeedbackList(userID){
     //Gets the List of General Feedback from the DB 
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
+        cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
         success: function(data){
@@ -180,6 +183,7 @@ function getGeneralFeedbackList(userID){
 function getDevelopmentNeedsList(userID){
 	$.ajax({
 	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
+        cache: false,
 	    method: 'GET',
 	    xhrFields: {'withCredentials': true},
 	    success: function(data){
