@@ -45,6 +45,7 @@ function initResizable(){
 function getNotesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+      cache: false,
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){

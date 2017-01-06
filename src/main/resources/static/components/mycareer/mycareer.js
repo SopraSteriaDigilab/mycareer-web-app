@@ -10,8 +10,7 @@ var isManager = null;
 
 
 function getEnvironment(){
-//	return "mycareer-uat.duns.uk.sopra";
-	return "localhost";
+	return "mycareer-uat.duns.uk.sopra";
 }
 
 //Hardcoded for now
