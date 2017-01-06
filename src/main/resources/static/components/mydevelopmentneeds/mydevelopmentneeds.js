@@ -26,7 +26,7 @@ $(function() {
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
-	var url = "http://127.0.0.1:8080/addDevelopmentNeed/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID;
 	var data = {};
 	data["title"] = devNeedTitle;
 	data["description"] = devNeedText;
@@ -36,6 +36,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	   xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -47,7 +48,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
-	var url = "http://localhost:8080/editDevelopmentNeed/"+userID;
+	var url = "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID;
 	var data = {};
 	data["devNeedID"] = devNeedID;
 	data["title"] = devNeedTitle;
@@ -59,6 +60,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -216,17 +218,17 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 0)'> \
-					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
+					      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 1)'> \
-					       <div class='text-center'><h6>In-Progress</h6></div> \
+					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
-					       <div class='text-center'><h6>Completed</h6></div> \
+					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \

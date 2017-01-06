@@ -44,8 +44,9 @@ function initResizable(){
 //Method to get the Notes list
 function getNotesList(userID){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getNotes/'+userID,
+      url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
       method: 'GET',
+      xhrFields: {'withCredentials': true},
       success: function(data){
           $.each(data, function(key, val){
           	
@@ -63,7 +64,7 @@ function getNotesList(userID){
 
 //function getNoteLinks(userID){
 //	  $.ajax({
-//	      url: 'http://127.0.0.1:8080/getIDTitlePairs/'+userID,
+//	      url: 'http://'+getEnvironment()+':8080/getIDTitlePairs/'+userID,
 //	      method: 'GET',
 //	      success: function(data){
 //	          $.each(data, function(key, val){

@@ -24,7 +24,7 @@ $(function() {
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
-	var url = "http://127.0.0.1:8080/addObjective/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addObjective/"+userID;
 	var data = {};
 	data["title"] = objTitle;
 	data["description"] = objText;
@@ -34,6 +34,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -45,7 +46,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-	var url = "http://127.0.0.1:8080/editObjective/"+userID;
+	var url = "http://"+getEnvironment()+":8080/editObjective/"+userID;
 	var data = {};
 	data["objectiveID"] = objID;
 	data["title"] = objTitle;
@@ -57,6 +58,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -130,7 +132,7 @@ function clickArchiveObjective(objID, archive){
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
-	var url = "http://127.0.0.1:8080/changeStatusObjective/"+getADLoginID();;
+	var url = "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID();;
 	var data = {};
 	data["objectiveID"] = objID;
 	data["isArchived"] = archive;
@@ -138,6 +140,7 @@ function editObjectiveArchiveOnDB(objID, archive){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -161,7 +164,7 @@ function updateObjectiveList(objID){
 
 //onclick to view feedback
 function clickObjectiveFeedback(id){
-	window.location.replace("http://localhost:8000/mycareer/feedback"); 
+	window.location.replace("http://"+getEnvironment()+"/mycareer/feedback"); 
 }
 
 function updateObjectiveStatusOnDB(objID, objStatus){
@@ -256,17 +259,17 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 0)'> \
-					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
+					      <div class='text-center' style='cursor:pointer' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 1)'> \
-					       <div class='text-center'><h6>In-Progress</h6></div> \
+					       <div class='text-center' style='cursor:pointer'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 2)'> \
-					       <div class='text-center'><h6>Completed</h6></div> \
+					       <div class='text-center' style='cursor:pointer'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \

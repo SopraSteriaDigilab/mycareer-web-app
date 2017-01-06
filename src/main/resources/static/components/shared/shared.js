@@ -9,7 +9,7 @@ var fullMonths = ['January','Febuary','March','April','May','June','July','Augus
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
-var modalStatusList = ['Add', 'Edit', 'Proposed'];
+var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-Learning', 'Self-Study', 'Other'];
 var lastDevID = 0;
@@ -27,8 +27,10 @@ function adjustDatePicker(){
 //HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(userID){
   $.ajax({
-      url: 'http://127.0.0.1:8080/getObjectives/'+userID,
+      url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
+      cache: false,
       method: 'GET',
+      xhrFields: {'withCredentials': true},
       success: function(data){
     	  lastObjID = data.length;
           $.each(data, function(key, val){
@@ -103,7 +105,6 @@ function clickSubmitObjective(){
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
-//        alert(proposedTo);
          if (validEmails(proposedTo)){
              proposeObjective(userID, objTitle, objText, objDate, proposedTo);
              showObjectiveModal(false);
@@ -124,8 +125,10 @@ function clickSubmitObjective(){
 //Gets the list of Competencies from the DB
 function getCompetencyList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
                 addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
@@ -154,8 +157,10 @@ function checkSelected(isSelected){
 function getGeneralFeedbackList(userID){
     //Gets the List of General Feedback from the DB 
     $.ajax({
-        url: 'http://127.0.0.1:8080/getFeedback/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
+        cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
@@ -177,8 +182,10 @@ function getGeneralFeedbackList(userID){
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(userID){
 	$.ajax({
-	    url: 'http://127.0.0.1:8080/getDevelopmentNeeds/'+userID,
+	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
+        cache: false,
 	    method: 'GET',
+	    xhrFields: {'withCredentials': true},
 	    success: function(data){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
@@ -209,7 +216,7 @@ function isOngoing(date){
 
 //Method to make ajax call to add note to database
 function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://127.0.0.1:8080/addNote/"+userID;
+	var url = "http://"+getEnvironment()+":8080/addNote/"+userID;
 	var data = {};
 	data["noteType"] = noteType;
 	data["linkID"] = linkID;
@@ -219,6 +226,7 @@ function addNoteToDB(userID, noteType, linkID, from, body ){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 

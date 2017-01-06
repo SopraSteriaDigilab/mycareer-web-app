@@ -24,8 +24,10 @@ var selectedReporteeID = 0;
 function getReportees(){
 
 	    $.ajax({
-	        url: 'http://127.0.0.1:8080/getReportees/'+getADLoginID(),
+	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
+            cache: false,
 	        method: 'GET',
+	        xhrFields: {'withCredentials': true},
 	        success: function(data){
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username);
@@ -74,8 +76,10 @@ function getReporteeCareer(id, name) {
 
 function getReporteeCompetencyList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
         	var competencyList = [];
             $.each(data, function(key, val){
@@ -95,8 +99,10 @@ function getReporteeCompetencyList(userID){
 ////Method to get the Notes list
 function getReporteeNotesList(userID){
     $.ajax({
-        url: 'http://127.0.0.1:8080/getNotes/'+userID,
+        url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+        cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
             	
@@ -217,17 +223,17 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"'> \
-					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
+					      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"'> \
-					       <div class='text-center'><h6>In-Progress</h6></div> \
+					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start'></div> \
 					       <div  class='bs-wizard-dot-complete'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"'> \
-					       <div class='text-center'><h6>Completed</h6></div> \
+					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start'></div> \
 					        <div  class='bs-wizard-dot-complete'></div> \
@@ -317,17 +323,17 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 	            		</div> \
 	            		<div class='col-sm-5 bs-wizard'> \
 	            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"'> \
-						      <div class='text-center' id='test'><h6>Proposed</h6></div> \
+						      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
 						      <div  class='bs-wizard-dot-start'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><h6>In-Progress</h6></div> \
+						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
 						       <div class='progress'><div class='progress-bar'></div></div> \
 						       <div  class='bs-wizard-dot-start'></div> \
 						       <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><h6>Completed</h6></div> \
+						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
 						       	 <div class='progress'><div class='progress-bar'></div></div> \
 						        <div class='bs-wizard-dot-start'></div> \
 						        <div  class='bs-wizard-dot-complete'></div> \
