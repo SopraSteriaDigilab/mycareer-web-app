@@ -1,0 +1,38 @@
+/*.scrollable-menu {
+	height: auto;
+	max-height: 200px;
+	overflow-x: hidden;
+}*/
+
+.col-md-6:not (:last-child ) {
+	border-right: 1px solid #ccc;
+}
+
+.nav-tabs.nav-justified{
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.remove-padding{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.reviewer-label{
+	font-size:12px;
+}
+
+.scrollable-feedback{
+    height: 465px;
+    overflow-y: scroll;
+}
+
+.feedback-select{
+    border-color: #66AFE9;
+    outline: 0px none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+}
+.bg-info{
+    padding: 5px;
+    border-radius: 5px;
+}

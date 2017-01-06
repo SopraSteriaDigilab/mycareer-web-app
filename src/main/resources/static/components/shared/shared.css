@@ -1,0 +1,110 @@
+body {
+	height: 100vh;
+}
+
+.wrap-text {
+    white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.wrap-only{
+	word-wrap: break-word;
+}
+
+textarea {
+    max-width: 100%; 
+    max-height: 100%;
+}
+
+.toast {
+  opacity: 1 !important;
+}
+
+form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: white;
+    opacity: 1;
+}
+/*
+.bottomless {
+	margin-bottom: 0px;
+}
+*/
+
+/*----------------------------------------------------- Objectives -----------------------------------------------------*/
+
+
+.btn-link {
+	border-radius: 4px;
+}
+
+.btn-link:hover {
+	background-color: #eee;
+}
+/*
+#objective-date {
+	background-color: white;
+}*/
+
+.vertical-centre{
+	transform: translateY(70%);
+}
+
+
+.panel-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
+}
+
+.panel-heading a.collapsed:after {
+	content: "\e080";
+}
+
+
+.progress{
+	background-color: #D4D1D1;
+}
+
+.chev-height{
+	margin-top: 5%;
+}
+
+
+/*Form Wizard*/
+.bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot-start {position: absolute; width: 30px; height: 30px; display: block; background: #2CAB65; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%; z-index:1;} 
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot-complete { position: absolute; width: 30px; height: 30px; display: block; background: #D4D1D1; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%; z-index:1; ;} 
+.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 5px 0; right: 50%;}
+.bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #2CAB65 ;}
+.bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
+.bs-wizard > .complete > .bs-wizard-dot-complete {transition-delay: 0.3s; background: #2CAB65; }
+/*END Form Wizard*/
+
+/*----------------------------------------------------- Competencies -----------------------------------------------------*/
+
+.panel-heading-sm{
+    height: 28px;
+    padding: 4px 10px;
+}
+
+.glyphicon-star{
+    color: #F18926;
+}
+
+/*----------------------------------------------------- Notes -----------------------------------------------------*/
+#resizable {
+	z-index: 100;
+	position:fixed;
+	/*right:-400px;*/
+	left:100vw;
+	width: 400px;
+	height: 100vh;
+	background: #f5f5f5;
+	border: 2px solid #DDD;
+	box-sizing:content-box ;
+	
+}
+
+
+

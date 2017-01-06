@@ -1,0 +1,46 @@
+.nav, .nav-tabs {
+	border-bottom: 0px;
+	
+}
+
+.navbar {
+	background-color: white;
+
+}
+
+#primary {
+	background-color: #da202c;
+}
+
+.navbar-default .navbar-nav>li>a {
+	cursor:pointer;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	border-bottom: 1px solid #da202c;
+}
+
+.navbar-default .navbar-nav .selected {
+	border-bottom: 1px solid #da202c;
+}
+
+.navbar-default .navbar-nav .selected:hover {
+	border-bottom: 0px;
+}
+
+.bootstrap-tagsinput {
+  width: 100% !important;
+}
+
+.label-info {
+    background-color: #5D839A;
+}
+
+.nav-height {
+	height: 48px;
+}
+
+.profile-name-display{
+	transform: translateY(10%);
+	padding-right: 10px;
+}
