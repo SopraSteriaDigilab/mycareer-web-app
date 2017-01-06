@@ -28,6 +28,7 @@ function adjustDatePicker(){
 function getObjectivesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
+      cache: false,
       method: 'GET',
       success: function(data){
     	  lastObjID = data.length;
@@ -124,6 +125,7 @@ function clickSubmitObjective(){
 function getCompetencyList(userID){
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        cache: false,
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -154,6 +156,7 @@ function getGeneralFeedbackList(userID){
     //Gets the List of General Feedback from the DB 
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
+        cache: false,
         method: 'GET',
         success: function(data){
             $.each(data, function(key, val){
@@ -177,6 +180,7 @@ function getGeneralFeedbackList(userID){
 function getDevelopmentNeedsList(userID){
 	$.ajax({
 	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
+        cache: false,
 	    method: 'GET',
 	    success: function(data){
         	lastDevID = data.length;
