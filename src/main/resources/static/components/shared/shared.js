@@ -30,6 +30,7 @@ function getObjectivesList(userID){
       url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
       cache: false,
       method: 'GET',
+      xhrFields: {'withCredentials': true},
       success: function(data){
     	  lastObjID = data.length;
           $.each(data, function(key, val){
@@ -127,6 +128,7 @@ function getCompetencyList(userID){
         url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
         cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
                 addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
@@ -158,6 +160,7 @@ function getGeneralFeedbackList(userID){
         url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
         cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
@@ -182,6 +185,7 @@ function getDevelopmentNeedsList(userID){
 	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
         cache: false,
 	    method: 'GET',
+	    xhrFields: {'withCredentials': true},
 	    success: function(data){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
@@ -222,6 +226,7 @@ function addNoteToDB(userID, noteType, linkID, from, body ){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 

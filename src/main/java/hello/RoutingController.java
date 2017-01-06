@@ -11,25 +11,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/mycareer")
 public class RoutingController {
 	
 	private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "myteam");
 	
     @RequestMapping("")
     public String myapp(Model model) {
-        return "myapp";
+    	model.addAttribute("section", "myobjectives");
+        return "reroute";
     }
     
 
     @RequestMapping("/{section}")
     public String mycareer(@PathVariable String section, Model model) {
+    	if(!sections.contains(section))
+    		return "reroute";
+    	
     	model.addAttribute("section", section);
-    	if(sections.contains(section)){
-    		 return "mycareer";
-    	}else{
-    		return "myapp";
-    	}  
+    	return "mycareer";
+    }
+    
+    @RequestMapping("/access-issue")
+    public String myapp() {
+        return "access-issue";
     }
 
 }

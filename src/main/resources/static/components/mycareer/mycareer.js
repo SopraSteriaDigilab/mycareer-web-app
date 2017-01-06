@@ -1,10 +1,6 @@
 $(function() {
-	
-	if(!sessionStorage.getItem("username")){
-		window.location.replace("http://"+getEnvironment()+":8000/mycareer");
-	}else{
-		authenticate(sessionStorage.getItem("username"));
-	}
+		logMeIn();
+
 	
 });
 
@@ -14,7 +10,8 @@ var isManager = null;
 
 
 function getEnvironment(){
-	return "ldunsmycareerdev01.duns.uk.sopra";
+	return "mycareer-uat.duns.uk.sopra";
+//	return "localhost";
 }
 
 //Hardcoded for now
@@ -25,8 +22,9 @@ function getUserName(){
 //Authenticate the user against AD
 function authenticate(username){	
 	 $.ajax({
-	      url: 'http://'+getEnvironment()+':8080/authenticateUserProfile/',
+	      url: 'http://'+getEnvironment()+':8080/authenticateUserProfile',
 	      method: 'GET',
+	      xhrFields: { 'withCredentials': true },
 	      data: {'userName_Email' : username},
 	      success: function(data){
 	    	  ADfullName = data.fullName;
@@ -36,8 +34,7 @@ function authenticate(username){
 	    	  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
-	    	  window.location.replace("http://"+getEnvironment()+"/mycareer");
-	    	  console.log("Sorry no access");
+	    	  window.location.replace("/access-issue");
 	      }
 	  });
 	
@@ -48,7 +45,7 @@ function loadPage(section){
 	$( "#navbar" ).load( "../components/navbar/navbar.html");
 	$( "#notes" ).load( "../components/notes/notes.html");
 	
-	$.get( "http://"+getEnvironment()+":8000/components/"+section+"/"+section+".html", function( data ) {
+	$.get( "/components/"+section+"/"+section+".html", function( data ) {
 		  $( "#myapp" ).html( data );
 		}).fail(function() {
 			 toastr.error("Sorry could not load page, please try again later");
@@ -68,5 +65,28 @@ function isUserManager(){
 	return isManager;
 }
 
+function logMeIn(){
+
+	if(!sessionStorage.getItem("username")){
+		var settings = {
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "http://"+getEnvironment()+":8080/logMeIn",
+		  "method": "GET",
+		   xhrFields: { 'withCredentials': true },
+		}
+		
+		$.ajax(settings).done(function (response) {
+			 
+			  console.log(response);
+			  sessionStorage.setItem("username", response);
+			  authenticate(response);
+		});
+		
+	}else{
+		authenticate(sessionStorage.getItem("username"));
+	}
+}
+	
 
 

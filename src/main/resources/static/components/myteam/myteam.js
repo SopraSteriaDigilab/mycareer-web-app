@@ -27,6 +27,7 @@ function getReportees(){
 	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
             cache: false,
 	        method: 'GET',
+	        xhrFields: {'withCredentials': true},
 	        success: function(data){
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username);
@@ -78,6 +79,7 @@ function getReporteeCompetencyList(userID){
         url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
         cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
         	var competencyList = [];
             $.each(data, function(key, val){
@@ -100,6 +102,7 @@ function getReporteeNotesList(userID){
         url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
         cache: false,
         method: 'GET',
+        xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
             	

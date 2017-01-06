@@ -36,6 +36,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	   xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -59,6 +60,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 

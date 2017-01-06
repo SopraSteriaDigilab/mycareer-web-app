@@ -34,6 +34,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -57,6 +58,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
@@ -138,6 +140,7 @@ function editObjectiveArchiveOnDB(objID, archive){
 	var settings = {
 	  "url": url,
 	  "method": "POST",
+	  xhrFields: {'withCredentials': true},
 	  "data": data
 	}
 
