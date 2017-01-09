@@ -295,22 +295,6 @@ function openRequestFeedbackModal(){
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
-//validates to ensure email format
-function isValidEmailAddress(requestingTo){
-    var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return pattern.test(requestingTo);
-}
-
-function validEmails(requestingTo){
-    var isValid = true;
-    var result = requestingTo.split(",");
-        $.each(result, function(key, val){
-            isValid = isValidEmailAddress(val);
-            return isValid;    
-        });
-    return isValid;
-}  
-
 //Email details sent through back-end.
 function submitFeedbackRequest(){
 	var url = "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID();
