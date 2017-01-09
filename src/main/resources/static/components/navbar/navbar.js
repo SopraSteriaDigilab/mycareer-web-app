@@ -52,22 +52,46 @@ function proposedToHTML(){
 }
 
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    var url = "http://"+getEnvironment()+":8080/addProposedObjective/"+userID;
-    var data = {};
-    data["title"] = objTitle;
-    data["description"] = objText;
-    data["completedBy"] = objDate;
-    data["emails"] = proposedTo;
-
-    var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
+        method: 'POST',
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'emails': proposedTo
+        },            
+        success: function(response){
+            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
+                toastr.warning(response);
+               }else if(response.indexOf("Error") !== -1){   
+                toastr.error(response);
+               }else{
+                toastr.success(response);
+               }
+           },
+           
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        },
+    });
+//    var url = "http://"+getEnvironment()+":8080/addProposedObjective/"+userID;
+//    var data = {};
+//    data["title"] = objTitle;
+//    data["description"] = objText;
+//    data["completedBy"] = objDate;
+//    data["emails"] = proposedTo;
+//    
+//    var settings = {
+//	  "url": url,
+//	  "method": "POST",
+//	  xhrFields: {'withCredentials': true},
+//	  "data": data,
+//	}
+//	$.ajax(settings).done(function (response) {
+//	  toastr.success(response);
+//	});
     
 }
 
