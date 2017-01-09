@@ -19,9 +19,10 @@ $(function() {
 	$('#submit-dev-need').click(function(){ clickSubmitDevelopmentNeed(); });
 	
     //Ensuring all the objectives items are shown
-    $("#dev-need-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
-    $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}) });
-    $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}) });
+    $("#dev-need-all-tab").click(function(){ $('.dev-need').css({'display':''}); });
+    $("#dev-need-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
+    $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}); });
+    $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 	
 	
 });
