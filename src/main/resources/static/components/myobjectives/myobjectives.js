@@ -14,9 +14,10 @@ $(function() {
     $("#navTab").click(function(){});
     
     //Ensuring all the objectives items are shown
-    $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
-    $("#obj-started-tab").click(function(){ $('.started').css({'display':''}) });
-    $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}) });
+    $("#obj-all-tab").click(function(){ $(".unarchived-obj-item").css('display', ''); });
+    $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
+    $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
+    $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 
     
 });
@@ -216,10 +217,6 @@ function updateObjectiveStatusOnList(objID, objStatus){
 	$("#objective-item-"+objID).addClass(statusList[parseInt(objStatus)]);
 
 
-}
-
-function updateAllTab(){
-	$(".unarchived-obj-item").css('display', '');
 }
 
 function updateArchiveTab(){
