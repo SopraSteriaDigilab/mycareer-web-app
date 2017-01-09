@@ -1,8 +1,6 @@
 <link rel="stylesheet" href="../components/myobjectives/myobjectives.css"/>
 <script type="text/javascript" src="../components/myobjectives/myobjectives.js"></script>
 
-
-<!--Containter for full page -->
 <div class="container">
 
 		<!--Page Header -->
@@ -16,7 +14,7 @@
 				</div>
 			</div>
 			<!--  <div id="profile"></div>-->
-			<div class="col-md-5 vertical-centre ">
+			<div class="col-md-5 vertical-centre">
 				<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 			</div>
 		</div>
@@ -41,30 +39,23 @@
 		
 		
 		
-	<!-- My Objectives half  -->
+	
 	<div class='row'>
-	<div class='col-sm-12 col-md-7'>
-		<div id="all-obj" class="tab-content">
+		<!-- My Objectives half  -->
+		<div class='col-md-7'>
+			<div id="all-obj" class="tab-content">
+			    <div class='proposed'></div>
+	  			<div class='started'></div>
+	  			<div class='completed'></div>
+	  			<div class='archived' id='archived-list'></div>
+			    <div id="obj-archived" class="tab-pane fade in"></div>
+			</div>
+		</div><!--End of My Objectives half -->
+
+
+		<!-- Competency/Notes half -->
+		<div class='col-md-5' id='competencies'></div>
 		
-		<!--	<div id="all-obj" class="tab-pane fade in active"></div><!-- End of objList container -->
-			 <!-- Competencies Section  -->
-			 	 
-		 	<!--<div id="completed-obj" class="tab-pane fade in "></div>
-		    <div id="started-obj" class="tab-pane fade in "></div>
-		    <div id="proposed-obj" class="tab-pane fade in "></div> -->
-		    <div class='proposed'></div>
-  			<div class='started'></div>
-  			<div class='completed'></div>
-  			<div class='archived' id='archived-list'></div>
-		    <div id="obj-archived" class="tab-pane fade in"></div>
-
-
-		</div>
-   
-	</div><!--End of My Objectives half -->
-
-
-	<!-- Competency/Notes half -->
-	<div class='col-md-5' id='competencies'></div></div>
+	</div>
 
 </div>

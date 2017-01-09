@@ -18,6 +18,11 @@ $(function() {
 	//onClick for Submit modal
 	$('#submit-dev-need').click(function(){ clickSubmitDevelopmentNeed(); });
 	
+    //Ensuring all the objectives items are shown
+    $("#dev-need-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
+    $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}) });
+    $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}) });
+	
 	
 });
 
@@ -116,20 +121,20 @@ function clickSubmitDevelopmentNeed(){
 
 //Function to add development need to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	var devListID = "";
-	switch(parseInt(status)){
-		case 0: 
-			devListID = statusList[0];
-			break;
-		case 1: 
-			devListID = statusList[1];
-			break;
-		case 2: 
-			devListID = statusList[2];
-			break;
-	}
-	devListID += "-dev-needs";
-	$("#"+devListID).append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
+//	var devListID = "";
+//	switch(parseInt(status)){
+//		case 0: 
+//			devListID = statusList[status];
+//			break;
+//		case 1: 
+//			devListID = statusList[status];
+//			break;
+//		case 2: 
+//			devListID = statusList[status];
+//			break;
+//	}
+//	devListID += "-dev-needs";
+	$("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
 //Function to update development need on list
@@ -165,19 +170,19 @@ function showDevelopmentNeedModal(show){
 	}
 }
 
-function updateDevelopmentNeedList(devNeedID){
-	var title = $('#dev-need-title-'+devNeedID).text();
-	var description = $('#dev-need-text-'+devNeedID).text();
-	var expectedBy = $('#dev-need-date-'+devNeedID).text();
-	var category = $('#dev-need-category-id-'+devNeedID).val();
-	var status = $('#dev-need-status-'+devNeedID).val();
-//	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
-	
-	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
-	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
-	
-	
-}
+//function updateDevelopmentNeedList(devNeedID){
+//	var title = $('#dev-need-title-'+devNeedID).text();
+//	var description = $('#dev-need-text-'+devNeedID).text();
+//	var expectedBy = $('#dev-need-date-'+devNeedID).text();
+//	var category = $('#dev-need-category-id-'+devNeedID).val();
+//	var status = $('#dev-need-status-'+devNeedID).val();
+////	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
+//	
+//	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
+//	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
+//	
+//	
+//}
 
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
@@ -195,13 +200,41 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 	$('#dev-need-status-'+devNeedID).val(parseInt(devNeedStatus));
 	
 	editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-	updateDevelopmentNeedList(devNeedID);
+	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+	//	updateDevelopmentNeedList(devNeedID);	
+}
+
+function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
+	
+	switch(parseInt(devNeedStatus)){
+		case 0:
+			$('#started-dev-need-dot-'+devNeedID).removeClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).removeClass('complete');
+			break;
+		case 1:
+			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).removeClass('complete');
+			break;
+		case 2:
+			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).addClass('complete');
+	}
+	
+	
+	
+	if(!($("#dev-need-all-tab").hasClass("active"))){
+		$("#development-need-item-"+devNeedID).fadeOut();
+	}
+	
+	$("#development-need-item-"+devNeedID).removeClass("proposed started completed");
+	$("#development-need-item-"+devNeedID).addClass(statusList[parseInt(devNeedStatus)]);
+		
 }
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
 	var html = " \
-    <div class='panel-group' id='development-need-item-"+id+"'> \
+    <div class='panel-group tab-pane fade dev-need " + statusList[status] + " active in' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
 	        <input type='hidden' id='dev-need-status-"+id+"' value='"+status+"'> \
 	        <input type='hidden' id='dev-need-category-id-"+id+"' value='"+category+"'> \
