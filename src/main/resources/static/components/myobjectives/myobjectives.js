@@ -93,23 +93,25 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 
 	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-			objListID = "obj-archived";
+//			objListID = "obj-archived";
+			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		}else{
 			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
-			switch(parseInt(status)){
-				case 0: 
-					objListID = statusList[status];
-					break;
-				case 1: 
-					objListID = statusList[status];
-					break;
-				case 2: 
-					objListID = statusList[status];
-					break;
-			}
-			objListID += "-obj";
+//			switch(parseInt(status)){
+//				case 0: 
+//					objListID = statusList[status];
+//					break;
+//				case 1: 
+//					objListID = statusList[status];
+//					break;
+//				case 2: 
+//					objListID = statusList[status];
+//					break;
+//			}
+//			objListID += "-obj";
+//			alert(objListID);
 		}
-		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+//		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		
 }
 
@@ -183,11 +185,11 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	
 	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
 	
-	updateStatusOnList(objID, objStatus);
+	updateObjectiveStatusOnList(objID, objStatus);
 //	updateObjectiveList(objID);
 }
 
-function updateStatusOnList(objID, objStatus){
+function updateObjectiveStatusOnList(objID, objStatus){
 
 
 	switch(parseInt(objStatus)){

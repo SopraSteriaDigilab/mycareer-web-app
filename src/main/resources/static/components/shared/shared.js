@@ -50,6 +50,7 @@ function checkComplete(status, item){
 	if(status >= item){
 		return 'complete';
 	}
+	return "";
 }
 
 

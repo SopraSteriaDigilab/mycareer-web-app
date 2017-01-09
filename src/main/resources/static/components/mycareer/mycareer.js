@@ -1,21 +1,17 @@
 $(function() {
-		logMeIn();
-
-	
+	logMeIn();
 });
 
 var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 
-
 function getEnvironment(){
 	//return "mycareer-uat.duns.uk.sopra";
-    return "localhost";
-    //return "ldunsmycareerdev01.duns.uk.sopra";
+//    return "localhost";
+    return "ldunsmycareerdev01.duns.uk.sopra";
 }
 
-//Hardcoded for now
 function getUserName(){
 	return sessionStorage.getItem("username");
 }
@@ -79,7 +75,7 @@ function logMeIn(){
 		
 		$.ajax(settings).done(function (response) {
 			 
-			  console.log(response);
+//			  console.log(response);
 			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});

@@ -24,11 +24,11 @@
 	<!-- Nav Pills header -->
 	<div class="row">
 		<div class="col-md-7">
-			<ul class="nav nav-tabs nav-justified">
-				<li class="active"><a data-target="#proposed-dev-needs, #started-dev-needs, #completed-dev-needs" data-toggle="tab"> All </a></li>
-				<li><a href="#proposed-dev-needs" data-toggle="tab"> Proposed </a></li>
-				<li><a href="#started-dev-needs" data-toggle="tab"> In-Progress </a></li>
-				<li><a href="#completed-dev-needs" data-toggle="tab"> Completed </a></li>
+			<ul class="nav nav-tabs nav-justified" style="cursor:pointer">
+				<li id="dev-need-all-tab"class="active"><a data-target=".dev-need" data-toggle="tab"> All </a></li>
+				<li id="dev-need-proposed-tab"><a data-target=".proposed" data-toggle="tab"> Proposed </a></li>
+				<li id="dev-need-started-tab"><a data-target=".started" data-toggle="tab"> In-Progress  </a></li>
+				<li id="dev-need-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed </a></li>
 			</ul>
 		</div>
 	</div>
@@ -37,14 +37,16 @@
 		
 	<!-- My Development Needs half  -->
 	<div class='row'>
-		<div class='col-sm-12 col-md-7'>
-			<div class="tab-content">
-			
-				<div id="dev-needs-list"></div><!-- End of dev-needs-list container -->
-		        
+		<div class='col-md-7'>
+			<div  id="all-dev-need" class="tab-content">
+				<div class='proposed'></div>
+	  			<div class='started'></div>
+	  			<div class='completed'></div>
+	  			
+				<!--<div id="dev-needs-list"></div>
 		        <div id="completed-dev-needs" class="tab-pane fade in active"></div>
 			    <div id="started-dev-needs" class="tab-pane fade in active"></div>
-			    <div id="proposed-dev-needs" class="tab-pane fade in active"></div>
+			    <div id="proposed-dev-needs" class="tab-pane fade in active"></div> -->
 		
 			</div>
 		</div><!--End of My Development Needs half -->
