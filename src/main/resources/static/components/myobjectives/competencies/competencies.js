@@ -70,7 +70,7 @@ function updateCompetencyStatus(userID, id, title, status){
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }

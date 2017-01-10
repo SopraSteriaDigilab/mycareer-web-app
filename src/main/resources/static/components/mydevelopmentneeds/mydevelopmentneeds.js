@@ -46,7 +46,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         } 
     });
 }
@@ -69,7 +69,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }

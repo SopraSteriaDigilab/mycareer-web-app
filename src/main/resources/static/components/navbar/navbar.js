@@ -72,7 +72,7 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
            },
            
            error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         },
     });
 }

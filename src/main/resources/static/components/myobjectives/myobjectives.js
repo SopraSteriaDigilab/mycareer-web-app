@@ -39,7 +39,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }
@@ -62,7 +62,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         },
     });
 }
@@ -145,7 +145,7 @@ function editObjectiveArchiveOnDB(objID, archive){
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }

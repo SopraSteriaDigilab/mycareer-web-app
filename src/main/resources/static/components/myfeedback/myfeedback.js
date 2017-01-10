@@ -307,7 +307,7 @@ function submitFeedbackRequest(){
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         },
     });
         $('#request-feedback').click(function() {

@@ -8,8 +8,8 @@ var isManager = null;
 
 function getEnvironment(){
 	//return "mycareer-uat.duns.uk.sopra";
-    //return "localhost";
-    return "ldunsmycareerdev01.duns.uk.sopra";
+    return "localhost";
+//    return "ldunsmycareerdev01.duns.uk.sopra";
 }
 
 function getUserName(){
