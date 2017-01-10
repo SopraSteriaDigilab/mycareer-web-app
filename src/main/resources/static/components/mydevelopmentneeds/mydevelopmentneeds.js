@@ -108,6 +108,8 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedCategory = $('#category-radio input:radio:checked').val();
 	var devNeedDate =  $("#development-need-date").val().trim();
 	var devNeedStatus =  parseInt($("#development-need-status").val());
+	
+	if(checkIfPastDate(devNeedDate)){ return false; }
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);

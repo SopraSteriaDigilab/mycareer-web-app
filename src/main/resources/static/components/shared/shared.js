@@ -92,9 +92,10 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-//	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
+	
+	if(checkIfPastDate(objDate)){ return false; }
 
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
@@ -298,14 +299,13 @@ function timeStampToClassDate(date){
 	return date;
 }
 
-
-
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
 function reverseDateFormat(date){
 	var year = date.slice(-4, date.length);
 	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
 	return year+'-'+ addZero(monthIndex);
 }
+
 
 //Method to add number of days to date
 Date.prototype.addDays = function(days)
@@ -416,6 +416,17 @@ function isValidEmailAddress(requestingTo){
 }
 
 
+function checkIfPastDate (date){
+	var date = new Date(date);
+	var today = new Date();
+	today = new Date(today.getFullYear(), today.getMonth(), 1);
+	
+	if(date < today){
+		toastr.error("The 'Expected By' date can not be in the past, please change the date and try again.");
+		return true;
+	}
+	return false;
+}
 
 
 
