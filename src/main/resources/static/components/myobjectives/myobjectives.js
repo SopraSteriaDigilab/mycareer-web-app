@@ -61,9 +61,9 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
         success: function(response){
             toastr.success(response);
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown, response){
-            toastr.error(response);
-        }
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        },
     });
 }
 
