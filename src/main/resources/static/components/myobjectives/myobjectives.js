@@ -39,7 +39,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }
@@ -62,7 +62,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         },
     });
 }
@@ -145,7 +145,7 @@ function editObjectiveArchiveOnDB(objID, archive){
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }
@@ -330,61 +330,3 @@ function objectivesButtonsHTML(id, isArchived){
 	}
 	return(HTML);
 }
-
-
-
-
-
-
-
-//Method for updating progress bar wth a value
-//function updateProgressBar(value){
-//	$('#objStatus').width(value + "%");
-//}
-
-
-// Progress bar not in first sprint
-//function updateNewProgressBar(score){
-//
-//	if(score > 0){
-//		$('#feedback-progress-1').removeClass("progress-bar-danger");
-//		$('#feedback-progress-1').addClass("progress-bar-success");
-//		$('#feedback-progress-1').css('margin-left', (50 +'%'));
-//		$('#feedback-progress-1').width(score + '%')
-//	}else{
-//		$('#feedback-progress-1').removeClass("progress-bar-success");
-//		$('#feedback-progress-1').addClass("progress-bar-danger");
-//		$('#feedback-progress-1').css('margin-left', (50 + score) + '%');
-//		$('#feedback-progress-1').width(-score + '%')
-//	}
-//
-//
-//}
-
-
-//function isEmpty(value, className){
-//	if(!value){
-//		$('#' + className).addClass("has-error");
-//		return true;
-//	}else{
-//		$('#' + className).removeClass("has-error");
-//		return false;
-//	}
-//}
-
-
-//<div class='row'> \
-//<div class='col-md-6'> \
-//  <div class='bottomless progress progress-striped'> \
-//      <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-//  </div> \
-//</div> \
-//<div class='col-md-6'> \
-//  <div class='bottomless progress progress-striped'> \
-//      <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-//  </div> \
-//</div> \
-//</div> \
-//<div class='col-sm-6'> \
-//<button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
-//</div> \

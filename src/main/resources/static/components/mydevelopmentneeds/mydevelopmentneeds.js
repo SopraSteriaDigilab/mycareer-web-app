@@ -46,7 +46,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         } 
     });
 }
@@ -69,7 +69,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(errorThrown);
+            toastr.error(XMLHttpRequest.responseText);
         }
     });
 }
@@ -106,6 +106,8 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedCategory = $('#category-radio input:radio:checked').val();
 	var devNeedDate =  $("#development-need-date").val().trim();
 	var devNeedStatus =  parseInt($("#development-need-status").val());
+	
+	if(checkIfPastDate(devNeedDate)){ return false; }
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
