@@ -218,25 +218,24 @@ function isOngoing(date){
 
 //Method to make ajax call to add note to database
 function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://"+getEnvironment()+":8080/addNote/"+userID;
-	var data = {};
-	data["noteType"] = noteType;
-	data["linkID"] = linkID;
-	data["from"] = from;
-	data["body"] = body;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addNote/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'noteType': noteType,
+            'linkID': linkID,
+            'from': from,
+            'body': body
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        }
+    });
 }
-
 
 //------------------------------------------------------------------------------------
 

@@ -295,24 +295,25 @@ function openRequestFeedbackModal(){
 
 //Email details sent through back-end.
 function submitFeedbackRequest(){
-	var url = "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID();
-	var data = {};
-	data["emailsTo"] = $('#requestingTo').val();
-	data["notes"] = $('#requestingText').val();
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-    
-    $('#request-feedback').click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'emailsTo': $('#requestingTo').val(),
+            'notes': $('#requestingText').val(),
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        },
     });
-    $('#requestFeedbackModal').modal('hide');
+        $('#request-feedback').click(function() {
+            $("textarea").val("");
+            $("#requestingTo").tagsinput('removeAll');
+        });
+        $('#requestFeedbackModal').modal('hide');
+    
 }

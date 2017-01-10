@@ -32,48 +32,46 @@ $(function() {
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
-	var url = "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID;
-	var data = {};
-	data["title"] = devNeedTitle;
-	data["description"] = devNeedText;
-	data["category"] = devNeedCategory;
-	data["timeToCompleteBy"] = devNeedDate;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	   xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': devNeedTitle,
+            'description': devNeedText,
+            'category': devNeedCategory,
+            'timeToCompleteBy': devNeedDate
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        } 
+    });
 }
 
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
-	var url = "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID;
-	var data = {};
-	data["devNeedID"] = devNeedID;
-	data["title"] = devNeedTitle;
-	data["description"] = devNeedText;
-	data["category"] = devNeedCategory;
-	data["timeToCompleteBy"] = devNeedDate;
-	data["progress"] = devNeedStatus;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'devNeedID': devNeedID,
+            'title': devNeedTitle,
+            'description': devNeedText,
+            'category': devNeedCategory,
+            'timeToCompleteBy': devNeedDate,
+            'progress': devNeedStatus
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        }
+    });
 }
 
 //Function to set up and open ADD development-need modal
