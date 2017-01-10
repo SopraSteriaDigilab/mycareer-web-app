@@ -25,49 +25,47 @@ $(function() {
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
-	var url = "http://"+getEnvironment()+":8080/addObjective/"+userID;
-	var data = {};
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-    data["proposedBy"] = proposedBy;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addObjective/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'proposedBy': proposedBy,
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        }
+    });
 }
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-	var url = "http://"+getEnvironment()+":8080/editObjective/"+userID;
-	var data = {};
-	data["objectiveID"] = objID;
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-	data["progress"] = objStatus;
-    data["proposedBy"] = proposedBy;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editObjective/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'progress': objStatus,
+            'proposedBy': proposedBy
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown, response){
+            toastr.error(response);
+        }
+    });
 }
-
 
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
@@ -135,21 +133,21 @@ function clickArchiveObjective(objID, archive){
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
-	var url = "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID();;
-	var data = {};
-	data["objectiveID"] = objID;
-	data["isArchived"] = archive;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-		toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'isArchived': archive
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(errorThrown);
+        }
+    });
 }
 
 function updateObjectiveList(objID){
