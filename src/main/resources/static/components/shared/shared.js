@@ -98,6 +98,10 @@ function clickSubmitObjective(){
 	if(checkIfPastDate(objDate)){ return false; }
 
 	if(type === 'add'){
+		var tabs = $('.nav-tabs');
+		tabs.find('.active').removeClass('active');
+		$("#obj-all-tab").addClass("active");
+		$("#obj-proposed-tab").find('a').trigger("click"); 
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
 		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
         showObjectiveModal(false);
