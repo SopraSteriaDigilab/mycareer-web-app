@@ -100,6 +100,7 @@ function clickSubmitObjective(){
 	if(checkIfPastDate(objDate)){ return false; }
 	
 	if(type === 'add'){
+		$("#obj-proposed-tab").find('a').trigger("click"); 
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
 		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
 		showProposedTab();
