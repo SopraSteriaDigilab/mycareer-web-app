@@ -112,6 +112,7 @@ function clickSubmitDevelopmentNeed(){
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
 		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
+		showProposedDevelopmentTab();
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
@@ -304,4 +305,8 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     "
                             
     return html;
+}
+
+function showProposedDevelopmentTab(){
+	$("#dev-need-proposed-tab").find('a').trigger("click");
 }
