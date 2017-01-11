@@ -110,9 +110,9 @@ function clickSubmitDevelopmentNeed(){
 	if(checkIfPastDate(devNeedDate)){ return false; }
 
 	if(type == 'add'){
-		$("#dev-need-proposed-tab").find('a').trigger("click");
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
 		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
+		showProposedDevelopmentTab();
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
@@ -305,4 +305,11 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     "
                             
     return html;
+}
+
+
+function showProposedDevelopmentTab(){
+	if(!$("#dev-need-all-tab").hasClass("active")){
+		$("#dev-need-proposed-tab").find('a').trigger("click");
+	}
 }

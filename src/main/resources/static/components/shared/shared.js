@@ -1,5 +1,7 @@
 $(function() {
 	
+
+	
 	adjustDatePicker();
 
 });
@@ -96,11 +98,11 @@ function clickSubmitObjective(){
 	var objIsArchived = $("#objective-is-archived").val();
 	
 	if(checkIfPastDate(objDate)){ return false; }
-
+	
 	if(type === 'add'){
-		$("#obj-proposed-tab").find('a').trigger("click"); 
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
 		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
+		showProposedObjTab();
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
@@ -382,7 +384,8 @@ function imgError(image, size){
 function getProfilePicture(userName, size){
 	var imageURL = " \
 			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?t=1479114656424' alt='' \
-	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'>";
+	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'> \
+			";
 	return imageURL;
 }
 
@@ -404,7 +407,7 @@ function validEmails(requestingTo){
     var result = requestingTo.split(",");
         $.each(result, function(key, val){
             isValid = isValidEmailAddress(val);
-            return isValid;    
+            return isValid;
         });
     return isValid;
 }  
@@ -428,9 +431,11 @@ function checkIfPastDate (date){
 	return false;
 }
 
-
-
-
+function showProposedObjTab(){
+	if(!$("#obj-all-tab").hasClass("active")){
+		$("#obj-proposed-tab").find('a').trigger("click");
+	}
+}
 
 
 
