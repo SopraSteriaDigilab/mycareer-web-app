@@ -100,10 +100,9 @@ function clickSubmitObjective(){
 	if(checkIfPastDate(objDate)){ return false; }
 	
 	if(type === 'add'){
-		$("#obj-proposed-tab").find('a').trigger("click"); 
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
 		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
-		showProposedTab();
+		showProposedObjTab();
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
@@ -432,8 +431,10 @@ function checkIfPastDate (date){
 	return false;
 }
 
-function showProposedTab(){
-	$("#obj-proposed-tab").find('a').trigger("click");
+function showProposedObjTab(){
+	if(!$("#obj-all-tab").hasClass("active")){
+		$("#obj-proposed-tab").find('a').trigger("click");
+	}
 }
 
 
