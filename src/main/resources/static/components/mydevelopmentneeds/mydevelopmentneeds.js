@@ -43,6 +43,8 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'timeToCompleteBy': devNeedDate
         },
         success: function(response){
+            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0);
+		    showProposedDevelopmentTab();
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -66,6 +68,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
             'progress': devNeedStatus
         },
         success: function(response){
+            editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -111,11 +114,8 @@ function clickSubmitDevelopmentNeed(){
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
-		showProposedDevelopmentTab();
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
 	
 	showDevelopmentNeedModal(false);
@@ -209,6 +209,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 	
 	$('#dev-need-status-'+devNeedID).val(devNeedStatus);
+
 	switch(parseInt(devNeedStatus)){
 		case 0:
 			$('#started-dev-need-dot-'+devNeedID).removeClass('complete');

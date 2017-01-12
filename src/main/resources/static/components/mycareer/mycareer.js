@@ -7,6 +7,7 @@ var ADLoginID = null;
 var isManager = null;
 
 function getEnvironment(){
+
 	var host = $("#env").text();
 	switch (host) {
 		case "ldunsmycareerdev01":
