@@ -67,6 +67,25 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
     });
 }
 
+//HTTP request for UPDATING an objective in DB
+function editObjectiveProgressOnDB(userID, objID, objStatus){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editObjectiveProgress/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'progress': objStatus
+        },
+        success: function(response){
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
 	$("#obj-modal-type").val('add');
@@ -173,19 +192,9 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 			|| objStatus === parseInt($('#obj-status-'+objID).val())){
 		return false;
 	}
-
 	var userID = getADLoginID();
-	var objTitle = $('#obj-title-'+objID).text();
-	var objText = $('#obj-text-'+objID).text();
-	var objDate = $('#obj-date-'+objID).text();
-    var proposedBy = $('#obj-proposedBy-'+objID).text();
-	objDate = reverseDateFormat(objDate);
-	$('#obj-status-'+objID).val(parseInt(objStatus));
-	
-	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
-	
+	editObjectiveProgressOnDB(userID, objID, objStatus);
 	updateObjectiveStatusOnList(objID, objStatus);
-//	updateObjectiveList(objID);
 }
 
 function updateObjectiveStatusOnList(objID, objStatus){

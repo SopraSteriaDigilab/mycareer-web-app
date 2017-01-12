@@ -7,9 +7,10 @@ var ADLoginID = null;
 var isManager = null;
 
 function getEnvironment(){
+	return "localhost";
+//  return "ldunsmycareerdev01.duns.uk.sopra";
 //	return "mycareer.uk.corp.sopra";
-//    return "localhost";
-    return "ldunsmycareerdev01.duns.uk.sopra";
+//	return "mycareer-uat.duns.uk.sopra";
 }
 
 function getUserName(){

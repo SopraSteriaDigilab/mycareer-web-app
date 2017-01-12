@@ -80,9 +80,9 @@ function selectedFeedback(element){
 	
 	$(".sender-panel").each(function(index){
 		if(element.id == this.id){
-			$(this).addClass("selected-feedback");
+			$(this).addClass("selected-panel");
 		}else{
-			$(this).removeClass("selected-feedback");
+			$(this).removeClass("selected-panel");
 		}
 	});     
 }
