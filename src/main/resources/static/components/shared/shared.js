@@ -97,7 +97,7 @@ function clickSubmitObjective(){
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
 	
-	if(checkIfPastDate(objDate)){ return false; }
+	if(checkIfPastDate(objDate) || (checkEmpty("objective-modal-validate", true))){ return false; }
 	
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
@@ -328,21 +328,28 @@ function addZero(value){
 
 //method that enables the submit button only when all inputs in the form have content
 function validateForm(inputClass, submitButtonID) {
-	var isEmpty = false;
-
-	$('.'+inputClass).each(function(i) {
-		value = $(this).val().trim();
-		if(!value){
-			isEmpty = true;
-			return;
-		}
-	});
+	var isEmpty = checkEmpty(inputClass, false);
 	
 	if(isEmpty){
 		$('#'+submitButtonID).prop("disabled", true);
 	}else{
 		$('#'+submitButtonID).prop("disabled", false);
 	}
+}
+
+function checkEmpty(inputClass, throwError){
+	var isEmpty = false;
+	$('.'+inputClass).each(function(i) {
+		value = $(this).val().trim();
+		if(!value){
+			isEmpty = true;
+		}
+	});
+	
+	if(isEmpty && throwError)
+		toastr.error("Please fill in all mandatory fields.");
+	
+	return isEmpty;
 }
 
 //Method to set title to the correct type
