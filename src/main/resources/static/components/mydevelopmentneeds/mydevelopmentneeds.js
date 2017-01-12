@@ -253,17 +253,17 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 0)'> \
-					      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
+					      <div class='text-center progress-link' id='test' style='cursor:pointer'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 1)'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></div> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></div> \
+					     <div class='col-xs-4 bs-wizard-step"+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
