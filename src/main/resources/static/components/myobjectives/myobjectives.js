@@ -199,7 +199,7 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 
 function updateObjectiveStatusOnList(objID, objStatus){
 
-
+	$('#obj-status-'+objID).val(objStatus);
 	switch(parseInt(objStatus)){
 		case 0:
 			$('#started-obj-dot-'+objID).removeClass('complete');
@@ -265,7 +265,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 0)'> \
-					      <div class='text-center progress-link' style='cursor:pointer' id='test'><h6>Proposed</h6></div> \
+					      <div class='text-center progress-link' style='cursor:pointer'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 1)'> \

@@ -107,7 +107,7 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedDate =  $("#development-need-date").val().trim();
 	var devNeedStatus =  parseInt($("#development-need-status").val());
 	
-	if(checkIfPastDate(devNeedDate) || (checkEmpty("objective-modal-validate", true))){ return false; }
+	if(checkIfPastDate(devNeedDate) || checkEmpty("development-need-modal-validate", true)){ return false; }
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
@@ -208,6 +208,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 	
+	$('#dev-need-status-'+devNeedID).val(devNeedStatus);
 	switch(parseInt(devNeedStatus)){
 		case 0:
 			$('#started-dev-need-dot-'+devNeedID).removeClass('complete');

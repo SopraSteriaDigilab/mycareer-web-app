@@ -1,4 +1,5 @@
 $(function() {
+//	alert($("#env").text());
 	logMeIn();
 });
 
@@ -7,8 +8,8 @@ var ADLoginID = null;
 var isManager = null;
 
 function getEnvironment(){
-//	return "localhost";
-  return "ldunsmycareerdev01.duns.uk.sopra";
+	return "127.0.0.1";
+//  return "ldunsmycareerdev01.duns.uk.sopra";
 //	return "mycareer.uk.corp.sopra";
 //	return "mycareer-uat.duns.uk.sopra";
 }

@@ -1,8 +1,12 @@
 package hello;
 
 import java.lang.reflect.Array;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +18,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RoutingController {
 	
 	private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "myteam");
+	private String host;
 	
     @RequestMapping("")
-    public String myapp(Model model) {
+    public String myapp(Model model, HttpServletRequest response) {
+    	try {
+			host = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+    	System.out.println(host);
     	model.addAttribute("section", "myobjectives");
+    	model.addAttribute("env", host);
         return "reroute";
     }
     
 
     @RequestMapping("/{section}")
     public String mycareer(@PathVariable String section, Model model) {
+    	try {
+			host = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
     	if(!sections.contains(section))
     		return "reroute";
     	
