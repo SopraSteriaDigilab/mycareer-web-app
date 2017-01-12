@@ -101,12 +101,9 @@ function clickSubmitObjective(){
 	
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
-		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
-		showProposedObjTab();
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
-		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
@@ -220,7 +217,7 @@ function isOngoing(date){
 //
 
 //Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body ){
+function addNoteToDB(userID, noteType, linkID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNote/"+userID,
         method: "POST",
@@ -229,9 +226,11 @@ function addNoteToDB(userID, noteType, linkID, from, body ){
             'noteType': noteType,
             'linkID': linkID,
             'from': from,
-            'body': body
+            'body': body,
+            'date': date,
         },
         success: function(response){
+            addNoteToList(from, noteType, linkID, body, date);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -340,17 +339,20 @@ function validateForm(inputClass, submitButtonID) {
 function checkEmpty(inputClass, throwError){
 	var isEmpty = false;
 	$('.'+inputClass).each(function(i) {
-		value = $(this).val().trim();
+		var value = $(this).val().trim();
 		if(!value){
 			isEmpty = true;
+			return true;
 		}
 	});
 	
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");
+
 	
 	return isEmpty;
-}
+
+} 
 
 //Method to set title to the correct type
 

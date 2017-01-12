@@ -36,6 +36,8 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             'proposedBy': proposedBy,
         },
         success: function(response){
+            addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName());
+		    showProposedObjTab();
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -59,6 +61,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
             'proposedBy': proposedBy
         },
         success: function(response){
+            editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -78,6 +81,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus){
             'progress': objStatus
         },
         success: function(response){
+            updateObjectiveStatusOnList(objID, objStatus);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -145,10 +149,6 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 function clickArchiveObjective(objID, archive){
 	$('#obj-is-archived-'+objID).val(archive);
 	editObjectiveArchiveOnDB(objID, archive);
-	updateObjectiveList(objID);
-	if(!archive){
-		updateArchiveTab();
-	}
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
@@ -161,6 +161,10 @@ function editObjectiveArchiveOnDB(objID, archive){
             'isArchived': archive
         },
         success: function(response){
+            updateObjectiveList(objID);
+            if(!archive){
+		          updateArchiveTab();
+	        }
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -194,12 +198,11 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	}
 	var userID = getADLoginID();
 	editObjectiveProgressOnDB(userID, objID, objStatus);
-	updateObjectiveStatusOnList(objID, objStatus);
 }
 
 function updateObjectiveStatusOnList(objID, objStatus){
 
-
+    $('#obj-status-'+objID).val(objStatus); 
 	switch(parseInt(objStatus)){
 		case 0:
 			$('#started-obj-dot-'+objID).removeClass('complete');
