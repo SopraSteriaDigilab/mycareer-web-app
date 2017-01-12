@@ -19,6 +19,7 @@ $(function() {
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
+var selectedReporteeEmail = "";
 
 //Method to get the Reportee list
 function getReportees(){
@@ -30,7 +31,7 @@ function getReportees(){
 	        xhrFields: {'withCredentials': true},
 	        success: function(data){
 	            $.each(data, function(key, val){
-	            	addReporteeToList(val.employeeID, val.fullName, val.username);
+	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
 	            });
 	        },
 	        error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -40,13 +41,13 @@ function getReportees(){
 	    });
 }
 
-function addReporteeToList(employeeID, fullName, userName){
-	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName));
+function addReporteeToList(employeeID, fullName, userName, emailAddress){
+	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
 }
 
-function reporteeListItemHTML(employeeID, fullName, userName){
+function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div class='panel panel-default' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\")' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -59,11 +60,24 @@ function reporteeListItemHTML(employeeID, fullName, userName){
   ";
 
   return HTML;
- 
 }
 
-function getReporteeCareer(id, name) {
-	if(checkSelectedUser(parseInt(id))){
+
+function selectedReportee(element){
+	
+	$(".reportee-panel").each(function(index){
+		if(element.id == this.id){
+			$(this).addClass("selected-panel");
+		}else{
+			$(this).removeClass("selected-panel");
+		}
+	});     
+}
+
+
+function getReporteeCareer(id, name, emailAddress, element) {
+	if(checkSelectedUser(parseInt(id), emailAddress)){
+		selectedReportee(element)
 		clearReporteeLists();
 		showReporteeView(name)
 		getObjectivesList(id);
@@ -117,15 +131,48 @@ function getReporteeNotesList(userID){
     });
 }
 
+//Method to propose objective
+function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
+        method: 'POST',
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'emails': proposedTo
+        },            
+        success: function(response){
+            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
+            	toastr.warning(response);
+               }else if(response.indexOf("Error") !== -1){   
+                toastr.error(response);
+               }else{
+            	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
+            		addObjectiveToList((++lastObjID), objTitle, objText, objDate, 0, false);
+            	}
+                toastr.success(response);
+               }
+           },
+           
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+
 function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
 
-function checkSelectedUser(id){
+function checkSelectedUser(id, emailAddress){
 	if(selectedReporteeID == id){
 		return false;
 	}
 	selectedReporteeID = id;
+	selectedReporteeEmail = emailAddress;
 	return true;
 }
 
@@ -181,7 +228,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 //Method to add competencies to list display
 function addCompetenciesToList(competencies){
 	if(competencies.length == 0) {
-		$("#reportee-comp-list").HTML("")
+		$("#reportee-comp-list").append("No Competencies have been selected.");
 	}
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
