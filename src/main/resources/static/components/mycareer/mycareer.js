@@ -13,9 +13,9 @@ function getEnvironment(){
 		case "ldunsmycareerdev01":
 			return "ldunsmycareerdev01.duns.uk.sopra";
 		case "ldunsmycareeruat01":
-			return "http://mycareer-uat.duns.uk.sopra";
+			return "mycareer-uat.duns.uk.sopra";
 		case "ldunsmycareer01":
-			return "http://mycareer.uk.corp.sopra";
+			return "mycareer.uk.corp.sopra";
 		default:
 			return "localhost";
 	}
@@ -83,8 +83,6 @@ function logMeIn(){
 		}
 		
 		$.ajax(settings).done(function (response) {
-			 
-//			  console.log(response);
 			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});
