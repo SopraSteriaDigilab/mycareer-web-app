@@ -50,29 +50,3 @@ function proposedToHTML(){
     return HTML;
 }
 
-function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    $.ajax({
-        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
-        method: 'POST',
-        xhrFields: {'withCredentials': true},
-        data: {
-            'title': objTitle,
-            'description': objText,
-            'completedBy': objDate,
-            'emails': proposedTo
-        },            
-        success: function(response){
-            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
-            	toastr.warning(response);
-               }else if(response.indexOf("Error") !== -1){   
-                toastr.error(response);
-               }else{
-                toastr.success(response);
-               }
-           },
-           
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
-}
