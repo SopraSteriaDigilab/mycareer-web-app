@@ -7,10 +7,17 @@ var ADLoginID = null;
 var isManager = null;
 
 function getEnvironment(){
-//	return "localhost";
-  return "ldunsmycareerdev01.duns.uk.sopra";
-//	return "mycareer.uk.corp.sopra";
-//	return "mycareer-uat.duns.uk.sopra";
+	var host = $("#env").text();
+	switch (host) {
+		case "ldunsmycareerdev01":
+			return "ldunsmycareerdev01.duns.uk.sopra";
+		case "ldunsmycareeruat01":
+			return "http://mycareer-uat.duns.uk.sopra";
+		case "ldunsmycareer01":
+			return "http://mycareer.uk.corp.sopra";
+		default:
+			return "localhost";
+	}
 }
 
 function getUserName(){
