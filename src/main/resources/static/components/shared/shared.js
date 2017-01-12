@@ -1,9 +1,5 @@
 $(function() {
-	
-
-	
 	adjustDatePicker();
-
 });
 
 
@@ -328,7 +324,6 @@ function addZero(value){
 //method that enables the submit button only when all inputs in the form have content
 function validateForm(inputClass, submitButtonID) {
 	var isEmpty = checkEmpty(inputClass, false);
-	
 	if(isEmpty){
 		$('#'+submitButtonID).prop("disabled", true);
 	}else{
@@ -351,8 +346,8 @@ function checkEmpty(inputClass, throwError){
 
 	
 	return isEmpty;
-
 } 
+
 
 //Method to set title to the correct type
 

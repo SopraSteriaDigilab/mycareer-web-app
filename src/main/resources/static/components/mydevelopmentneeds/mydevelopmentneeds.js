@@ -110,15 +110,12 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedDate =  $("#development-need-date").val().trim();
 	var devNeedStatus =  parseInt($("#development-need-status").val());
 	
-	if(checkIfPastDate(devNeedDate) || (checkEmpty("development-need-modal-validate", true))){ return false; }
+	if(checkIfPastDate(devNeedDate) || checkEmpty("development-need-modal-validate", true)){ return false; }
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-//		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
-//		showProposedDevelopmentTab();
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-		//editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
 	
 	showDevelopmentNeedModal(false);
@@ -210,7 +207,9 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 }
 
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
-	$('#dev-need-status-'+devNeedID).val(devNeedStatus); 
+	
+	$('#dev-need-status-'+devNeedID).val(devNeedStatus);
+
 	switch(parseInt(devNeedStatus)){
 		case 0:
 			$('#started-dev-need-dot-'+devNeedID).removeClass('complete');
