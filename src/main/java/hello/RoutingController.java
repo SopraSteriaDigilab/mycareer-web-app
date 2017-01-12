@@ -21,13 +21,12 @@ public class RoutingController {
 	private String host;
 	
     @RequestMapping("")
-    public String myapp(Model model, HttpServletRequest response) {
+    public String myapp(Model model) {
     	try {
 			host = InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-    	System.out.println(host);
     	model.addAttribute("section", "myobjectives");
     	model.addAttribute("env", host);
         return "reroute";
@@ -45,6 +44,7 @@ public class RoutingController {
     		return "reroute";
     	
     	model.addAttribute("section", section);
+    	model.addAttribute("env", host);
     	return "mycareer";
     }
     
