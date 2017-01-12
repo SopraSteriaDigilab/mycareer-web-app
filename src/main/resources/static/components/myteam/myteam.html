@@ -14,11 +14,10 @@
 			<div class="hidden" id="reportee-header">
 				<br/>
 				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
-					<!-- <li><a href="#reportee-comp-list" data-toggle="tab"> Competencies </a></li>-->
-					<li><a href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
-					<li><a href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
-					<li><a href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
+					<li class="active"><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
+					<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
+					<li><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
+					<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
 				</ul>
 			</div>
 		</div>
@@ -74,7 +73,7 @@
 			<div class="modal-body">
       			<div class="row">
 					<div class="form-group col-md-12" >
-						<label for="general-note-input">Note*:</label>
+						<label for="general-note-input">Note*<span class="max-characters"> (max 1000 characters) </span>:</label>
 						<textarea id="reportee-note-input" class="reportee-note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
 					</div>
 				</div>

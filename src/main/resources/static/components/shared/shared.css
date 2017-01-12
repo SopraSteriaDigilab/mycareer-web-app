@@ -2,6 +2,13 @@ body {
 	height: 100vh;
 }
 
+textarea {
+    max-width: 100%; 
+    max-height: 100%;
+}
+
+
+
 .wrap-text {
     white-space: pre-wrap;
 	word-wrap: break-word;
@@ -11,10 +18,7 @@ body {
 	word-wrap: break-word;
 }
 
-textarea {
-    max-width: 100%; 
-    max-height: 100%;
-}
+
 
 .toast {
   opacity: 1 !important;
@@ -24,6 +28,23 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
     background-color: white;
     opacity: 1;
 }
+
+.dropdown-menu > li > a {
+	text-decoration: none;
+}
+
+.panel-heading{
+	border-radius: 3px;
+}
+
+.progress-link{
+	color: #337ab7;	
+}
+
+.progress-link :hover{
+	text-decoration: underline;
+}
+
 /*
 .bottomless {
 	margin-bottom: 0px;
@@ -71,15 +92,22 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 }
 
 
+
+
 /*Form Wizard*/
 .bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot-start {position: absolute; width: 30px; height: 30px; display: block; background: #2CAB65; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%; z-index:1;} 
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot-complete { position: absolute; width: 30px; height: 30px; display: block; background: #D4D1D1; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%; z-index:1; ;} 
-.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 5px 0; right: 50%;}
+.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 20px 0; right: 50%;}
 .bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #2CAB65 ;}
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
 .bs-wizard > .complete > .bs-wizard-dot-complete {transition-delay: 0.3s; background: #2CAB65; }
 /*END Form Wizard*/
+
+/*------------------------------------------------------- Feedback -------------------------------------------------------*/
+.selected-panel{
+    border: 1px solid #66AFE9;
+}
 
 /*----------------------------------------------------- Competencies -----------------------------------------------------*/
 
@@ -106,5 +134,7 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	
 }
 
-
+.max-characters{
+    font-size: 11px;
+}
 

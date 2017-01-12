@@ -1,7 +1,5 @@
 $(function() {
-	
 	adjustDatePicker();
-
 });
 
 
@@ -50,6 +48,7 @@ function checkComplete(status, item){
 	if(status >= item){
 		return 'complete';
 	}
+	return "";
 }
 
 
@@ -91,17 +90,16 @@ function clickSubmitObjective(){
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
 	var objDate = $("#objective-date").val().trim();
-//	alert(objDate);
 	var objStatus = parseInt($("#objective-status").val());
 	var objIsArchived = $("#objective-is-archived").val();
-
+	
+	if(checkIfPastDate(objDate) || (checkEmpty("objective-modal-validate", true))){ return false; }
+	
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
-		addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), objStatus, objIsArchived, getADfullName());
         showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
-		editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
         showObjectiveModal(false);
 	}else{
         var proposedTo = $("#proposed-obj-to").val().trim(); 
@@ -215,26 +213,27 @@ function isOngoing(date){
 //
 
 //Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body ){
-	var url = "http://"+getEnvironment()+":8080/addNote/"+userID;
-	var data = {};
-	data["noteType"] = noteType;
-	data["linkID"] = linkID;
-	data["from"] = from;
-	data["body"] = body;
-    
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+function addNoteToDB(userID, noteType, linkID, from, body, date){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addNote/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'noteType': noteType,
+            'linkID': linkID,
+            'from': from,
+            'body': body,
+            'date': date,
+        },
+        success: function(response){
+            addNoteToList(from, noteType, linkID, body, date);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        }
+    });
 }
-
 
 //------------------------------------------------------------------------------------
 
@@ -297,14 +296,13 @@ function timeStampToClassDate(date){
 	return date;
 }
 
-
-
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
 function reverseDateFormat(date){
 	var year = date.slice(-4, date.length);
 	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
 	return year+'-'+ addZero(monthIndex);
 }
+
 
 //Method to add number of days to date
 Date.prototype.addDays = function(days)
@@ -325,16 +323,7 @@ function addZero(value){
 
 //method that enables the submit button only when all inputs in the form have content
 function validateForm(inputClass, submitButtonID) {
-	var isEmpty = false;
-
-	$('.'+inputClass).each(function(i) {
-		value = $(this).val().trim();
-		if(!value){
-			isEmpty = true;
-			return;
-		}
-	});
-	
+	var isEmpty = checkEmpty(inputClass, false);
 	if(isEmpty){
 		$('#'+submitButtonID).prop("disabled", true);
 	}else{
@@ -342,7 +331,23 @@ function validateForm(inputClass, submitButtonID) {
 	}
 }
 
-//Method to set title to the correct type
+function checkEmpty(inputClass, throwError){
+	var isEmpty = false;
+	$('.'+inputClass).each(function(i) {
+		var value = $(this).val().trim();
+		if(!value){
+			isEmpty = true;
+			return true;
+		}
+	});
+	
+	if(isEmpty && throwError)
+		toastr.error("Please fill in all mandatory fields.");
+
+	
+	return isEmpty;
+} 
+
 
     
 function enableSubmit(type){
@@ -379,9 +384,12 @@ function imgError(image, size){
 }
 
 function getProfilePicture(userName, size){
+    var d = new Date();
+    var n = d.getTime();
 	var imageURL = " \
-			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?t=1479114656424' alt='' \
-	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'>";
+			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?"+n+"' alt='' \
+	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'> \
+			";
 	return imageURL;
 }
 
@@ -398,12 +406,40 @@ function closeNotesBar(){
 	$("#resizable").animate({'left':'100vw'});
 }
 
+function validEmails(requestingTo){
+    var isValid = true;
+    var result = requestingTo.split(",");
+        $.each(result, function(key, val){
+            isValid = isValidEmailAddress(val);
+            return isValid;
+        });
+    return isValid;
+}  
+
+//validates to ensure email format
+function isValidEmailAddress(requestingTo){
+    var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return pattern.test(requestingTo);
+}
 
 
+function checkIfPastDate (date){
+	var date = new Date(date);
+	var today = new Date();
+	today = new Date(today.getFullYear(), today.getMonth(), 1);
+	
+	if(date < today){
+		toastr.error("The 'Expected By' date can not be in the past, please change the date and try again.");
+		return true;
+	}
+	return false;
+}
 
-
-
-
+function showProposedObjTab(){
+	if(!$("#obj-all-tab").hasClass("active")){
+		$("#obj-proposed-tab").find('a').trigger("click");
+	}
+}
 
 
 

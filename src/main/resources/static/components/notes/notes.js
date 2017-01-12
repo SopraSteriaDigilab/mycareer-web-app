@@ -45,6 +45,7 @@ function initResizable(){
 function getNotesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+      cache: false,
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
@@ -171,9 +172,8 @@ function clickSubmitNote(){
 //		linkID = 0;
 //	}
 	
-	addNoteToDB(userID, noteType, linkID, from, note);
-	addNoteToList(from, noteType, linkID, note, date);
-	
+	addNoteToDB(userID, noteType, linkID, from, note, date);
+    
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
 }

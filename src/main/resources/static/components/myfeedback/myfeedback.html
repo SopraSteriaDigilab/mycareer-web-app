@@ -26,10 +26,9 @@
 		</div>
 	</div>
 	<!--End of Page Header -->
-   
+    <br/>
     <!--Text advising on what address to send feedback to -->
-    <h4 class="bg-info text-center"> You can send feedback to an employee at any time via email, making sure to CC <a href="mailto: ?CC=feedback.uk@soprasteria.com&Subject=Feedback">feedback.uk@soprasteria.com</a></h4>
-
+    <!--<h4 class="bg-info text-center"> You can send feedback to an employee at any time via email, making sure to CC <a href="mailto: ?CC=feedback.uk@soprasteria.com&Subject=Feedback">feedback.uk@soprasteria.com</a></h4> -->
 	<!-- Accordion sort half - added a test one, setting out layout -->
  	<div class="col-md-3">
  	
@@ -149,12 +148,12 @@
 					<input type="hidden" id="modal-type" value="add">
 					<input type="hidden" id="request-feedback-id" value="0">
 					<div class="form-group" id="to-validate">
-						<label for="requesting-to">Email*:</label>
+						<label for="requesting-to">Email(s)*:</label>
 						<input type="text" class="request-feedback-validate form-control" data-role="tagsinput" placeholder="..."  id="requestingTo" maxlength="150" spellcheck="true"/>
 					</div>
                                     
 					<div class="form-group" id="text-validate">
-						<label for="requesting-text" class="control-label">Additional message (Optional): </label>
+						<label for="requesting-text" class="control-label">Optional message <span class="max-characters"> (max 1000 characters) </span>: </label>
 						<textarea class="form-control" id="requestingText" placeholder="..." maxlength="1000" rows="5" spellcheck="true"></textarea>
                         <button type="button" class="btn btn-link pull-right" id="view-feedback-template" data-target="#emailTemplateModal">view feedback request template</button>
 					</div>

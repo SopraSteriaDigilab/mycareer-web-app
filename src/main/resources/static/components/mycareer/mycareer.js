@@ -1,20 +1,26 @@
 $(function() {
-		logMeIn();
-
-	
+	logMeIn();
 });
 
 var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 
-
 function getEnvironment(){
-	return "mycareer-uat.duns.uk.sopra";
-//	return "localhost";
+
+	var host = $("#env").text();
+	switch (host) {
+		case "ldunsmycareerdev01":
+			return "ldunsmycareerdev01.duns.uk.sopra";
+		case "ldunsmycareeruat01":
+			return "mycareer-uat.duns.uk.sopra";
+		case "ldunsmycareer01":
+			return "mycareer.uk.corp.sopra";
+		default:
+			return "localhost";
+	}
 }
 
-//Hardcoded for now
 function getUserName(){
 	return sessionStorage.getItem("username");
 }
@@ -77,8 +83,6 @@ function logMeIn(){
 		}
 		
 		$.ajax(settings).done(function (response) {
-			 
-			  console.log(response);
 			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});

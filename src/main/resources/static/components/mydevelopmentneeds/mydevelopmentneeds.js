@@ -18,6 +18,12 @@ $(function() {
 	//onClick for Submit modal
 	$('#submit-dev-need').click(function(){ clickSubmitDevelopmentNeed(); });
 	
+    //Ensuring all the objectives items are shown
+    $("#dev-need-all-tab").click(function(){ $('.dev-need').css({'display':''}); });
+    $("#dev-need-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
+    $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}); });
+    $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
+	
 	
 });
 
@@ -26,48 +32,49 @@ $(function() {
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
-	var url = "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID;
-	var data = {};
-	data["title"] = devNeedTitle;
-	data["description"] = devNeedText;
-	data["category"] = devNeedCategory;
-	data["timeToCompleteBy"] = devNeedDate;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	   xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': devNeedTitle,
+            'description': devNeedText,
+            'category': devNeedCategory,
+            'timeToCompleteBy': devNeedDate
+        },
+        success: function(response){
+            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0);
+		    showProposedDevelopmentTab();
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        } 
+    });
 }
 
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
-	var url = "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID;
-	var data = {};
-	data["devNeedID"] = devNeedID;
-	data["title"] = devNeedTitle;
-	data["description"] = devNeedText;
-	data["category"] = devNeedCategory;
-	data["timeToCompleteBy"] = devNeedDate;
-	data["progress"] = devNeedStatus;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'devNeedID': devNeedID,
+            'title': devNeedTitle,
+            'description': devNeedText,
+            'category': devNeedCategory,
+            'timeToCompleteBy': devNeedDate,
+            'progress': devNeedStatus
+        },
+        success: function(response){
+            editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        }
+    });
 }
 
 //Function to set up and open ADD development-need modal
@@ -102,13 +109,13 @@ function clickSubmitDevelopmentNeed(){
 	var devNeedCategory = $('#category-radio input:radio:checked').val();
 	var devNeedDate =  $("#development-need-date").val().trim();
 	var devNeedStatus =  parseInt($("#development-need-status").val());
+	
+	if(checkIfPastDate(devNeedDate) || checkEmpty("development-need-modal-validate", true)){ return false; }
 
 	if(type == 'add'){
 		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-		addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), devNeedStatus);
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
 	
 	showDevelopmentNeedModal(false);
@@ -116,20 +123,20 @@ function clickSubmitDevelopmentNeed(){
 
 //Function to add development need to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	var devListID = "";
-	switch(parseInt(status)){
-		case 0: 
-			devListID = statusList[0];
-			break;
-		case 1: 
-			devListID = statusList[1];
-			break;
-		case 2: 
-			devListID = statusList[2];
-			break;
-	}
-	devListID += "-dev-needs";
-	$("#"+devListID).append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
+//	var devListID = "";
+//	switch(parseInt(status)){
+//		case 0: 
+//			devListID = statusList[status];
+//			break;
+//		case 1: 
+//			devListID = statusList[status];
+//			break;
+//		case 2: 
+//			devListID = statusList[status];
+//			break;
+//	}
+//	devListID += "-dev-needs";
+	$("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
 //Function to update development need on list
@@ -165,19 +172,19 @@ function showDevelopmentNeedModal(show){
 	}
 }
 
-function updateDevelopmentNeedList(devNeedID){
-	var title = $('#dev-need-title-'+devNeedID).text();
-	var description = $('#dev-need-text-'+devNeedID).text();
-	var expectedBy = $('#dev-need-date-'+devNeedID).text();
-	var category = $('#dev-need-category-id-'+devNeedID).val();
-	var status = $('#dev-need-status-'+devNeedID).val();
-//	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
-	
-	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
-	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
-	
-	
-}
+//function updateDevelopmentNeedList(devNeedID){
+//	var title = $('#dev-need-title-'+devNeedID).text();
+//	var description = $('#dev-need-text-'+devNeedID).text();
+//	var expectedBy = $('#dev-need-date-'+devNeedID).text();
+//	var category = $('#dev-need-category-id-'+devNeedID).val();
+//	var status = $('#dev-need-status-'+devNeedID).val();
+////	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
+//	
+//	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
+//	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
+//	
+//	
+//}
 
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
@@ -187,21 +194,72 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 	}
 
 	var userID = getADLoginID();
-	var devNeedTitle = $('#dev-need-title-'+devNeedID).text();
-	var devNeedText = $('#dev-need-text-'+devNeedID).text();
-	var devNeedCategory = $('#dev-need-category-id-'+devNeedID).val();
-	var devNeedDate = $('#dev-need-date-'+devNeedID).text();
-	devNeedDate = reverseDateFormat(devNeedDate);
-	$('#dev-need-status-'+devNeedID).val(parseInt(devNeedStatus));
+//	var devNeedTitle = $('#dev-need-title-'+devNeedID).text();
+//	var devNeedText = $('#dev-need-text-'+devNeedID).text();
+//	var devNeedCategory = $('#dev-need-category-id-'+devNeedID).val();
+//	var devNeedDate = $('#dev-need-date-'+devNeedID).text();
+//	devNeedDate = reverseDateFormat(devNeedDate);
+//	$('#dev-need-status-'+devNeedID).val(parseInt(devNeedStatus));
 	
-	editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-	updateDevelopmentNeedList(devNeedID);
+	editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus);
+	
+//	editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+//	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+	//	updateDevelopmentNeedList(devNeedID);	
+}
+
+function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editDevelopmentNeedProgress/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'devNeedID': devNeedID,
+            'progress': devNeedStatus
+        },
+        success: function(response){
+        	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
+	
+	$('#dev-need-status-'+devNeedID).val(devNeedStatus);
+
+	switch(parseInt(devNeedStatus)){
+		case 0:
+			$('#started-dev-need-dot-'+devNeedID).removeClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).removeClass('complete');
+			break;
+		case 1:
+			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).removeClass('complete');
+			break;
+		case 2:
+			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
+			$('#complete-dev-need-dot-'+devNeedID).addClass('complete');
+	}
+	
+	
+	
+	if(!($("#dev-need-all-tab").hasClass("active"))){
+		$("#development-need-item-"+devNeedID).fadeOut();
+	}
+	
+	$("#development-need-item-"+devNeedID).removeClass("proposed started completed");
+	$("#development-need-item-"+devNeedID).addClass(statusList[parseInt(devNeedStatus)]);
+		
 }
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
 	var html = " \
-    <div class='panel-group' id='development-need-item-"+id+"'> \
+    <div class='panel-group tab-pane fade dev-need " + statusList[status] + " active in' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
 	        <input type='hidden' id='dev-need-status-"+id+"' value='"+status+"'> \
 	        <input type='hidden' id='dev-need-category-id-"+id+"' value='"+category+"'> \
@@ -218,17 +276,17 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 0)'> \
-					      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
+					      <div class='text-center progress-link' id='test' style='cursor:pointer'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 1)'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></div> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></div> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
@@ -270,4 +328,11 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     "
                             
     return html;
+}
+
+
+function showProposedDevelopmentTab(){
+	if(!$("#dev-need-all-tab").hasClass("active")){
+		$("#dev-need-proposed-tab").find('a').trigger("click");
+	}
 }

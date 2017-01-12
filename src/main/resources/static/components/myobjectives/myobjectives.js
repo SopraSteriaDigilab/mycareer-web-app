@@ -14,9 +14,10 @@ $(function() {
     $("#navTab").click(function(){});
     
     //Ensuring all the objectives items are shown
-    $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}) });
-    $("#obj-started-tab").click(function(){ $('.started').css({'display':''}) });
-    $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}) });
+    $("#obj-all-tab").click(function(){ $(".unarchived-obj-item").css('display', ''); });
+    $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
+    $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
+    $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 
     
 });
@@ -24,49 +25,70 @@ $(function() {
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
-	var url = "http://"+getEnvironment()+":8080/addObjective/"+userID;
-	var data = {};
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-    data["proposedBy"] = proposedBy;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-  
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addObjective/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'proposedBy': proposedBy,
+        },
+        success: function(response){
+            addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName());
+		    showProposedObjTab();
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        }
+    });
 }
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-	var url = "http://"+getEnvironment()+":8080/editObjective/"+userID;
-	var data = {};
-	data["objectiveID"] = objID;
-	data["title"] = objTitle;
-	data["description"] = objText;
-	data["completedBy"] = objDate;
-	data["progress"] = objStatus;
-    data["proposedBy"] = proposedBy;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editObjective/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'progress': objStatus,
+            'proposedBy': proposedBy
+        },
+        success: function(response){
+            editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
 }
 
+//HTTP request for UPDATING an objective in DB
+function editObjectiveProgressOnDB(userID, objID, objStatus){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editObjectiveProgress/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'progress': objStatus
+        },
+        success: function(response){
+            updateObjectiveStatusOnList(objID, objStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
 
 //Function to set up and open ADD objective modal
 function openAddObjectiveModal(){
@@ -93,23 +115,25 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 
 	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-			objListID = "obj-archived";
+//			objListID = "obj-archived";
+			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		}else{
 			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
-			switch(parseInt(status)){
-				case 0: 
-					objListID = statusList[status];
-					break;
-				case 1: 
-					objListID = statusList[status];
-					break;
-				case 2: 
-					objListID = statusList[status];
-					break;
-			}
-			objListID += "-obj";
+//			switch(parseInt(status)){
+//				case 0: 
+//					objListID = statusList[status];
+//					break;
+//				case 1: 
+//					objListID = statusList[status];
+//					break;
+//				case 2: 
+//					objListID = statusList[status];
+//					break;
+//			}
+//			objListID += "-obj";
+//			alert(objListID);
 		}
-		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+//		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		
 }
 
@@ -125,28 +149,28 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 function clickArchiveObjective(objID, archive){
 	$('#obj-is-archived-'+objID).val(archive);
 	editObjectiveArchiveOnDB(objID, archive);
-	updateObjectiveList(objID);
-	if(!archive){
-		updateArchiveTab();
-	}
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
-	var url = "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID();;
-	var data = {};
-	data["objectiveID"] = objID;
-	data["isArchived"] = archive;
-  
-	var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-
-	$.ajax(settings).done(function (response) {
-		toastr.success(response);
-	});
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'isArchived': archive
+        },
+        success: function(response){
+            updateObjectiveList(objID);
+            if(!archive){
+		          updateArchiveTab();
+	        }
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        }
+    });
 }
 
 function updateObjectiveList(objID){
@@ -155,11 +179,11 @@ function updateObjectiveList(objID){
 	var expectedBy = $('#obj-date-'+objID).text();
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
-//	alert(title + " : " + status + " : " + archive);
+	var proposedBy = $('#obj-proposedBy-'+objID).text();
 	
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
-	addObjectiveToList(objID, title, description, expectedBy, status, archive);	
+	addObjectiveToList(objID, title, description, expectedBy, status, archive, proposedBy);	
 }
 
 //onclick to view feedback
@@ -172,23 +196,13 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 			|| objStatus === parseInt($('#obj-status-'+objID).val())){
 		return false;
 	}
-
 	var userID = getADLoginID();
-	var objTitle = $('#obj-title-'+objID).text();
-	var objText = $('#obj-text-'+objID).text();
-	var objDate = $('#obj-date-'+objID).text();
-    var proposedBy = $('#obj-proposedBy-'+objID).text();
-	objDate = reverseDateFormat(objDate);
-	$('#obj-status-'+objID).val(parseInt(objStatus));
-	
-	editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy);
-	
-	updateStatusOnList(objID, objStatus);
-//	updateObjectiveList(objID);
+	editObjectiveProgressOnDB(userID, objID, objStatus);
 }
 
-function updateStatusOnList(objID, objStatus){
+function updateObjectiveStatusOnList(objID, objStatus){
 
+	$('#obj-status-'+objID).val(objStatus);
 
 	switch(parseInt(objStatus)){
 		case 0:
@@ -214,10 +228,6 @@ function updateStatusOnList(objID, objStatus){
 	$("#objective-item-"+objID).addClass(statusList[parseInt(objStatus)]);
 
 
-}
-
-function updateAllTab(){
-	$(".unarchived-obj-item").css('display', '');
 }
 
 function updateArchiveTab(){
@@ -259,17 +269,17 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 0)'> \
-					      <div class='text-center' style='cursor:pointer' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
+					      <div class='text-center progress-link' style='cursor:pointer'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 1)'> \
-					       <div class='text-center' style='cursor:pointer'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 2)'> \
-					       <div class='text-center' style='cursor:pointer'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
+					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
@@ -333,61 +343,3 @@ function objectivesButtonsHTML(id, isArchived){
 	}
 	return(HTML);
 }
-
-
-
-
-
-
-
-//Method for updating progress bar wth a value
-//function updateProgressBar(value){
-//	$('#objStatus').width(value + "%");
-//}
-
-
-// Progress bar not in first sprint
-//function updateNewProgressBar(score){
-//
-//	if(score > 0){
-//		$('#feedback-progress-1').removeClass("progress-bar-danger");
-//		$('#feedback-progress-1').addClass("progress-bar-success");
-//		$('#feedback-progress-1').css('margin-left', (50 +'%'));
-//		$('#feedback-progress-1').width(score + '%')
-//	}else{
-//		$('#feedback-progress-1').removeClass("progress-bar-success");
-//		$('#feedback-progress-1').addClass("progress-bar-danger");
-//		$('#feedback-progress-1').css('margin-left', (50 + score) + '%');
-//		$('#feedback-progress-1').width(-score + '%')
-//	}
-//
-//
-//}
-
-
-//function isEmpty(value, className){
-//	if(!value){
-//		$('#' + className).addClass("has-error");
-//		return true;
-//	}else{
-//		$('#' + className).removeClass("has-error");
-//		return false;
-//	}
-//}
-
-
-//<div class='row'> \
-//<div class='col-md-6'> \
-//  <div class='bottomless progress progress-striped'> \
-//      <div class='progress-bar progress-bar-success progress-middle' id='personal-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-//  </div> \
-//</div> \
-//<div class='col-md-6'> \
-//  <div class='bottomless progress progress-striped'> \
-//      <div class='progress-bar progress-bar-success progress-middle' id='feedback-progress-1' role='progressbar' aria-valuemin='0' aria-valuemax='100'></div> \
-//  </div> \
-//</div> \
-//</div> \
-//<div class='col-sm-6'> \
-//<button type='button' class='btn btn-block btn-default' onClick='clickObjectiveFeedback("+id+")'>View Feedback</button> \
-//</div> \
