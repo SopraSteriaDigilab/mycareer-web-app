@@ -123,5 +123,7 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	
 }
 
-
+.max-characters{
+    font-size: 11px;
+}
 
