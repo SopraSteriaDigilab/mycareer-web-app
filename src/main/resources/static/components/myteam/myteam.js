@@ -47,7 +47,7 @@ function addReporteeToList(employeeID, fullName, userName, emailAddress){
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div class='panel panel-default' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\")' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -60,11 +60,24 @@ function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
   ";
 
   return HTML;
- 
 }
 
-function getReporteeCareer(id, name, emailAddress) {
+
+function selectedReportee(element){
+	
+	$(".reportee-panel").each(function(index){
+		if(element.id == this.id){
+			$(this).addClass("selected-panel");
+		}else{
+			$(this).removeClass("selected-panel");
+		}
+	});     
+}
+
+
+function getReporteeCareer(id, name, emailAddress, element) {
 	if(checkSelectedUser(parseInt(id), emailAddress)){
+		selectedReportee(element)
 		clearReporteeLists();
 		showReporteeView(name)
 		getObjectivesList(id);

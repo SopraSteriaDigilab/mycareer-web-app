@@ -27,14 +27,8 @@
     overflow-y: scroll;
 }
 
-.selected-feedback{
-    border: 1px solid #66AFE9;
-}
 .bg-info{
     padding: 5px;
     border-radius: 5px;
 }
 
-.panel-heading{
-	border-radius: 3px;
-}

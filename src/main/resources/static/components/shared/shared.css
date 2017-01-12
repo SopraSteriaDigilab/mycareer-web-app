@@ -28,6 +28,14 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
     background-color: white;
     opacity: 1;
 }
+
+.dropdown-menu > li > a {
+	text-decoration: none;
+}
+
+.panel-heading{
+	border-radius: 3px;
+}
 /*
 .bottomless {
 	margin-bottom: 0px;
@@ -84,6 +92,11 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
 .bs-wizard > .complete > .bs-wizard-dot-complete {transition-delay: 0.3s; background: #2CAB65; }
 /*END Form Wizard*/
+
+/*------------------------------------------------------- Feedback -------------------------------------------------------*/
+.selected-panel{
+    border: 1px solid #66AFE9;
+}
 
 /*----------------------------------------------------- Competencies -----------------------------------------------------*/
 
