@@ -350,8 +350,6 @@ function checkEmpty(inputClass, throwError){
 
 }
 
-//Method to set title to the correct type
-
     
 function enableSubmit(type){
     if (type === 1){

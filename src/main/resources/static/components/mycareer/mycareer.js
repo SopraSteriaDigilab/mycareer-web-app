@@ -82,8 +82,6 @@ function logMeIn(){
 		}
 		
 		$.ajax(settings).done(function (response) {
-			 
-//			  console.log(response);
 			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});
