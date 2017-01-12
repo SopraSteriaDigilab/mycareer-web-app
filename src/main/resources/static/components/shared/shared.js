@@ -382,8 +382,10 @@ function imgError(image, size){
 }
 
 function getProfilePicture(userName, size){
+    var d = new Date();
+    var n = d.getTime();
 	var imageURL = " \
-			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?t=1479114656424' alt='' \
+			<img class='backup_picture' src='http://mysite.corp.sopra/User%20Photos/Images%20du%20profil/"+userName+"_SThumb.jpg?"+n+"' alt='' \
 	style='min-width:"+size+"px; min-height:"+size+"px; clip:rect(0px, "+size+"px, "+size+"px, 0px); max-width:"+size+"px;' onerror='imgError(this, "+size+");'> \
 			";
 	return imageURL;
