@@ -278,6 +278,7 @@ function openRequestFeedbackModal(){
 
 //Email details sent through back-end.
 function submitFeedbackRequest(){
+	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
     $.ajax({
         url: "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID(),
         method: "POST",
@@ -287,9 +288,11 @@ function submitFeedbackRequest(){
             'notes': $('#requestingText').val(),
         },
         success: function(response){
+        	$("#nav-bar-buttons").empty();
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
             toastr.error(XMLHttpRequest.responseText);
         },
     });
