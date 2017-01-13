@@ -172,40 +172,13 @@ function showDevelopmentNeedModal(show){
 	}
 }
 
-//function updateDevelopmentNeedList(devNeedID){
-//	var title = $('#dev-need-title-'+devNeedID).text();
-//	var description = $('#dev-need-text-'+devNeedID).text();
-//	var expectedBy = $('#dev-need-date-'+devNeedID).text();
-//	var category = $('#dev-need-category-id-'+devNeedID).val();
-//	var status = $('#dev-need-status-'+devNeedID).val();
-////	alert(devNeedID + " | " + title + " | " +description + " | " + expectedBy + " | " + status);
-//	
-//	$("#development-need-item-"+devNeedID).fadeOut(400, function() { $(this).remove(); });
-//	addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status);
-//	
-//	
-//}
-
-
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
 
 	if(devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
 		return false;
 	}
-
 	var userID = getADLoginID();
-//	var devNeedTitle = $('#dev-need-title-'+devNeedID).text();
-//	var devNeedText = $('#dev-need-text-'+devNeedID).text();
-//	var devNeedCategory = $('#dev-need-category-id-'+devNeedID).val();
-//	var devNeedDate = $('#dev-need-date-'+devNeedID).text();
-//	devNeedDate = reverseDateFormat(devNeedDate);
-//	$('#dev-need-status-'+devNeedID).val(parseInt(devNeedStatus));
-	
 	editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus);
-	
-//	editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-//	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
-	//	updateDevelopmentNeedList(devNeedID);	
 }
 
 function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){

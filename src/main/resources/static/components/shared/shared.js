@@ -31,11 +31,13 @@ function getObjectivesList(userID){
       xhrFields: {'withCredentials': true},
       success: function(data){
     	  lastObjID = data.length;
+    	  var isEmpty = true;
           $.each(data, function(key, val){
-
-          	var expectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
+        	  var expectedBy = formatDate(val.timeToCompleteBy);
+        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
           });
+          if(data.length == 0)
+        	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
@@ -166,6 +168,11 @@ function getGeneralFeedbackList(userID){
                 var name = (val.fullName) ? val.fullName : val.fromWho; 
                 addGeneralFeedbackToList(val.id, name, val.emailBody, longDate, classDate, val.fromWho);            
             });//end of for each loop
+            if(data.length == 0) {
+	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
+	        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+	        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+            }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
@@ -190,6 +197,8 @@ function getDevelopmentNeedsList(userID){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
 	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
 	        });
+	        if(data.length == 0)
+	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown){
 	        console.log('error', errorThrown);

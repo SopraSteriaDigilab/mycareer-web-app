@@ -54,6 +54,8 @@ function getNotesList(userID){
           	var date = timeStampToDateTime(new Date(val.timeStamp));
           	addNoteToList(val.fromWho, val.noteType, val.linkID, val.body, date);
           });
+          if(data.length == 0)
+        	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
       	
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){

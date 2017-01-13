@@ -23,16 +23,19 @@ var selectedReporteeEmail = "";
 
 //Method to get the Reportee list
 function getReportees(){
-
+		$("#reportee-list").append("<h5>Loading Reportees...</h5>");
 	    $.ajax({
 	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
             cache: false,
 	        method: 'GET',
 	        xhrFields: {'withCredentials': true},
 	        success: function(data){
+	        	$("#reportee-list").empty();
+	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
 	            });
+	            
 	        },
 	        error: function(XMLHttpRequest, textStatus, errorThrown){
 	            console.log('error', errorThrown);
@@ -182,7 +185,7 @@ function showReporteeView(name){
 	});
 	
 	if(reporteeSectionHidden){
-		$("#reportee-header").removeClass("hidden");
+		$("#info-message").remove();
 		$("#reportee-body").removeClass("hidden");
 		reporteeSectionHidden = false;
 	}
