@@ -24,11 +24,7 @@ $(function() {
     $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 	
-	
 });
-
-
-
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
@@ -43,6 +39,8 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'timeToCompleteBy': devNeedDate
         },
         success: function(response){
+            if(lastObjID == 0)
+        		$("#all-dev-need").removeClass("text-center").empty(); 
             addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0);
 		    showProposedDevelopmentTab();
             toastr.success(response);
@@ -98,7 +96,6 @@ function openEditDevelopmentNeedModal(id){
 	showDevelopmentNeedModal(true);	
 }
 
-
 function clickSubmitDevelopmentNeed(){
 	var type = $("#dev-need-modal-type").val();
 	
@@ -117,25 +114,11 @@ function clickSubmitDevelopmentNeed(){
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
-	
 	showDevelopmentNeedModal(false);
 }
 
 //Function to add development need to list
 function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-//	var devListID = "";
-//	switch(parseInt(status)){
-//		case 0: 
-//			devListID = statusList[status];
-//			break;
-//		case 1: 
-//			devListID = statusList[status];
-//			break;
-//		case 2: 
-//			devListID = statusList[status];
-//			break;
-//	}
-//	devListID += "-dev-needs";
 	$("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
 }
 
@@ -161,7 +144,6 @@ function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type,
 	$('#submit-dev-need').prop("disabled", enableSubmit(type));
 }
 
-
 //Method to show/hide development need modal
 function showDevelopmentNeedModal(show){
 	if(show){
@@ -173,7 +155,6 @@ function showDevelopmentNeedModal(show){
 }
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
-
 	if(devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
 		return false;
 	}
@@ -218,15 +199,12 @@ function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 			$('#complete-dev-need-dot-'+devNeedID).addClass('complete');
 	}
 	
-	
-	
 	if(!($("#dev-need-all-tab").hasClass("active"))){
 		$("#development-need-item-"+devNeedID).fadeOut();
 	}
 	
 	$("#development-need-item-"+devNeedID).removeClass("proposed started completed");
-	$("#development-need-item-"+devNeedID).addClass(statusList[parseInt(devNeedStatus)]);
-		
+	$("#development-need-item-"+devNeedID).addClass(statusList[parseInt(devNeedStatus)]);	
 }
 
 //Function that returns dev needs list in html format with the parameters given
@@ -302,7 +280,6 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                             
     return html;
 }
-
 
 function showProposedDevelopmentTab(){
 	if(!$("#dev-need-all-tab").hasClass("active")){

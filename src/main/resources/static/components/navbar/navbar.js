@@ -32,8 +32,7 @@ function highlight(value) {
 		}else{
 			$("#"+this.id).removeClass("selected");
 		}
-	});
-
+	})
 }
 
 //function to open Proposed objective modal
@@ -49,4 +48,3 @@ function proposedToHTML(){
             <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }
-

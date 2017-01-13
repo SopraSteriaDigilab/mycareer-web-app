@@ -41,32 +41,27 @@ $(function() {
     });
     
     //click to open a modal that shows the feedback email template
-    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
-    
-	
-	
+    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });	
 	
 });//End of Document Function
 
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
+var firstFeedback = true;
 
 function initFeedbackDatePicker(id, start){
-		
-		$("#"+id+"-date-picker").datepicker({
-			useCurrent: true,
-			forceParse: false,
-			disabled: true,
-			format: "dd-mm-yyyy",
-			startDate: start,
-			orientation: 'bottom',
-			autoclose: true,
-		});
-		
-		$("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
+    
+    $("#"+id+"-date-picker").datepicker({
+	   useCurrent: true,
+       forceParse: false,
+       disabled: true,
+       format: "dd-mm-yyyy",
+       startDate: start,
+       orientation: 'bottom',
+       autoclose: true,
+    });	
+    $("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
 }
-
-var firstFeedback = true;
 
 function addGeneralFeedbackToList(id, sender, description, date, classDate, email){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email));
@@ -77,7 +72,6 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate, emai
 }
 
 function selectedFeedback(element){
-	
 	$(".sender-panel").each(function(index){
 		if(element.id == this.id){
 			$(this).addClass("selected-panel");
@@ -112,7 +106,6 @@ function feedbackReviewersListHTML(reviewer, email){
 				 <input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"'> \
 			</div> \
 		</div>";
-	
 	return HTML;
 }
 
@@ -131,7 +124,6 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 			</div> \
 		 </div> \
 	</div> ";
-	
 	return HTML
 }
 
@@ -142,9 +134,7 @@ function updateEndDate(){
 	if(startDate > endDate){
 		$("#feedback-end-date").val(timeStampToClassDate(startDate));
 	}
-	
 	$("#feedback-end-date-picker").datepicker('setStartDate', startDate);
-
 }
 
 //From dd-mm-yyyy to timestamp
@@ -153,7 +143,6 @@ function formatFeedbackDate(date){
 	var month = date.slice(3,5);
 	var year = date.slice(6,10);
 	return new Date(year + '-' + month + '-' + day);
-	
 }
 
 function applyDateFilter(){
@@ -201,12 +190,10 @@ function applyReviewerFilter(){
 		});
 		reviewerFilterApplied = true;
 	}
-
 	updateFilterView();
 }
 
 function updateFilterView(){
-	
 	$(".filterable-feedback").each(function(index){
 		var feedback = $(this);
 		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer")){
@@ -229,13 +216,11 @@ function updateFilterView(){
 }
 
 function clearFilter(filter){
-	
 	if(filter === "date"){
 		clearDateFilter();
 	}else{
 		clearReviewerFilter();
 	}
-	
 	updateFilterView();
 }
 
@@ -262,7 +247,6 @@ function clearAllFilters(){
 	updateFilterView();
 }
 
-
 function showGeneralFeedback(id){
 	generalFeedbackID = "feedback-"+id;
     
@@ -272,12 +256,12 @@ function showGeneralFeedback(id){
 		}else{
 			$(this).addClass("hidden");
 		}
-
 	});
 }
 
 function reviewerExists(reviewer){
 	var reviewerCheckedList = [];
+    
 	$(".reviewer-checkbox").each(function(){
 		reviewerCheckedList.push(this.value);
 	});
@@ -285,8 +269,7 @@ function reviewerExists(reviewer){
 		return true;		
 	}else{
 		return false;
-	}
-	
+	}	
 }
 
 function openRequestFeedbackModal(){
@@ -315,5 +298,4 @@ function submitFeedbackRequest(){
             $("#requestingTo").tagsinput('removeAll');
         });
         $('#requestFeedbackModal').modal('hide');
-    
 }

@@ -6,7 +6,6 @@ $(function() {
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
-	
 	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
 
@@ -18,10 +17,8 @@ $(function() {
     $("#obj-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
-
     
 });
-
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
@@ -36,6 +33,8 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             'proposedBy': proposedBy,
         },
         success: function(response){
+            if(lastObjID == 0)
+        		$("#all-obj").removeClass("text-center").empty(); 
             addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName());
 		    showProposedObjTab();
             toastr.success(response);
@@ -112,29 +111,12 @@ function openEditObjectiveModal(id){
 
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
-
 	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
-//			objListID = "obj-archived";
 			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		}else{
 			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
-//			switch(parseInt(status)){
-//				case 0: 
-//					objListID = statusList[status];
-//					break;
-//				case 1: 
-//					objListID = statusList[status];
-//					break;
-//				case 2: 
-//					objListID = statusList[status];
-//					break;
-//			}
-//			objListID += "-obj";
-//			alert(objListID);
-		}
-//		$("#"+objListID).append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
-		
+		}	
 }
 
 //Function to update objective on list
@@ -181,7 +163,6 @@ function updateObjectiveList(objID){
 	var archive = $('#obj-is-archived-'+objID).val();
 	var proposedBy = $('#obj-proposedBy-'+objID).text();
 	
-	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
 	addObjectiveToList(objID, title, description, expectedBy, status, archive, proposedBy);	
 }
@@ -201,9 +182,7 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 }
 
 function updateObjectiveStatusOnList(objID, objStatus){
-
 	$('#obj-status-'+objID).val(objStatus);
-
 	switch(parseInt(objStatus)){
 		case 0:
 			$('#started-obj-dot-'+objID).removeClass('complete');
@@ -218,16 +197,12 @@ function updateObjectiveStatusOnList(objID, objStatus){
 			$('#complete-obj-dot-'+objID).addClass('complete');
 	}
 	
-	
-	
 	if(!($("#obj-all-tab").hasClass("active"))){
 		$("#objective-item-"+objID).fadeOut();
 	}
-	
+    
 	$("#objective-item-"+objID).removeClass("proposed started completed");
 	$("#objective-item-"+objID).addClass(statusList[parseInt(objStatus)]);
-
-
 }
 
 function updateArchiveTab(){
@@ -245,9 +220,7 @@ function isArchivedItem(isArchived){
 		return "archived-obj-item";
 	}
 	return "unarchived-obj-item"
-	
 }
-
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
@@ -315,8 +288,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
          \
         </div> \
     </div> \
-    "
-                            
+    "                      
     return html;
 }
 
