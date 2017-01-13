@@ -48,7 +48,7 @@ function getNotesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-          lastNoteID == data.length;          
+          lastNoteID = data.length;          
           $.each(data, function(key, val){
           	
           	var date = timeStampToDateTime(new Date(val.timeStamp));
