@@ -231,7 +231,8 @@ function addNoteToDB(userID, noteType, linkID, from, body, date){
         },
         success: function(response){
             if(lastNoteID == 0)
-        		$("#general-notes-list").removeClass("text-center").empty(); 
+        		$("#general-notes-list").removeClass("text-center").empty();
+            lastNoteID++;
             addNoteToList(from, noteType, linkID, body, date);
             toastr.success(response);
         },
