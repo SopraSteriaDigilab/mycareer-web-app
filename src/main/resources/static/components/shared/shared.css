@@ -45,12 +45,6 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	text-decoration: underline;
 }
 
-/*
-.bottomless {
-	margin-bottom: 0px;
-}
-*/
-
 /*----------------------------------------------------- Objectives -----------------------------------------------------*/
 
 
@@ -61,15 +55,10 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .btn-link:hover {
 	background-color: #eee;
 }
-/*
-#objective-date {
-	background-color: white;
-}*/
 
 .vertical-centre{
 	transform: translateY(70%);
 }
-
 
 .panel-heading a:after {
 	font-family: 'Glyphicons Halflings';
@@ -90,9 +79,6 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .chev-height{
 	margin-top: 5%;
 }
-
-
-
 
 /*Form Wizard*/
 .bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
@@ -137,4 +123,3 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .max-characters{
     font-size: 11px;
 }
-

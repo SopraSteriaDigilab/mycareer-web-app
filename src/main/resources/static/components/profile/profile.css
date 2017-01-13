@@ -8,8 +8,6 @@
 
 #userProfileName, #userProfilePicture{
 	color: #FFF;
-	/*Outline in  black*/
-	/*text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;*/
 }
 
 #profile-dropdown {

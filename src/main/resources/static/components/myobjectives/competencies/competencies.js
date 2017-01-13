@@ -34,7 +34,6 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
     return html;
 }
 
-
 //send request to backend to update star to be selected or de-selected
 function starChanger(id){
     var status = ($('#starSelected'+id).val() === "true") ? false : true;
@@ -42,7 +41,6 @@ function starChanger(id){
     var userID = getADLoginID();
     
     updateCompetencyStatus(userID,id,title,status);
-
 }
 
 //Method to make Ajax call and return clicked competencies to DB

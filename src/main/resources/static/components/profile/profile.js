@@ -9,9 +9,7 @@ function populateProfile(userName, fullName){
 	$("#userProfilePicture").append(getProfilePicture(userName, 48))
 							.append("<span class='caret'></span>");
 	highlightProfileDropdown("#userProfilePicture, #userProfileName");
-//	$("#userProfilePicture").append();
 }
-
 
 function highlightProfileDropdown(elements){
     $("#profile-container").hover(function(){

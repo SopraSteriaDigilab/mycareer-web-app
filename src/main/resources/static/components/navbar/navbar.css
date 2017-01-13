@@ -1,13 +1,10 @@
 .navbar {
 	background-color: white;
-
 }
 
 .nav, .nav-tabs {
 	border-bottom: 0px;
-	
 }
-
 
 .nav >li > a{
 	text-decoration: none;

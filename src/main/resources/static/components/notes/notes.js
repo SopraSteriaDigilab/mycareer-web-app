@@ -40,7 +40,6 @@ function initResizable(){
 	  });
 }
 
-
 //Method to get the Notes list
 function getNotesList(userID){
   $.ajax({
@@ -49,11 +48,14 @@ function getNotesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
+          lastNoteID = data.length;          
           $.each(data, function(key, val){
           	
           	var date = timeStampToDateTime(new Date(val.timeStamp));
           	addNoteToList(val.fromWho, val.noteType, val.linkID, val.body, date);
           });
+          if(data.length == 0)
+        	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
       	
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -96,8 +98,6 @@ function optionHTML(id, title){
 	return HTML;
 }
 
-
-
 //Method to add note to list directly
 function addNoteToList(fromWho, noteType, linkID, body, date){
 //	var listID = "";
@@ -126,7 +126,6 @@ function addNoteToList(fromWho, noteType, linkID, body, date){
 	$("#general-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
 }
 
-
 //Method to return html
 function notesListHTML(fromWho, noteType, linkID, body, date){
 	var link="";
@@ -152,7 +151,6 @@ function notesListHTML(fromWho, noteType, linkID, body, date){
 	  ";
 	return html;	
 }
-
 
 //Method to get data and submit data
 function clickSubmitNote(){

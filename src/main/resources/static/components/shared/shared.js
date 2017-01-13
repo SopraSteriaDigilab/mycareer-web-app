@@ -2,7 +2,6 @@ $(function() {
 	adjustDatePicker();
 });
 
-
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
@@ -12,6 +11,7 @@ var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-stud
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-Learning', 'Self-Study', 'Other'];
 var lastDevID = 0;
 var lastObjID = 0;
+var lastNoteID = 0;
 
 function adjustDatePicker(){
 	$.fn.datepicker.noConflict = function(){
@@ -31,11 +31,13 @@ function getObjectivesList(userID){
       xhrFields: {'withCredentials': true},
       success: function(data){
     	  lastObjID = data.length;
+    	  var isEmpty = true;
           $.each(data, function(key, val){
-
-          	var expectedBy = formatDate(val.timeToCompleteBy);
-          	addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
+        	  var expectedBy = formatDate(val.timeToCompleteBy);
+        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
           });
+          if(data.length == 0)
+        	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
@@ -50,7 +52,6 @@ function checkComplete(status, item){
 	}
 	return "";
 }
-
 
 //Method to set and show content of modal
 function setObjectiveModalContent(id, title, text, date, status, type){
@@ -110,11 +111,8 @@ function clickSubmitObjective(){
           toastr.error("One or more email addresses entered are not valid");
           showObjectiveModal(true);
         }  
-       
     }
-	
 }
-
 
 //------------------------------------------------------------------------------------
 
@@ -138,7 +136,6 @@ function getCompetencyList(userID){
         }
     });
 }
-
 
 //Method to change star icon to selected or not
 function checkSelected(isSelected){
@@ -166,6 +163,11 @@ function getGeneralFeedbackList(userID){
                 var name = (val.fullName) ? val.fullName : val.fromWho; 
                 addGeneralFeedbackToList(val.id, name, val.emailBody, longDate, classDate, val.fromWho);            
             });//end of for each loop
+            if(data.length == 0) {
+	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
+	        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+	        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+            }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
@@ -190,6 +192,8 @@ function getDevelopmentNeedsList(userID){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
 	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
 	        });
+	        if(data.length == 0)
+	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown){
 	        console.log('error', errorThrown);
@@ -226,6 +230,9 @@ function addNoteToDB(userID, noteType, linkID, from, body, date){
             'date': date,
         },
         success: function(response){
+            if(lastNoteID == 0)
+        		$("#general-notes-list").removeClass("text-center").empty();
+            lastNoteID++;
             addNoteToList(from, noteType, linkID, body, date);
             toastr.success(response);
         },
@@ -250,10 +257,6 @@ function initDatePicker(id, today){
 		minViewMode: "months",
 		startDate: today,
 		autoclose: true,
-
-		// defaultDate: '01-10-2016',
-		// todayHighlight: true,
-		// todayBtn: true,
 	});
 	
 	$("#"+id+"-date").val(getToday());
@@ -284,7 +287,7 @@ function timeStampToDateTime(date){
 function timeStampToLongDate(date){
 	var d = new Date(date);
 	var date = d.getDate() + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
-	
+
 	return date;
 }
 
@@ -320,7 +323,6 @@ function addZero(value){
 	return value;
 }
 
-
 //method that enables the submit button only when all inputs in the form have content
 function validateForm(inputClass, submitButtonID) {
 	var isEmpty = checkEmpty(inputClass, false);
@@ -344,12 +346,9 @@ function checkEmpty(inputClass, throwError){
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");
 
-	
 	return isEmpty;
 } 
 
-
-    
 function enableSubmit(type){
     if (type === 1){
         return false;
@@ -393,8 +392,6 @@ function getProfilePicture(userName, size){
 	return imageURL;
 }
 
-
-
 function openNotesBar(){
 	var screenWidth = $(document).width();
 	var sidebarWidth = $("#resizable").width();
@@ -422,7 +419,6 @@ function isValidEmailAddress(requestingTo){
     return pattern.test(requestingTo);
 }
 
-
 function checkIfPastDate (date){
 	var date = new Date(date);
 	var today = new Date();
@@ -440,6 +436,3 @@ function showProposedObjTab(){
 		$("#obj-proposed-tab").find('a').trigger("click");
 	}
 }
-
-
-
