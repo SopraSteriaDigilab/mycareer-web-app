@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../components/navbar/navbar.css"/>
-<script type="text/javascript" src="../components/navbar/navbar.js"></script>
+<link rel="stylesheet" href="../components/navbar/navbar.min.css"/>
+<script type="text/javascript" src="../components/navbar/navbar.min.js"></script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
 
@@ -15,11 +15,8 @@
 			<ul class="nav nav-tabs nav-height">
 				<li role="presentation" class="active "><a class="nav-height" href="#">MyCareer</a></li>
 				
-					<div id="profile"></div>
-
-
+					<div id="profile" class="dropdown"></div>
 			</ul>
-			
 		</div>
 	</div>
 
@@ -34,15 +31,12 @@
 		</div>
 		<!-- /.navbar-collapse --> 
 	</div>
-
 </nav>
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
-
-
 
 <!-- Add Objective Modal -->
 <div id=objective-modal class="modal fade" role="dialog">
@@ -55,21 +49,20 @@
 			</div>
 			<div class="modal-body">
 				<form>
-					<input type="hidden" id="archive" value="true"> <!-- added for Story 395 -->
+					<input type="hidden" id="archive" value="true">
 					<input type="hidden" id="obj-modal-type" value="add">
 					<input type="hidden" id="objective-id" value="0">
 					<input type="hidden" id="objective-status" value="proposed">
-				<!-- 	<input type="hidden" id="objective-is-archived" value="false"> -->
-                    <div class="form-group" id="proposedTo">
-                                            
-                    </div>
+                    
+                    <div class="form-group" id="proposedTo"></div>
+                    
 					<div class="form-group">
-						<label for="objective-title">Title*:</label>
+						<label for="objective-title">Title* <span class="max-characters"> (max 150 characters) </span>:</label>
 						<input type="text" class="objective-modal-validate form-control" id="objective-title" maxlength="150" spellcheck="true" />
 					</div>
 
 					<div class="form-group">
-						<label for="objective-text">Description*:</label>
+						<label for="objective-text">Description* <span class="max-characters"> (max 1000 characters) </span>:</label>
 						<textarea class="objective-modal-validate form-control" id="objective-text" maxlength="1000" rows="8" spellcheck="true"></textarea>
 					</div>
 
@@ -93,17 +86,9 @@
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-				
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>				
 				<button type="button" class="btn btn-default" id="submit-obj" disabled>Submit</button>
 			</div>
 		</div>
-
 	</div>
 </div>
-
-
-
-
-
-

@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../components/mydevelopmentneeds/mydevelopmentneeds.css"/>
-<script type="text/javascript" src="../components/mydevelopmentneeds/mydevelopmentneeds.js"></script>
+<link rel="stylesheet" href="../components/mydevelopmentneeds/mydevelopmentneeds.min.css"/>
+<script type="text/javascript" src="../components/mydevelopmentneeds/mydevelopmentneeds.min.js"></script>
 
 <div class="container">
 
@@ -24,11 +24,11 @@
 	<!-- Nav Pills header -->
 	<div class="row">
 		<div class="col-md-7">
-			<ul class="nav nav-tabs nav-justified">
-				<li class="active"><a data-target="#proposed-dev-needs, #started-dev-needs, #completed-dev-needs" data-toggle="tab"> All </a></li>
-				<li><a href="#proposed-dev-needs" data-toggle="tab"> Proposed </a></li>
-				<li><a href="#started-dev-needs" data-toggle="tab"> In-Progress </a></li>
-				<li><a href="#completed-dev-needs" data-toggle="tab"> Completed </a></li>
+			<ul class="nav nav-tabs nav-justified" style="cursor:pointer">
+				<li id="dev-need-all-tab"class="active"><a data-target=".dev-need" data-toggle="tab"> All </a></li>
+				<li id="dev-need-proposed-tab"><a data-target=".proposed" data-toggle="tab"> Proposed </a></li>
+				<li id="dev-need-started-tab"><a data-target=".started" data-toggle="tab"> In-Progress  </a></li>
+				<li id="dev-need-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed </a></li>
 			</ul>
 		</div>
 	</div>
@@ -37,19 +37,14 @@
 		
 	<!-- My Development Needs half  -->
 	<div class='row'>
-		<div class='col-sm-12 col-md-7'>
-			<div class="tab-content">
-			
-				<div id="dev-needs-list"></div><!-- End of dev-needs-list container -->
-		        
-		        <div id="completed-dev-needs" class="tab-pane fade in active"></div>
-			    <div id="started-dev-needs" class="tab-pane fade in active"></div>
-			    <div id="proposed-dev-needs" class="tab-pane fade in active"></div>
-		
+		<div class='col-md-7'>
+			<div  id="all-dev-need" class="tab-content">
+				<div class='proposed'></div>
+	  			<div class='started'></div>
+                <div class='completed'></div>		
 			</div>
-		</div><!--End of My Development Needs half -->
-	
-	</div>
+		</div>
+	</div><!--End of My Development Needs half -->
 </div>
 
 <!-- Add Development Needs Modal -->
@@ -67,12 +62,12 @@
 					<input type="hidden" id="development-need-id" value="0">
 					<input type="hidden" id="development-need-status" value="0">
 					<div class="form-group">
-						<label for="development-need-title">Title*:</label>
+						<label for="development-need-title">Title*<span class="max-characters"> (max 150 characters) </span>:</label>
 						<input type="text" class="development-need-modal-validate form-control" id="development-need-title" maxlength="150" spellcheck="true"/>
 					</div>
 
 					<div class="form-group">
-						<label for="development-need-text">Description*:</label>
+						<label for="development-need-text">Description*<span class="max-characters"> (max 1000 characters) </span>:</label>
 						<textarea class="development-need-modal-validate form-control" id="development-need-text" maxlength="1000" rows="8" spellcheck="true"></textarea>
 					</div>
 					

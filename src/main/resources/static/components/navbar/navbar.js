@@ -1,5 +1,4 @@
 $(function() {
-
 	
 	$("sidebar").resizable();
 	loadProfile();
@@ -33,8 +32,7 @@ function highlight(value) {
 		}else{
 			$("#"+this.id).removeClass("selected");
 		}
-	});
-
+	})
 }
 
 //function to open Proposed objective modal
@@ -46,59 +44,7 @@ function openProposedObjectiveModal(){
 
 function proposedToHTML(){
     var HTML= " \
-        <label for='proposed-obj-to'>Email*:</label> \
+        <label for='proposed-obj-to'>Email(s)*:</label> \
             <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }
-
-function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    var url = "http://"+getEnvironment()+":8080/addProposedObjective/"+userID;
-    var data = {};
-    data["title"] = objTitle;
-    data["description"] = objText;
-    data["completedBy"] = objDate;
-    data["emails"] = proposedTo;
-
-    var settings = {
-	  "url": url,
-	  "method": "POST",
-	  xhrFields: {'withCredentials': true},
-	  "data": data
-	}
-	$.ajax(settings).done(function (response) {
-	  toastr.success(response);
-	});
-    
-}
-
-
-//$("#objectives").click(function() {
-//window.history.pushState("objectives","objectives", "myobjectives");
-//loadPage("myobjectives");
-//highlight('objectives');
-//});
-//
-//$("#feedback").click(function() {
-//window.history.pushState("feedback","feedback", "myfeedback");
-//loadPage("myfeedback");
-//highlight('feedback');
-//});
-//
-//$("#development-needs").click(function() {
-//window.history.pushState("developmentneeds","developmentneeds", "mydevelopmentneeds");
-//loadPage("mydevelopmentneeds");
-//highlight('development-needs');
-//});
-//
-//
-//
-//function loadPage(section){
-//	$.get( "http://"+getEnvironment()+":8000/components/"+section+"/"+section+".html", function( data ) {
-//		  $( "#myapp" ).html( data );
-//		}).fail(function() {
-//			 toastr.error("Sorry could not load page, please try again later");
-//		});
-//
-//}
-
-

@@ -1,20 +1,25 @@
 $(function() {
-		logMeIn();
-
-	
+	logMeIn();
 });
 
 var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 
-
 function getEnvironment(){
-	return "mycareer-uat.duns.uk.sopra";
-//	return "localhost";
+	var host = $("#env").text();
+	switch (host) {
+		case "ldunsmycareerdev01":
+			return "ldunsmycareerdev01.duns.uk.sopra";
+		case "ldunsmycareeruat01":
+			return "mycareer-uat.duns.uk.sopra";
+		case "ldunsmycareer01":
+			return "mycareer.uk.corp.sopra";
+		default:
+			return "localhost";
+	}
 }
 
-//Hardcoded for now
 function getUserName(){
 	return sessionStorage.getItem("username");
 }
@@ -30,14 +35,12 @@ function authenticate(username){
 	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
 	    	  isManager = Boolean(data.isManager);
-	    	  loadPage($("#section").text());
-	    	  
+	    	  loadPage($("#section").text());  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
 	    	  window.location.replace("/access-issue");
 	      }
 	  });
-	
 }
 
 //Load relevant page based on section in url
@@ -50,7 +53,6 @@ function loadPage(section){
 		}).fail(function() {
 			 toastr.error("Sorry could not load page, please try again later");
 		});
-
 }
 
 function getADfullName(){
@@ -66,7 +68,6 @@ function isUserManager(){
 }
 
 function logMeIn(){
-
 	if(!sessionStorage.getItem("username")){
 		var settings = {
 		  "async": true,
@@ -75,18 +76,11 @@ function logMeIn(){
 		  "method": "GET",
 		   xhrFields: { 'withCredentials': true },
 		}
-		
 		$.ajax(settings).done(function (response) {
-			 
-			  console.log(response);
 			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});
-		
 	}else{
 		authenticate(sessionStorage.getItem("username"));
 	}
 }
-	
-
-

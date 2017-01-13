@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../components/myteam/myteam.css"/>
-<script type="text/javascript" src="../components/myteam/myteam.js"></script>
+<link rel="stylesheet" href="../components/myteam/myteam.min.css"/>
+<script type="text/javascript" src="../components/myteam/myteam.min.js"></script>
 
 <!--Containter for full page -->
 <div class="container">
@@ -11,14 +11,13 @@
 			<h2 >My Team</h2>
 		</div>
 		<div class="col-md-7">
-			<div class="hidden" id="reportee-header">
+			<div class="" id="reportee-header">
 				<br/>
 				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
-					<!-- <li><a href="#reportee-comp-list" data-toggle="tab"> Competencies </a></li>-->
-					<li><a href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
-					<li><a href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
-					<li><a href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
+					<li class="active"><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
+					<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
+					<li><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
+					<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
 				</ul>
 			</div>
 		</div>
@@ -34,7 +33,7 @@
 
 	<div class="col-md-3" id='reportee-list'></div>
 	
-	<div class="col-md-7">
+	<div id="info-holder" class="col-md-7">
 		<div class="tab-content hidden" id="reportee-body">
 			<div id="reportee-obj-tab" class="tab-pane fade in active">
 				<div class="row">
@@ -58,10 +57,7 @@
     	</div>
 	</div>
 
-
 </div><!--end of container -->
-
-
 
 <!--Reportee Note Modal -->
 <div class="modal fade" id="reportee-note-modal" role="dialog">
@@ -74,7 +70,7 @@
 			<div class="modal-body">
       			<div class="row">
 					<div class="form-group col-md-12" >
-						<label for="general-note-input">Note*:</label>
+						<label for="general-note-input">Note*<span class="max-characters"> (max 1000 characters) </span>:</label>
 						<textarea id="reportee-note-input" class="reportee-note-validate form-control" id="note-text" maxlength="1000" spellcheck="true"></textarea>
 					</div>
 				</div>

@@ -19,19 +19,22 @@ $(function() {
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
+var selectedReporteeEmail = "";
 
 //Method to get the Reportee list
 function getReportees(){
-
+		$("#reportee-list").append("<h5>Loading Reportees...</h5>");
 	    $.ajax({
 	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
             cache: false,
 	        method: 'GET',
 	        xhrFields: {'withCredentials': true},
 	        success: function(data){
+	        	$("#reportee-list").empty();
+	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
 	            $.each(data, function(key, val){
-	            	addReporteeToList(val.employeeID, val.fullName, val.username);
-	            });
+	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+	            });  
 	        },
 	        error: function(XMLHttpRequest, textStatus, errorThrown){
 	            console.log('error', errorThrown);
@@ -40,13 +43,13 @@ function getReportees(){
 	    });
 }
 
-function addReporteeToList(employeeID, fullName, userName){
-	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName));
+function addReporteeToList(employeeID, fullName, userName, emailAddress){
+	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
 }
 
-function reporteeListItemHTML(employeeID, fullName, userName){
+function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div class='panel panel-default' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\")' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -57,13 +60,22 @@ function reporteeListItemHTML(employeeID, fullName, userName){
 		    </div> \
 		  </div> \
   ";
-
   return HTML;
- 
 }
 
-function getReporteeCareer(id, name) {
-	if(checkSelectedUser(parseInt(id))){
+function selectedReportee(element){
+	$(".reportee-panel").each(function(index){
+		if(element.id == this.id){
+			$(this).addClass("selected-panel");
+		}else{
+			$(this).removeClass("selected-panel");
+		}
+	});     
+}
+
+function getReporteeCareer(id, name, emailAddress, element) {
+	if(checkSelectedUser(parseInt(id), emailAddress)){
+		selectedReportee(element)
 		clearReporteeLists();
 		showReporteeView(name)
 		getObjectivesList(id);
@@ -105,7 +117,6 @@ function getReporteeNotesList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-            	
             	var date = timeStampToDateTime(new Date(val.timeStamp));
             	addNoteToReporteeList(val.fromWho, val.body, date);
             });
@@ -117,15 +128,46 @@ function getReporteeNotesList(userID){
     });
 }
 
+//Method to propose objective
+function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
+        method: 'POST',
+        xhrFields: {'withCredentials': true},
+        data: {
+            'title': objTitle,
+            'description': objText,
+            'completedBy': objDate,
+            'emails': proposedTo
+        },            
+        success: function(response){
+            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
+            	toastr.warning(response);
+               }else if(response.indexOf("Error") !== -1){   
+                toastr.error(response);
+               }else{
+            	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
+            		addObjectiveToList((++lastObjID), objTitle, objText, objDate, 0, false);
+            	}
+                toastr.success(response);
+               }
+           },
+           error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
 function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
 
-function checkSelectedUser(id){
+function checkSelectedUser(id, emailAddress){
 	if(selectedReporteeID == id){
 		return false;
 	}
 	selectedReporteeID = id;
+	selectedReporteeEmail = emailAddress;
 	return true;
 }
 
@@ -135,7 +177,7 @@ function showReporteeView(name){
 	});
 	
 	if(reporteeSectionHidden){
-		$("#reportee-header").removeClass("hidden");
+		$("#info-message").remove();
 		$("#reportee-body").removeClass("hidden");
 		reporteeSectionHidden = false;
 	}
@@ -181,7 +223,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 //Method to add competencies to list display
 function addCompetenciesToList(competencies){
 	if(competencies.length == 0) {
-		$("#reportee-comp-list").HTML("")
+		$("#reportee-comp-list").append("No Competencies have been selected.");
 	}
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
@@ -201,7 +243,6 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }
-
 
 //Function that returns objective list in html format with the parameters given
 function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
@@ -223,17 +264,17 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
             		</div> \
             		<div class='col-sm-5 bs-wizard'> \
             			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-obj-dot-"+id+"'> \
-					      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></div> \
+					      <div class='text-center' id='test'><h6>Proposed</h6></div> \
 					      <div  class='bs-wizard-dot-start'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-obj-dot-"+id+"'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
+					       <div class='text-center'><h6>In-Progress</h6></div> \
 					       <div class='progress'><div class='progress-bar'></div></div> \
 					       <div  class='bs-wizard-dot-start'></div> \
 					       <div  class='bs-wizard-dot-complete'></div> \
 					     </div> \
 					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"'> \
-					       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
+					       <div class='text-center'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start'></div> \
 					        <div  class='bs-wizard-dot-complete'></div> \
@@ -265,11 +306,9 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
          \
         </div> \
     </div> \
-    ";
-                            
+    ";                   
     return html;
 }
-
 
 //Method to return competency html
 function reporteeCompetenciesListHTML(competencies){
@@ -299,8 +338,7 @@ function reporteeFeedbackDescriptionListHTML(id, sender, description, date, clas
 			</div> \
 		</li> \
 	</ul>";
-	
-	return HTML
+	return HTML;
 }
 
 //Function that returns dev needs list in html format with the parameters given
@@ -323,17 +361,17 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 	            		</div> \
 	            		<div class='col-sm-5 bs-wizard'> \
 	            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"'> \
-						      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
+						      <div class='text-center' id='test'><h6>Proposed</h6></div> \
 						      <div  class='bs-wizard-dot-start'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
+						       <div class='text-center'><h6>In-Progress</h6></div> \
 						       <div class='progress'><div class='progress-bar'></div></div> \
 						       <div  class='bs-wizard-dot-start'></div> \
 						       <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
+						       <div class='text-center'><h6>Complete</h6></div> \
 						       	 <div class='progress'><div class='progress-bar'></div></div> \
 						        <div class='bs-wizard-dot-start'></div> \
 						        <div  class='bs-wizard-dot-complete'></div> \
@@ -365,15 +403,12 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 	         \
 	        </div> \
 	    </div> \
-	    "
-                            
+	    "                    
     return html;
 }
 
-
 //Method to return html
 function reporteeNotesListHTML(fromWho, body, date){
-
 	var html = " \
 	  <ul class='list-group-item'> \
 	  	<div class='row'> \
@@ -391,6 +426,5 @@ function reporteeNotesListHTML(fromWho, body, date){
 function addProposed(){
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
-		
 	}
 }
