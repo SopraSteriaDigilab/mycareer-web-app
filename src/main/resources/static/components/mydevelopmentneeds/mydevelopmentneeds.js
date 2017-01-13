@@ -39,7 +39,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'timeToCompleteBy': devNeedDate
         },
         success: function(response){
-            if(lastObjID == 0)
+            if(lastDevID == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
             addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0);
 		    showProposedDevelopmentTab();
