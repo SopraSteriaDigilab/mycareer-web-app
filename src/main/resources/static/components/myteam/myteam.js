@@ -34,8 +34,7 @@ function getReportees(){
 	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-	            });
-	            
+	            });  
 	        },
 	        error: function(XMLHttpRequest, textStatus, errorThrown){
 	            console.log('error', errorThrown);
@@ -61,13 +60,10 @@ function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 		    </div> \
 		  </div> \
   ";
-
   return HTML;
 }
 
-
 function selectedReportee(element){
-	
 	$(".reportee-panel").each(function(index){
 		if(element.id == this.id){
 			$(this).addClass("selected-panel");
@@ -76,7 +72,6 @@ function selectedReportee(element){
 		}
 	});     
 }
-
 
 function getReporteeCareer(id, name, emailAddress, element) {
 	if(checkSelectedUser(parseInt(id), emailAddress)){
@@ -122,7 +117,6 @@ function getReporteeNotesList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-            	
             	var date = timeStampToDateTime(new Date(val.timeStamp));
             	addNoteToReporteeList(val.fromWho, val.body, date);
             });
@@ -158,13 +152,11 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
                 toastr.success(response);
                }
            },
-           
            error: function(XMLHttpRequest, textStatus, errorThrown){
             toastr.error(XMLHttpRequest.responseText);
         },
     });
 }
-
 
 function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
@@ -252,7 +244,6 @@ function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }
 
-
 //Function that returns objective list in html format with the parameters given
 function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived){
 	var html = " \
@@ -315,11 +306,9 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
          \
         </div> \
     </div> \
-    ";
-                            
+    ";                   
     return html;
 }
-
 
 //Method to return competency html
 function reporteeCompetenciesListHTML(competencies){
@@ -349,8 +338,7 @@ function reporteeFeedbackDescriptionListHTML(id, sender, description, date, clas
 			</div> \
 		</li> \
 	</ul>";
-	
-	return HTML
+	return HTML;
 }
 
 //Function that returns dev needs list in html format with the parameters given
@@ -373,17 +361,17 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 	            		</div> \
 	            		<div class='col-sm-5 bs-wizard'> \
 	            			 <div class='col-xs-4 bs-wizard-step complete' id='proposed-dev-need-dot-"+id+"'> \
-						      <div class='text-center' id='test'><button type='button' class='btn btn-link btn-xs'><h6>Proposed</h6></button></div> \
+						      <div class='text-center' id='test'><h6>Proposed</h6></div> \
 						      <div  class='bs-wizard-dot-start'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 1) +"' id='started-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>In-Progress</h6></button></div> \
+						       <div class='text-center'><h6>In-Progress</h6></div> \
 						       <div class='progress'><div class='progress-bar'></div></div> \
 						       <div  class='bs-wizard-dot-start'></div> \
 						       <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 						     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"'> \
-						       <div class='text-center'><button type='button' class='btn btn-link btn-xs'><h6>Complete</h6></button></div> \
+						       <div class='text-center'><h6>Complete</h6></div> \
 						       	 <div class='progress'><div class='progress-bar'></div></div> \
 						        <div class='bs-wizard-dot-start'></div> \
 						        <div  class='bs-wizard-dot-complete'></div> \
@@ -415,15 +403,12 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 	         \
 	        </div> \
 	    </div> \
-	    "
-                            
+	    "                    
     return html;
 }
 
-
 //Method to return html
 function reporteeNotesListHTML(fromWho, body, date){
-
 	var html = " \
 	  <ul class='list-group-item'> \
 	  	<div class='row'> \
@@ -441,6 +426,5 @@ function reporteeNotesListHTML(fromWho, body, date){
 function addProposed(){
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
-		
 	}
 }
