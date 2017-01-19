@@ -1,10 +1,12 @@
 $(function() {
+	//test
 	logMeIn();
 });
 
 var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
+var ADUsername = null;
 
 function getEnvironment(){
 	var host = $("#env").text();
@@ -20,10 +22,6 @@ function getEnvironment(){
 	}
 }
 
-function getUserName(){
-	return sessionStorage.getItem("username");
-}
-
 //Authenticate the user against AD
 function authenticate(username){	
 	 $.ajax({
@@ -34,6 +32,7 @@ function authenticate(username){
 	      success: function(data){
 	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
+	    	  ADUsername = data.username;
 	    	  isManager = Boolean(data.isManager);
 	    	  loadPage($("#section").text());  
 	      },
@@ -63,12 +62,15 @@ function getADLoginID(){
 	return ADLoginID;
 }
 
+function getUserName(){
+	return ADUsername;
+}
+
 function isUserManager(){
 	return isManager;
 }
 
 function logMeIn(){
-	if(!sessionStorage.getItem("username")){
 		var settings = {
 		  "async": true,
 		  "crossDomain": true,
@@ -77,10 +79,6 @@ function logMeIn(){
 		   xhrFields: { 'withCredentials': true },
 		}
 		$.ajax(settings).done(function (response) {
-			  sessionStorage.setItem("username", response);
 			  authenticate(response);
 		});
-	}else{
-		authenticate(sessionStorage.getItem("username"));
-	}
 }
