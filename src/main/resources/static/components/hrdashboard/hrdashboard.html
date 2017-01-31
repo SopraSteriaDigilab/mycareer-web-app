@@ -2,23 +2,32 @@
 <script type="text/javascript" src="../components/hrdashboard/hrdashboard.js"></script>
 
 <div class="container">
+    
+    <!--Page Header -->
     <div class="row">
-        <div class="col-md-12" >
-            <div class="col-md-6">
-                <h2 >HR Dashboard</h2>
-            </div>
-            <div class="col-md-6 vertical-centre">
-                <button type="button" class="btn btn-default pull-right" disabled id="">Generate Graphs</button>
-                <button type="button" class="btn btn-default pull-right" disabled id="">Download .csv</button>
-            </div>
+        <div class="col-md-6">
+            <h2>HR Dashboard</h2>
         </div>
-    </div><!--End header row-->
-    
-    <br/>
-
-    <div class="row">
-        <div class="col-md-12" id="hr-dashboard"></div>
+        <div class="col-md-6 vertical-centre">
+            <button type="button" class="btn btn-default pull-right" disabled id="">Generate Graphs</button>
+            <button type="button" class="btn btn-default pull-right" disabled id="">Download .csv</button>
+        </div>
     </div>
+    <!--End of Page header-->
+    <br/>
     
+    <!-- Dropdown to select which HR report -->
+    <div class="col-md-12">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle btn-default" data-toggle="dropdown" id="report-selector">Select a Report <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" id="hr-overview">Overview</a></li>
+                    <li><a href="#" id="hr-objectives">Objectives</a></li>
+                    <li><a href="#" id="hr-development-needs">Development Needs</a></li>
+                </ul>
+        </div>
+        
+        <div class="hr-dashboard"></div>
+    </div><!--End of dropdown row -->
     
 </div><!--End of Container -->
