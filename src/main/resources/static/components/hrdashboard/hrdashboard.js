@@ -5,6 +5,7 @@ $(function() {
     $("#hr-overview").click(function(){ showHrOverviewList() });
     $("#hr-objectives").click(function(){  $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); });
     $("#hr-development-needs").click(function(){ $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() ); });
+    $("#hr-feedback").click(function(){ $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); });
 
 });
 
@@ -27,6 +28,11 @@ function getHRdata(){
             $(".hr-dashboard").append(hrDevNeedsHeader());
            $.each(data.hrDevNeedsData, function(key, val){
                 addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount);
+            });
+           
+           $(".hr-dashboard").append(hrFeedbackHeader());
+           $.each(data.hrFeedbackData, function(key, val){
+                addHrFeedbackToList(val.employeeID, val.fullName, val.totalFeedback);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -35,6 +41,10 @@ function getHRdata(){
         }
     });
 }
+
+// function that 
+
+//------------------------------------------------- HR Overview ----------------------------------------------------------------
 
 // function to add HR data overview to a list and append it on the HTML
 function addHrDataToList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
@@ -51,6 +61,9 @@ function showHrOverviewList(){
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
     }
 }
 
@@ -100,6 +113,8 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
     return html;
 }
 
+//------------------------------------------------- HR Objectives ----------------------------------------------------------------
+
 //function to add HR data overview to a list and append it on the HTML
 function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount){
     $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount));
@@ -119,6 +134,9 @@ function showHrObjectivesList(){
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
     }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
+    }
 }
 
 //Function that returns the table headings
@@ -133,6 +151,9 @@ function hrObjectivesHeader(){
                    <th>Objectives Proposed</th> \
                    <th>Objectives In-Progress</th> \
                    <th>Objectives Complete</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
                 </tr> \
             </thead> \
             <tbody id='objectiveDetails'> \
@@ -152,10 +173,15 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, 
                 <td>"+proposedCount+"</td> \
                 <td>"+setCount+"</td> \
                 <td>"+completeCount+"</td> \
+                <td>Sopra Steria Limited</td> \
+                <td>SS Government (GOV)</td> \
+                <td>Scotland People (DPC181)</td> \
             </tr> \
     "
     return html;
 }
+
+//------------------------------------------------- HR Development Needs ----------------------------------------------------------------
 
 //function to add HR data overview to a list and append it on the HTML
 function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount){
@@ -176,6 +202,9 @@ function showHrDevelopmentNeedsList(){
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
     }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
+    }
 }
 
 //Function that returns the table headings
@@ -190,6 +219,9 @@ function hrDevNeedsHeader(){
                    <th>Development Needs Proposed</th> \
                    <th>Development Needs In-Progress</th> \
                    <th>Development Needs Complete</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
                 </tr> \
             </thead> \
             <tbody id='devNeedsDetails'> \
@@ -198,6 +230,7 @@ function hrDevNeedsHeader(){
     "
     return html;
 }
+
 
 //Function that returns HR development needs list in html format with the parameters given
 function hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount){
@@ -209,6 +242,71 @@ var html = " \
                 <td>"+proposedCount+"</td> \
                 <td>"+setCount+"</td> \
                 <td>"+completeCount+"</td> \
+                <td>Sopra Steria Limited</td> \
+                <td>SS Government (GOV)</td> \
+                <td>Scotland People (DPC181)</td> \
+            </tr> \
+    "
+    return html;
+}
+
+//------------------------------------------------- HR Feedback ----------------------------------------------------------------
+
+//function to add HR data feedback to a list and append it on the HTML
+function addHrFeedbackToList(employeeID, fullName, totalFeedback){
+    $("#feedbackDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalFeedback));
+}
+
+// function that shows the HR Overview list when clicked
+function showHrFeedbackList(){
+    if ($("#hrFeedbackTable").hasClass("hidden")){
+         $("#hrFeedbackTable").removeClass("hidden");
+    }
+    if($("#hrFeedbackTable_wrapper").hasClass("hidden")){
+         $("#hrFeedbackTable_wrapper").removeClass("hidden");
+    }
+    if ($("#hrOverviewTable").not("hidden")){
+         $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrObjectivesTable_wrapper').not("hidden")){
+         $("#hrObjectivesTable_wrapper").addClass("hidden");
+    }
+    if($("#hrDevNeedsTable_wrapper").not("hidden")){
+         $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+}
+
+//Function that returns the table headings
+function hrFeedbackHeader(){
+    var html = " \
+        <table class='table table-striped hidden' id='hrFeedbackTable'> \
+            <thead> \
+                <tr> \
+                   <th>Employee ID</th> \
+                   <th>Employee Name</th> \
+                   <th>Total no of Feedback recieved</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
+                </tr> \
+            </thead> \
+            <tbody id='feedbackDetails'> \
+            </tbody> \
+        </table> \
+    "
+    return html;
+}
+
+//Function that returns HR feedback list in html format with the parameters given
+function hrFeedbackList(employeeID, fullName, totalFeedback){
+var html = " \
+            <tr> \
+                <td>"+employeeID+"</td> \
+                <td>"+fullName+"</td> \
+                <td>"+totalFeedback+"</td> \
+                <td>Sopra Steria Limited</td> \
+                <td>SS Government (GOV)</td> \
+                <td>Scotland People (DPC181)</td> \
             </tr> \
     "
     return html;
