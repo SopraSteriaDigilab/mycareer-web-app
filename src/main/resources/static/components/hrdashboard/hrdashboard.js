@@ -42,8 +42,6 @@ function getHRdata(){
     });
 }
 
-// function that 
-
 //------------------------------------------------- HR Overview ----------------------------------------------------------------
 
 // function to add HR data overview to a list and append it on the HTML
