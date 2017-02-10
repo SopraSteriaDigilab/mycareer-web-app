@@ -12,7 +12,7 @@ function logMeIn(){
 		 $.ajax({
 		  "async": true,
 		  "crossDomain": true,
-		  "url": "http://"+getEnvironment()+":8080/logMeIn",
+		  "url": "http://"+getEnvironment()+":8080/authenticateUserProfile?userName_Email=dbolla",
 		  "method": "GET",
 		   xhrFields: { 'withCredentials': true },
 	      success: function(data){
