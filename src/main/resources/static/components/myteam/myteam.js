@@ -158,6 +158,29 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     });
 }
 
+//Method to make ajax call to add note to database
+function addNoteToReporteeDB(reporteeID, from, body, date){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+reporteeID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'from': from,
+            'body': body,
+        },
+        success: function(response){
+            if(lastNoteID == 0)
+        		$("#general-notes-list").removeClass("text-center").empty();
+            lastNoteID++;
+        	addNoteToReporteeList(from, body, date);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        }
+    });
+}
+
 function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
@@ -207,8 +230,8 @@ function clickSubmitReporteeNote(){
 	var noteType = 0;
 	var linkID = 0;
 	
-	addNoteToDB(reporteeID, noteType, linkID, from, note);
-	addNoteToReporteeList(from, note, date);
+	addNoteToReporteeDB(reporteeID, from, note, date);
+
 	
 	showReporteeNoteModal(false);
 }
