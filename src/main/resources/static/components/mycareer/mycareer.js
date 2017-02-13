@@ -6,6 +6,7 @@ var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
+var hasHRDash = null;
 
 
 function logMeIn(){	

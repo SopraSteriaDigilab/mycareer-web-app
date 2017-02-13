@@ -1,4 +1,5 @@
 $(function() {
+    verifyUser();
     getHRdata();
     
     //click functions to display specific report
@@ -9,6 +10,12 @@ $(function() {
 
 });
 
+//verify that user has access to HR dashboard
+function verifyUser(){
+    if(userHasHrDash() === "false" || userHasHrDash() == false){
+         window.location ="/myobjectives";
+    }
+}
 
 //function to get the HR stats of mycareer
 function getHRdata(){
