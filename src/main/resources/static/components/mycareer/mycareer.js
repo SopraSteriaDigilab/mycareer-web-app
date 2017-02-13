@@ -20,7 +20,7 @@ function logMeIn(){
 	    	  ADLoginID = data.employeeID;
 	    	  ADUsername = data.username;
 	    	  isManager = Boolean(data.isManager);
-              //hashHrDash = Boolean(data.hashHrDash);
+              hasHRDash = Boolean(data.hasHRDash);
 	    	  loadPage($("#section").text());  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -71,6 +71,6 @@ function isUserManager(){
 	return isManager;
 }
 
-//function userHasHrDash(){
-//    return hasHrDssh;
-//}
+function userHasHrDash(){
+    return hasHRDash;
+}

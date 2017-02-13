@@ -21,11 +21,10 @@ function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
-	}
-//    if(userHasHrDash() === "true" || userHasHrDash() == true){
-//        $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>");
-//        
-//    }
+	};
+    if(userHasHrDash() === "true" || userHasHrDash() == true){
+        $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>"); 
+    }
 	$(".full-name").html(getADfullName);
 }
 

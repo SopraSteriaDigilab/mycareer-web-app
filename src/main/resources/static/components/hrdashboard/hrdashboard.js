@@ -54,6 +54,9 @@ function showHrOverviewList(){
     if ($("#hrOverviewTable").hasClass("hidden")){
          $("#hrOverviewTable").removeClass("hidden");
     }
+    if ($("#hrOverviewFilters").hasClass("hidden")){
+         $("#hrOverviewFilters").removeClass("hidden");
+    }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
     }
@@ -68,6 +71,59 @@ function showHrOverviewList(){
 //Function that returns HR Overview list in html format with the parameters given
 function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
     var html = " \
+    <br/> \
+    <div class='col-md-12 hidden' id='hrOverviewFilters'> \
+         <div class='col-md-4'> \
+             <div class='btn-group'> \
+                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Company <span class='caret'></span></button> \
+                <ul class='dropdown-menu scrollable-menu' role='menu'> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                </ul> \
+            </div> \
+         </div> \
+         <div class='col-md-4'> \
+             <div class='btn-group'> \
+                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Super Sector <span class='caret'></span></button> \
+                <ul class='dropdown-menu scrollable-menu' role='menu'> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                </ul> \
+            </div> \
+         </div> \
+          <div class='col-md-4'> \
+             <div class='btn-group'> \
+                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Department <span class='caret'></span></button> \
+                <ul class='dropdown-menu scrollable-menu' role='menu'> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                    <li><a href='#'>Another action</a></li> \
+                    <li><a href='#'>Something else here</a></li> \
+                    <li><a href='#'>Action</a></li> \
+                </ul> \
+            </div> \
+         </div> \
     <br/> \
     <table class='table table-striped hidden' id='hrOverviewTable'> \
         <thead> \
@@ -107,9 +163,11 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
             </tr> \
         </tbody> \
     </table> \
+ </div> \
     "
     return html;
 }
+
 
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
@@ -128,6 +186,9 @@ function showHrObjectivesList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($("#hrOverviewFilters").not("hidden")){
+         $("#hrOverviewFilters").addClass("hidden");
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
@@ -197,6 +258,9 @@ function showHrDevelopmentNeedsList(){
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
     }
+    if ($("#hrOverviewFilters").not("hidden")){
+         $("#hrOverviewFilters").addClass("hidden");
+    }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
     }
@@ -265,6 +329,9 @@ function showHrFeedbackList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($("#hrOverviewFilters").not("hidden")){
+         $("#hrOverviewFilters").addClass("hidden");
     }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
