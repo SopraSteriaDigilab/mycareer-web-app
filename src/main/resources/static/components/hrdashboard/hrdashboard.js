@@ -1,6 +1,7 @@
 $(function() {
     verifyUser();
     getHRdata();
+    getHRFeedbackStats()
     
     //click functions to display specific report
     $("#hr-overview").click(function(){ showHrOverviewList() });
@@ -20,7 +21,7 @@ function verifyUser(){
 //function to get the HR stats of mycareer
 function getHRdata(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/getHRData',
+       url: 'http://'+getEnvironment()+':8080/hr/getHRData',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -36,15 +37,30 @@ function getHRdata(){
            $.each(data.hrDevNeedsData, function(key, val){
                 addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
             });
-           
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR data, please try again later.")
+        }
+    });
+}
+
+//function to get HR feedback stats of mycareer
+function getHRFeedbackStats(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getFeedbackStats',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
            $(".hr-dashboard").append(hrFeedbackHeader());
-           $.each(data.hrFeedbackData, function(key, val){
+           $.each(data, function(key, val){
                 addHrFeedbackToList(val.employeeID, val.fullName, val.totalFeedback, val.company, val.superSector, val.department);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting HR data, please try again later.")
+            toastr.error("Sorry, there was a problem getting HR Feedback data, please try again later.")
         }
     });
 }
@@ -148,6 +164,7 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
+    <br/> \
         <table class='table table-striped hidden' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
@@ -260,7 +277,7 @@ var html = " \
 
 //function to add HR data feedback to a list and append it on the HTML
 function addHrFeedbackToList(employeeID, fullName, totalFeedback, company, superSector, department){
-    $("#feedbackDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalFeedback, company, superSector, department));
+    $("#feedbackDetails").append(hrFeedbackList(employeeID, fullName, totalFeedback, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
