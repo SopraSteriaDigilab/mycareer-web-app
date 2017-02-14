@@ -10,7 +10,7 @@ $(function() {
 
 });
 
-//verify that user has access to HR dashboard
+//verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
 function verifyUser(){
     if(userHasHrDash() === "false" || userHasHrDash() == false){
          window.location ="/myobjectives";
@@ -29,17 +29,17 @@ function getHRdata(){
             
             $(".hr-dashboard").append(hrObjectivesHeader());
             $.each(data.hrObjectiveData, function(key, val){
-                addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposedCount, val.setCount, val.completeCount);
+                addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
             });
            
             $(".hr-dashboard").append(hrDevNeedsHeader());
            $.each(data.hrDevNeedsData, function(key, val){
-                addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount);
+                addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
             });
            
            $(".hr-dashboard").append(hrFeedbackHeader());
            $.each(data.hrFeedbackData, function(key, val){
-                addHrFeedbackToList(val.employeeID, val.fullName, val.totalFeedback);
+                addHrFeedbackToList(val.employeeID, val.fullName, val.totalFeedback, val.company, val.superSector, val.department);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -61,9 +61,6 @@ function showHrOverviewList(){
     if ($("#hrOverviewTable").hasClass("hidden")){
          $("#hrOverviewTable").removeClass("hidden");
     }
-    if ($("#hrOverviewFilters").hasClass("hidden")){
-         $("#hrOverviewFilters").removeClass("hidden");
-    }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
     }
@@ -78,59 +75,6 @@ function showHrOverviewList(){
 //Function that returns HR Overview list in html format with the parameters given
 function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
     var html = " \
-    <br/> \
-    <div class='col-md-12 hidden' id='hrOverviewFilters'> \
-         <div class='col-md-4'> \
-             <div class='btn-group'> \
-                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Company <span class='caret'></span></button> \
-                <ul class='dropdown-menu scrollable-menu' role='menu'> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                </ul> \
-            </div> \
-         </div> \
-         <div class='col-md-4'> \
-             <div class='btn-group'> \
-                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Super Sector <span class='caret'></span></button> \
-                <ul class='dropdown-menu scrollable-menu' role='menu'> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                </ul> \
-            </div> \
-         </div> \
-          <div class='col-md-4'> \
-             <div class='btn-group'> \
-                <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'> Department <span class='caret'></span></button> \
-                <ul class='dropdown-menu scrollable-menu' role='menu'> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                    <li><a href='#'>Another action</a></li> \
-                    <li><a href='#'>Something else here</a></li> \
-                    <li><a href='#'>Action</a></li> \
-                </ul> \
-            </div> \
-         </div> \
     <br/> \
     <table class='table table-striped hidden' id='hrOverviewTable'> \
         <thead> \
@@ -170,7 +114,6 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
             </tr> \
         </tbody> \
     </table> \
- </div> \
     "
     return html;
 }
@@ -179,8 +122,8 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
 //function to add HR data overview to a list and append it on the HTML
-function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount){
-    $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount));
+function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department){
+    $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
@@ -193,9 +136,6 @@ function showHrObjectivesList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
-    }
-    if ($("#hrOverviewFilters").not("hidden")){
-         $("#hrOverviewFilters").addClass("hidden");
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
@@ -230,7 +170,7 @@ function hrObjectivesHeader(){
 }
 
 //Function that returns HR objectives list in html format with the parameters given
-function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount){
+function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department){
      var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
@@ -239,9 +179,9 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, 
                 <td>"+proposedCount+"</td> \
                 <td>"+setCount+"</td> \
                 <td>"+completeCount+"</td> \
-                <td>Sopra Steria Limited</td> \
-                <td>SS Government (GOV)</td> \
-                <td>Scotland People (DPC181)</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
             </tr> \
     "
     return html;
@@ -250,8 +190,8 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, 
 //------------------------------------------------- HR Development Needs ----------------------------------------------------------------
 
 //function to add HR data overview to a list and append it on the HTML
-function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount){
-    $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount));
+function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department){
+    $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
@@ -264,9 +204,6 @@ function showHrDevelopmentNeedsList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
-    }
-    if ($("#hrOverviewFilters").not("hidden")){
-         $("#hrOverviewFilters").addClass("hidden");
     }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
@@ -302,7 +239,7 @@ function hrDevNeedsHeader(){
 
 
 //Function that returns HR development needs list in html format with the parameters given
-function hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount){
+function hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department){
 var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
@@ -311,9 +248,9 @@ var html = " \
                 <td>"+proposedCount+"</td> \
                 <td>"+setCount+"</td> \
                 <td>"+completeCount+"</td> \
-                <td>Sopra Steria Limited</td> \
-                <td>SS Government (GOV)</td> \
-                <td>Scotland People (DPC181)</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
             </tr> \
     "
     return html;
@@ -322,8 +259,8 @@ var html = " \
 //------------------------------------------------- HR Feedback ----------------------------------------------------------------
 
 //function to add HR data feedback to a list and append it on the HTML
-function addHrFeedbackToList(employeeID, fullName, totalFeedback){
-    $("#feedbackDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalFeedback));
+function addHrFeedbackToList(employeeID, fullName, totalFeedback, company, superSector, department){
+    $("#feedbackDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalFeedback, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
@@ -336,9 +273,6 @@ function showHrFeedbackList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
-    }
-    if ($("#hrOverviewFilters").not("hidden")){
-         $("#hrOverviewFilters").addClass("hidden");
     }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
@@ -370,15 +304,15 @@ function hrFeedbackHeader(){
 }
 
 //Function that returns HR feedback list in html format with the parameters given
-function hrFeedbackList(employeeID, fullName, totalFeedback){
+function hrFeedbackList(employeeID, fullName, totalFeedback, company, superSector, department){
 var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
                 <td>"+fullName+"</td> \
                 <td>"+totalFeedback+"</td> \
-                <td>Sopra Steria Limited</td> \
-                <td>SS Government (GOV)</td> \
-                <td>Scotland People (DPC181)</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
             </tr> \
     "
     return html;
