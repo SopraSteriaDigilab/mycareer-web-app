@@ -160,8 +160,8 @@ function getGeneralFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                var name = (val.fullName) ? val.fullName : val.fromWho; 
-                addGeneralFeedbackToList(val.id, name, val.emailBody, longDate, classDate, val.fromWho);            
+                var name = (val.providerName) ? val.providerName : val.providerEmail; 
+                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail);   
             });//end of for each loop
             if(data.length == 0) {
 	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
