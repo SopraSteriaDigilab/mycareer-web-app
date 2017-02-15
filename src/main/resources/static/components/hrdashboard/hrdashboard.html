@@ -19,16 +19,16 @@
     <!-- Dropdown to select which HR report -->
     <div class="col-md-12">
         <div class="btn-group">
-            <button class="btn dropdown-toggle btn-default" data-toggle="dropdown" id="report-selector">Select a Report <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li><a href="#" id="hr-overview">Overview</a></li>
-                    <li><a href="#" id="hr-objectives">Objectives</a></li>
-                    <li><a href="#" id="hr-feedback">Feedback</a></li>
-                    <li><a href="#" id="hr-development-needs">Development Needs</a></li>
-                </ul>
+            <select class="selectpicker" title="Please select a report...">
+                <option>Overview</option>
+                <option>Employees</option>
+                <option>Objectives</option>
+                <option>Feedback</option>
+                <option>Development Needs</option>
+            </select>
         </div>
         
-        <div class="hr-dashboard"></div>
+        <div class="hr-dashboard"><br/></div>
     </div><!--End of dropdown row -->
     
 </div><!--End of Container -->

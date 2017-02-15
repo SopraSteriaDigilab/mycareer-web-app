@@ -1,13 +1,32 @@
 $(function() {
+    
+    //inicialization of select picker
+    $('.selectpicker').selectpicker();
+    
+    //verifies that the user has access to HR Dashboard
     verifyUser();
+    
+    //gets HR data
     getHRdata();
-    getHRFeedbackStats()
+    getEmployeeStats();
+    getHRObjectivesStats();
+    getHRDevNeedsStats();
+    getHRFeedbackStats();
     
     //click functions to display specific report
-    $("#hr-overview").click(function(){ showHrOverviewList() });
-    $("#hr-objectives").click(function(){  $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); });
-    $("#hr-development-needs").click(function(){ $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() ); });
-    $("#hr-feedback").click(function(){ $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); });
+      $('.selectpicker').on('change', function(){
+          if($(this).val() === "Overview"){
+            showHrOverviewList(); 
+          }else if($(this).val() === "Employees"){
+             $('#hrEmployeeTable').dataTable(  showHrEmployeeList()  ); 
+          }else if($(this).val() === "Objectives"){
+             $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
+          }else if($(this).val() === "Development Needs"){
+             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() ); 
+          }else if($(this).val() === "Feedback"){
+             $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); 
+          }
+        });
 
 });
 
@@ -18,7 +37,7 @@ function verifyUser(){
     }
 }
 
-//function to get the HR stats of mycareer
+//function to get the general HR stats of mycareer
 function getHRdata(){
     $.ajax({
        url: 'http://'+getEnvironment()+':8080/hr/getHRData',
@@ -27,20 +46,70 @@ function getHRdata(){
        xhrFields: {'withCredentials': true},
        success: function(data){
            addHrDataToList(data.totalAccounts, data.totalUsersWithObjectives, data.totalUsersWithDevelopmentNeeds, data.totalUsersWithNotes, data.totalUsersWithCompetencies, data.totalUsersWithSubmittedFeedback, data.totalUsersWithFeedback);
-            
-            $(".hr-dashboard").append(hrObjectivesHeader());
-            $.each(data.hrObjectiveData, function(key, val){
-                addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
-            });
-           
-            $(".hr-dashboard").append(hrDevNeedsHeader());
-           $.each(data.hrDevNeedsData, function(key, val){
-                addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
-            });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting HR data, please try again later.")
+        }
+    });
+}
+
+//function to get HR Employee stats of mycareer
+function getEmployeeStats(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getEmployeeStats',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
+           $(".hr-dashboard").append(hrEmployeeHeader());
+           $.each(data, function(key, val){
+               addHrEmployeeToList(val.employeeID, val.fullName, val.company, val.superSector, val.department);
+            }); 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR Employee data, please try again later.")
+        }
+    });
+}
+
+//function to get HR Objectives stats of mycareer
+function getHRObjectivesStats(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getObjectiveStats',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
+           $(".hr-dashboard").append(hrObjectivesHeader());
+           $.each(data, function(key, val){
+               addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
+            }); 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR Objective data, please try again later.")
+        }
+    });
+}
+
+//function to get HR Development Needs stats of mycareer
+function getHRDevNeedsStats(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getDevNeedsStats',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
+           $(".hr-dashboard").append(hrDevNeedsHeader());
+           $.each(data, function(key, val){
+               addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
+            }); 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR Development Needs data, please try again later.")
         }
     });
 }
@@ -77,6 +146,9 @@ function showHrOverviewList(){
     if ($("#hrOverviewTable").hasClass("hidden")){
          $("#hrOverviewTable").removeClass("hidden");
     }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
+    }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
     }
@@ -91,7 +163,6 @@ function showHrOverviewList(){
 //Function that returns HR Overview list in html format with the parameters given
 function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
     var html = " \
-    <br/> \
     <table class='table table-striped hidden' id='hrOverviewTable'> \
         <thead> \
             <tr> \
@@ -134,6 +205,68 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
     return html;
 }
 
+//------------------------------------------------- HR Employees ----------------------------------------------------------------
+
+// function to add HR Employee accessed data to a list and append it on the HTML
+function addHrEmployeeToList(employeeID, fullName, company, superSector, department){
+    $("#employeeDetails").append(hrEmployeeList(employeeID, fullName, company, superSector, department));
+}
+
+function showHrEmployeeList(){
+    if ($("#hrEmployeeTable").hasClass("hidden")){
+         $("#hrEmployeeTable").removeClass("hidden");
+    }
+    if($("#hrEmployeeTable_wrapper").hasClass("hidden")){
+         $("#hrEmployeeTable_wrapper").removeClass("hidden");
+    }
+    if ($("#hrOverviewTable").not("hidden")){
+         $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrObjectivesTable_wrapper').not("hidden")){
+         $("#hrObjectivesTable_wrapper").addClass("hidden");
+    }
+    if($("#hrDevNeedsTable_wrapper").not("hidden")){
+         $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
+    }
+}
+
+//Function that returns the table headings
+function hrEmployeeHeader(){
+    var html = " \
+        <table class='table table-striped hidden' id='hrEmployeeTable'> \
+            <thead> \
+                <tr> \
+                   <th>Employee ID</th> \
+                   <th>Employee Name</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
+                </tr> \
+            </thead> \
+            <tbody id='employeeDetails'> \
+            </tbody> \
+        </table> \
+    "
+    return html;
+}
+
+//Function that returns HR Employee accessed list in html format with the parameters given
+function hrEmployeeList(employeeID, fullName, company, superSector, department){
+    var html = " \
+            <tr> \
+                <td>"+employeeID+"</td> \
+                <td>"+fullName+"</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
+            </tr> \
+    "
+    return html;
+}
+
 
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
@@ -153,6 +286,9 @@ function showHrObjectivesList(){
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
     }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
+    }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
     }
@@ -164,7 +300,6 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
-    <br/> \
         <table class='table table-striped hidden' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
@@ -221,6 +356,9 @@ function showHrDevelopmentNeedsList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
     }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
@@ -290,6 +428,9 @@ function showHrFeedbackList(){
     }
     if ($("#hrOverviewTable").not("hidden")){
          $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
     }
     if ($('#hrObjectivesTable_wrapper').not("hidden")){
          $("#hrObjectivesTable_wrapper").addClass("hidden");
