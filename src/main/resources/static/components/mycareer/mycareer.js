@@ -21,7 +21,7 @@ function logMeIn(){
 	    	  ADLoginID = data.employeeID;
 	    	  ADUsername = data.username;
 	    	  isManager = Boolean(data.isManager);
-              hasHRDash = Boolean(data.hasHRDash);
+              hasHRDash = Boolean(data.hasHRDash);             
 	    	  loadPage($("#section").text());  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){
