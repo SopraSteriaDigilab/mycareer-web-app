@@ -1,5 +1,4 @@
 $(function() {
-
 	//Get list of reportees
 	getReportees();
 	
@@ -43,13 +42,21 @@ function getReportees(){
 	    });
 }
 
+//method to remove apostrophe from names so can be clicked on in my team
+function removeApostrophe(fullName){
+    if(fullName.indexOf("'") != -1){
+        fullName = fullName.replace(/'/g, '');
+    }
+    return fullName;
+}
+
 function addReporteeToList(employeeID, fullName, userName, emailAddress){
 	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
 }
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
