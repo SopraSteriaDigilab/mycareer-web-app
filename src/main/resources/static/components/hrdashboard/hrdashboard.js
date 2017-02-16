@@ -7,7 +7,7 @@ $(function() {
     verifyUser();
     
     //gets HR data
-    getHRdata();
+    getMyCareerStats();
     getEmployeeStats();
     getHRObjectivesStats();
     getHRDevNeedsStats();
@@ -38,14 +38,14 @@ function verifyUser(){
 }
 
 //function to get the general HR stats of mycareer
-function getHRdata(){
+function getMyCareerStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getHRData',
+       url: 'http://'+getEnvironment()+':8080/hr/getMyCareerStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
        success: function(data){
-           addHrDataToList(data.totalAccounts, data.totalUsersWithObjectives, data.totalUsersWithDevelopmentNeeds, data.totalUsersWithNotes, data.totalUsersWithCompetencies, data.totalUsersWithSubmittedFeedback, data.totalUsersWithFeedback);
+           addHrDataToList(data.totalAccounts, data.usersWithObjectives, data.usersWithDevNeeds, data.usersWithNotes, data.usersWithCompetencies, data.usersWithFeedbackRequests, data.usersWithFeedback);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
@@ -84,7 +84,7 @@ function getHRObjectivesStats(){
        success: function(data){           
            $(".hr-dashboard").append(hrObjectivesHeader());
            $.each(data, function(key, val){
-               addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
+               addHrObjectivesToList(val.employeeID, val.fullName, val.totalObjectives, val.proposed, val.inProgress, val.complete, val.company, val.superSector, val.department);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -97,14 +97,14 @@ function getHRObjectivesStats(){
 //function to get HR Development Needs stats of mycareer
 function getHRDevNeedsStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getDevNeedsStats',
+       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
        success: function(data){           
            $(".hr-dashboard").append(hrDevNeedsHeader());
            $.each(data, function(key, val){
-               addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevNeeds, val.proposedCount, val.setCount, val.completeCount, val.company, val.superSector, val.department);
+               addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.totalDevelopmentNeeds, val.proposed, val.inProgress, val.complete, val.company, val.superSector, val.department);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -137,8 +137,8 @@ function getHRFeedbackStats(){
 //------------------------------------------------- HR Overview ----------------------------------------------------------------
 
 // function to add HR data overview to a list and append it on the HTML
-function addHrDataToList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
-    $(".hr-dashboard").append(hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback));
+function addHrDataToList(totalAccounts, usersWithObjectives, usersWithDevNeeds, usersWithNotes, usersWithCompetencies, usersWithFeedbackRequests, usersWithFeedback){
+    $(".hr-dashboard").append(hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, usersWithNotes, usersWithCompetencies, usersWithFeedbackRequests, usersWithFeedback));
 }
 
 // function that shows the HR Overview list when clicked
@@ -161,7 +161,7 @@ function showHrOverviewList(){
 }
 
 //Function that returns HR Overview list in html format with the parameters given
-function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithDevelopmentNeeds, totalUsersWithNotes, totalUsersWithCompetencies, totalUsersWithSubmittedFeedback, totalUsersWithFeedback){
+function hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, usersWithNotes, usersWithCompetencies, usersWithFeedbackRequests, usersWithFeedback){
     var html = " \
     <table class='table table-striped hidden' id='hrOverviewTable'> \
         <thead> \
@@ -177,27 +177,27 @@ function hrOverviewList(totalAccounts, totalUsersWithObjectives, totalUsersWithD
             </tr> \
             <tr> \
                 <td>Users with at least one objective</td> \
-                <td>"+totalUsersWithObjectives+"</td> \
+                <td>"+usersWithObjectives+"</td> \
             </tr> \
             <tr> \
                 <td>Users with at least one development need</td> \
-                <td>"+totalUsersWithDevelopmentNeeds+"</td> \
+                <td>"+usersWithDevNeeds+"</td> \
             </tr> \
             <tr> \
                 <td>Users with at least one note</td> \
-                <td>"+totalUsersWithNotes+"</td> \
+                <td>"+usersWithNotes+"</td> \
             </tr> \
             <tr> \
                 <td>Users that have clicked a competency</td> \
-                <td>"+totalUsersWithCompetencies+"</td> \
+                <td>"+usersWithCompetencies+"</td> \
             </tr> \
             <tr> \
                 <td>Users that have submitted a feedback request</td> \
-                <td>"+totalUsersWithSubmittedFeedback+"</td> \
+                <td>"+usersWithFeedbackRequests+"</td> \
             </tr> \
             <tr> \
                 <td>Users that have received feedback</td> \
-                <td>"+totalUsersWithFeedback+"</td> \
+                <td>"+usersWithFeedback+"</td> \
             </tr> \
         </tbody> \
     </table> \
@@ -271,8 +271,8 @@ function hrEmployeeList(employeeID, fullName, company, superSector, department){
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
 //function to add HR data overview to a list and append it on the HTML
-function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department){
-    $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department));
+function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department){
+    $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
@@ -322,15 +322,15 @@ function hrObjectivesHeader(){
 }
 
 //Function that returns HR objectives list in html format with the parameters given
-function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, setCount, completeCount, company, superSector, department){
+function hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department){
      var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
                 <td>"+fullName+"</td> \
                 <td>"+totalObjectives+"</td> \
-                <td>"+proposedCount+"</td> \
-                <td>"+setCount+"</td> \
-                <td>"+completeCount+"</td> \
+                <td>"+proposed+"</td> \
+                <td>"+inProgress+"</td> \
+                <td>"+complete+"</td> \
                 <td>"+company+"</td> \
                 <td>"+superSector+"</td> \
                 <td>"+department+"</td> \
@@ -342,8 +342,8 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposedCount, 
 //------------------------------------------------- HR Development Needs ----------------------------------------------------------------
 
 //function to add HR data overview to a list and append it on the HTML
-function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department){
-    $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department));
+function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department){
+    $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department));
 }
 
 // function that shows the HR Overview list when clicked
@@ -394,15 +394,15 @@ function hrDevNeedsHeader(){
 
 
 //Function that returns HR development needs list in html format with the parameters given
-function hrDevelopmentNeedsList(employeeID, fullName, totalDevNeeds, proposedCount, setCount, completeCount, company, superSector, department){
+function hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department){
 var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
                 <td>"+fullName+"</td> \
-                <td>"+totalDevNeeds+"</td> \
-                <td>"+proposedCount+"</td> \
-                <td>"+setCount+"</td> \
-                <td>"+completeCount+"</td> \
+                <td>"+totalDevelopmentNeeds+"</td> \
+                <td>"+proposed+"</td> \
+                <td>"+inProgress+"</td> \
+                <td>"+complete+"</td> \
                 <td>"+company+"</td> \
                 <td>"+superSector+"</td> \
                 <td>"+department+"</td> \
