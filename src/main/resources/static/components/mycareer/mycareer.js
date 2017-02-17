@@ -1,5 +1,4 @@
 $(function() {
-	//test
 	logMeIn();
 });
 
@@ -7,6 +6,29 @@ var ADfullName = null;
 var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
+var hasHRDash = null;
+
+
+function logMeIn(){	
+		 $.ajax({
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "http://"+getEnvironment()+":8080/logMeIn",
+		  "method": "GET",
+		   xhrFields: { 'withCredentials': true },
+	      success: function(data){
+	    	  ADfullName = data.fullName;
+	    	  ADLoginID = data.employeeID;
+	    	  ADUsername = data.username;
+	    	  isManager = Boolean(data.isManager);
+              hasHRDash = Boolean(data.hasHRDash);             
+	    	  loadPage($("#section").text());  
+	      },
+	      error: function(XMLHttpRequest, textStatus, errorThrown){
+	    	  window.location.replace("/access-issue");
+	      }
+	  });
+}
 
 function getEnvironment(){
 	var host = $("#env").text();
@@ -20,26 +42,6 @@ function getEnvironment(){
 		default:
 			return "localhost";
 	}
-}
-
-//Authenticate the user against AD
-function authenticate(username){	
-	 $.ajax({
-	      url: 'http://'+getEnvironment()+':8080/authenticateUserProfile',
-	      method: 'GET',
-	      xhrFields: { 'withCredentials': true },
-	      data: {'userName_Email' : username},
-	      success: function(data){
-	    	  ADfullName = data.fullName;
-	    	  ADLoginID = data.employeeID;
-	    	  ADUsername = data.username;
-	    	  isManager = Boolean(data.isManager);
-	    	  loadPage($("#section").text());  
-	      },
-	      error: function(XMLHttpRequest, textStatus, errorThrown){
-	    	  window.location.replace("/access-issue");
-	      }
-	  });
 }
 
 //Load relevant page based on section in url
@@ -70,15 +72,6 @@ function isUserManager(){
 	return isManager;
 }
 
-function logMeIn(){
-		var settings = {
-		  "async": true,
-		  "crossDomain": true,
-		  "url": "http://"+getEnvironment()+":8080/logMeIn",
-		  "method": "GET",
-		   xhrFields: { 'withCredentials': true },
-		}
-		$.ajax(settings).done(function (response) {
-			  authenticate(response);
-		});
+function userHasHrDash(){
+    return hasHRDash;
 }
