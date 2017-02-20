@@ -14,7 +14,7 @@ apply plugin: 'spring-boot'
 
 jar {
     baseName = 'mycareer-web-app'
-    version =  '1.0.1-email-redo'
+    version =  '1.2.2'
 }
 
 repositories {
