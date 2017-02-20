@@ -4,7 +4,6 @@ $(function() {
 
 	//Get general-notes and link ids
 	getNotesList(getADLoginID());
-//	getNoteLinks(getADLoginID());
 	
 	$("#notes-open").click(function(e) { openNotesBar() });
 	 
@@ -65,30 +64,6 @@ function getNotesList(userID){
   });
 }
 
-//function getNoteLinks(userID){
-//	  $.ajax({
-//	      url: 'http://'+getEnvironment()+':8080/getIDTitlePairs/'+userID,
-//	      method: 'GET',
-//	      success: function(data){
-//	          $.each(data, function(key, val){
-//	          	 
-//	          	 $.each(val, function(k, v){
-//	          		 if(key === "Competencies"){
-//	          			addLinkID(key.toLowerCase(), ("#"+(++k)+" "+v), k);
-//	          		 }else{
-//	          			addLinkID(key.toLowerCase(), ("#"+k), v);
-//	          		 }
-//	          	 });
-//	          });
-//	      },
-//	      error: function(XMLHttpRequest, textStatus, errorThrown){
-//	          console.log('error', errorThrown);
-//	          toastr.error("Sorry, there was a problem getting notes, please try again later.");
-//	      }
-//	  });
-//	
-//}
-
 function addLinkID(divID, id, title){
 	$("#"+divID+"-links").append(optionHTML(id, title)).selectpicker("refresh");
 }
@@ -100,42 +75,12 @@ function optionHTML(id, title){
 
 //Method to add note to list directly
 function addNoteToList(fromWho, noteType, linkID, body, date){
-//	var listID = "";
-//	switch(parseInt(noteType)){
-//		case 0:
-//			listID = "general";
-//			break;
-//		case 1:
-//			listID = "objective";
-//			break;
-//		case 2:
-//			listID = "competency";
-//			break;
-//		case 3:
-//			listID = "feedback";
-//			break;
-//		case 4:
-//			listID = "development-needs";
-//			break;
-//		case 5:
-//			listID = "team";
-//			break;
-//	}
-//	$("#"+listID+"-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
-
 	$("#general-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
 }
 
 //Method to return html
 function notesListHTML(fromWho, noteType, linkID, body, date){
 	var link="";
-//	if(parseInt(noteType)>0){
-//		link = linkID
-//		if(parseInt(noteType)==2){
-//			link++;
-//		}
-//		link = '#'+link;
-//	};
 	
 	var html = " \
 	  <li class='list-group-item'> \
@@ -160,15 +105,6 @@ function clickSubmitNote(){
 	var date = timeStampToDateTime(new Date());
 	var noteType = 0;
 	var linkID = 0;
-//	var noteTypeText = $("#note-type-picker").find("option:selected").val();
-//	var noteType = noteTypeList.indexOf(noteTypeText.toLowerCase());	
-//	var linkID = linkID = $("#"+noteTypeText.toLowerCase()+"-links").find("option:selected").val();;
-//	if(noteTypeText === "Competencies"){
-//		linkID = competencyList.indexOf(linkID);
-//	}
-//	if(noteTypeText === "General"){
-//		linkID = 0;
-//	}
 	
 	addNoteToDB(userID, noteType, linkID, from, note, date);
     
