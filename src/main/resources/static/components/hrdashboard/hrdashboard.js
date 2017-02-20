@@ -11,6 +11,7 @@ $(function() {
     getEmployeeStats();
     getHRObjectivesStats();
     getHRDevNeedsStats();
+    getHRDevNeedBreakdown();
     getHRFeedbackStats();
     
     //click functions to display specific report
@@ -21,8 +22,10 @@ $(function() {
              $('#hrEmployeeTable').dataTable(  showHrEmployeeList()  ); 
           }else if($(this).val() === "Objectives"){
              $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
-          }else if($(this).val() === "Development Needs"){
-             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() ); 
+          }else if($(this).val() === "Development Needs Overview"){
+             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() );
+          }else if($(this).val() === "Development Needs Breakdown"){
+             $('#hrDevNeedsBreakdownTable').dataTable( showHrDevelopmentNeedsBreakdownList() ); 
           }else if($(this).val() === "Feedback"){
              $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); 
           }
@@ -122,9 +125,9 @@ function getHRDevNeedBreakdown(){
        method: 'GET',
        xhrFields: {'withCredentials': true},
        success: function(data){           
-           $(".hr-dashboard").append(hrDevNeedsHeader());
            $.each(data, function(key, val){
-               addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, val.title, val. category);
+               $(".hr-dashboard").append(hrDevNeedsBreakdownHeader());
+               addHrDevelopmentNeedsBreakdownToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, val.title, val. category);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -174,6 +177,9 @@ function showHrOverviewList(){
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
@@ -249,6 +255,9 @@ function showHrEmployeeList(){
     if($("#hrDevNeedsTable_wrapper").not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
     }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
+    }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
     }
@@ -313,6 +322,9 @@ function showHrObjectivesList(){
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
     }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
+    }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
     }
@@ -367,6 +379,11 @@ function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevelopmentNeeds
     $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department));
 }
 
+//function to add HR Development Needs Breakdown to a list and append it on the HTML
+function addHrDevelopmentNeedsBreakdownToList(employeeID, fullName, company, superSector, department, title, category){
+    $("#devNeedsBreakdown").append(hrDevelopmentNeedsBreakdownList(employeeID, fullName, company, superSector, department, title, category));
+}
+
 // function that shows the HR Development Needs list when clicked
 function showHrDevelopmentNeedsList(){
     if ($("#hrDevNeedsTable").hasClass("hidden")){
@@ -387,9 +404,37 @@ function showHrDevelopmentNeedsList(){
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
     }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
+    }
 }
 
-//Function that returns the table headings
+// function that shows the HR Development Needs breakdown list when clicked
+function showHrDevelopmentNeedsBreakdownList(){
+    if ($("#hrDevNeedsBreakdownTable").hasClass("hidden")){
+         $("#hrDevNeedsBreakdownTable").removeClass("hidden");
+    }
+    if($("#hrDevNeedsBreakdownTable_wrapper").hasClass("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").removeClass("hidden");
+    }
+    if ($("#hrOverviewTable").not("hidden")){
+         $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrObjectivesTable_wrapper').not("hidden")){
+         $("#hrObjectivesTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsTable_wrapper').not("hidden")){
+         $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+}
+
+//Function that returns the table headings for dev needs overview
 function hrDevNeedsHeader(){
     var html = " \
         <table class='table table-striped hidden' id='hrDevNeedsTable'> \
@@ -413,6 +458,28 @@ function hrDevNeedsHeader(){
     return html;
 }
 
+//Function that returns the table headings for dev needs breakdown
+function hrDevNeedsBreakdownHeader(){
+    var html = " \
+        <table class='table table-striped hidden' id='hrDevNeedsBreakdownTable'> \
+            <thead> \
+                <tr> \
+                   <th>Employee ID</th> \
+                   <th>Employee Name</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
+                   <th>Title</th> \
+                   <th>Category</th> \
+                </tr> \
+            </thead> \
+            <tbody id='devNeedsBreakdown'> \
+            </tbody> \
+        </table> \
+    "
+    return html;
+}
+
 
 //Function that returns HR development needs list in html format with the parameters given
 function hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department){
@@ -427,6 +494,22 @@ var html = " \
                 <td>"+company+"</td> \
                 <td>"+superSector+"</td> \
                 <td>"+department+"</td> \
+            </tr> \
+    "
+    return html;
+}
+
+//Function that returns HR development needs breakdown list in html format with the parameters given
+function hrDevelopmentNeedsBreakdownList(employeeID, fullName, company, superSector, department, title, category){
+var html = " \
+            <tr> \
+                <td>"+employeeID+"</td> \
+                <td>"+fullName+"</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
+                <td>"+title+"</td> \
+                <td>"+category+"</td> \
             </tr> \
     "
     return html;
@@ -458,6 +541,9 @@ function showHrFeedbackList(){
     }
     if($("#hrDevNeedsTable_wrapper").not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
 }
 
