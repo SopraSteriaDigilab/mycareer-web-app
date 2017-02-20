@@ -1,7 +1,14 @@
 $(function() {
     
-    //inicialization of select picker
+    //initialization of select picker
     $('.selectpicker').selectpicker();
+    
+    //initialization of DataTables
+    $('#hrEmployeeTable').DataTable( {
+    buttons: [
+        'excel'
+    ]
+} );
     
     //verifies that the user has access to HR Dashboard
     verifyUser();
@@ -19,7 +26,7 @@ $(function() {
           if($(this).val() === "Overview"){
             showHrOverviewList(); 
           }else if($(this).val() === "Employees"){
-             $('#hrEmployeeTable').dataTable(  showHrEmployeeList()  ); 
+             $('#hrEmployeeTable').dataTable( showHrEmployeeList()  ); 
           }else if($(this).val() === "Objectives"){
              $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
           }else if($(this).val() === "Development Needs Overview"){
@@ -124,10 +131,10 @@ function getHRDevNeedBreakdown(){
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
-       success: function(data){           
+       success: function(data){ 
+           $(".hr-dashboard").append(hrDevNeedsBreakdownHeader());
            $.each(data, function(key, val){
-               $(".hr-dashboard").append(hrDevNeedsBreakdownHeader());
-               addHrDevelopmentNeedsBreakdownToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, val.title, val. category);
+               addHrDevelopmentNeedsBreakdownToList(val.employeeID, val.fullName, val.title, val. category, val.company, val.superSector, val.department);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -380,8 +387,8 @@ function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevelopmentNeeds
 }
 
 //function to add HR Development Needs Breakdown to a list and append it on the HTML
-function addHrDevelopmentNeedsBreakdownToList(employeeID, fullName, company, superSector, department, title, category){
-    $("#devNeedsBreakdown").append(hrDevelopmentNeedsBreakdownList(employeeID, fullName, company, superSector, department, title, category));
+function addHrDevelopmentNeedsBreakdownToList(employeeID, fullName, title, category, company, superSector, department){
+    $("#devNeedsBreakdownDetails").append(hrDevelopmentNeedsBreakdownList(employeeID, fullName, title, category, company, superSector, department));
 }
 
 // function that shows the HR Development Needs list when clicked
@@ -466,14 +473,14 @@ function hrDevNeedsBreakdownHeader(){
                 <tr> \
                    <th>Employee ID</th> \
                    <th>Employee Name</th> \
+                   <th>Title</th> \
+                   <th>Category</th> \
                    <th>Company</th> \
                    <th>Super Sector</th> \
                    <th>Department</th> \
-                   <th>Title</th> \
-                   <th>Category</th> \
                 </tr> \
             </thead> \
-            <tbody id='devNeedsBreakdown'> \
+            <tbody id='devNeedsBreakdownDetails'> \
             </tbody> \
         </table> \
     "
