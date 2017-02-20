@@ -8,7 +8,6 @@ var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
 
-
 function logMeIn(){	
 		 $.ajax({
 		  "async": true,

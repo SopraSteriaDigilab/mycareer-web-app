@@ -11,6 +11,7 @@ $(function() {
     getEmployeeStats();
     getHRObjectivesStats();
     getHRDevNeedsStats();
+    getHRDevNeedBreakdown();
     getHRFeedbackStats();
     
     //click functions to display specific report
@@ -21,8 +22,10 @@ $(function() {
              $('#hrEmployeeTable').dataTable(  showHrEmployeeList()  ); 
           }else if($(this).val() === "Objectives"){
              $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
-          }else if($(this).val() === "Development Needs"){
-             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() ); 
+          }else if($(this).val() === "Development Needs Overview"){
+             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() );
+          }else if($(this).val() === "Development Needs Breakdown"){
+             $('#hrDevNeedsBreakdownTable').dataTable( showHrDevelopmentNeedsBreakdownList() ); 
           }else if($(this).val() === "Feedback"){
              $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); 
           }
@@ -114,6 +117,26 @@ function getHRDevNeedsStats(){
     });
 }
 
+//function to get HR Development Need breakdown stats of mycareer
+function getHRDevNeedBreakdown(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedBreakDown',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
+           $.each(data, function(key, val){
+               $(".hr-dashboard").append(hrDevNeedsBreakdownHeader());
+               addHrDevelopmentNeedsBreakdownToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, val.title, val. category);
+            }); 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR Development Needs data, please try again later.")
+        }
+    });
+}
+
 //function to get HR feedback stats of mycareer
 function getHRFeedbackStats(){
     $.ajax({
@@ -154,6 +177,9 @@ function showHrOverviewList(){
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
@@ -212,6 +238,7 @@ function addHrEmployeeToList(employeeID, fullName, company, superSector, departm
     $("#employeeDetails").append(hrEmployeeList(employeeID, fullName, company, superSector, department));
 }
 
+// function that shows the HR Employee list when clicked
 function showHrEmployeeList(){
     if ($("#hrEmployeeTable").hasClass("hidden")){
          $("#hrEmployeeTable").removeClass("hidden");
@@ -227,6 +254,9 @@ function showHrEmployeeList(){
     }
     if($("#hrDevNeedsTable_wrapper").not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
@@ -270,12 +300,12 @@ function hrEmployeeList(employeeID, fullName, company, superSector, department){
 
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
-//function to add HR data overview to a list and append it on the HTML
+//function to add HR objectives to a list and append it on the HTML
 function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department){
     $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+// function that shows the HR Objectives list when clicked
 function showHrObjectivesList(){
     if ($("#hrObjectivesTable").hasClass("hidden")){
          $("#hrObjectivesTable").removeClass("hidden");
@@ -291,6 +321,9 @@ function showHrObjectivesList(){
     }
     if ($('#hrDevNeedsTable_wrapper').not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
@@ -341,12 +374,17 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inPro
 
 //------------------------------------------------- HR Development Needs ----------------------------------------------------------------
 
-//function to add HR data overview to a list and append it on the HTML
+//function to add HR Development Needs to a list and append it on the HTML
 function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department){
     $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+//function to add HR Development Needs Breakdown to a list and append it on the HTML
+function addHrDevelopmentNeedsBreakdownToList(employeeID, fullName, company, superSector, department, title, category){
+    $("#devNeedsBreakdown").append(hrDevelopmentNeedsBreakdownList(employeeID, fullName, company, superSector, department, title, category));
+}
+
+// function that shows the HR Development Needs list when clicked
 function showHrDevelopmentNeedsList(){
     if ($("#hrDevNeedsTable").hasClass("hidden")){
          $("#hrDevNeedsTable").removeClass("hidden");
@@ -366,9 +404,37 @@ function showHrDevelopmentNeedsList(){
     if ($('#hrFeedbackTable_wrapper').not("hidden")){
          $("#hrFeedbackTable_wrapper").addClass("hidden");
     }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
+    }
 }
 
-//Function that returns the table headings
+// function that shows the HR Development Needs breakdown list when clicked
+function showHrDevelopmentNeedsBreakdownList(){
+    if ($("#hrDevNeedsBreakdownTable").hasClass("hidden")){
+         $("#hrDevNeedsBreakdownTable").removeClass("hidden");
+    }
+    if($("#hrDevNeedsBreakdownTable_wrapper").hasClass("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").removeClass("hidden");
+    }
+    if ($("#hrOverviewTable").not("hidden")){
+         $("#hrOverviewTable").addClass("hidden");
+    }
+    if ($('#hrEmployeeTable_wrapper').not("hidden")){
+         $("#hrEmployeeTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrObjectivesTable_wrapper').not("hidden")){
+         $("#hrObjectivesTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrFeedbackTable_wrapper').not("hidden")){
+         $("#hrFeedbackTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsTable_wrapper').not("hidden")){
+         $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+}
+
+//Function that returns the table headings for dev needs overview
 function hrDevNeedsHeader(){
     var html = " \
         <table class='table table-striped hidden' id='hrDevNeedsTable'> \
@@ -386,6 +452,28 @@ function hrDevNeedsHeader(){
                 </tr> \
             </thead> \
             <tbody id='devNeedsDetails'> \
+            </tbody> \
+        </table> \
+    "
+    return html;
+}
+
+//Function that returns the table headings for dev needs breakdown
+function hrDevNeedsBreakdownHeader(){
+    var html = " \
+        <table class='table table-striped hidden' id='hrDevNeedsBreakdownTable'> \
+            <thead> \
+                <tr> \
+                   <th>Employee ID</th> \
+                   <th>Employee Name</th> \
+                   <th>Company</th> \
+                   <th>Super Sector</th> \
+                   <th>Department</th> \
+                   <th>Title</th> \
+                   <th>Category</th> \
+                </tr> \
+            </thead> \
+            <tbody id='devNeedsBreakdown'> \
             </tbody> \
         </table> \
     "
@@ -411,6 +499,22 @@ var html = " \
     return html;
 }
 
+//Function that returns HR development needs breakdown list in html format with the parameters given
+function hrDevelopmentNeedsBreakdownList(employeeID, fullName, company, superSector, department, title, category){
+var html = " \
+            <tr> \
+                <td>"+employeeID+"</td> \
+                <td>"+fullName+"</td> \
+                <td>"+company+"</td> \
+                <td>"+superSector+"</td> \
+                <td>"+department+"</td> \
+                <td>"+title+"</td> \
+                <td>"+category+"</td> \
+            </tr> \
+    "
+    return html;
+}
+
 //------------------------------------------------- HR Feedback ----------------------------------------------------------------
 
 //function to add HR data feedback to a list and append it on the HTML
@@ -418,7 +522,7 @@ function addHrFeedbackToList(employeeID, fullName, totalFeedback, company, super
     $("#feedbackDetails").append(hrFeedbackList(employeeID, fullName, totalFeedback, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+// function that shows the HR feedback list when clicked
 function showHrFeedbackList(){
     if ($("#hrFeedbackTable").hasClass("hidden")){
          $("#hrFeedbackTable").removeClass("hidden");
@@ -437,6 +541,9 @@ function showHrFeedbackList(){
     }
     if($("#hrDevNeedsTable_wrapper").not("hidden")){
          $("#hrDevNeedsTable_wrapper").addClass("hidden");
+    }
+    if ($('#hrDevNeedsBreakdownTable_wrapper').not("hidden")){
+         $("#hrDevNeedsBreakdownTable_wrapper").addClass("hidden");
     }
 }
 
