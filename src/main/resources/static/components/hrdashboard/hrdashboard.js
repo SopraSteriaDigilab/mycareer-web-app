@@ -114,6 +114,26 @@ function getHRDevNeedsStats(){
     });
 }
 
+//function to get HR Development Need breakdown stats of mycareer
+function getHRDevNeedBreakdown(){
+    $.ajax({
+       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedBreakDown',
+       cache: false,
+       method: 'GET',
+       xhrFields: {'withCredentials': true},
+       success: function(data){           
+           $(".hr-dashboard").append(hrDevNeedsHeader());
+           $.each(data, function(key, val){
+               addHrDevelopmentNeedsToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, val.title, val. category);
+            }); 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting HR Development Needs data, please try again later.")
+        }
+    });
+}
+
 //function to get HR feedback stats of mycareer
 function getHRFeedbackStats(){
     $.ajax({
@@ -212,6 +232,7 @@ function addHrEmployeeToList(employeeID, fullName, company, superSector, departm
     $("#employeeDetails").append(hrEmployeeList(employeeID, fullName, company, superSector, department));
 }
 
+// function that shows the HR Employee list when clicked
 function showHrEmployeeList(){
     if ($("#hrEmployeeTable").hasClass("hidden")){
          $("#hrEmployeeTable").removeClass("hidden");
@@ -270,12 +291,12 @@ function hrEmployeeList(employeeID, fullName, company, superSector, department){
 
 //------------------------------------------------- HR Objectives ----------------------------------------------------------------
 
-//function to add HR data overview to a list and append it on the HTML
+//function to add HR objectives to a list and append it on the HTML
 function addHrObjectivesToList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department){
     $("#objectiveDetails").append(hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inProgress, complete, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+// function that shows the HR Objectives list when clicked
 function showHrObjectivesList(){
     if ($("#hrObjectivesTable").hasClass("hidden")){
          $("#hrObjectivesTable").removeClass("hidden");
@@ -341,12 +362,12 @@ function hrObjectivesList(employeeID, fullName, totalObjectives, proposed, inPro
 
 //------------------------------------------------- HR Development Needs ----------------------------------------------------------------
 
-//function to add HR data overview to a list and append it on the HTML
+//function to add HR Development Needs to a list and append it on the HTML
 function addHrDevelopmentNeedsToList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department){
     $("#devNeedsDetails").append(hrDevelopmentNeedsList(employeeID, fullName, totalDevelopmentNeeds, proposed, inProgress, complete, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+// function that shows the HR Development Needs list when clicked
 function showHrDevelopmentNeedsList(){
     if ($("#hrDevNeedsTable").hasClass("hidden")){
          $("#hrDevNeedsTable").removeClass("hidden");
@@ -418,7 +439,7 @@ function addHrFeedbackToList(employeeID, fullName, totalFeedback, company, super
     $("#feedbackDetails").append(hrFeedbackList(employeeID, fullName, totalFeedback, company, superSector, department));
 }
 
-// function that shows the HR Overview list when clicked
+// function that shows the HR feedback list when clicked
 function showHrFeedbackList(){
     if ($("#hrFeedbackTable").hasClass("hidden")){
          $("#hrFeedbackTable").removeClass("hidden");
