@@ -221,14 +221,12 @@ function addNoteToDB(userID, noteType, linkID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNote/"+userID,
         method: "POST",
+        headers: {'Content-Type': 'application/json'},
         xhrFields: {'withCredentials': true},
-        data: {
-            'noteType': noteType,
-            'linkID': linkID,
-            'from': from,
-            'body': body,
-            'date': date,
-        },
+        data: JSON.stringify({
+            'providerName': from,
+            'noteDescription': body,
+        }),
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();

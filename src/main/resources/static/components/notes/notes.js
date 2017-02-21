@@ -44,14 +44,15 @@ function getNotesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
       cache: false,
+      headers: {'Content-Type': 'application/json'},
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-          lastNoteID = data.length;          
+          lastNoteID = data.length;
           $.each(data, function(key, val){
           	
-          	var date = timeStampToDateTime(new Date(val.timeStamp));
-          	addNoteToList(val.fromWho, val.noteType, val.linkID, val.body, date);
+          	var date = timeStampToDateTime(new Date(val.timestamp));
+          	addNoteToList(val.providerName, val.noteType, val.linkID, val.noteDescription, date);
           });
           if(data.length == 0)
         	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
