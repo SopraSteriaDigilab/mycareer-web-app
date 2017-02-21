@@ -3,13 +3,6 @@ $(function() {
     //initialization of select picker
     $('.selectpicker').selectpicker();
     
-    //initialization of DataTables
-    $('#hrEmployeeTable').DataTable( {
-    buttons: [
-        'excel'
-    ]
-} );
-    
     //verifies that the user has access to HR Dashboard
     verifyUser();
     
@@ -21,12 +14,29 @@ $(function() {
     getHRDevNeedBreakdown();
     getHRFeedbackStats();
     
+    
+//initialization of specific datatable with added button to export to excel
+//$('#hrEmployeeTable').DataTable( {
+//    dom: 'Bfrtip',
+//    buttons: [
+//        {
+//            extend: 'excel',
+//            text: 'Save current page',
+//            exportOptions: {
+//                modifier: {
+//                    page: 'current'
+//                }
+//            }
+//        }
+//    ]
+//});  
+    
     //click functions to display specific report
       $('.selectpicker').on('change', function(){
           if($(this).val() === "Overview"){
             showHrOverviewList(); 
           }else if($(this).val() === "Employees"){
-             $('#hrEmployeeTable').dataTable( showHrEmployeeList()  ); 
+             $('#hrEmployeeTable').dataTable( showHrEmployeeList()  );           
           }else if($(this).val() === "Objectives"){
              $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
           }else if($(this).val() === "Development Needs Overview"){
@@ -119,7 +129,7 @@ function getHRDevNeedsStats(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting HR Development Needs data, please try again later.")
+            toastr.error("Sorry, there was a problem getting HR Development Needs overview data, please try again later.")
         }
     });
 }
@@ -139,7 +149,7 @@ function getHRDevNeedBreakdown(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting HR Development Needs data, please try again later.")
+            toastr.error("Sorry, there was a problem getting HR Development Needs breakdown data, please try again later.")
         }
     });
 }
@@ -340,7 +350,7 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrObjectivesTable'> \
+        <table class='table table-striped hidden' cellspacing='0' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
