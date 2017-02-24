@@ -12,42 +12,90 @@ $(function() {
     getHRObjectivesStats();
     getHRDevNeedsStats();
     getHRDevNeedBreakdown();
-    getHRFeedbackStats();
-    
-    
-//initialization of specific datatable with added button to export to excel
-//$('#hrEmployeeTable').DataTable( {
-//    dom: 'Bfrtip',
-//    buttons: [
-//        {
-//            extend: 'excel',
-//            text: 'Save current page',
-//            exportOptions: {
-//                modifier: {
-//                    page: 'current'
-//                }
-//            }
-//        }
-//    ]
-//});  
-    
-    //click functions to display specific report
+    getHRFeedbackStats();  
+
+//    //click functions to display specific report and initializarion of specific datatable with added button to export to excel
       $('.selectpicker').on('change', function(){
           if($(this).val() === "Overview"){
             showHrOverviewList(); 
-          }else if($(this).val() === "Employees"){
-             $('#hrEmployeeTable').dataTable( showHrEmployeeList()  );           
-          }else if($(this).val() === "Objectives"){
-             $('#hrObjectivesTable').dataTable(  showHrObjectivesList()  ); 
-          }else if($(this).val() === "Development Needs Overview"){
-             $('#hrDevNeedsTable').dataTable( showHrDevelopmentNeedsList() );
-          }else if($(this).val() === "Development Needs Breakdown"){
-             $('#hrDevNeedsBreakdownTable').dataTable( showHrDevelopmentNeedsBreakdownList() ); 
-          }else if($(this).val() === "Feedback"){
-             $('#hrFeedbackTable').dataTable( showHrFeedbackList() ); 
           }
-        });
-
+          
+          if($(this).val() === "Employees"){
+              if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
+                    table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
+              }
+              else {
+                    table = $('#hrEmployeeTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrEmployeeList(); 
+              }
+            }
+          if($(this).val() === "Objectives"){
+              if ( $.fn.dataTable.isDataTable( '#hrObjectivesTable' ) ) {
+                    table = $('#hrObjectivesTable').DataTable( showHrObjectivesList() );    
+              }
+              else {
+                    table = $('#hrObjectivesTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrObjectivesList(); 
+              }
+            }
+          if($(this).val() === "Development Needs Overview"){
+              if ( $.fn.dataTable.isDataTable( '#hrDevNeedsTable' ) ) {
+                    table = $('#hrDevNeedsTable').DataTable( showHrDevelopmentNeedsList() );    
+              }
+              else {
+                    table = $('#hrDevNeedsTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrDevelopmentNeedsList(); 
+              }
+            }          
+          if($(this).val() === "Development Needs Breakdown"){
+              if ( $.fn.dataTable.isDataTable( '#hrDevNeedsBreakdownTable' ) ) {
+                    table = $('#hrDevNeedsBreakdownTable').DataTable( showHrDevelopmentNeedsBreakdownList() );    
+              }
+              else {
+                    table = $('#hrDevNeedsBreakdownTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrDevelopmentNeedsBreakdownList(); 
+              }
+            }
+          if($(this).val() === "Feedback"){
+              if ( $.fn.dataTable.isDataTable( '#hrFeedbackTable' ) ) {
+                    table = $('#hrFeedbackTable').DataTable( showHrFeedbackList() );    
+              }
+              else {
+                    table = $('#hrFeedbackTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrFeedbackList(); 
+              }
+            }          
+          });//end of selectpicker change function
 });
 
 //verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
@@ -350,7 +398,7 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
-        <table class='table table-striped hidden' cellspacing='0' id='hrObjectivesTable'> \
+        <table class='table table-striped hidden' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
