@@ -16,11 +16,11 @@ $(function() {
 
 //    //click functions to display specific report and initializarion of specific datatable with added button to export to excel
       $('.selectpicker').on('change', function(){
-          if($(this).val() === "Overview"){
+          if($(this).val() === "MyCareer Overview"){
             showHrOverviewList(); 
           }
           
-          if($(this).val() === "Employees"){
+          if($(this).val() === "Total Accounts"){
               if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
                     table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
               }
