@@ -17,6 +17,17 @@ $(function() {
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');
+    
+    //Auto fills email address in email(s) field
+//    $('#requestingTo').tagsinput({
+//       // tagsinput options
+//        typeahead: {
+//            source: ,
+//            afterSelect: function() {
+//                this.$element[0].value = '';
+//            }
+//        }
+//    });
 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });

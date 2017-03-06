@@ -16,11 +16,11 @@ $(function() {
 
 //    //click functions to display specific report and initializarion of specific datatable with added button to export to excel
       $('.selectpicker').on('change', function(){
-          if($(this).val() === "Overview"){
+          if($(this).val() === "MyCareer Overview"){
             showHrOverviewList(); 
           }
           
-          if($(this).val() === "Employees"){
+          if($(this).val() === "Total Accounts"){
               if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
                     table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
               }
@@ -259,36 +259,44 @@ function hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, u
             <tr> \
                <th>Overview of MyCareer</th> \
     	       <th>Number of Users</th> \
+               <th>% of Users</th> \
             </tr> \
         </thead> \
         <tbody> \
             <tr> \
                 <td>Total Accounts Accessed</td> \
                 <td>"+totalAccounts+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users with at least one objective</td> \
                 <td>"+usersWithObjectives+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users with at least one development need</td> \
                 <td>"+usersWithDevNeeds+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users with at least one note</td> \
                 <td>"+usersWithNotes+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users that have clicked a competency</td> \
                 <td>"+usersWithCompetencies+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users that have submitted a feedback request</td> \
                 <td>"+usersWithFeedbackRequests+"</td> \
+                <td>50%</td> \
             </tr> \
             <tr> \
                 <td>Users that have received feedback</td> \
                 <td>"+usersWithFeedback+"</td> \
+                <td>50%</td> \
             </tr> \
         </tbody> \
     </table> \
