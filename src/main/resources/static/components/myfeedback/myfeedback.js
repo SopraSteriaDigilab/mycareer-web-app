@@ -16,37 +16,26 @@ $(function() {
 	
     // Initializing the typeahead with remote dataset
     $('#requestingTo').tagsinput({
-        typeahead: {
-        source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo', 'Cairoooo', 'ai'],
-        afterSelect: function() {
-            this.$element[0].value = '';
-            }
+        typeahead: {    
+        afterSelect: function(val) {
+            this.$element[0].val = '';
+            },
+        source: function(){
+            var result = null;
+            $.ajax({
+                url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+                type: 'GET',
+                async: false,
+                success: function(data){
+                    result = data;
+                }
+            });
+            console.log(result);
+            return JSON.stringify(result);
+            } 
         }
     });
-    
-//    var elt = $("#'.$vinput_id.'"); //tagsinput input
-//    elt.tagsinput({
-//        typeahead: {
-//            afterSelect: function(val) { this.$element.val(""); },
-//            source: function(query) {
-//                var result = null;
-//                $.ajax({
-//                   url: "URL/TO/JSON/SOURCE&term="+query,
-//                   type: "get",
-//                   dataType: "html",
-//                   async: false,
-//                   success: function(data) {
-//                       result = data;
-//                   } 
-//                });
-//                console.log(result);
-//
-//                return  JSON.parse(result);
-//
-//           }
-//        }
-//    });
-//        
+        
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');
