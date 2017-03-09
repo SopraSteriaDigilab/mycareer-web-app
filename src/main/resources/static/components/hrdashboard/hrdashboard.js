@@ -8,23 +8,33 @@ $(function() {
     
     //gets HR data
     getMyCareerStats();
+    getHRSuperSectorStats();
     getEmployeeStats();
     getHRObjectivesStats();
+    getHRFeedbackStats();
     getHRDevNeedsStats();
     getHRDevNeedBreakdown();
-    getHRFeedbackStats();
-    getHRSuperSectorStats();
 
 //    //click functions to display specific report and initializarion of specific datatable with added button to export to excel
       $('.selectpicker').on('change', function(){
           if($(this).val() === "MyCareer Overview"){
             showHrOverviewList(); 
           }
-          
           if($(this).val() === "Super Sector"){
-             showHrSuperSectorList()
+             if ( $.fn.dataTable.isDataTable( '#hrSuperSectorTable' ) ) {
+                    table = $('#hrSuperSectorTable').DataTable( showHrSuperSectorList() );    
+              }
+              else {
+                    table = $('#hrSuperSectorTable').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [{
+                        extend: 'csvHtml5',
+                        text: 'Export to Excel'
+                        }]
+                    });
+                showHrSuperSectorList(); 
+              }
           }
-          
           if($(this).val() === "Total Accounts"){
               if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
                     table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
@@ -230,14 +240,14 @@ function getHRFeedbackStats(){
 //function to get the Super Sector HR stats of mycareer
 function getHRSuperSectorStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getSuperSectorStats',
+       url: 'http://'+getEnvironment()+':8080/hr/getSectorBreakDown',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
        success: function(data){
            $(".hr-dashboard").append(hrSuperSectorHeader());
            $.each(data, function(key, val){
-                addHrSuperSectorToList(val.superSector, val.noOfEmployees, val.noWithObjectives, val.noWithDevelopment, val.percentWithObjectives, val.percentWithDevelopment);
+                addHrSuperSectorToList(val.sector, val.employees, val.noWithObjs, val.noWithDevNeeds, val.percentObjs, val.percentDevNeeds);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -702,8 +712,8 @@ var html = " \
 
 //------------------------------------------------- HR Super Sector  ----------------------------------------------------------------
 
-function addHrSuperSectorToList(){
-     $("#superSectorDetails").append(hrSuperSectorList(superSector, noOfEmployees, noWithObjectives, noWithDevelopment, percentOfObjectives, percentOfDevelopment));
+function addHrSuperSectorToList(sector, employees, noWithObjs, noWithDevNeeds, percentObjs, percentDevNeeds){
+     $("#superSectorDetails").append(hrSuperSectorList(sector, employees, noWithObjs, noWithDevNeeds, percentObjs, percentDevNeeds));
 }
 
 function showHrSuperSectorList(){
@@ -750,15 +760,15 @@ function hrSuperSectorHeader(){
     return html;    
 }
 
-function hrSuperSectorList(superSector, noOfEmployees, noWithObjectives, noWithDevelopment, percentOfObjectives, percentOfDevelopment){
+function hrSuperSectorList(sector, employees, noWithObjs, noWithDevNeeds, percentObjs, percentDevNeeds){
         var html = " \
             <tr> \
-               <td>"+superSector+"</td> \
-    	       <td>"+noOfEmployees+"</td> \
-               <td>"+noWithObjectives+"</td> \
-               <td>"+noWithDevelopment+"</td> \
-               <td>"+percentOfObjectives+"</td> \
-               <td>"+percentOfDevelopment+"</td> \
+               <td>"+sector+"</td> \
+    	       <td>"+employees+"</td> \
+               <td>"+noWithObjs+"</td> \
+               <td>"+noWithDevNeeds+"</td> \
+               <td>"+percentObjs+"%</td> \
+               <td>"+percentDevNeeds+"%</td> \
             </tr> \
     "
     return html;
