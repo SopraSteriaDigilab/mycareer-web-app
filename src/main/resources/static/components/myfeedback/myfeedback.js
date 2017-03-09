@@ -14,21 +14,43 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
+    // Initializing the typeahead with remote dataset
+    $('#requestingTo').tagsinput({
+        typeahead: {
+        source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo', 'Cairoooo', 'ai'],
+        afterSelect: function() {
+            this.$element[0].value = '';
+            }
+        }
+    });
+    
+//    var elt = $("#'.$vinput_id.'"); //tagsinput input
+//    elt.tagsinput({
+//        typeahead: {
+//            afterSelect: function(val) { this.$element.val(""); },
+//            source: function(query) {
+//                var result = null;
+//                $.ajax({
+//                   url: "URL/TO/JSON/SOURCE&term="+query,
+//                   type: "get",
+//                   dataType: "html",
+//                   async: false,
+//                   success: function(data) {
+//                       result = data;
+//                   } 
+//                });
+//                console.log(result);
+//
+//                return  JSON.parse(result);
+//
+//           }
+//        }
+//    });
+//        
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');
     
-    //Auto fills email address in email(s) field
-//    $('#requestingTo').tagsinput({
-//       // tagsinput options
-//        typeahead: {
-//            source: ,
-//            afterSelect: function() {
-//                this.$element[0].value = '';
-//            }
-//        }
-//    });
-
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
