@@ -1,5 +1,5 @@
 $(function() {
-	adjustDatePicker();    
+	adjustDatePicker();
 });
 
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
@@ -433,4 +433,8 @@ function showProposedObjTab(){
 	if(!$("#obj-all-tab").hasClass("active")){
 		$("#obj-proposed-tab").find('a').trigger("click");
 	}
+}
+
+function getEmailAddresses(){
+    return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
 }

@@ -2,7 +2,10 @@ $(function() {
     
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-	
+    
+    //Gets list of email addresses
+    var emails = getEmailAddresses();
+
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -14,18 +17,16 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
-//    // Initializing the typeahead with remote dataset
+    // Initializing the typeahead with remote dataset
     $('#requestingTo').tagsinput({
         typeahead: {
-            source: function(){
-                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
-            },
+            source: emails,
             afterSelect: function() {
                 this.$element[0].value = '';
             }
         }
     });
-        
+    
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');
@@ -313,4 +314,26 @@ function submitFeedbackRequest(){
             $("#requestingTo").tagsinput('removeAll');
         });
         $('#requestFeedbackModal').modal('hide');
+}
+
+function getEmailAddresses(){
+    var d;
+    $.ajax({
+        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+            d = data;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+        }
+    });	
+    
+    $.each(d, function(key,val){
+        alert(val);
+    });
+    return d;
 }
