@@ -5,9 +5,6 @@ $(function() {
 	//Add Proposed Button
 	addProposed();
 	
-	//Get email list and initialise tags input
-	getEmailList("proposed-obj-to");
-	
 	//onClick for opening modal
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
 
@@ -463,3 +460,4 @@ function addProposed(){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+	

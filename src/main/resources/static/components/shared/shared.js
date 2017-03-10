@@ -1,7 +1,9 @@
 $(function() {
 	adjustDatePicker();
+	getEmailList();
 });
 
+var emails = [];
 var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
@@ -57,7 +59,9 @@ function checkComplete(status, item){
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
-         keypress('objective-modal');
+    	//Get email list and initialise tags input
+    	tags("proposed-obj-to", emails);
+        keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
     }
@@ -440,22 +444,20 @@ function showProposedObjTab(){
 		$("#obj-proposed-tab").find('a').trigger("click");
 	}
 }
-
-
-function getEmailList(tagID){
-	   $.ajax({
-	    	"async": true,
-	        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
-	        cache: false,
-	        method: 'GET',
-	        xhrFields: {'withCredentials': true},
-	        success: function(data){
-	        	tags(tagID, data);
-	        },
-	        error: function(XMLHttpRequest, textStatus, errorThrown){
-	            console.log('error', errorThrown);
-	            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-	        }
-	    });	
 	
+function getEmailList(){
+	$.ajax({
+    	"async": true,
+        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+        	emails = data;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+        }
+    });	
 }

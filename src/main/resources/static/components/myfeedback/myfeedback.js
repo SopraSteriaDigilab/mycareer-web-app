@@ -1,7 +1,9 @@
 $(function() {
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-	getEmailList("requestingTo");
+    
+    //initialise Tags
+    tags("requestingTo", emails);
     
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
