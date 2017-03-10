@@ -19,7 +19,7 @@ function logMeIn(){
 	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
 	    	  ADUsername = data.username;
-	    	  isManager = Boolean(true);
+	    	  isManager = Boolean(data.isManager);
               hasHRDash = Boolean(data.hasHRDash);
 	    	  loadPage($("#section").text());  
 	      },
