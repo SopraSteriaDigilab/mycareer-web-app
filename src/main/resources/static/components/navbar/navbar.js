@@ -4,6 +4,9 @@ $(function() {
 	loadProfile();
 	
 	highlight($("#section").text());
+    
+    //Gets list of email addresses
+    var emails = getEmailAddresses();
 	
 	//Initialising the date picker
 	initDatePicker('objective', new Date());
@@ -13,8 +16,17 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
-        
-});
+    
+
+    // Initializing the typeahead with remote dataset
+    $('#proposed-obj-to').tagsinput({
+        typeahead: {
+            source: emails,
+            afterSelect: function() {
+                this.$element[0].value = '';
+            }
+        }
+    });
 
 //Function to load profile section
 function loadProfile(){
