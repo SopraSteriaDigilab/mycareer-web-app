@@ -230,7 +230,7 @@ function addNoteToDB(userID, noteType, linkID, from, body, date){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             lastNoteID++;
-            addNoteToList(from, noteType, linkID, body, date);
+            addNoteToList(from, body, date);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
