@@ -14,25 +14,15 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
-    // Initializing the typeahead with remote dataset
+//    // Initializing the typeahead with remote dataset
     $('#requestingTo').tagsinput({
-        typeahead: {    
-        afterSelect: function(val) {
-            this.$element[0].val = '';
+        typeahead: {
+            source: function(){
+                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
             },
-        source: function(){
-            var result = null;
-            $.ajax({
-                url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
-                type: 'GET',
-                async: false,
-                success: function(data){
-                    result = data;
-                }
-            });
-            console.log(result);
-            return JSON.stringify(result);
-            } 
+            afterSelect: function() {
+                this.$element[0].value = '';
+            }
         }
     });
         
