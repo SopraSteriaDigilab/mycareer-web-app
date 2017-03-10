@@ -57,7 +57,7 @@ function checkComplete(status, item){
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
-         tags('proposed-obj-to');
+//         tags('proposed-obj-to');
          keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
@@ -354,12 +354,17 @@ function enableSubmit(type){
     return true;
 }
 
-function tags(id){
+function tags(id, data){
     //sets email addresses to use bootstrap tag input
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
-       trimValue: true
+       trimValue: true,
+       typeahead: {
+           source: data,
+           afterSelect: function() {
+               this.$element[0].value = '';
+           }}
     });
 }
 
@@ -435,6 +440,21 @@ function showProposedObjTab(){
 	}
 }
 
-function getEmailAddresses(){
-    return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
+
+function getEmailList(tagID){
+	   $.ajax({
+	    	"async": true,
+	        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+	        cache: false,
+	        method: 'GET',
+	        xhrFields: {'withCredentials': true},
+	        success: function(data){
+	        	tags(tagID, data);
+	        },
+	        error: function(XMLHttpRequest, textStatus, errorThrown){
+	            console.log('error', errorThrown);
+	            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+	        }
+	    });	
+	
 }

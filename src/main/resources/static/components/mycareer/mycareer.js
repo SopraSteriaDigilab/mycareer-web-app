@@ -18,9 +18,9 @@ function logMeIn(){
 	      success: function(data){
 	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
-	    	  ADUsername = data.username;
-	    	  isManager = Boolean(data.isManager);
-              hasHRDash = Boolean(data.hasHRDash);
+	    	  ADUsername = "dbolla";
+	    	  isManager = Boolean(true);
+              hasHRDash = Boolean(true);
 	    	  loadPage($("#section").text());  
 	      },
 	      error: function(XMLHttpRequest, textStatus, errorThrown){

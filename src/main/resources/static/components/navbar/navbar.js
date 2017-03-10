@@ -4,9 +4,6 @@ $(function() {
 	loadProfile();
 	
 	highlight($("#section").text());
-    
-    //Gets list of email addresses
-    var emails = getEmailAddresses();
 	
 	//Initialising the date picker
 	initDatePicker('objective', new Date());
@@ -17,16 +14,7 @@ $(function() {
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
     
-
-    // Initializing the typeahead with remote dataset
-    $('#proposed-obj-to').tagsinput({
-        typeahead: {
-            source: emails,
-            afterSelect: function() {
-                this.$element[0].value = '';
-            }
-        }
-    });
+});
 
 //Function to load profile section
 function loadProfile(){
@@ -60,6 +48,6 @@ function openProposedObjectiveModal(){
 function proposedToHTML(){
     var HTML= " \
         <label for='proposed-obj-to'>Email(s)*:</label> \
-            <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
+            <input type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }

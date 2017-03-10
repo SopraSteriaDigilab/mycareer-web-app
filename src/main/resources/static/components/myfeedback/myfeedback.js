@@ -1,11 +1,8 @@
 $(function() {
-    
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
+	getEmailList("requestingTo");
     
-    //Gets list of email addresses
-    var emails = getEmailAddresses();
-
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -16,21 +13,10 @@ $(function() {
 	$("#submit-date-filter").click(function (){ applyDateFilter() })
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
-	
-    // Initializing the typeahead with remote dataset
-    $('#requestingTo').tagsinput({
-        typeahead: {
-            source: emails,
-            afterSelect: function() {
-                this.$element[0].value = '';
-            }
-        }
-    });
     
     //feedback request modal key preses
-    tags('requestingTo');
-    keypress('requestFeedbackModal');
-    
+	keypress('requestFeedbackModal');
+	 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
@@ -42,7 +28,6 @@ $(function() {
             toastr.error("One or more email addresses entered are not valid");
         }    
      });
-    
     //when these are clicked it clears the feedback request modal
     $("#close-feedback-request-modal").click(function() {
         $("textarea").val("");
@@ -54,10 +39,14 @@ $(function() {
     });
     
     //click to open a modal that shows the feedback email template
-    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });	
-	
+    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    
+    
+
 });//End of Document Function
 
+
+//var emailList = [];
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
 var firstFeedback = true;
@@ -314,26 +303,4 @@ function submitFeedbackRequest(){
             $("#requestingTo").tagsinput('removeAll');
         });
         $('#requestFeedbackModal').modal('hide');
-}
-
-function getEmailAddresses(){
-    var d;
-    $.ajax({
-        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            d = data;
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-        }
-    });	
-    
-    $.each(d, function(key,val){
-        alert(val);
-    });
-    return d;
 }

@@ -5,6 +5,9 @@ $(function() {
 	//Add Proposed Button
 	addProposed();
 	
+	//Get email list and initialise tags input
+	getEmailList("proposed-obj-to");
+	
 	//onClick for opening modal
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
 
