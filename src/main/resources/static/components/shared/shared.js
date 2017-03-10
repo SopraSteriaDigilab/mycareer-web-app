@@ -57,7 +57,6 @@ function checkComplete(status, item){
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
-//         tags('proposed-obj-to');
          keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
@@ -361,10 +360,12 @@ function tags(id, data){
        confirmKeys: [9,32,44,59],
        trimValue: true,
        typeahead: {
-           source: data,
+    	   source: data,
            afterSelect: function() {
                this.$element[0].value = '';
-           }}
+           },
+       },
+
     });
 }
 
