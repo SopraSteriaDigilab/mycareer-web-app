@@ -317,5 +317,23 @@ function submitFeedbackRequest(){
 }
 
 function getEmailAddresses(){
-    return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
+    var d;
+    $.ajax({
+        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+            d = data;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+        }
+    });	
+    
+    $.each(d, function(key,val){
+        alert(val);
+    });
+    return d;
 }
