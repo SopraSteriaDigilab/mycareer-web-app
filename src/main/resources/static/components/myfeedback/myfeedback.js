@@ -5,7 +5,7 @@ $(function() {
     
     //Gets list of email addresses
     var emails = getEmailAddresses();
-	
+
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -17,7 +17,7 @@ $(function() {
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
 	
-//    // Initializing the typeahead with remote dataset
+    // Initializing the typeahead with remote dataset
     $('#requestingTo').tagsinput({
         typeahead: {
             source: emails,
@@ -27,9 +27,6 @@ $(function() {
         }
     });
     
-//    function(){
-//                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
-//            }
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');

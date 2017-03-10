@@ -434,3 +434,7 @@ function showProposedObjTab(){
 		$("#obj-proposed-tab").find('a').trigger("click");
 	}
 }
+
+function getEmailAddresses(){
+    return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
+}
