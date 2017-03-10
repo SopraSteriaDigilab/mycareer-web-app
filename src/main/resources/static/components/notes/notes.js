@@ -50,9 +50,8 @@ function getNotesList(userID){
       success: function(data){
           lastNoteID = data.length;
           $.each(data, function(key, val){
-          	
           	var date = timeStampToDateTime(new Date(val.timestamp));
-          	addNoteToList(val.providerName, val.noteType, val.linkID, val.noteDescription, date);
+          	addNoteToList(val.providerName, val.noteDescription, date);
           });
           if(data.length == 0)
         	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
@@ -75,19 +74,18 @@ function optionHTML(id, title){
 }
 
 //Method to add note to list directly
-function addNoteToList(fromWho, noteType, linkID, body, date){
-	$("#general-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
+function addNoteToList(fromWho, body, date){
+	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
 }
 
 //Method to return html
-function notesListHTML(fromWho, noteType, linkID, body, date){
+function notesListHTML(fromWho, body, date){
 	var link="";
 	
 	var html = " \
 	  <li class='list-group-item'> \
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
-			<!--<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> --> \
 			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 		</div> \
 		<div class='row'> \
