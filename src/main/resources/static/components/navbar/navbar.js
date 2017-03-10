@@ -13,6 +13,18 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
+    
+    // Initializing the typeahead with remote dataset
+    $('#proposed-obj-to').tagsinput({
+        typeahead: {
+            source: function(){
+                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
+            },
+            afterSelect: function() {
+                this.$element[0].value = '';
+            }
+        }
+    });
         
 });
 

@@ -2,6 +2,9 @@ $(function() {
     
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
+    
+    //Gets list of email addresses
+    var emails = getEmailAddresses();
 	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
@@ -17,15 +20,16 @@ $(function() {
 //    // Initializing the typeahead with remote dataset
     $('#requestingTo').tagsinput({
         typeahead: {
-            source: function(){
-                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
-            },
+            source: emails,
             afterSelect: function() {
                 this.$element[0].value = '';
             }
         }
     });
-        
+    
+//    function(){
+//                return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
+//            }
     //feedback request modal key preses
     tags('requestingTo');
     keypress('requestFeedbackModal');
@@ -313,4 +317,8 @@ function submitFeedbackRequest(){
             $("#requestingTo").tagsinput('removeAll');
         });
         $('#requestFeedbackModal').modal('hide');
+}
+
+function getEmailAddresses(){
+    return $.get('http://'+getEnvironment()+':8080/data/getAllEmailAddresses');
 }
