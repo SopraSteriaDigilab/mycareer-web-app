@@ -4,7 +4,7 @@ $(function() {
 });
 
 var emails = [];
-var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
