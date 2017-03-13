@@ -220,16 +220,15 @@ function isOngoing(date){
 //
 
 //Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body, date){
+function addNoteToDB(userID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNote/"+userID,
         method: "POST",
-        headers: {'Content-Type': 'application/json'},
         xhrFields: {'withCredentials': true},
-        data: JSON.stringify({
+        data:{
             'providerName': from,
             'noteDescription': body,
-        }),
+        },
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();

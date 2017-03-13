@@ -44,7 +44,6 @@ function getNotesList(userID){
   $.ajax({
       url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
       cache: false,
-      headers: {'Content-Type': 'application/json'},
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
@@ -64,24 +63,13 @@ function getNotesList(userID){
   });
 }
 
-function addLinkID(divID, id, title){
-	$("#"+divID+"-links").append(optionHTML(id, title)).selectpicker("refresh");
-}
-
-function optionHTML(id, title){
-	var HTML = "<option>"+id+"</option>";
-	return HTML;
-}
-
 //Method to add note to list directly
 function addNoteToList(fromWho, body, date){
 	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
 }
 
 //Method to return html
-function notesListHTML(fromWho, body, date){
-	var link="";
-	
+function notesListHTML(fromWho, body, date){	
 	var html = " \
 	  <li class='list-group-item'> \
 	  	<div class='row'> \
@@ -102,10 +90,8 @@ function clickSubmitNote(){
 	var note = $('#note-text').val().trim();
 	var from = getADfullName();
 	var date = timeStampToDateTime(new Date());
-	var noteType = 0;
-	var linkID = 0;
 	
-	addNoteToDB(userID, noteType, linkID, from, note, date);
+	addNoteToDB(userID, from, note, date);
     
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
