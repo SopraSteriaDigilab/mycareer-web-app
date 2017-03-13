@@ -10,6 +10,20 @@
 	text-decoration: none;
 } 
 
+.nav-height >li >a  {
+	color : white;
+	width: 110px;
+	text-align : center;
+}
+
+.inactive >a:hover, .inactive >a:focus {
+	background : linear-gradient(to right, #bf0000 , #da202c) !important;
+	border-left-color :#bf0000 !important;
+	border-right-color :#da202c !important;
+	border-top-color :#da202c !important;
+	border-bottom-color :#da202c !important;
+}
+
 #primary {
 	background-color: #da202c;
 }
