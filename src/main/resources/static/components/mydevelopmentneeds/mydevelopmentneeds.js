@@ -24,6 +24,9 @@ $(function() {
     $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 	
+  //onClick for Close modal
+	$('#close-dev-need').on('click', function(e) { clickCloseDevNeed(e); });
+    
 });
 
 //HTTP request for INSERTING an development need to DB

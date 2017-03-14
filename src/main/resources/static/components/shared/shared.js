@@ -114,6 +114,24 @@ function clickSubmitObjective(){
     }
 }
 
+//Method to handle the close objective button
+function clickCloseObjective(e){
+	if (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false)){
+		$('#objective-modal').modal('hide');
+	    }
+	else {
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#objective-modal').modal('hide');
+		    });
+	};
+}
+
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Competencies -----------------------------------
@@ -209,6 +227,24 @@ function isOngoing(date){
 	}else{
 		return false;
 	}	
+}
+
+//Method to handle the close development need button
+function clickCloseDevNeed(e){
+	if (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false)){
+		$('#development-need-modal').modal('hide');
+	    }
+	else {
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#development-need-modal').modal('hide');
+		    });
+	};
 }
 
 //------------------------------------------------------------------------------------
@@ -340,6 +376,20 @@ function checkEmpty(inputClass, throwError){
 			return true;
 		}
 	});
+	
+	if(isEmpty && throwError)
+		toastr.error("Please fill in all mandatory fields.");
+
+	return isEmpty;
+} 
+
+function checkEmptyID(inputID, throwError){
+	var isEmpty = false;
+		var value = $('#'+inputID).val().trim();
+		if(!value){
+			isEmpty = true;
+			return true;
+		};
 	
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");

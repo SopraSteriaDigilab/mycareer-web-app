@@ -16,8 +16,10 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
+	
+	//onClick for Close modal
+	$('#close-obj').on('click', function(e) { clickCloseObjective(e); });
     
-
     // Initializing the typeahead with remote dataset
     $('#proposed-obj-to').tagsinput({
         typeahead: {
@@ -27,6 +29,7 @@ $(function() {
             }
         }
     });
+});
 
 //Function to load profile section
 function loadProfile(){
