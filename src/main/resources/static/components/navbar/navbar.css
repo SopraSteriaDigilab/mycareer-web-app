@@ -16,7 +16,12 @@
 	text-align : center;
 }
 
-.inactive >a:hover, .inactive >a:focus {
+.inactive >a:focus {
+	background : #da202c !important;
+	border-color :#da202c !important;
+}
+
+.inactive >a:hover {
 	background : linear-gradient(to right, #bf0000 , #da202c) !important;
 	border-left-color :#bf0000 !important;
 	border-right-color :#da202c !important;
