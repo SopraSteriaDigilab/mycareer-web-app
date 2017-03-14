@@ -123,6 +123,7 @@ function clickCloseObjective(e){
 		$('#objective-modal').modal('hide');
 	    }
 	else {
+		 addHTMLforPopUpBox("objective-modal");
 		 var $form = $(this).closest('form');
 		  e.preventDefault();
 		  $('#confirm').modal({
@@ -238,6 +239,7 @@ function clickCloseDevNeed(e){
 		$('#development-need-modal').modal('hide');
 	    }
 	else {
+		addHTMLforPopUpBox("development-need-modal");
 		 var $form = $(this).closest('form');
 		  e.preventDefault();
 		  $('#confirm').modal({
@@ -397,6 +399,24 @@ function checkEmptyID(inputID, throwError){
 		toastr.error("Please fill in all mandatory fields.");
 
 	return isEmpty;
+} 
+
+function addHTMLforPopUpBox(parentModalID){
+	$("#pop-up-"+parentModalID).append(""
+			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
+			+			"<div class=\"modal-dialog\">"
+			+				"<!-- Modal content-->"
+		    +				"<div class=\"modal-content\">"
+		    +					"<div class=\"modal-body\">"
+		    +						"Your changes are unsaved. Are you sure you want to close this window?"
+		  	+					"</div>"
+		  	+				"<div class=\"modal-footer\">"
+		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn btn-primary\" id=\"close-modals\" onClick=\"$(\"#"+parentModalID+"\").modal(\"hide\");\">Close this window</button>"
+		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn\">Cancel</button>"
+		  	+				"</div>"
+		  	+			"</div>"
+			+		"</div>"
+			+	"</div>");
 } 
 
 function enableSubmit(type){
