@@ -8,9 +8,6 @@ $(function() {
 	
 	//onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
-
-    //Navigation Pills to show All/Awaiting/InFlight/Done objectives
-    $("#navTab").click(function(){});
     
     //Ensuring all the objectives items are shown
     $("#obj-all-tab").click(function(){ $(".unarchived-obj-item").css('display', ''); });
@@ -111,7 +108,6 @@ function openEditObjectiveModal(id){
 
 //Function to add objective to list
 function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
-	var objListID = "";
 		if(isArchived === true || isArchived === 'true'){
 			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
 		}else{

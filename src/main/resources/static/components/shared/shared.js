@@ -4,7 +4,7 @@ $(function() {
 });
 
 var emails = [];
-var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
@@ -212,7 +212,7 @@ function getDevelopmentNeedsList(userID){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
