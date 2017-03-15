@@ -174,11 +174,11 @@ function updateDevelopmentNeedsList(devNeedID){
     var categoryID = $('#dev-need-category-id-'+devNeedID).val();
     var status = $('#dev-need-status-'+devNeedID).val();
     var isArchived = $('#dev-need-is-archived-'+devNeedID).val();
-    
+
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
-    addDevelopmentNeedToList(devNeedID, title, description, category, expectedBy, status, isArchived);
+    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived);
 }
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
