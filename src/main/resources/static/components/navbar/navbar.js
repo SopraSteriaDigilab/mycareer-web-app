@@ -15,7 +15,7 @@ $(function() {
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
 	
 	//onClick for Close modal
-	$('#close-obj').on('click', function(e) { clickCloseObjective(e); });
+	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
 
 });
 
