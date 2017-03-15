@@ -52,7 +52,7 @@
 </div>
 
 <!-- Add Development Needs Modal -->
-<div id=development-need-modal class="modal fade" role="dialog">
+<div id=development-need-modal class="modal fade" role="dialog"  style="z-index: 1400;">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -121,11 +121,11 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left"
-					data-dismiss="modal">Close</button>
+					data-toggle="modal" id="close-dev-need">Close</button>
 				<button type="button" class="btn btn-default" id="submit-dev-need"
 					disabled>Submit</button>
 			</div>
 		</div>
-
 	</div>
 </div>
+<div id="pop-up-development-need-modal"></div>

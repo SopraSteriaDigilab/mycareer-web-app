@@ -13,7 +13,10 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
-    
+	
+	//onClick for Close modal
+	$('#close-obj').on('click', function(e) { clickCloseObjective(e); });
+
 });
 
 //Function to load profile section

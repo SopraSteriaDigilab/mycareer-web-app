@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../components/navbar/navbar.min.css"/>
-<script type="text/javascript" src="../components/navbar/navbar.js"></script>
+<script type="text/javascript" src="../components/navbar/navbar.min.js"></script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
 
@@ -14,7 +14,7 @@
 			</button>
 			<ul class="nav nav-tabs nav-height">
 				<li role="presentation" class="active "><a class="nav-height" href="#">MyCareer</a></li>
-				<li role="presentation" class="inactive "><a class="nav-height" href="http://people.uk.corp.sopra/Skills">MySkills</a></li>
+				<li role="presentation" class="inactive "><a class="nav-height" href="http://people.uk.corp.sopra/Skills" target="_blank">MySkills</a></li>
 				
 					<div id="profile" class="dropdown"></div>
 			</ul>
@@ -40,7 +40,7 @@
 <br/>
 
 <!-- Add Objective Modal -->
-<div id=objective-modal class="modal fade" role="dialog">
+<div id=objective-modal class="modal fade" role="dialog" style="z-index: 1400;">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -87,9 +87,10 @@
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>				
+				<button type="button" class="btn btn-default pull-left" data-toggle="modal" id="close-obj" >Close</button>			
 				<button type="button" class="btn btn-default" id="submit-obj" disabled>Submit</button>
 			</div>
 		</div>
 	</div>
 </div>
+<div id="pop-up-objective-modal"></div>
