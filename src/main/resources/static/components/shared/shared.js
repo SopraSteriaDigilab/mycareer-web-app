@@ -36,7 +36,7 @@ function getObjectivesList(userID){
     	  var isEmpty = true;
           $.each(data, function(key, val){
         	  var expectedBy = formatDate(val.timeToCompleteBy);
-        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy);
+        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy, val.timeStamp);
           });
           if(data.length == 0)
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
@@ -213,7 +213,7 @@ function getDevelopmentNeedsList(userID){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived, val.timeStamp);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
