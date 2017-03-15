@@ -25,7 +25,7 @@ $(function() {
     $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 	
   //onClick for Close modal
-	$('#close-dev-need').on('click', function(e) { clickCloseDevNeed(e); });
+	$('#close-dev-need, #close-dev-need-cross').on('click', function(e) { clickCloseDevNeed(e); });
     
 });
 

@@ -119,7 +119,8 @@ function clickSubmitObjective(){
 
 //Method to handle the close objective button
 function clickCloseObjective(e){
-	if (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false)){
+	var type = $("#obj-modal-type").val();
+	if ((type=== "edit") || (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false))){
 		$('#objective-modal').modal('hide');
 	    }
 	else {
@@ -235,7 +236,8 @@ function isOngoing(date){
 
 //Method to handle the close development need button
 function clickCloseDevNeed(e){
-	if (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false)){
+	var type = $("#dev-need-modal-type").val();
+	if ((type=== "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
 		$('#development-need-modal').modal('hide');
 	    }
 	else {
