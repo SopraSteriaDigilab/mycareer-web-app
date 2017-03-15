@@ -117,6 +117,12 @@ function clickSubmitObjective(){
     }
 }
 
+function showProposedObjTab(){
+	if(!$("#obj-all-tab").hasClass("active")){
+		$("#obj-proposed-tab").find('a').trigger("click");
+	}
+}
+
 //Method to handle the close objective button
 function clickCloseObjective(e){
 	var type = $("#obj-modal-type").val();
@@ -274,6 +280,12 @@ function clickCloseDevNeed(e){
 		    	$('#development-need-modal').modal('hide');
 		    });
 	};
+}
+
+function showProposedDevelopmentTab(){
+	if(!$("#dev-need-all-tab").hasClass("active")){
+		$("#dev-need-proposed-tab").find('a').trigger("click");
+	}
 }
 
 //------------------------------------------------------------------------------------
@@ -530,12 +542,6 @@ function checkIfPastDate (date){
 		return true;
 	}
 	return false;
-}
-
-function showProposedObjTab(){
-	if(!$("#obj-all-tab").hasClass("active")){
-		$("#obj-proposed-tab").find('a').trigger("click");
-	}
 }
 	
 function getEmailList(){
