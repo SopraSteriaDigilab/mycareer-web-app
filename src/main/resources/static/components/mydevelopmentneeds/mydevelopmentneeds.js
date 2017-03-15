@@ -146,12 +146,11 @@ function clickArchiveDevNeed(id, archive){
 
 function editDevNeedArchiveOnDB(id, archive){
     $.ajax({
-        url:"http://"+getEnvironment()+":8080/changeStatusDevNeed/"+getADLoginID(),
+        url:"http://"+getEnvironment()+":8080/toggleDevNeedArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials':true},
         data: {
-            'devNeedID': id,
-            'isArchived': archive
+            'developmentNeedID': id,
         },
         success: function(response){
             updateDevelopmentNeedsList(id);
@@ -169,11 +168,11 @@ function editDevNeedArchiveOnDB(id, archive){
 function updateDevelopmentNeedsList(id){
     var title = $('#dev-need-title-'+id).text();
     var description = $('#dev-need-text-'+id).text();
-    var expectedBy = $('#obj-date-'+objID).text();
+    var expectedBy = $('#dev-need-date-'+id).text();
     var category = $('#dev-need-category-'+id).text();
     var categoryID = $('#dev-need-category-id-'+id).val();
     var status = $('#dev-need-status-'+id).val();
-    var archive = $('#dev-need-is-archived-'+objID).val();
+    var isArchived = $('#dev-need-is-archived-'+id).val();
     
     $("#dev-need-item-"+id).fadeOut(400, function() {
         $(this).remove();

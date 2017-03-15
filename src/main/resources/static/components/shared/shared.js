@@ -212,7 +212,7 @@ function getDevelopmentNeedsList(userID){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
