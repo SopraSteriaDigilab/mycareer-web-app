@@ -174,7 +174,7 @@ function updateDevelopmentNeedsList(id){
     var status = $('#dev-need-status-'+id).val();
     var isArchived = $('#dev-need-is-archived-'+id).val();
     
-    $("#dev-need-item-"+id).fadeOut(400, function() {
+    $("#development-need-item-"+id).fadeOut(400, function() {
         $(this).remove();
     });
     addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived);
@@ -342,28 +342,6 @@ function clickSubmitDevelopmentNeed(){
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
 	showDevelopmentNeedModal(false);
-}
-
-//Method to set and show content of modal
-function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
-	$('#dev-need-modal-title-type').text(modalStatusList[type]);
-	$("#development-need-id").val(id);
-	$("#development-need-title").val(title);
-	$("#development-need-text").val(text);
-	$('#'+radioValue).prop('checked', true);
-	$("#development-need-date").val(date);
-	$("#development-need-status").val(status);
-	$('#submit-dev-need').prop("disabled", enableSubmit(type));
-}
-
-//Method to show/hide development need modal
-function showDevelopmentNeedModal(show){
-	if(show){
-		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
-	}else{
-		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
-		$('#development-need-modal').modal('hide');
-	}
 }
 
 function showProposedDevelopmentTab(){

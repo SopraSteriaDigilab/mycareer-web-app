@@ -225,6 +225,28 @@ function getDevelopmentNeedsList(userID){
 	});	
 }
 
+//Method to set and show content of modal
+function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
+	$('#dev-need-modal-title-type').text(modalStatusList[type]);
+	$("#development-need-id").val(id);
+	$("#development-need-title").val(title);
+	$("#development-need-text").val(text);
+	$('#'+radioValue).prop('checked', true);
+	$("#development-need-date").val(date);
+	$("#development-need-status").val(status);
+	$('#submit-dev-need').prop("disabled", enableSubmit(type));
+}
+
+//Method to show/hide development need modal
+function showDevelopmentNeedModal(show){
+	if(show){
+		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
+		$('#development-need-modal').modal('hide');
+	}
+}
+
 //Function to check if development need is ongoing or has an end date
 function isOngoing(date){
 	if(date === 'Ongoing'){
