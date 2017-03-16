@@ -7,8 +7,6 @@ textarea {
     max-height: 100%;
 }
 
-
-
 .wrap-text {
     white-space: pre-wrap;
 	word-wrap: break-word;
@@ -17,8 +15,6 @@ textarea {
 .wrap-only{
 	word-wrap: break-word;
 }
-
-
 
 .toast {
   opacity: 1 !important;
@@ -71,7 +67,6 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	content: "\e080";
 }
 
-
 .progress{
 	background-color: #D4D1D1;
 }
@@ -117,7 +112,6 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	background: #f5f5f5;
 	border: 2px solid #DDD;
 	box-sizing:content-box ;
-	
 }
 
 .max-characters{
