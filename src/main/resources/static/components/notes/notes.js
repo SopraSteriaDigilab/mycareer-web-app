@@ -104,6 +104,4 @@ function showSection(section){
 			$(this).fadeIn(600);
 		}
 	});
-	
-	
 }
