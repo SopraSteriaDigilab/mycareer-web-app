@@ -152,7 +152,7 @@ function getEmployeeStats(){
                }else{
                    var lastLogged = timeStampToLongDate(val.lastLogon);
                }
-               addHrEmployeeToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, lastLogged);
+               addHrEmployeeToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, lastLogged, val.currentEmployee);
             }); 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -343,8 +343,8 @@ function hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, u
 //------------------------------------------------- HR Employees ----------------------------------------------------------------
 
 // function to add HR Employee accessed data to a list and append it on the HTML
-function addHrEmployeeToList(employeeID, fullName, company, superSector, department, lastLogged){
-    $("#employeeDetails").append(hrEmployeeList(employeeID, fullName, company, superSector, department, lastLogged));
+function addHrEmployeeToList(employeeID, fullName, company, superSector, department, lastLogged, currentEmployee){
+    $("#employeeDetails").append(hrEmployeeList(employeeID, fullName, company, superSector, department, lastLogged, currentEmployee));
 }
 
 // function that shows the HR Employee list when clicked
@@ -387,6 +387,7 @@ function hrEmployeeHeader(){
                    <th>Super Sector</th> \
                    <th>Department</th> \
                    <th>Last Logged On</th> \
+                   <th>Current Employee</th> \
                 </tr> \
             </thead> \
             <tbody id='employeeDetails'> \
@@ -397,7 +398,7 @@ function hrEmployeeHeader(){
 }
 
 //Function that returns HR Employee accessed list in html format with the parameters given
-function hrEmployeeList(employeeID, fullName, company, superSector, department, lastLogged){
+function hrEmployeeList(employeeID, fullName, company, superSector, department, lastLogged, currentEmployee){
     var html = " \
             <tr> \
                 <td>"+employeeID+"</td> \
@@ -406,6 +407,7 @@ function hrEmployeeList(employeeID, fullName, company, superSector, department, 
                 <td>"+superSector+"</td> \
                 <td>"+department+"</td> \
                 <td>"+lastLogged+"</td> \
+                <td>"+currentEmployee+"</td> \
             </tr> \
     "
     return html;
