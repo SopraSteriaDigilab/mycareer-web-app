@@ -120,7 +120,6 @@ function getReporteeNotesList(userID){
     $.ajax({
         url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
         cache: false,
-        headers: {'Content-Type': 'application/json'},
         method: 'GET',
         xhrFields: {'withCredentials': true},
         success: function(data){
