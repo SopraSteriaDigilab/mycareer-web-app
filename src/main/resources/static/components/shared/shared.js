@@ -1,8 +1,10 @@
 $(function() {
 	adjustDatePicker();
+	getEmailList();
 });
 
-var fullMonths = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+var emails = [];
+var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
 var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
@@ -57,8 +59,9 @@ function checkComplete(status, item){
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
-         tags('proposed-obj-to');
-         keypress('objective-modal');
+    	//Get email list and initialise tags input
+    	tags("proposed-obj-to", emails);
+        keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
     }
@@ -112,6 +115,32 @@ function clickSubmitObjective(){
           showObjectiveModal(true);
         }  
     }
+}
+
+function showProposedObjTab(){
+	if(!$("#obj-all-tab").hasClass("active")){
+		$("#obj-proposed-tab").find('a').trigger("click");
+	}
+}
+
+//Method to handle the close objective button
+function clickCloseObjective(e){
+	var type = $("#obj-modal-type").val();
+	if ((type=== "edit") || (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false))){
+		$('#objective-modal').modal('hide');
+	    }
+	else {
+		 addHTMLforPopUpBox("objective-modal");
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#objective-modal').modal('hide');
+		    });
+	};
 }
 
 //------------------------------------------------------------------------------------
@@ -190,7 +219,7 @@ function getDevelopmentNeedsList(userID){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
 	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
@@ -202,6 +231,28 @@ function getDevelopmentNeedsList(userID){
 	});	
 }
 
+//Method to set and show content of modal
+function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
+	$('#dev-need-modal-title-type').text(modalStatusList[type]);
+	$("#development-need-id").val(id);
+	$("#development-need-title").val(title);
+	$("#development-need-text").val(text);
+	$('#'+radioValue).prop('checked', true);
+	$("#development-need-date").val(date);
+	$("#development-need-status").val(status);
+	$('#submit-dev-need').prop("disabled", enableSubmit(type));
+}
+
+//Method to show/hide development need modal
+function showDevelopmentNeedModal(show){
+	if(show){
+		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
+	}else{
+		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
+		$('#development-need-modal').modal('hide');
+	}
+}
+
 //Function to check if development need is ongoing or has an end date
 function isOngoing(date){
 	if(date === 'Ongoing'){
@@ -211,29 +262,52 @@ function isOngoing(date){
 	}	
 }
 
+//Method to handle the close development need button
+function clickCloseDevNeed(e){
+	var type = $("#dev-need-modal-type").val();
+	if ((type=== "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
+		$('#development-need-modal').modal('hide');
+	    }
+	else {
+		addHTMLforPopUpBox("development-need-modal");
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#development-need-modal').modal('hide');
+		    });
+	};
+}
+
+function showProposedDevelopmentTab(){
+	if(!$("#dev-need-all-tab").hasClass("active")){
+		$("#dev-need-proposed-tab").find('a').trigger("click");
+	}
+}
+
 //------------------------------------------------------------------------------------
 
 //--------------------------------------- Notes --------------------------------------
 //
 
 //Method to make ajax call to add note to database
-function addNoteToDB(userID, noteType, linkID, from, body, date){
+function addNoteToDB(userID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNote/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
-        data: {
-            'noteType': noteType,
-            'linkID': linkID,
-            'from': from,
-            'body': body,
-            'date': date,
+        data:{
+            'providerName': from,
+            'noteDescription': body,
         },
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             lastNoteID++;
-            addNoteToList(from, noteType, linkID, body, date);
+            addNoteToList(from, body, date);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -349,6 +423,38 @@ function checkEmpty(inputClass, throwError){
 	return isEmpty;
 } 
 
+function checkEmptyID(inputID, throwError){
+	var isEmpty = false;
+		var value = $('#'+inputID).val().trim();
+		if(!value){
+			isEmpty = true;
+			return true;
+		};
+	
+	if(isEmpty && throwError)
+		toastr.error("Please fill in all mandatory fields.");
+
+	return isEmpty;
+} 
+
+function addHTMLforPopUpBox(parentModalID){
+	$("#pop-up-"+parentModalID).append(""
+			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
+			+			"<div class=\"modal-dialog\">"
+			+				"<!-- Modal content-->"
+		    +				"<div class=\"modal-content\">"
+		    +					"<div class=\"modal-body\">"
+		    +						"Your changes are unsaved. Are you sure you want to close this window?"
+		  	+					"</div>"
+		  	+				"<div class=\"modal-footer\">"
+		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn btn-primary\" id=\"close-modals\" onClick=\"$(\"#"+parentModalID+"\").modal(\"hide\");\">Close this window</button>"
+		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn\">Cancel</button>"
+		  	+				"</div>"
+		  	+			"</div>"
+			+		"</div>"
+			+	"</div>");
+} 
+
 function enableSubmit(type){
     if (type === 1){
         return false;
@@ -356,12 +462,19 @@ function enableSubmit(type){
     return true;
 }
 
-function tags(id){
+function tags(id, data){
     //sets email addresses to use bootstrap tag input
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
-       trimValue: true
+       trimValue: true,
+       typeahead: {
+    	   source: data,
+           afterSelect: function() {
+               this.$element[0].value = '';
+           },
+       },
+
     });
 }
 
@@ -430,9 +543,20 @@ function checkIfPastDate (date){
 	}
 	return false;
 }
-
-function showProposedObjTab(){
-	if(!$("#obj-all-tab").hasClass("active")){
-		$("#obj-proposed-tab").find('a').trigger("click");
-	}
+	
+function getEmailList(){
+	$.ajax({
+    	"async": true,
+        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+        	emails = data;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+        }
+    });	
 }

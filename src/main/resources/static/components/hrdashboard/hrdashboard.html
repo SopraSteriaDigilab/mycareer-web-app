@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../components/hrdashboard/hrdashboard.css"/>
+<link rel="stylesheet" href="../components/hrdashboard/hrdashboard.min.css"/>
 <script type="text/javascript" src="../components/hrdashboard/hrdashboard.js"></script>
 
 <div class="container">
@@ -9,8 +9,7 @@
             <h2>HR Dashboard</h2>
         </div>
         <div class="col-md-6 vertical-centre">
-            <button type="button" class="btn btn-default pull-right" disabled id="">Generate Graphs</button>
-            <button type="button" class="btn btn-default pull-right" disabled id="">Download .csv</button>
+<!--            <button type="button" class="btn btn-default pull-right" disabled id="">Generate Graphs</button>-->
         </div>
     </div>
     <!--End of Page header-->
@@ -20,11 +19,15 @@
     <div class="col-md-12">
         <div class="btn-group">
             <select class="selectpicker" title="Please select a report...">
-                <option>Overview</option>
-                <option>Employees</option>
+                <option>MyCareer Overview</option>
+                <option>Super Sector</option>
+                <option>Total Accounts</option>
                 <option>Objectives</option>
                 <option>Feedback</option>
-                <option>Development Needs</option>
+                <optgroup label="Development Needs">
+                        <option>Development Needs Overview</option>
+                        <option>Development Needs Breakdown</option>
+                </optgroup>  
             </select>
         </div>
         

@@ -47,11 +47,10 @@ function getNotesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-          lastNoteID = data.length;          
+          lastNoteID = data.length;
           $.each(data, function(key, val){
-          	
-          	var date = timeStampToDateTime(new Date(val.timeStamp));
-          	addNoteToList(val.fromWho, val.noteType, val.linkID, val.body, date);
+          	var date = timeStampToDateTime(new Date(val.timestamp));
+          	addNoteToList(val.providerName, val.noteDescription, date);
           });
           if(data.length == 0)
         	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
@@ -64,29 +63,17 @@ function getNotesList(userID){
   });
 }
 
-function addLinkID(divID, id, title){
-	$("#"+divID+"-links").append(optionHTML(id, title)).selectpicker("refresh");
-}
-
-function optionHTML(id, title){
-	var HTML = "<option>"+id+"</option>";
-	return HTML;
-}
-
 //Method to add note to list directly
-function addNoteToList(fromWho, noteType, linkID, body, date){
-	$("#general-notes-list").prepend(notesListHTML(fromWho, noteType, linkID, body, date));
+function addNoteToList(fromWho, body, date){
+	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date));
 }
 
 //Method to return html
-function notesListHTML(fromWho, noteType, linkID, body, date){
-	var link="";
-	
+function notesListHTML(fromWho, body, date){	
 	var html = " \
 	  <li class='list-group-item'> \
 	  	<div class='row'> \
 			<div class='col-md-6 wrap-text'><h6 ><b>" + fromWho + "</b></h6></div> \
-			<!--<div class='col-md-2'><h6 class='pull-right'><b> " + link + "</b></h6></div> --> \
 			<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 		</div> \
 		<div class='row'> \
@@ -103,10 +90,8 @@ function clickSubmitNote(){
 	var note = $('#note-text').val().trim();
 	var from = getADfullName();
 	var date = timeStampToDateTime(new Date());
-	var noteType = 0;
-	var linkID = 0;
 	
-	addNoteToDB(userID, noteType, linkID, from, note, date);
+	addNoteToDB(userID, from, note, date);
     
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);
@@ -119,6 +104,4 @@ function showSection(section){
 			$(this).fadeIn(600);
 		}
 	});
-	
-	
 }

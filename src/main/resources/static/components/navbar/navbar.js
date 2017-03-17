@@ -13,7 +13,10 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
-        
+	
+	//onClick for Close modal
+	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
+
 });
 
 //Function to load profile section
@@ -48,6 +51,6 @@ function openProposedObjectiveModal(){
 function proposedToHTML(){
     var HTML= " \
         <label for='proposed-obj-to'>Email(s)*:</label> \
-            <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
+            <input type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }

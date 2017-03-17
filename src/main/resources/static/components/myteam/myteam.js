@@ -124,8 +124,8 @@ function getReporteeNotesList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-            	var date = timeStampToDateTime(new Date(val.timeStamp));
-            	addNoteToReporteeList(val.fromWho, val.body, date);
+            	var date = timeStampToDateTime(new Date(val.timestamp));
+            	addNoteToReporteeList(val.providerName, val.noteDescription, date);
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -170,11 +170,12 @@ function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+reporteeID,
         method: "POST",
+        headers: {'Content-Type': 'application/json'},
         xhrFields: {'withCredentials': true},
-        data: {
-            'from': from,
-            'body': body,
-        },
+        data: JSON.stringify({
+            'providerName': from,
+            'noteDescription': body,
+        }),
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
@@ -458,3 +459,4 @@ function addProposed(){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+	

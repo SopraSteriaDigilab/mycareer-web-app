@@ -18,12 +18,15 @@ $(function() {
 	//onClick for Submit modal
 	$('#submit-dev-need').click(function(){ clickSubmitDevelopmentNeed(); });
 	
-    //Ensuring all the objectives items are shown
-    $("#dev-need-all-tab").click(function(){ $('.dev-need').css({'display':''}); });
+    //Ensuring all the development need items are shown
+    $("#dev-need-all-tab").click(function(){ $(".unarchived-dev-item").css('display', ''); });
     $("#dev-need-proposed-tab").click(function(){ $('.proposed').css({'display':''}); });
     $("#dev-need-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#dev-need-completed-tab").click(function(){ $('.completed').css({'display':''}); });
 	
+  //onClick for Close modal
+	$('#close-dev-need, #close-dev-need-cross').on('click', function(e) { clickCloseDevNeed(e); });
+    
 });
 
 //HTTP request for INSERTING an development need to DB
@@ -41,7 +44,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
         success: function(response){
             if(lastDevID == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0);
+            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false);
 		    showProposedDevelopmentTab();
             toastr.success(response);
         },
@@ -75,6 +78,26 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
     });
 }
 
+//HTTP request for UPDATING a development need in DB
+function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/editDevelopmentNeedProgress/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'devNeedID': devNeedID,
+            'progress': devNeedStatus
+        },
+        success: function(response){
+        	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
 //Function to set up and open ADD development-need modal
 function openAddDevelopmentNeedModal(){
 	$("#dev-need-modal-type").val('add');
@@ -96,93 +119,77 @@ function openEditDevelopmentNeedModal(id){
 	showDevelopmentNeedModal(true);	
 }
 
-function clickSubmitDevelopmentNeed(){
-	var type = $("#dev-need-modal-type").val();
-	
-	var userID = getADLoginID();
-	var devNeedID = $("#development-need-id").val();
-	var devNeedTitle = $("#development-need-title").val().trim();
-	var devNeedText = $("#development-need-text").val().trim();
-	var devNeedCategory = $('#category-radio input:radio:checked').val();
-	var devNeedDate =  $("#development-need-date").val().trim();
-	var devNeedStatus =  parseInt($("#development-need-status").val());
-	
-	if(checkIfPastDate(devNeedDate) || checkEmpty("development-need-modal-validate", true)){ return false; }
-
-	if(type == 'add'){
-		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
-	}else{
-		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-	}
-	showDevelopmentNeedModal(false);
-}
-
 //Function to add development need to list
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	$("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status));
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived){
+    if(isArchived === true || isArchived === 'true'){
+        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived));
+    }else{
+        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived));
+    }
 }
 
 //Function to update development need on list
-function editDevelopmentNeedOnList(id, title, description, category, expectedBy, status){
-	$('#dev-need-title-'+id).text(title);
-	$('#dev-need-text-'+id).text(description);
-	$('#dev-need-category-'+id).text(categoryList[category]);
-	$('#dev-need-category-id-'+id).val(category);
-	$('#dev-need-date-'+id).text('').append("<h6 class='pull-right'><b>" + formatDate(expectedBy) + "</b></h6>");
-	$('#dev-need-status-'+id).val(status);
+function editDevelopmentNeedOnList(devNeedID, title, description, category, expectedBy, status){
+	$('#dev-need-title-'+devNeedID).text(title);
+	$('#dev-need-text-'+devNeedID).text(description);
+	$('#dev-need-category-'+devNeedID).text(categoryList[category]);
+	$('#dev-need-category-id-'+devNeedID).val(category);
+	$('#dev-need-date-'+devNeedID).text('').append("<h6 class='pull-right'><b>" + formatDate(expectedBy) + "</b></h6>");
+	$('#dev-need-status-'+devNeedID).val(status);
 }
 
-//Method to set and show content of modal
-function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
-	$('#dev-need-modal-title-type').text(modalStatusList[type]);
-	$("#development-need-id").val(id);
-	$("#development-need-title").val(title);
-	$("#development-need-text").val(text);
-	$('#'+radioValue).prop('checked', true);
-	$("#development-need-date").val(date);
-	$("#development-need-status").val(status);
-	$('#submit-dev-need').prop("disabled", enableSubmit(type));
+//Method to handle the archive objective button
+function clickArchiveDevNeed(devNeedID, archive){
+	$('#dev-need-is-archived-'+devNeedID).val(archive);
+	editDevNeedArchiveOnDB(devNeedID, archive);
 }
 
-//Method to show/hide development need modal
-function showDevelopmentNeedModal(show){
-	if(show){
-		$('#development-need-modal').modal({backdrop: 'static', keyboard: false, show: true});
-	}else{
-		setDevelopmentNeedModalContent('', '', '', categoryIDs[0], getToday(), 0, 0);
-		$('#development-need-modal').modal('hide');
-	}
+function editDevNeedArchiveOnDB(devNeedID, archive){
+    $.ajax({
+        url:"http://"+getEnvironment()+":8080/toggleDevNeedArchive/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials':true},
+        data: {
+            'developmentNeedID': devNeedID,
+            'isArchived': archive
+        },
+        success: function(response){
+            updateDevelopmentNeedsList(devNeedID);
+            if(!archive){
+                updateArchiveTabDevNeeds();
+            }
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);   
+        }
+    });
+}
+
+function updateDevelopmentNeedsList(devNeedID){
+    var title = $('#dev-need-title-'+devNeedID).text();
+    var description = $('#dev-need-text-'+devNeedID).text();
+    var expectedBy = $('#dev-need-date-'+devNeedID).text();
+    var category = $('#dev-need-category-'+devNeedID).text();
+    var categoryID = $('#dev-need-category-id-'+devNeedID).val();
+    var status = $('#dev-need-status-'+devNeedID).val();
+    var isArchived = $('#dev-need-is-archived-'+devNeedID).val();
+
+    $("#development-need-item-"+devNeedID).fadeOut(400, function() {
+        $(this).remove();
+    });
+    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived);
 }
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
-	if(devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
+	if($('#dev-need-is-archived-'+devNeedID).val() === 'true' || $('#dev-need-is-archived-'+devNeedID).val() == true || devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
 		return false;
 	}
 	var userID = getADLoginID();
 	editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus);
 }
 
-function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
-    $.ajax({
-        url: "http://"+getEnvironment()+":8080/editDevelopmentNeedProgress/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'devNeedID': devNeedID,
-            'progress': devNeedStatus
-        },
-        success: function(response){
-        	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
-}
-
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
-	
 	$('#dev-need-status-'+devNeedID).val(devNeedStatus);
 
 	switch(parseInt(devNeedStatus)){
@@ -207,13 +214,31 @@ function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 	$("#development-need-item-"+devNeedID).addClass(statusList[parseInt(devNeedStatus)]);	
 }
 
+function updateArchiveTabDevNeeds(){
+	$(".panel-group").each(function(){
+		if($(this).hasClass("archived-dev-item")){
+			$(this).addClass("active in");
+		}else{
+			$(this).removeClass("active in");
+		}
+	});
+}
+
+function isArchivedItem(isArchived){
+	if(isArchived == true || isArchived === "true"){
+		return "archived-dev-item";
+	}
+	return "unarchived-dev-item"
+}
+
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status){
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived){
 	var html = " \
-    <div class='panel-group tab-pane fade dev-need " + statusList[status] + " active in' id='development-need-item-"+id+"'> \
+    <div class='panel-group tab-pane fade dev-need "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
 	        <input type='hidden' id='dev-need-status-"+id+"' value='"+status+"'> \
 	        <input type='hidden' id='dev-need-category-id-"+id+"' value='"+category+"'> \
+            <input type='hidden' id='dev-need-is-archived-"+id+"' value='"+isArchived+"'> \
         	<div class='panel-heading'> \
             	<div class='row'> \
             		<div class='col-sm-6'> \
@@ -266,23 +291,57 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                             <p id='dev-need-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    <div class='row'> \
-	                     <div class='col-md-offset-6 col-md-6'> \
-	                        <button type='button' class='btn btn-block btn-default' onClick='openEditDevelopmentNeedModal("+id+")'>Edit</button> \
-	                     </div> \
-	                <div>\
+                    " + devNeedsButtonsHTML(id, isArchived); + " \
                 </div> \
             </div> \
-         \
+             \
         </div> \
     </div> \
-    "
-                            
+    "                     
     return html;
 }
 
-function showProposedDevelopmentTab(){
-	if(!$("#dev-need-all-tab").hasClass("active")){
-		$("#dev-need-proposed-tab").find('a').trigger("click");
+function devNeedsButtonsHTML(devNeedID, isArchived){
+	var HTML = " \
+    <div class='col-md-12'> \
+		<div class='col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
+        </div> \
+        <div class=' col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default' onClick='openEditDevelopmentNeedModal("+devNeedID+")'>Edit</button> \
+        </div> \
+    </div> \
+";
+	if(isArchived === true || isArchived ==='true'){
+		var unArchiveButton = " \
+		    <div class='col-md-12'> \
+		        <div class=' col-sm-6 pull-right'> \
+		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", false)' id='archive-dev-need'>Restore</button> \
+		        </div> \
+		    </div> \
+		";
+		return(unArchiveButton);
 	}
+	return(HTML);
+}
+
+function clickSubmitDevelopmentNeed(){
+	var type = $("#dev-need-modal-type").val();
+	
+	var userID = getADLoginID();
+	var devNeedID = $("#development-need-id").val();
+	var devNeedTitle = $("#development-need-title").val().trim();
+	var devNeedText = $("#development-need-text").val().trim();
+	var devNeedCategory = $('#category-radio input:radio:checked').val();
+	var devNeedDate =  $("#development-need-date").val().trim();
+	var devNeedStatus =  parseInt($("#development-need-status").val());
+	
+	if(checkIfPastDate(devNeedDate) || checkEmpty("development-need-modal-validate", true)){ return false; }
+
+	if(type == 'add'){
+		addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate);
+	}else{
+		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+	}
+	showDevelopmentNeedModal(false);
 }
