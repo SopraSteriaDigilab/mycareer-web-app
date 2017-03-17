@@ -1,8 +1,10 @@
 $(function() {
-    
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-	
+    
+    //initialise Tags
+    tags("requestingTo", emails);
+    
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -13,11 +15,10 @@ $(function() {
 	$("#submit-date-filter").click(function (){ applyDateFilter() })
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
-	
+    
     //feedback request modal key preses
-    tags('requestingTo');
-    keypress('requestFeedbackModal');
-
+	keypress('requestFeedbackModal');
+	 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
@@ -29,7 +30,6 @@ $(function() {
             toastr.error("One or more email addresses entered are not valid");
         }    
      });
-    
     //when these are clicked it clears the feedback request modal
     $("#close-feedback-request-modal").click(function() {
         $("textarea").val("");
@@ -41,10 +41,14 @@ $(function() {
     });
     
     //click to open a modal that shows the feedback email template
-    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });	
-	
+    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    
+    
+
 });//End of Document Function
 
+
+//var emailList = [];
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
 var firstFeedback = true;

@@ -13,7 +13,10 @@ $(function() {
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });
-        
+	
+	//onClick for Close modal
+	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
+
 });
 
 //Function to load profile section
@@ -21,7 +24,10 @@ function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
-	}
+	};
+    if(userHasHrDash() === "true" || userHasHrDash() == true){
+        $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>"); 
+    }
 	$(".full-name").html(getADfullName);
 }
 
@@ -45,6 +51,6 @@ function openProposedObjectiveModal(){
 function proposedToHTML(){
     var HTML= " \
         <label for='proposed-obj-to'>Email(s)*:</label> \
-            <input type='text' class='form-control' id='proposed-obj-to' maxlength='150' />";
+            <input type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' id='proposed-obj-to' maxlength='150' />";
     return HTML;
 }

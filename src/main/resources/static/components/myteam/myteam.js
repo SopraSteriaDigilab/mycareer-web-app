@@ -1,5 +1,4 @@
 $(function() {
-
 	//Get list of reportees
 	getReportees();
 	
@@ -43,13 +42,21 @@ function getReportees(){
 	    });
 }
 
+//method to remove apostrophe from names so can be clicked on in my team
+function removeApostrophe(fullName){
+    if(fullName.indexOf("'") != -1){
+        fullName = fullName.replace(/'/g, '');
+    }
+    return fullName;
+}
+
 function addReporteeToList(employeeID, fullName, userName, emailAddress){
 	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
 }
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+fullName+"\", \""+emailAddress+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -117,8 +124,8 @@ function getReporteeNotesList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-            	var date = timeStampToDateTime(new Date(val.timeStamp));
-            	addNoteToReporteeList(val.fromWho, val.body, date);
+            	var date = timeStampToDateTime(new Date(val.timestamp));
+            	addNoteToReporteeList(val.providerName, val.noteDescription, date);
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -163,11 +170,12 @@ function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+reporteeID,
         method: "POST",
+        headers: {'Content-Type': 'application/json'},
         xhrFields: {'withCredentials': true},
-        data: {
-            'from': from,
-            'body': body,
-        },
+        data: JSON.stringify({
+            'providerName': from,
+            'noteDescription': body,
+        }),
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
@@ -451,3 +459,4 @@ function addProposed(){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+	
