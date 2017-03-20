@@ -168,14 +168,14 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
 //Method to make ajax call to add note to database
 function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+reporteeID,
+        url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+getADLoginID(),
         method: "POST",
-        headers: {'Content-Type': 'application/json'},
         xhrFields: {'withCredentials': true},
-        data: JSON.stringify({
+        data:{
+            'reporteeEmployeeID': reporteeID,
             'providerName': from,
             'noteDescription': body,
-        }),
+        },
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
@@ -459,4 +459,3 @@ function addProposed(){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
-	
