@@ -27,7 +27,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             'title': objTitle,
             'description': objText,
             'completedBy': objDate,
-            'proposedBy': proposedBy,
+            'proposedBy': proposedBy
         },
         success: function(response){
             if(lastObjID == 0)
@@ -107,11 +107,11 @@ function openEditObjectiveModal(id){
 }
 
 //Function to add objective to list
-function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy){
+function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp){
 		if(isArchived === true || isArchived === 'true'){
-			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
 		}else{
-			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy));
+			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
 		}	
 }
 
@@ -218,8 +218,9 @@ function isArchivedItem(isArchived){
 	return "unarchived-obj-item"
 }
 
+
 //Function that returns objective list in html format with the parameters given
-function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy){
+function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy, timeStamp){
 	var html = " \
     <div class='panel-group tab-pane fade "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -265,7 +266,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-4'> \
-                            <h5><b>Description</b></h5> \
+                            <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(timeStamp)+"</span></h6> \
                         </div> \
                         <div class='col-md-3'> \
                         </div> \

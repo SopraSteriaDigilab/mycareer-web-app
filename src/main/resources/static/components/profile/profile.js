@@ -1,6 +1,7 @@
 $(function() {
 	
 	populateProfile(getUserName(), getADfullName());
+	openPDF();
 	
 });
 
@@ -17,4 +18,13 @@ function highlightProfileDropdown(elements){
         }, function(){
         $(elements).css("color", "#FFF");
     });
+}
+
+function openPDF() {
+	$('.pdf').on('click', 'a', function() {
+		var id = event.target.id;
+		if(id=== "objPDF"){
+			openObjPDF(); //eval converts the string to a variable name
+		}
+	});
 }
