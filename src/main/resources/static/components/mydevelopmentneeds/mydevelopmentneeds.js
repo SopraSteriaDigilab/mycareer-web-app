@@ -120,11 +120,11 @@ function openEditDevelopmentNeedModal(id){
 }
 
 //Function to add development need to list
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, devNeedCreationDate){
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, timeStamp){
     if(isArchived === true || isArchived === 'true'){
-        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, devNeedCreationDate));
+        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
     }else{
-        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, devNeedCreationDate));
+        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
     }
 }
 
@@ -230,6 +230,22 @@ function isArchivedItem(isArchived){
 	}
 	return "unarchived-dev-item"
 }
+
+function getTimeStamp(id){
+	$.ajax({
+    url: 'http://'+getEnvironment()+':8080/getdevelopmentNeeds/'+id,
+    cache: false,
+    method: 'GET',
+    xhrFields: {'withCredentials': true},
+    success: function(data){
+    	createdOn = timeStampToLongDate(data[0].timeStamp);
+    	alert(createdOn);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown){
+        console.log('error', errorThrown);
+        toastr.error("Sorry, there was a problem getting timeStamp data, please try again later.")
+     }
+ })};
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, timeStamp){

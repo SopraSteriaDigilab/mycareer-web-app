@@ -107,11 +107,11 @@ function openEditObjectiveModal(id){
 }
 
 //Function to add objective to list
-function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy, devNeedCreationDate){
+function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp){
 		if(isArchived === true || isArchived === 'true'){
-			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, devNeedCreationDate));
+			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
 		}else{
-			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, devNeedCreationDate));
+			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
 		}	
 }
 
@@ -217,6 +217,7 @@ function isArchivedItem(isArchived){
 	}
 	return "unarchived-obj-item"
 }
+
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy, timeStamp){
