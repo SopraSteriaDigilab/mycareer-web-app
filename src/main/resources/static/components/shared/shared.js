@@ -265,7 +265,7 @@ function isOngoing(date){
 //Method to handle the close development need button
 function clickCloseDevNeed(e){
 	var type = $("#dev-need-modal-type").val();
-	if ((type=== "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
+	if ((type === "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
 		$('#development-need-modal').modal('hide');
 	    }
 	else {
@@ -440,7 +440,7 @@ function checkEmptyID(inputID, throwError){
 function addHTMLforPopUpBox(parentModalID){
 	$("#pop-up-"+parentModalID).append(""
 			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
-			+			"<div class=\"modal-dialog\">"
+			+			"<div class=\"modal-dialog modal-sm\">"
 			+				"<!-- Modal content-->"
 		    +				"<div class=\"modal-content\">"
 		    +					"<div class=\"modal-body\">"
