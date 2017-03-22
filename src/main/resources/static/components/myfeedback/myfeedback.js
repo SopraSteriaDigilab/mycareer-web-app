@@ -22,6 +22,9 @@ $(function() {
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
     
+    //click to open up feedback sent modal
+    $('#send-feedback').click(function(){ openSendFeedbackModal() });
+    
     //click to submit feedback request
     $('#submit-request-feedback').click(function(){ 
        if (validEmails($('#requestingTo').val())){
@@ -278,6 +281,10 @@ function reviewerExists(reviewer){
 
 function openRequestFeedbackModal(){
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function openSendFeedbackModal(){
+    $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 //Email details sent through back-end.
