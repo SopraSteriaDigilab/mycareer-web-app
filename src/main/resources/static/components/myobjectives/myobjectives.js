@@ -218,6 +218,15 @@ function isArchivedItem(isArchived){
 	return "unarchived-obj-item"
 }
 
+//Method to handle the delete objective button onclick
+function clickDeleteObjective(id, title){
+    openDeleteObjectiveModal();
+}
+
+//Mehtod to open delete modal
+function openDeleteObjectiveModal(){
+    $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
 
 //Function that returns objective list in html format with the parameters given
 function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy, timeStamp){
@@ -279,7 +288,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                             <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    " + objectivesButtonsHTML(id, isArchived); + " \
+                    " + objectivesButtonsHTML(id, isArchived, title); + " \
                 </div> \
             </div> \
          \
@@ -289,7 +298,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     return html;
 }
 
-function objectivesButtonsHTML(id, isArchived){
+function objectivesButtonsHTML(id, isArchived, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
@@ -303,9 +312,12 @@ function objectivesButtonsHTML(id, isArchived){
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
-		        <div class=' col-sm-6 pull-right'> \
+		        <div class=' col-sm-6'> \
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Restore</button> \
 		        </div> \
+                <div class=' col-sm-6'> \
+                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteObjective("+id+", \""+title+"\")' id='delete-obj'>Delete</button> \
+                </div> \
 		    </div> \
 		";
 		return(unArchiveButton);
