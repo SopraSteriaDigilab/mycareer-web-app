@@ -543,7 +543,8 @@ function checkIfPastDate (date){
 	}
 	return false;
 }
-	
+
+//function to get all emails of all employees so can be used to auto fill email addresses
 function getEmailList(){
 	$.ajax({
     	"async": true,

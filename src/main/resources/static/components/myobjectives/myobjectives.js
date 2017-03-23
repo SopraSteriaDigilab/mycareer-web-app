@@ -218,9 +218,14 @@ function isArchivedItem(isArchived){
 	return "unarchived-obj-item"
 }
 
-//Method to handle the delete objective button onclick
+//Method to handle the delete objective button onclick and appends objective title
 function clickDeleteObjective(id, title){
     openDeleteObjectiveModal();
+    $("#modal-title-type").empty().append('Objective');
+    $("#modal-type").empty().append('Objective');
+    $("#modal-warning").empty().append('an Objective');;
+    $("#deleteTitle").empty().append(title);
+   
 }
 
 //Mehtod to open delete modal

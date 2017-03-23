@@ -231,6 +231,17 @@ function isArchivedItem(isArchived){
 	return "unarchived-dev-item"
 }
 
+function clickDeleteDevNeed(id, title){
+    openDeleteDevNeedModal();
+    $("#modal-title-type").empty().append('Development Need');
+    $("#modal-type").empty().append('Development Need');
+    $("#modal-warning").empty().append('a Development Need');
+    $('#deleteTitle').empty().append(title);
+}
+
+function openDeleteDevNeedModal(){
+    $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
 function getTimeStamp(id){
 	$.ajax({
     url: 'http://'+getEnvironment()+':8080/getdevelopmentNeeds/'+id,
@@ -307,7 +318,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                             <p id='dev-need-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    " + devNeedsButtonsHTML(id, isArchived); + " \
+                    " + devNeedsButtonsHTML(id, isArchived, title); + " \
                 </div> \
             </div> \
              \
@@ -317,7 +328,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     return html;
 }
 
-function devNeedsButtonsHTML(devNeedID, isArchived){
+function devNeedsButtonsHTML(devNeedID, isArchived, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
@@ -331,9 +342,12 @@ function devNeedsButtonsHTML(devNeedID, isArchived){
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
-		        <div class=' col-sm-6 pull-right'> \
+		        <div class='col-sm-6'> \
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", false)' id='archive-dev-need'>Restore</button> \
 		        </div> \
+                <div class=' col-sm-6'> \
+                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \""+title+"\")' id='delete-obj'>Delete</button> \
+                </div> \
 		    </div> \
 		";
 		return(unArchiveButton);
