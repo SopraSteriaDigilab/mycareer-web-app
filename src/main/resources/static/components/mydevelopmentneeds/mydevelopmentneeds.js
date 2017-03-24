@@ -27,6 +27,9 @@ $(function() {
   //onClick for Close modal
 	$('#close-dev-need, #close-dev-need-cross').on('click', function(e) { clickCloseDevNeed(e); });
     
+    //onclick to delete development need
+    $('#delete').click(function(){ deleteDevelopmentNeed(); });
+    
 });
 
 //HTTP request for INSERTING an development need to DB
@@ -90,6 +93,30 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
         },
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+//function request for DELETING a development need in DB
+function deleteDevelopmentNeed(userID, devNeedID, deletingText){
+        $.ajax({
+        url: "http://"+getEnvironment()+":8080/deleteDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'devNeedID': devNeedID,
+            'text': deletingText,
+        },
+        success: function(response){
+            //need to update dev need list to remove
+            removeDevNeedFromList(devNeedID);
+            //need to update note list
+            var date = timeStampToDateTime(new Date(val.timestamp));
+            addNoteToList(userID, deletingText, date); //method reads as addNoteToList(fromWho, body, date);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -242,6 +269,13 @@ function clickDeleteDevNeed(id, title){
 function openDeleteDevNeedModal(){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
+
+function removeDevNeedFromList(devNeedID){
+    $("#development-need-item-"+devNeedID).fadeOut(400, function() {
+        $(this).remove();
+    });
+}
+
 function getTimeStamp(id){
 	$.ajax({
     url: 'http://'+getEnvironment()+':8080/getdevelopmentNeeds/'+id,

@@ -15,6 +15,9 @@ $(function() {
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
     
+    //onclick to delete development need
+    $('#delete').click(function(){ deleteObjective(); });
+    
 });
 
 //HTTP request for INSERTING an objective to DB
@@ -78,6 +81,30 @@ function editObjectiveProgressOnDB(userID, objID, objStatus){
         },
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+    
+    //function request for DELETING a development need in DB
+function deleteObjective(userID, objID, deletingText){
+        $.ajax({
+        url: "http://"+getEnvironment()+":8080/deleteObjective/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'objectiveID': objID,
+            'text': deletingText,
+        },
+        success: function(response){
+            //need to update objective list to remove
+            removeObjectiveFromList(objID);
+            //need to update note list
+            var date = timeStampToDateTime(new Date(val.timestamp));
+            addNoteToList(userID, deletingText, date); //method reads as addNoteToList(fromWho, body, date);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -231,6 +258,12 @@ function clickDeleteObjective(id, title){
 //Mehtod to open delete modal
 function openDeleteObjectiveModal(){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function removeObjectiveFromList(objID){
+    $("#objective-item-"+objID).fadeOut(400, function() {
+        $(this).remove();
+    });
 }
 
 //Function that returns objective list in html format with the parameters given
