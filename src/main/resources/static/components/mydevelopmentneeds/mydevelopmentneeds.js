@@ -42,12 +42,12 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'title': devNeedTitle,
             'description': devNeedText,
             'category': devNeedCategory,
-            'timeToCompleteBy': devNeedDate
+            'dueDate': devNeedDate
         },
         success: function(response){
             if(lastDevID == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false);
+            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
             toastr.success(response);
         },
@@ -64,12 +64,11 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'devNeedID': devNeedID,
+            'developmentNeedId': devNeedID,
             'title': devNeedTitle,
             'description': devNeedText,
             'category': devNeedCategory,
-            'timeToCompleteBy': devNeedDate,
-            'progress': devNeedStatus
+            'dueDate': devNeedDate,
         },
         success: function(response){
             editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
@@ -84,11 +83,11 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 //HTTP request for UPDATING a development need in DB
 function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/editDevelopmentNeedProgress/"+userID,
+        url: "http://"+getEnvironment()+":8080/updateDevelopmentNeedProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'devNeedID': devNeedID,
+            'developmentNeedId': devNeedID,
             'progress': devNeedStatus
         },
         success: function(response){
@@ -173,12 +172,11 @@ function clickArchiveDevNeed(devNeedID, archive){
 
 function editDevNeedArchiveOnDB(devNeedID, archive){
     $.ajax({
-        url:"http://"+getEnvironment()+":8080/toggleDevNeedArchive/"+getADLoginID(),
+        url:"http://"+getEnvironment()+":8080/toggleDevelopmentNeedArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials':true},
         data: {
-            'developmentNeedID': devNeedID,
-            'isArchived': archive
+            'developmentNeedId': devNeedID,
         },
         success: function(response){
             updateDevelopmentNeedsList(devNeedID);

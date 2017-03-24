@@ -46,12 +46,11 @@ function starChanger(id){
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateCompetency/"+getADLoginID(),
+        url: "http://"+getEnvironment()+":8080/toggleCompetency/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'title': title,
-            'status': status
+            'competencyTitle': title,
         },
         success: function(response){
             toastr.success("'" + title + "' competency has been updated");

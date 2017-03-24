@@ -29,13 +29,12 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
         data: {
             'title': objTitle,
             'description': objText,
-            'completedBy': objDate,
-            'proposedBy': proposedBy
+            'dueDate': objDate,
         },
         success: function(response){
             if(lastObjID == 0)
         		$("#all-obj").removeClass("text-center").empty(); 
-            addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName());
+            addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 		    showProposedObjTab();
             toastr.success(response);
         },
@@ -52,12 +51,10 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'objectiveID': objID,
+            'objectiveId': objID,
             'title': objTitle,
             'description': objText,
-            'completedBy': objDate,
-            'progress': objStatus,
-            'proposedBy': proposedBy
+            'dueDate': objDate,
         },
         success: function(response){
             editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
@@ -72,11 +69,11 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 //HTTP request for UPDATING an objective in DB
 function editObjectiveProgressOnDB(userID, objID, objStatus){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/editObjectiveProgress/"+userID,
+        url: "http://"+getEnvironment()+":8080/updateObjectiveProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'objectiveID': objID,
+            'objectiveId': objID,
             'progress': objStatus
         },
         success: function(response){
@@ -158,12 +155,11 @@ function clickArchiveObjective(objID, archive){
 
 function editObjectiveArchiveOnDB(objID, archive){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/changeStatusObjective/"+getADLoginID(),
+        url: "http://"+getEnvironment()+":8080/toggleObjectiveArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'objectiveID': objID,
-            'isArchived': archive
+            'objectiveId': objID,
         },
         success: function(response){
             updateObjectiveList(objID);

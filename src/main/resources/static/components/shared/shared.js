@@ -10,7 +10,7 @@ var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
-var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-Learning', 'Self-Study', 'Other'];
+var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
 var lastDevID = 0;
 var lastObjID = 0;
 var lastNoteID = 0;
@@ -35,8 +35,9 @@ function getObjectivesList(userID){
     	  lastObjID = data.length;
     	  var isEmpty = true;
           $.each(data, function(key, val){
-        	  var expectedBy = formatDate(val.timeToCompleteBy);
-        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy, val.timeStamp);
+        	  var expectedBy = formatDate(val.dueDate);
+              var progressNumber = numberProgress(val.progress);
+        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
           });
           if(data.length == 0)
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
@@ -46,6 +47,24 @@ function getObjectivesList(userID){
           toastr.error("Sorry, there was a problem getting objectives, please try again later.");
       }
   });	
+}
+
+function numberProgress(progress){
+    switch(progress){
+        case 'Proposed': return 0;
+        case 'In-Progress': return 1;
+        case 'Complete': return 2;
+    }
+}
+
+function numberCategory(category){
+    switch(category){
+        case categoryList[0]: return 0;
+        case categoryList[1]: return 1;
+        case categoryList[2]: return 2;
+        case categoryList[3]: return 3;
+        case categoryList[4]: return 4;
+    }
 }
 
 function checkComplete(status, item){
@@ -156,7 +175,7 @@ function getCompetencyList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
+                addCompetencyToList(val.id,val.title,'test',val.selected);  
             });
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -218,8 +237,10 @@ function getDevelopmentNeedsList(userID){
 	    success: function(data){
         	lastDevID = data.length;
 	        $.each(data, function(key, val){
-	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived, val.timeStamp);
+	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+                 var progressNumber = numberProgress(val.progress);
+                var categoryNumber = numberCategory(val.category);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
