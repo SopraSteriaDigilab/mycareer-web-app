@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="../components/navbar/navbar.min.css"/>
+<link rel="stylesheet" href="../components/navbar/navbar.css"/>
 <script type="text/javascript" src="../components/navbar/navbar.min.js"></script>
+<script type="text/javascript" src="../components/print/print.js"></script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
 
@@ -94,3 +95,20 @@
 	</div>
 </div>
 <div id="pop-up-objective-modal"></div>
+
+  <!-- Add Print Modal -->
+<div id="print-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog" id="pdf-modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="close-print-cross">&times;</button>
+				<h4 class="modal-title">Print <small><span class="glyphicon glyphicon-chevron-right"></span></small> My <span id="print-modal-title-type"></span></h4>
+			</div>
+			<div class="modal-body" id="pdf-modal-body"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>			
+			</div>
+		</div>
+	</div>
+</div>
