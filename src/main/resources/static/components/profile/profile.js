@@ -5,21 +5,20 @@ $(function() {
 	$('.pdf').click(function() {
 		var id = event.target.id;
 		if(id=== "objPDF"){			
+			 getObjectivesData();
 			 $('#print-modal-title-type').text('Objectives');
-			 openPDF("objTable");
 		}
 		else if(id=== "feedPDF"){
+			 getFeedbacksData();
 			 $('#print-modal-title-type').text('Feedbacks');
-			 openPDF("feedTable");
 		}
 		else if(id=== "devPDF"){
-			 $('#print-modal-title-type').text('Development Needs');
-			 openPDF("devNeedsTable");
-			 
+			 getDevelopmentNeedsData();
+			 $('#print-modal-title-type').text('Development Needs'); 
 		}
 		else if(id=== "notesPDF"){
+			 getNotesData();
 			 $('#print-modal-title-type').text('Notes');
-			 openPDF("notesTable");
 		}
 		$("#pdf-modal-body").append("<div class=\"" + id + "\"></div>");
 		openPrintModal();
