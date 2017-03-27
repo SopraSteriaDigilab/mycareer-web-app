@@ -31,7 +31,7 @@ function getFeedbacksData(){
 	         $.each(data, function(key, val){
 	        	 addFeedbacksDataToList(val.providerEmail, val.providerName, val.feedbackDescription, val.timeStamp);
 	         }); 
-	         openPDF("feedTable");  
+	         openPDF("feedTable");
      },
      error: function(XMLHttpRequest, textStatus, errorThrown){
          console.log('error', errorThrown);
@@ -184,7 +184,7 @@ function printObjectivesList(expectedBy, title, description, progress, createdOn
 	var html = " \
             <tr> \
                 <td>"+timeStampToLongDate(expectedBy)+"</td> \
-                <td><span style=\"font-weight: bold;\">"+title+"\n\n</span><br/>"+description+"</td> \
+                <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+proposedBy+"</td> \
@@ -236,10 +236,17 @@ function openPDF(id){
 	$('#'+id).DataTable({
 		dom: 'Brfti',
 		   buttons: [{
-		       extend: 'print',
+			   extend: 'print',
+			   exportOptions: {
+			        stripHtml: false
+			    },
+			   customize: function (win) {
+		            $(win.document.body).find('table').css('font-size', '10pt');
+				   },
 			   download: 'open',
 			   text: 'Print',
 			   title: setDocumentTitle(id),
+			   		   
 		   }]
 		 })
 	 $(".dt-buttons").appendTo(".modal-footer");

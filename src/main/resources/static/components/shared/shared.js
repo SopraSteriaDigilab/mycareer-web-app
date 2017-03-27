@@ -208,7 +208,7 @@ function getGeneralFeedbackList(userID){
             $.each(data, function(key, val){
                 var classDate = timeStampToClassDate(val.timeStamp);
                 var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                var name = (val.providerName) ? val.providerName : val.providerEmail; 
+                var name = (val.providerName) ? val.providerName : val.providerEmail;
                 addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail);   
             });//end of for each loop
             if(data.length == 0) {
