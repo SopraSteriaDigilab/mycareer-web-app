@@ -28,7 +28,7 @@ $(function() {
 	$('#close-dev-need, #close-dev-need-cross').on('click', function(e) { clickCloseDevNeed(e); });
     
     //onclick to delete development need
-    $('#delete').click(function(){ deleteDevelopmentNeed(); });
+    $('#delete').click(function(){ deleteDevelopmentNeed(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
 });
 
@@ -101,21 +101,20 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
 }
 
 //function request for DELETING a development need in DB
-function deleteDevelopmentNeed(userID, devNeedID, deletingText){
+function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
         $.ajax({
         url: "http://"+getEnvironment()+":8080/deleteDevelopmentNeed/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'devNeedID': devNeedID,
-            'text': deletingText,
+            'developmentNeedId': devNeedID,
+            'comment': deletingText,
         },
         success: function(response){
             //need to update dev need list to remove
             removeDevNeedFromList(devNeedID);
             //need to update note list
-            var date = timeStampToDateTime(new Date(val.timestamp));
-            addNoteToList(userID, deletingText, date); //method reads as addNoteToList(fromWho, body, date);
+            addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -257,14 +256,15 @@ function isArchivedItem(isArchived){
 }
 
 function clickDeleteDevNeed(id, title){
-    openDeleteDevNeedModal();
+    $("#delete-id").empty().append(id)
     $("#modal-title-type").empty().append('Development Need');
     $("#modal-type").empty().append('Development Need');
     $("#modal-warning").empty().append('a Development Need');
     $('#deleteTitle').empty().append(title);
+    openDeleteDevNeedModal();
 }
 
-function openDeleteDevNeedModal(){
+function openDeleteDevNeedModal(id, title){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
@@ -272,6 +272,7 @@ function removeDevNeedFromList(devNeedID){
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
+    $('#deleteModal').modal('hide');
 }
 
 function getTimeStamp(id){
@@ -282,7 +283,6 @@ function getTimeStamp(id){
     xhrFields: {'withCredentials': true},
     success: function(data){
     	createdOn = timeStampToLongDate(data[0].timeStamp);
-    	alert(createdOn);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown){
         console.log('error', errorThrown);

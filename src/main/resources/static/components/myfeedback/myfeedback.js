@@ -344,12 +344,12 @@ function submitFeedbackRequest(){
 function submitSendFeedback(){
     $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/generateSendFeedback/"+getADLoginID(),
+        url: "http://"+getEnvironment()+":8080/addFeedback/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'emailsTo': $('#sendingTo').val(),
-            'notes': $('#sendingText').val(),
+            'emails': $('#sendingTo').val(),
+            'feedback': $('#sendingText').val(),
         },
         success: function(response){
         	$("#nav-bar-buttons").empty();

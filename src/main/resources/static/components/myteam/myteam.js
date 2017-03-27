@@ -138,13 +138,13 @@ function getReporteeNotesList(userID){
 //Method to propose objective
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
+        url: "http://"+getEnvironment()+":8080/proposeObjective/"+userID,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
             'title': objTitle,
             'description': objText,
-            'completedBy': objDate,
+            'dueDate': objDate,
             'emails': proposedTo
         },            
         success: function(response){

@@ -15,8 +15,8 @@ $(function() {
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
     
-    //onclick to delete development need
-    $('#delete').click(function(){ deleteObjective(); });
+    //onclick to delete objectives
+    $('#delete').click(function(){ deleteObjective(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
 });
 
@@ -74,7 +74,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus){
         xhrFields: {'withCredentials': true},
         data: {
             'objectiveId': objID,
-            'progress': objStatus
+            'progress': objStatus,
         },
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
@@ -87,21 +87,20 @@ function editObjectiveProgressOnDB(userID, objID, objStatus){
 }
     
     //function request for DELETING a development need in DB
-function deleteObjective(userID, objID, deletingText){
+function deleteObjective(userID, objID, objTitle, deletingText){
         $.ajax({
         url: "http://"+getEnvironment()+":8080/deleteObjective/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'objectiveID': objID,
-            'text': deletingText,
+            'objectiveId': objID,
+            'comment': deletingText,
         },
         success: function(response){
             //need to update objective list to remove
             removeObjectiveFromList(objID);
             //need to update note list
-            var date = timeStampToDateTime(new Date(val.timestamp));
-            addNoteToList(userID, deletingText, date); //method reads as addNoteToList(fromWho, body, date);
+            addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -243,23 +242,25 @@ function isArchivedItem(isArchived){
 
 //Method to handle the delete objective button onclick and appends objective title
 function clickDeleteObjective(id, title){
-    openDeleteObjectiveModal();
+    $("#delete-id").empty().append(id);
     $("#modal-title-type").empty().append('Objective');
     $("#modal-type").empty().append('Objective');
     $("#modal-warning").empty().append('an Objective');;
     $("#deleteTitle").empty().append(title);
-   
+    openDeleteObjectiveModal(id, title);
 }
 
-//Mehtod to open delete modal
-function openDeleteObjectiveModal(){
+//Method to open delete modal
+function openDeleteObjectiveModal(id, title){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
+//method to remove objective from list and close delete Modal 
 function removeObjectiveFromList(objID){
     $("#objective-item-"+objID).fadeOut(400, function() {
         $(this).remove();
     });
+     $('#deleteModal').modal('hide');
 }
 
 //Function that returns objective list in html format with the parameters given
