@@ -21,9 +21,6 @@ $(function() {
     //onclick to delete objectives
     $('#delete').click(function(){ deleteObjective(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
-    //onclick to add optional note when completing an objective
-    $('#submit-completed-status-note').click(function(){ editObjectiveProgressOnDB(); });
-    
 });
 
 //HTTP request for INSERTING an objective to DB
@@ -207,10 +204,6 @@ function updateObjectiveStatusOnDB(objID, objStatus){
 	editObjectiveProgressOnDB(userID, objID, objStatus);
 }
 
-function updateCompletedStatusOnDB(objID, objStatus, completedText){
-    $("#completed-status-modal").modal({backdrop: 'static', keyboard: false, show: true});
-}
-
 function updateObjectiveStatusOnList(objID, objStatus){
 	$('#obj-status-'+objID).val(objStatus);
 	switch(parseInt(objStatus)){
@@ -304,7 +297,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateCompletedStatusOnDB("+id+", 2)'> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 2)'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
