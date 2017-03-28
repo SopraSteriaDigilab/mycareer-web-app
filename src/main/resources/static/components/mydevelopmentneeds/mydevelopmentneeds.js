@@ -273,6 +273,7 @@ function removeDevNeedFromList(devNeedID){
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
+    $("textarea").val("");
     $('#deleteModal').modal('hide');
 }
 

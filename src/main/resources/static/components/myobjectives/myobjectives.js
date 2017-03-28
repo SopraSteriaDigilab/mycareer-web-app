@@ -195,13 +195,29 @@ function clickObjectiveFeedback(id){
 	window.location.replace("http://"+getEnvironment()+"/mycareer/feedback"); 
 }
 
-function updateObjectiveStatusOnDB(objID, objStatus){
+function updateObjectiveStatusOnDB(objID, objStatus, title){
 	if($('#obj-is-archived-'+objID).val() === 'true' || $('#obj-is-archived-'+objID).val() == true
-			|| objStatus === parseInt($('#obj-status-'+objID).val())){
+			|| objStatus === parseInt($('#obj-status-'+objID).val()) || parseInt($('#obj-status-'+objID).val()) == 2){
 		return false;
 	}
-	var userID = getADLoginID();
-	editObjectiveProgressOnDB(userID, objID, objStatus);
+    
+    if(objStatus == 2){
+        alert(objID);
+        alert(title);
+    $("#complete-id").empty().append(objID);
+    $("#modal-type").empty().append('Objective');
+    $("#modal-warning").empty().append('an Objective');;
+    $("#completedTitle").empty().append(title);
+    openCompleteObjectiveModal(objID, title);
+    }else{
+        var userID = getADLoginID();
+        var completedText = "";
+        editObjectiveProgressOnDB(userID, objID, objStatus, completedText);
+    }
+}
+
+function openCompleteObjectiveModal(id, title){
+    $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 function updateObjectiveStatusOnList(objID, objStatus){
@@ -265,6 +281,7 @@ function removeObjectiveFromList(objID){
     $("#objective-item-"+objID).fadeOut(400, function() {
         $(this).remove();
     });
+    $("textarea").val("");
      $('#deleteModal').modal('hide');
 }
 
@@ -297,7 +314,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+", 2)'> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+",  2)'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
