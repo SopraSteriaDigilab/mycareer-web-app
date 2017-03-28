@@ -12,7 +12,7 @@ var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
 var lastDevID = 0;
-var lastObjID = 0;
+var nextObjId = [];
 var lastNoteID = 0;
 
 function adjustDatePicker(){
@@ -35,18 +35,27 @@ function getObjectivesList(userID){
     	  lastObjID = data.length;
     	  var isEmpty = true;
           $.each(data, function(key, val){
+              nextObjId.push(val.id);
         	  var expectedBy = formatDate(val.dueDate);
               var progressNumber = numberProgress(val.progress);
+              
         	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
           });
           if(data.length == 0)
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
+          nextObjectiveID();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
           toastr.error("Sorry, there was a problem getting objectives, please try again later.");
       }
   });	
+}
+
+//Function that finds the largest ID for objectives and finds the next one
+function nextObjectiveID(id){
+    nextObjId.sort();
+    alert(nextObjId);
 }
 
 function numberProgress(progress){

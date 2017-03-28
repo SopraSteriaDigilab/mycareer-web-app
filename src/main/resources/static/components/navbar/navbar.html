@@ -95,6 +95,7 @@
 </div>
 <div id="pop-up-objective-modal"></div>
 
+<!-- Delete Modal -->
 <div id="deleteModal" class="modal fade" role="dialog"> 
     <div class="modal-dialog"> 
         <div class="modal-content"> 
@@ -138,6 +139,29 @@
 			<div class="modal-body" id="pdf-modal-body"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>			
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- Completed Status Modal -->
+<div id="completed-status-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="close-print-cross">&times;</button>
+				<h4 class="modal-title">Completed Status</h4>
+			</div>
+			<div class="modal-body">
+                <div class="form-group" id="text-validate">
+				    <label for="completed-status-text" class="control-label">Optional Note: </label>
+					<textarea class="form-control" id="completedStatusText" placeholder="..." maxlength="200" rows="5" spellcheck="true"></textarea>
+				</div>
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>
+                <button type="button" class="btn btn-default" id="submit-completed-status-note">Submit</button>
 			</div>
 		</div>
 	</div>
