@@ -130,11 +130,11 @@ function openEditObjectiveModal(id){
 }
 
 //Function to add objective to list
-function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp){
+function addObjectiveToList(id, title, description, expectedBy, status, isArchived, proposedBy, createdOn){
 		if(isArchived === true || isArchived === 'true'){
-			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
+			$("#obj-archived").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, createdOn));
 		}else{
-			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, timeStamp));
+			$("#all-obj").append(objectiveListHTML(id, title, description, expectedBy, status, isArchived, proposedBy, createdOn));
 		}	
 }
 
@@ -180,9 +180,10 @@ function updateObjectiveList(objID){
 	var status = $('#obj-status-'+objID).val();
 	var archive = $('#obj-is-archived-'+objID).val();
 	var proposedBy = $('#obj-proposedBy-'+objID).text();
+	var createdOn = $('#obj-createdOn-'+objID).text();
 	
 	$("#objective-item-"+objID).fadeOut(400, function() { $(this).remove(); });
-	addObjectiveToList(objID, title, description, expectedBy, status, archive, proposedBy);	
+	addObjectiveToList(objID, title, description, expectedBy, status, archive, proposedBy, createdOn);	
 }
 
 //onclick to view feedback
@@ -264,7 +265,7 @@ function removeObjectiveFromList(objID){
 }
 
 //Function that returns objective list in html format with the parameters given
-function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy, timeStamp){
+function objectiveListHTML(id, title, description, timeToCompleteBy, status, isArchived, proposedBy, createdOn){
 	var html = " \
     <div class='panel-group tab-pane fade "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='objective-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -310,7 +311,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-4'> \
-                            <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(timeStamp)+"</span></h6> \
+                            <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
                         <div class='col-md-3'> \
                         </div> \

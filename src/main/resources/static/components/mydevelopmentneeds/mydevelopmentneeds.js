@@ -145,11 +145,11 @@ function openEditDevelopmentNeedModal(id){
 }
 
 //Function to add development need to list
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, timeStamp){
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, createdOn){
     if(isArchived === true || isArchived === 'true'){
-        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
+        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, createdOn));
     }else{
-        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
+        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, createdOn));
     }
 }
 
@@ -198,11 +198,12 @@ function updateDevelopmentNeedsList(devNeedID){
     var categoryID = $('#dev-need-category-id-'+devNeedID).val();
     var status = $('#dev-need-status-'+devNeedID).val();
     var isArchived = $('#dev-need-is-archived-'+devNeedID).val();
+    var createdOn = $('#dev-need-createdOn-'+devNeedID).text();
 
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
-    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived);
+    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived, createdOn);
 }
 
 function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
@@ -291,7 +292,7 @@ function getTimeStamp(id){
  })};
 
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, timeStamp){
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, createdOn){
 	var html = " \
     <div class='panel-group tab-pane fade dev-need "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -338,7 +339,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-6'> \
-                            <h6><b>Created on: </b><span id='dev-need-createdOn-"+id+"'>"+timeStampToLongDate(timeStamp)+"</span></h6> \
+                            <h6><b>Created on: </b><span id='dev-need-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
                        	<div class='col-md-6' > \
                         	<input type='hidden' id='dev-need-category-id-"+id+"' value='" + category + "'> \
