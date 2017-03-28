@@ -45,9 +45,9 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'dueDate': devNeedDate
         },
         success: function(response){
-            if(lastDevID == 0)
+            if(nextDevNeedId.length == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
+            addDevelopmentNeedToList(nextDevelopmentNeedID(), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
             toastr.success(response);
         },

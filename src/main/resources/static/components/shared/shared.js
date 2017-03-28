@@ -11,7 +11,7 @@ var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
-var lastDevID = 0;
+var nextDevNeedId = [];
 var nextObjId = [];
 var lastNoteID = 0;
 
@@ -32,18 +32,16 @@ function getObjectivesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-    	  lastObjID = data.length;
+    	  //lastObjID = data.length;
     	  var isEmpty = true;
           $.each(data, function(key, val){
               nextObjId.push(val.id);
         	  var expectedBy = formatDate(val.dueDate);
               var progressNumber = numberProgress(val.progress);
-              
         	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
           });
           if(data.length == 0)
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
-          nextObjectiveID();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
           console.log('error', errorThrown);
@@ -53,9 +51,13 @@ function getObjectivesList(userID){
 }
 
 //Function that finds the largest ID for objectives and finds the next one
-function nextObjectiveID(id){
-    nextObjId.sort();
-    alert(nextObjId);
+function nextObjectiveID(){
+    //numerical sort
+    nextObjId.sort(function(a,b){ return a - b;});
+    //finds the last id in the list
+    var lastId = nextObjId[nextObjId.length - 1];
+    nextObjId.push(++lastId);
+    return lastId;
 }
 
 function numberProgress(progress){
@@ -244,8 +246,8 @@ function getDevelopmentNeedsList(userID){
 	    method: 'GET',
 	    xhrFields: {'withCredentials': true},
 	    success: function(data){
-        	lastDevID = data.length;
 	        $.each(data, function(key, val){
+                nextDevNeedId.push(val.id);
 	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
                  var progressNumber = numberProgress(val.progress);
                 var categoryNumber = numberCategory(val.category);
@@ -316,6 +318,16 @@ function showProposedDevelopmentTab(){
 	if(!$("#dev-need-all-tab").hasClass("active")){
 		$("#dev-need-proposed-tab").find('a').trigger("click");
 	}
+}
+
+//Function that finds the largest ID for objectives and finds the next one
+function nextDevelopmentNeedID(){
+    //numerical sort
+    nextDevNeedId.sort(function(a,b){ return a - b;});
+    //finds the last id in the list
+    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
+    nextDevNeedId.push(++lastId);
+    return lastId;
 }
 
 //------------------------------------------------------------------------------------

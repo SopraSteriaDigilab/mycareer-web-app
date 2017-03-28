@@ -35,9 +35,9 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
             'dueDate': objDate,
         },
         success: function(response){
-            if(lastObjID == 0)
+            if(nextObjId.length == 0)
         		$("#all-obj").removeClass("text-center").empty();
-            addObjectiveToList((++lastObjID), objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
+            addObjectiveToList(nextObjectiveID(), objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 		    showProposedObjTab();
             toastr.success(response);
         },
