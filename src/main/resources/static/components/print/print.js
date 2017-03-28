@@ -8,7 +8,7 @@ function getObjectivesData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printObjectivesHeader());
 	         $.each(data, function(key, val){
-	        	 addObjectivesDataToList(val.timeToCompleteBy, val.title, val.description, val.progress, val.timeStamp, val.proposedBy);
+	        	 addObjectivesDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy);
 	         }); 
 	         openPDF("objTable");
      },
@@ -50,7 +50,7 @@ function getDevelopmentNeedsData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
 	         $.each(data, function(key, val){
-	        	 addDevelopmentNeedsDataToList(val.timeToCompleteBy, val.title, val.description, val.progress, val.timeStamp, val.category);
+	        	 addDevelopmentNeedsDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.category);
 	         });
 	         openPDF("devNeedsTable");
      },
@@ -83,8 +83,8 @@ function getNotesData(){
 }
 
 //function to add objectives data to a list and append it on the HTML
-function addObjectivesDataToList(expectedBy, title, description, progress, createdOn, proposedBy){
-    $("#objDetails").append(printObjectivesList(expectedBy, title, description, progress, createdOn, proposedBy));
+function addObjectivesDataToList(dueDate, title, description, progress, createdOn, proposedBy){
+    $("#objDetails").append(printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy));
 }
 
 //function to add feedbacks data to a list and append it on the HTML
@@ -93,8 +93,8 @@ function addFeedbacksDataToList(providerEmail, providerName, feedbackDescription
 }
 
 //function to add development needs data to a list and append it on the HTML
-function addDevelopmentNeedsDataToList(expectedBy, title, description, progress, createdOn, category){
-    $("#devNeedsDetails").append(printDevelopmentNeedsList(expectedBy, title, description, progress, createdOn, category));
+function addDevelopmentNeedsDataToList(dueDate, title, description, progress, createdOn, category){
+    $("#devNeedsDetails").append(printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category));
 }
 
 //function to add notes data to a list and append it on the HTML
@@ -180,10 +180,10 @@ function printNotesHeader(){
 }
 
 //Function that returns the objectives list in html format with the parameters given
-function printObjectivesList(expectedBy, title, description, progress, createdOn, proposedBy){
+function printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(expectedBy)+"</td> \
+                <td>"+timeStampToLongDate(dueDate)+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
@@ -199,17 +199,17 @@ function printFeedbacksList(providerEmail, providerName, feedbackDescription, ti
             <tr> \
                 <td><span style=\"font-weight: bold;\">"+providerName+"\n\n</span><br/>"+providerEmail+"</td> \
                 <td>"+feedbackDescription+"</td> \
-                <td>"+timeStamp+"</td> \
+                <td>"+timeStampToLongDate(timeStamp)+"</td> \
             </tr> \
     "
     return html;
 }
 
 //Function that returns the  development needs list in html format with the parameters given
-function printDevelopmentNeedsList(expectedBy, title, description, progress, createdOn, category){
+function printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(expectedBy)+"</td> \
+                <td>"+timeStampToLongDate(dueDate)+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"\n\n</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
