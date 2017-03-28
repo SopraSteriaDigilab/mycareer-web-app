@@ -15,6 +15,9 @@ $(function() {
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
     
+      //onClick for Close modal
+	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
+    
     //onclick to delete objectives
     $('#delete').click(function(){ deleteObjective(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
