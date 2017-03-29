@@ -72,8 +72,6 @@ $(function() {
     //click to open a modal that shows the feedback suggestion template
     $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
     
-    
-
 });//End of Document Function
 
 
