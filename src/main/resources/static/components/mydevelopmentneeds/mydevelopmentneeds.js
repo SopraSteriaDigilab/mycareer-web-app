@@ -30,6 +30,9 @@ $(function() {
     //onclick to delete development need
     $('#delete').click(function(){ deleteDevelopmentNeed(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
+    //onclick to complete objective
+    $('#submit-completed-status-note').click(function(){ editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); });
+    
 });
 
 //HTTP request for INSERTING an development need to DB
@@ -81,17 +84,19 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 }
 
 //HTTP request for UPDATING a development need in DB
-function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
+function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/updateDevelopmentNeedProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
             'developmentNeedId': devNeedID,
-            'progress': devNeedStatus
+            'progress': devNeedStatus,
+            'comment': completedText,
         },
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+            addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -206,12 +211,27 @@ function updateDevelopmentNeedsList(devNeedID){
     addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived, createdOn);
 }
 
-function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
-	if($('#dev-need-is-archived-'+devNeedID).val() === 'true' || $('#dev-need-is-archived-'+devNeedID).val() == true || devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
+function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
+	if($('#dev-need-is-archived-'+devNeedID).val() === 'true' || $('#dev-need-is-archived-'+devNeedID).val() == true || devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val()) || parseInt($('#dev-need-status-'+devNeedID).val()) == 2){
 		return false;
 	}
-	var userID = getADLoginID();
-	editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus);
+    
+    if(devNeedStatus == 2){
+    $("#complete-id").empty().append(devNeedID);
+    $("#complete-status").empty().append(devNeedStatus);
+    $("#modal-confirmation").empty().append('Development Need');
+    $("#modal-alert").empty().append('Development Need');;
+    $("#completedTitle").empty().append(title);
+    openCompleteDevelopmentNeedModal(devNeedID, title);
+    }else{
+        var userID = getADLoginID();
+        var completedText = "";
+        editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText);
+    }
+}
+
+function openCompleteDevelopmentNeedModal(id, title){
+    $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
@@ -229,6 +249,8 @@ function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 		case 2:
 			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
 			$('#complete-dev-need-dot-'+devNeedID).addClass('complete');
+            $("textarea").val("");
+            $('#completed-status-modal').modal('hide');
 	}
 	
 	if(!($("#dev-need-all-tab").hasClass("active"))){
@@ -322,7 +344,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \""+title+"\")'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
