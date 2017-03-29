@@ -4,6 +4,7 @@ $(function() {
     
     //initialise Tags
     tags("requestingTo", emails);
+    tags("sendingTo", emails);
     
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
@@ -18,14 +19,30 @@ $(function() {
     
     //feedback request modal key preses
 	keypress('requestFeedbackModal');
+    keypress('sendFeedbackModal');
+    
+    //modal validation
+    $('.send-feedback-validate').keyup(function() { validateForm('send-feedback-validate', 'submit-send-feedback'); });
 	 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
+    
+    //click to open up feedback sent modal
+    $('#send-feedback').click(function(){ openSendFeedbackModal() });
     
     //click to submit feedback request
     $('#submit-request-feedback').click(function(){ 
        if (validEmails($('#requestingTo').val())){
             submitFeedbackRequest();
+        }else{
+            toastr.error("One or more email addresses entered are not valid");
+        }    
+     });
+    
+    //click to submit send feedback
+    $('#submit-send-feedback').click(function(){ 
+       if (validEmails($('#sendingTo').val())){
+            submitSendFeedback();
         }else{
             toastr.error("One or more email addresses entered are not valid");
         }    
@@ -40,8 +57,20 @@ $(function() {
         $("#requestingTo").tagsinput('removeAll');
     });
     
+    //when these are clicked it clears the send feedback modal
+    $("#close-feedback-send-modal").click(function() {
+        $("textarea").val("");
+        $("#sendingTo").tagsinput('removeAll');
+    });
+    $("#cancelSendModal").click(function() {
+        $("textarea").val("");
+        $("#sendingTo").tagsinput('removeAll');
+    });
+    
     //click to open a modal that shows the feedback email template
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    //click to open a modal that shows the feedback suggestion template
+    $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
     
     
 
@@ -280,7 +309,11 @@ function openRequestFeedbackModal(){
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
-//Email details sent through back-end.
+function openSendFeedbackModal(){
+    $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+//Email details sent through BE to request feedback.
 function submitFeedbackRequest(){
 	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
     $.ajax({
@@ -305,4 +338,31 @@ function submitFeedbackRequest(){
             $("#requestingTo").tagsinput('removeAll');
         });
         $('#requestFeedbackModal').modal('hide');
+}
+
+//Email details sent to BE to send feedback
+function submitSendFeedback(){
+    $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/addFeedback/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'emails': $('#sendingTo').val(),
+            'feedback': $('#sendingText').val(),
+        },
+        success: function(response){
+        	$("#nav-bar-buttons").empty();
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+        $('#send-feedback').click(function() {
+            $("textarea").val("");
+            $("#sendingTo").tagsinput('removeAll');
+        });
+        $('#sendFeedbackModal').modal('hide');
 }

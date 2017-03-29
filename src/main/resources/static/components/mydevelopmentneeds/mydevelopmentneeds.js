@@ -27,6 +27,12 @@ $(function() {
   //onClick for Close modal
 	$('#close-dev-need, #close-dev-need-cross').on('click', function(e) { clickCloseDevNeed(e); });
     
+    //onclick to delete development need
+    $('#delete').click(function(){ deleteDevelopmentNeed(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
+    
+    //onclick to complete objective
+    $('#submit-completed-status-note').click(function(){ editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); });
+    
 });
 
 //HTTP request for INSERTING an development need to DB
@@ -39,12 +45,12 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'title': devNeedTitle,
             'description': devNeedText,
             'category': devNeedCategory,
-            'timeToCompleteBy': devNeedDate
+            'dueDate': devNeedDate
         },
         success: function(response){
-            if(lastDevID == 0)
+            if(nextDevNeedId.length == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList((++lastDevID), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false);
+            addDevelopmentNeedToList(nextDevelopmentNeedID(), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
             toastr.success(response);
         },
@@ -61,12 +67,11 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'devNeedID': devNeedID,
+            'developmentNeedId': devNeedID,
             'title': devNeedTitle,
             'description': devNeedText,
             'category': devNeedCategory,
-            'timeToCompleteBy': devNeedDate,
-            'progress': devNeedStatus
+            'dueDate': devNeedDate,
         },
         success: function(response){
             editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
@@ -79,17 +84,42 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 }
 
 //HTTP request for UPDATING a development need in DB
-function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus){
+function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/editDevelopmentNeedProgress/"+userID,
+        url: "http://"+getEnvironment()+":8080/updateDevelopmentNeedProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'devNeedID': devNeedID,
-            'progress': devNeedStatus
+            'developmentNeedId': devNeedID,
+            'progress': devNeedStatus,
+            'comment': completedText,
         },
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+            addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+//function request for DELETING a development need in DB
+function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
+        $.ajax({
+        url: "http://"+getEnvironment()+":8080/deleteDevelopmentNeed/"+userID,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'developmentNeedId': devNeedID,
+            'comment': deletingText,
+        },
+        success: function(response){
+            //need to update dev need list to remove
+            removeDevNeedFromList(devNeedID);
+            //need to update note list
+            addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -120,11 +150,11 @@ function openEditDevelopmentNeedModal(id){
 }
 
 //Function to add development need to list
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, timeStamp){
+function addDevelopmentNeedToList(id, title, description, category, expectedBy, status, isArchived, createdOn){
     if(isArchived === true || isArchived === 'true'){
-        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
+        $('#dev-need-archived').append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, createdOn));
     }else{
-        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, timeStamp));
+        $("#all-dev-need").append(developmentNeedListHTML(id, title, description, category, expectedBy, status, isArchived, createdOn));
     }
 }
 
@@ -146,12 +176,11 @@ function clickArchiveDevNeed(devNeedID, archive){
 
 function editDevNeedArchiveOnDB(devNeedID, archive){
     $.ajax({
-        url:"http://"+getEnvironment()+":8080/toggleDevNeedArchive/"+getADLoginID(),
+        url:"http://"+getEnvironment()+":8080/toggleDevelopmentNeedArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials':true},
         data: {
-            'developmentNeedID': devNeedID,
-            'isArchived': archive
+            'developmentNeedId': devNeedID,
         },
         success: function(response){
             updateDevelopmentNeedsList(devNeedID);
@@ -174,19 +203,35 @@ function updateDevelopmentNeedsList(devNeedID){
     var categoryID = $('#dev-need-category-id-'+devNeedID).val();
     var status = $('#dev-need-status-'+devNeedID).val();
     var isArchived = $('#dev-need-is-archived-'+devNeedID).val();
+    var createdOn = $('#dev-need-createdOn-'+devNeedID).text();
 
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
-    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived);
+    addDevelopmentNeedToList(devNeedID, title, description, categoryID, expectedBy, status, isArchived, createdOn);
 }
 
-function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus){
-	if($('#dev-need-is-archived-'+devNeedID).val() === 'true' || $('#dev-need-is-archived-'+devNeedID).val() == true || devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val())){
+function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
+	if($('#dev-need-is-archived-'+devNeedID).val() === 'true' || $('#dev-need-is-archived-'+devNeedID).val() == true || devNeedStatus === parseInt($('#dev-need-status-'+devNeedID).val()) || parseInt($('#dev-need-status-'+devNeedID).val()) == 2){
 		return false;
 	}
-	var userID = getADLoginID();
-	editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus);
+    
+    if(devNeedStatus == 2){
+    $("#complete-id").empty().append(devNeedID);
+    $("#complete-status").empty().append(devNeedStatus);
+    $("#modal-confirmation").empty().append('Development Need');
+    $("#modal-alert").empty().append('Development Need');;
+    $("#completedTitle").empty().append(title);
+    openCompleteDevelopmentNeedModal(devNeedID, title);
+    }else{
+        var userID = getADLoginID();
+        var completedText = "";
+        editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText);
+    }
+}
+
+function openCompleteDevelopmentNeedModal(id, title){
+    $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
@@ -204,6 +249,8 @@ function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
 		case 2:
 			$('#started-dev-need-dot-'+devNeedID).addClass('complete');
 			$('#complete-dev-need-dot-'+devNeedID).addClass('complete');
+            $("textarea").val("");
+            $('#completed-status-modal').modal('hide');
 	}
 	
 	if(!($("#dev-need-all-tab").hasClass("active"))){
@@ -231,6 +278,27 @@ function isArchivedItem(isArchived){
 	return "unarchived-dev-item"
 }
 
+function clickDeleteDevNeed(id, title){
+    $("#delete-id").empty().append(id)
+    $("#modal-title-type").empty().append('Development Need');
+    $("#modal-type").empty().append('Development Need');
+    $("#modal-warning").empty().append('a Development Need');
+    $('#deleteTitle').empty().append(title);
+    openDeleteDevNeedModal();
+}
+
+function openDeleteDevNeedModal(id, title){
+    $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function removeDevNeedFromList(devNeedID){
+    $("#development-need-item-"+devNeedID).fadeOut(400, function() {
+        $(this).remove();
+    });
+    $("textarea").val("");
+    $('#deleteModal').modal('hide');
+}
+
 function getTimeStamp(id){
 	$.ajax({
     url: 'http://'+getEnvironment()+':8080/getdevelopmentNeeds/'+id,
@@ -239,7 +307,6 @@ function getTimeStamp(id){
     xhrFields: {'withCredentials': true},
     success: function(data){
     	createdOn = timeStampToLongDate(data[0].timeStamp);
-    	alert(createdOn);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown){
         console.log('error', errorThrown);
@@ -248,7 +315,7 @@ function getTimeStamp(id){
  })};
 
 //Function that returns dev needs list in html format with the parameters given
-function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, timeStamp){
+function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, createdOn){
 	var html = " \
     <div class='panel-group tab-pane fade dev-need "+isArchivedItem(isArchived)+" "+statusList[status]+" active in' id='development-need-item-"+id+"'> \
         <div class='panel panel-default' id='panel'> \
@@ -277,7 +344,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2)'> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \""+title+"\")'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
@@ -295,7 +362,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                 <div class='panel-body'> \
                     <div class='row'> \
                         <div class='col-md-6'> \
-                            <h6><b>Created on: </b><span id='dev-need-createdOn-"+id+"'>"+timeStampToLongDate(timeStamp)+"</span></h6> \
+                            <h6><b>Created on: </b><span id='dev-need-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
                        	<div class='col-md-6' > \
                         	<input type='hidden' id='dev-need-category-id-"+id+"' value='" + category + "'> \
@@ -307,7 +374,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
                             <p id='dev-need-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    " + devNeedsButtonsHTML(id, isArchived); + " \
+                    " + devNeedsButtonsHTML(id, isArchived, title); + " \
                 </div> \
             </div> \
              \
@@ -317,7 +384,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     return html;
 }
 
-function devNeedsButtonsHTML(devNeedID, isArchived){
+function devNeedsButtonsHTML(devNeedID, isArchived, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
@@ -331,9 +398,12 @@ function devNeedsButtonsHTML(devNeedID, isArchived){
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
-		        <div class=' col-sm-6 pull-right'> \
+		        <div class='col-sm-6'> \
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", false)' id='archive-dev-need'>Restore</button> \
 		        </div> \
+                <div class=' col-sm-6'> \
+                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \""+title+"\")' id='delete-obj'>Delete</button> \
+                </div> \
 		    </div> \
 		";
 		return(unArchiveButton);

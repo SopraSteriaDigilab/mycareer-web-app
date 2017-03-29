@@ -10,9 +10,9 @@ var statusList = ['proposed', 'started', 'completed'];
 var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
-var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-Learning', 'Self-Study', 'Other'];
-var lastDevID = 0;
-var lastObjID = 0;
+var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
+var nextDevNeedId = [];
+var nextObjId = [];
 var lastNoteID = 0;
 
 function adjustDatePicker(){
@@ -32,11 +32,13 @@ function getObjectivesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-    	  lastObjID = data.length;
+    	  //lastObjID = data.length;
     	  var isEmpty = true;
           $.each(data, function(key, val){
-        	  var expectedBy = formatDate(val.timeToCompleteBy);
-        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, val.progress, val.isArchived, val.proposedBy, val.timeStamp);
+              nextObjId.push(val.id);
+        	  var expectedBy = formatDate(val.dueDate);
+              var progressNumber = numberProgress(val.progress);
+        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
           });
           if(data.length == 0)
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
@@ -46,6 +48,34 @@ function getObjectivesList(userID){
           toastr.error("Sorry, there was a problem getting objectives, please try again later.");
       }
   });	
+}
+
+//Function that finds the largest ID for objectives and finds the next one
+function nextObjectiveID(){
+    //numerical sort
+    nextObjId.sort(function(a,b){ return a - b;});
+    //finds the last id in the list
+    var lastId = nextObjId[nextObjId.length - 1];
+    nextObjId.push(++lastId);
+    return lastId;
+}
+
+function numberProgress(progress){
+    switch(progress){
+        case 'Proposed': return 0;
+        case 'In-Progress': return 1;
+        case 'Complete': return 2;
+    }
+}
+
+function numberCategory(category){
+    switch(category){
+        case categoryList[0]: return 0;
+        case categoryList[1]: return 1;
+        case categoryList[2]: return 2;
+        case categoryList[3]: return 3;
+        case categoryList[4]: return 4;
+    }
 }
 
 function checkComplete(status, item){
@@ -156,7 +186,7 @@ function getCompetencyList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,val.compentencyDescription,val.isSelected);  
+                addCompetencyToList(val.id,val.title,'test',val.selected);  
             });
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -187,9 +217,9 @@ function getGeneralFeedbackList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                var classDate = timeStampToClassDate(val.timeStamp);
-                var longDate = timeStampToLongDate(new Date(val.timeStamp));
-                var name = (val.providerName) ? val.providerName : val.providerEmail; 
+                var classDate = timeStampToClassDate(val.timestamp);
+                var longDate = timeStampToLongDate(new Date(val.timestamp));
+                var name = (val.providerName) ? val.providerName : val.providerEmail;
                 addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail);   
             });//end of for each loop
             if(data.length == 0) {
@@ -216,10 +246,12 @@ function getDevelopmentNeedsList(userID){
 	    method: 'GET',
 	    xhrFields: {'withCredentials': true},
 	    success: function(data){
-        	lastDevID = data.length;
 	        $.each(data, function(key, val){
-	        	var expectedBy = (isOngoing(val.timeToCompleteBy) ? val.timeToCompleteBy : formatDate(val.timeToCompleteBy) );
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, val.category, expectedBy, val.progress, val.isArchived, val.timeStamp);
+                nextDevNeedId.push(val.id);
+	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+                 var progressNumber = numberProgress(val.progress);
+                var categoryNumber = numberCategory(val.category);
+	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
 	        });
 	        if(data.length == 0)
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
@@ -265,7 +297,7 @@ function isOngoing(date){
 //Method to handle the close development need button
 function clickCloseDevNeed(e){
 	var type = $("#dev-need-modal-type").val();
-	if ((type=== "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
+	if ((type === "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
 		$('#development-need-modal').modal('hide');
 	    }
 	else {
@@ -286,6 +318,16 @@ function showProposedDevelopmentTab(){
 	if(!$("#dev-need-all-tab").hasClass("active")){
 		$("#dev-need-proposed-tab").find('a').trigger("click");
 	}
+}
+
+//Function that finds the largest ID for objectives and finds the next one
+function nextDevelopmentNeedID(){
+    //numerical sort
+    nextDevNeedId.sort(function(a,b){ return a - b;});
+    //finds the last id in the list
+    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
+    nextDevNeedId.push(++lastId);
+    return lastId;
 }
 
 //------------------------------------------------------------------------------------
@@ -440,7 +482,7 @@ function checkEmptyID(inputID, throwError){
 function addHTMLforPopUpBox(parentModalID){
 	$("#pop-up-"+parentModalID).append(""
 			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
-			+			"<div class=\"modal-dialog\">"
+			+			"<div class=\"modal-dialog modal-sm\">"
 			+				"<!-- Modal content-->"
 		    +				"<div class=\"modal-content\">"
 		    +					"<div class=\"modal-body\">"
@@ -543,7 +585,8 @@ function checkIfPastDate (date){
 	}
 	return false;
 }
-	
+
+//function to get all emails of all employees so can be used to auto fill email addresses
 function getEmailList(){
 	$.ajax({
     	"async": true,

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../components/myfeedback/myfeedback.min.css"/>
-<script type="text/javascript" src="../components/myfeedback/myfeedback.min.js"></script>
+<script type="text/javascript" src="../components/myfeedback/myfeedback.js"></script>
 
 <!--Containter for full page -->
 <div class="container">
@@ -10,20 +10,15 @@
 		     <div class="col-md-6">
                    <h2>My Feedback</h2>
                </div>      
-               <div class="col-md-6 vertical-centre">
-            	   <button type="button" class="btn btn-default pull-right" id="request-feedback">Request Feedback</button>
-                   <!-- Below code was added for a story that was descoped for live, but still in the backlog -->
-                   <!--<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
-                       <li id="general-feeback-list" class="active">
-                           <a data-toggle="tab" data-target="#general-feedback-tab, #generalFeeDescription">General</a></li>
-                       <li id="requested-feeback-list">
-                           <a data-toggle="tab" data-target="#requested-feedback-tab, #requestedFeeDescription">Requested</a></li> 
-                   </ul>-->
-                   
+               <div class="col-md-3 vertical-centre">
+                   <button type="button" class="btn btn-default pull-right" id="request-feedback">Request Feedback</button>
+               </div>
+               <div class="col-md-3 vertical-centre">
+                    <button type="button" class="btn btn-default pull-right" id="send-feedback">Send Feedback</button>
                </div>
            </div>
 
-		<div class="col-md-6 vertical-centre ">
+		<div class="col-md-6 vertical-centre">
 			<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 		</div>
 	</div>
@@ -158,7 +153,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left" id="cancel" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-default" id="submit-request-feedback">Submit</button>
+				<button type="button" class="btn btn-default" id="submit-request-feedback">Request</button>
 			</div>
 		</div><!-- End of Modal content-->
 	</div>
@@ -179,6 +174,65 @@
                		<div class="col-md-12"><h5>Simply reply to this email to provide <span class=full-name></span> with feedback. They supplied the following comment:</h5></div>
           			<div class="col-md-12"><h5> "Optional comments will go here"</h5></div>
           			<div class="col-md-12"><h5>The following headings may help you.</h5>
+                        <ol>
+                            <li>Context</li>
+                            <li>Time Period</li>
+                            <li>What went well?</li>
+                            <li>What could be improved?</li>
+                        </ol>                                                                                                                                   
+                    </div>
+          			<div class="col-md-12"><h5>You can find more information on the <a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/Performancemanagement/Pages/default.aspx" target="_blank">Performance Management page on F2F</a>.(External link required)</h5></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Send Feedback Modal -->
+<div id="sendFeedbackModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" id="close-feedback-send-modal" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Send feedback</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group" id="to-validate">
+						<label for="sending-to">Email(s)*:</label>
+						<input type="text" class="send-feedback-validate form-control" data-role="tagsinput" autocomplete="off" placeholder="..." id="sendingTo" maxlength="150"/>
+					</div>
+                                    
+					<div class="form-group" id="text-validate">
+						<label for="sending-text" class="control-label">Feedback: </label>
+						<textarea class="send-feedback-validate form-control" id="sendingText" placeholder="..." maxlength="5000" rows="5" spellcheck="true"></textarea>
+                        <button type="button" class="btn btn-link pull-right" id="view-feedback-suggestion-template" data-target="#feedbackTemplateModal">Feedback suggestion template</button>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" id="cancelSendModal" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-send-feedback">Send</button>
+			</div>
+		</div><!-- End of Modal content-->
+	</div>
+</div>
+
+<!--feedback suggestion template Modal -->
+<div id="feedbackTemplateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback suggestion template</h4>
+            </div>
+            <div class="modal-body">
+            	<div class="row">
+          			<div class="col-md-12"><h5>The following headings may help you to give feedback.</h5>
                         <ol>
                             <li>Context</li>
                             <li>Time Period</li>
