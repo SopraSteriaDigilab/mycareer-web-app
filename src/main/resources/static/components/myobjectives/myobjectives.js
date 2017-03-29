@@ -21,6 +21,8 @@ $(function() {
     //onclick to delete objectives
     $('#delete').click(function(){ deleteObjective(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
+    //onclick to complete objective
+    $('#submit-completed-status-note').click(function(){ editObjectiveProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); });
 });
 
 //HTTP request for INSERTING an objective to DB
@@ -70,7 +72,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 }
 
 //HTTP request for UPDATING an objective in DB
-function editObjectiveProgressOnDB(userID, objID, objStatus, completedText){
+function editObjectiveProgressOnDB(userID, objID, objStatus, title, completedText){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/updateObjectiveProgress/"+userID,
         method: "POST",
@@ -82,6 +84,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, completedText){
         },
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
+            addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -202,17 +205,16 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
 	}
     
     if(objStatus == 2){
-        alert(objID);
-        alert(title);
     $("#complete-id").empty().append(objID);
-    $("#modal-type").empty().append('Objective');
-    $("#modal-warning").empty().append('an Objective');;
+    $("#complete-status").empty().append(objStatus);
+    $("#modal-confirmation").empty().append('Objective');
+    $("#modal-alert").empty().append('an Objective');;
     $("#completedTitle").empty().append(title);
     openCompleteObjectiveModal(objID, title);
     }else{
         var userID = getADLoginID();
         var completedText = "";
-        editObjectiveProgressOnDB(userID, objID, objStatus, completedText);
+        editObjectiveProgressOnDB(userID, objID, objStatus, title, completedText);
     }
 }
 
@@ -234,6 +236,8 @@ function updateObjectiveStatusOnList(objID, objStatus){
 		case 2:
 			$('#started-obj-dot-'+objID).addClass('complete');
 			$('#complete-obj-dot-'+objID).addClass('complete');
+            $("textarea").val("");
+            $('#completed-status-modal').modal('hide');
 	}
 	
 	if(!($("#obj-all-tab").hasClass("active"))){
@@ -314,7 +318,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+",  2)'> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+",  2, \""+title+"\")'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
