@@ -10,7 +10,7 @@ $(function() {
 		}
 		else if(id=== "feedPDF"){
 			 getFeedbacksData();
-			 $('#print-modal-title-type').text('Feedbacks');
+			 $('#print-modal-title-type').text('Feedback');
 		}
 		else if(id=== "devPDF"){
 			 getDevelopmentNeedsData();

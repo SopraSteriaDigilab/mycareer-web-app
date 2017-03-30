@@ -126,7 +126,7 @@
     </div> 
 </div> 
 
-  <!-- Add Print Modal -->
+<!-- Add Print Modal -->
 <div id="print-modal" class="modal fade" role="dialog">
 	<div class="modal-dialog" id="pdf-modal-dialog">
 		<!-- Modal content-->
@@ -138,6 +138,74 @@
 			<div class="modal-body" id="pdf-modal-body"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>			
+			</div>
+		</div>
+	</div>
+</div>
+
+  <!-- Add Sorting Modal -->
+<div id="filter-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog" id="filter-modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="close-filter-cross">&times;</button>
+				<h4 class="modal-title">Filter Notes<span id="filter-modal-title-type"></span></h4>
+			</div>
+			<div class="modal-body" id="filter-modal-body">
+				<div class="panel-body remove-padding" >
+					<!-- <div class="row ">
+						<div class="col-md-6">
+							<h5><b>By Tag</b></h5>
+						</div>
+						<div class="col-md-6">
+							<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('date')">Clear Filter</h6>
+						</div>
+					</div>
+					<div class="form-group">
+					</div>
+					<hr/> -->
+					<div id="collapse-filter" class="panel-collapse collapse in">
+						<div class="row ">
+							<div class="col-md-6">
+								<h5><b>By Date</b></h5>
+							</div>
+							<!-- <div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearNoteFilter('date')">Clear Filter</h6>
+							</div> -->
+						</div>
+						<div class="row">
+							<div class='col-sm-12'>
+								<div class="form-group">
+									<h6><b>From:</b></h6>
+									<div class='input-group date' id='note-start-date-picker'>
+										<input type='text' class="form-control" id='note-start-date' readonly="readonly" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class='col-sm-12'>
+								<div class="form-group">
+									<h6><b>To:</b></h6>
+									<div class='input-group date' id='note-end-date-picker'>
+										<input type='text' class="form-control" id='note-end-date' readonly="readonly" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close">Cancel</button>			
+				<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="submit-note-date-filter">Apply</button>	
 			</div>
 		</div>
 	</div>
