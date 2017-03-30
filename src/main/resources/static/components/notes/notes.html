@@ -1,8 +1,6 @@
 <link rel="stylesheet" href="../components/notes/notes.min.css"/>
 <script type="text/javascript" src="../components/notes/notes.js"></script>
 
-
-
 <div class="row header">
   <br><br><br><br><br>
 
@@ -15,18 +13,6 @@
 			</div>
 	</div>
 	
-	<!--<div class="row">
-		<div class="col-md-12 text-center">
-			<select class="selectpicker select-note-type" id="note-type-picker">
-			  <option class="text-center" >General</option>
-			  <option class="text-center" >Objectives</option>
-			  <option class="text-center" >Competencies</option>
-			  <option class="text-center" >Feedback</option>
-			  <option class="text-center" >Development-Needs</option>
-			</select>
-		</div>
-	</div>-->
-	
 	<div class="row">
 		<div class="form-group col-md-12" >
 			<label for="general-note-input">Add note*<span class="max-characters"> (max 1000 characters) </span>:</label>
@@ -35,8 +21,12 @@
 	</div>
 	
 	<div class="row">
-		<div class="form-group col-md-offset-10 col-md-2">
-			<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+		<div class="form-group col-md-12">
+			<button type="button" class="btn btn-default pull-left  col-md-3" id="filter-note">Filter</button>
+			<div class="col-md-6">
+			<h6 class="pull-left btn-link" style="cursor:pointer;" onClick="clearNoteFilter('date')" >Clear Filter</h6>
+			</div>
+			<button type="button" class="btn btn-default pull-right col-md-3" id="submit-note" disabled>Submit</button>
 		</div>
 	</div>
 </div>

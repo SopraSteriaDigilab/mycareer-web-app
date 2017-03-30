@@ -13,9 +13,10 @@
 }
 
 .scrollable-feedback{
-    height: calc(100vh - 203px);
+    height: calc(100vh - 193px);
     overflow-y: auto;
    	overflow-x: hidden;
+   	min-height: 455px
 }
 
 .bg-info{
@@ -30,17 +31,17 @@
 }
 
 #resizable-reviewers {
-	height: calc(100vh - 494px);
-	flex: 1 1 auto;
-	max-height: 100%;
+	max-height: calc(100vh - 484px);
+	/*flex: 1 1 auto;*/
 	overflow-y: auto;
 	overflow-x: hidden;
 	min-height: 90px;
 }
 
 #fedback-descriptions .filterable-feedback {
-	max-height: calc(100vh - 203px);
+	max-height: calc(100vh - 193px);
 	overflow-y: auto;
 	overflow-x: hidden;
+	min-height: 100px;
 }
 
