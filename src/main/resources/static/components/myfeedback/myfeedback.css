@@ -16,7 +16,7 @@
     height: calc(100vh - 193px);
     overflow-y: auto;
    	overflow-x: hidden;
-   	min-height: 455px
+   	min-height: 381px
 }
 
 .bg-info{
