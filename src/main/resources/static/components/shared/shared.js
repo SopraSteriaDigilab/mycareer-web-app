@@ -391,7 +391,8 @@ function addNoteToDB(userID, from, body, date){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             lastNoteID++;
-            addNoteToList(from, body, date);
+            var classDate = timeStampToClassDate(new Date());
+            addNoteToList(from, body, date, classDate);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
