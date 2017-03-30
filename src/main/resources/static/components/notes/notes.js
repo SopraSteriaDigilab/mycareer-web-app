@@ -218,7 +218,7 @@ function clearNoteDateFilter(){
 	$("#note-start-date, #note-end-date").val(timeStampToClassDate(new Date()));
 	updateNoteEndDate();
 	$(".filterable-note").each(function(index){
-		$(this).closest('div').removeClass("filteredOutByDate");
+		$(this).removeClass("filteredOutByDate");
 	});
 	noteDateFilterApplied = false;
 }
