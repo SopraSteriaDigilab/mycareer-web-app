@@ -16,6 +16,7 @@
     height: calc(100vh - 193px);
     overflow-y: auto;
    	overflow-x: hidden;
+   	min-height: 455px
 }
 
 .bg-info{
@@ -31,7 +32,7 @@
 
 #resizable-reviewers {
 	max-height: calc(100vh - 484px);
-	flex: 1 1 auto;
+	/*flex: 1 1 auto;*/
 	overflow-y: auto;
 	overflow-x: hidden;
 	min-height: 90px;
@@ -41,5 +42,6 @@
 	max-height: calc(100vh - 193px);
 	overflow-y: auto;
 	overflow-x: hidden;
+	min-height: 100px;
 }
 

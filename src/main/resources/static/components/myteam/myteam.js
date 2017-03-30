@@ -31,6 +31,7 @@ function getReportees(){
 	        success: function(data){
 	        	$("#reportee-list").empty();
 	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+	        	demoManager(); //REMOVE ME!!!!
 	            $.each(data, function(key, val){
 	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
 	            });  
@@ -40,6 +41,12 @@ function getReportees(){
 	            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
 	        }
 	    });
+}
+
+function demoManager(){
+	if(getADLoginID() == 675590){
+		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
+	}
 }
 
 //method to remove apostrophe from names so can be clicked on in my team

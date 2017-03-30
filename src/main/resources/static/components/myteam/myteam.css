@@ -4,3 +4,10 @@
 #notes-link {
 	color: #337ab7;
 }
+
+#reportee-list, #info-holder {
+  height: calc(100vh - 193px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 455px
+}

@@ -19,7 +19,8 @@ function logMeIn(){
 	    	  ADfullName = data.fullName;
 	    	  ADLoginID = data.employeeID;
 	    	  ADUsername = data.username;
-	    	  isManager = Boolean(data.isManager); 
+	    	  isManager = Boolean(data.isManager);
+	    	  demoManager(data.employeeID) //REMOVE ME!!!!
               hasHRDash = Boolean(data.hasHRDash);
 	    	  loadPage($("#section").text());  
 	      },
@@ -27,6 +28,12 @@ function logMeIn(){
 	    	  window.location.replace("/access-issue");
 	      }
 	  });
+}
+
+function demoManager(employeeID){
+	if(employeeID == 675590){
+	  isManager = true;
+	}
 }
 
 function getEnvironment(){
