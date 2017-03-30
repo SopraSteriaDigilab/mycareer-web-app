@@ -96,7 +96,14 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         },
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
-            addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+            if(devNeedStatus == 2){
+                if(completedText === ""){
+                    addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'.", timeStampToDateTime(new Date()));
+                }else{
+                    addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+                } 
+            }
+
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -289,6 +296,7 @@ function clickDeleteDevNeed(id, title){
 
 function openDeleteDevNeedModal(id, title){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+    $("textarea").val("");
 }
 
 function removeDevNeedFromList(devNeedID){
@@ -391,7 +399,7 @@ function devNeedsButtonsHTML(devNeedID, isArchived, title){
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
         </div> \
         <div class=' col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default' onClick='openEditDevelopmentNeedModal("+devNeedID+")'>Edit</button> \
+        	<button type='button' class='btn btn-block btn-default' id='edit-dev-need-button' onClick='openEditDevelopmentNeedModal("+devNeedID+")'>Edit</button> \
         </div> \
     </div> \
 ";

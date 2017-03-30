@@ -36,7 +36,7 @@ $(function() {
             submitFeedbackRequest();
         }else{
             toastr.error("One or more email addresses entered are not valid");
-        }    
+        }
      });
     
     //click to submit send feedback
@@ -47,30 +47,17 @@ $(function() {
             toastr.error("One or more email addresses entered are not valid");
         }    
      });
-    //when these are clicked it clears the feedback request modal
-    $("#close-feedback-request-modal").click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
-    });
-    $("#cancel").click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
-    });
-    
-    //when these are clicked it clears the send feedback modal
-    $("#close-feedback-send-modal").click(function() {
-        $("textarea").val("");
-        $("#sendingTo").tagsinput('removeAll');
-    });
-    $("#cancelSendModal").click(function() {
-        $("textarea").val("");
-        $("#sendingTo").tagsinput('removeAll');
-    });
     
     //click to open a modal that shows the feedback email template
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
     //click to open a modal that shows the feedback suggestion template
     $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
+    
+    //onClick for Close send feedback modal
+	$('#cancelSendModal, #close-feedback-send-modal').on('click', function(e) { clickCloseSendFeedback(e); });
+    
+    //onClick for Close request feedback modal
+	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
     
 });//End of Document Function
 

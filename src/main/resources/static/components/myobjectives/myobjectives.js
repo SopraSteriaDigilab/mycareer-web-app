@@ -84,7 +84,13 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, title, completedTex
         },
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
-            addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+            if(objStatus == 2){
+                if(completedText === ""){
+                    addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'.", timeStampToDateTime(new Date()));
+                }else{
+                    addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+                } 
+            }
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -278,6 +284,7 @@ function clickDeleteObjective(id, title){
 //Method to open delete modal
 function openDeleteObjectiveModal(id, title){
     $('#deleteModal').modal({backdrop: 'static', keyboard: false, show: true});
+    $("textarea").val("");
 }
 
 //method to remove objective from list and close delete Modal 
@@ -366,7 +373,7 @@ function objectivesButtonsHTML(id, isArchived, title){
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div> \
         <div class=' col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
+        	<button type='button' class='btn btn-block btn-default' id='edit-objective-button' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
         </div> \
     </div> \
 ";
