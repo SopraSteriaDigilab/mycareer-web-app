@@ -125,7 +125,7 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             //need to update dev need list to remove
             removeDevNeedFromList(devNeedID);
             //need to update note list
-            if(completedText === ""){
+            if(deletingText === ""){
                 addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'.", timeStampToDateTime(new Date()));
             }else{
             addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
