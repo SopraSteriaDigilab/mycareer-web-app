@@ -84,7 +84,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, title, completedTex
         },
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
-            addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+            addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()), timeStampToClassDate(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -107,7 +107,7 @@ function deleteObjective(userID, objID, objTitle, deletingText){
             //need to update objective list to remove
             removeObjectiveFromList(objID);
             //need to update note list
-            addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
+            addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()),timeStampToClassDate(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){

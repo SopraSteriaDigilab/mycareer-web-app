@@ -96,7 +96,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         },
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
-            addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
+            addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()), timeStampToClassDate(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -119,7 +119,7 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             //need to update dev need list to remove
             removeDevNeedFromList(devNeedID);
             //need to update note list
-            addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
+            addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()),timeStampToClassDate(new Date()));
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
