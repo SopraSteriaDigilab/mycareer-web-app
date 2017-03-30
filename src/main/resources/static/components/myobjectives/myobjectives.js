@@ -113,7 +113,11 @@ function deleteObjective(userID, objID, objTitle, deletingText){
             //need to update objective list to remove
             removeObjectiveFromList(objID);
             //need to update note list
-            addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
+            if(deletingText === ""){
+                    addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'.", timeStampToDateTime(new Date()));
+                }else{
+                    addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
+                } 
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -226,6 +230,7 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
 
 function openCompleteObjectiveModal(id, title){
     $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
+    $("textarea").val("");
 }
 
 function updateObjectiveStatusOnList(objID, objStatus){

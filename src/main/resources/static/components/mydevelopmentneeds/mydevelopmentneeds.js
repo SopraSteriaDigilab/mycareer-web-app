@@ -103,7 +103,6 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
                     addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
                 } 
             }
-
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -126,7 +125,11 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             //need to update dev need list to remove
             removeDevNeedFromList(devNeedID);
             //need to update note list
+            if(completedText === ""){
+                addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'.", timeStampToDateTime(new Date()));
+            }else{
             addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
+            }
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -239,6 +242,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
 
 function openCompleteDevelopmentNeedModal(id, title){
     $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
+    $("textarea").val("");
 }
 
 function updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus){
