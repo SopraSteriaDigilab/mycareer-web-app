@@ -236,6 +236,48 @@ function getGeneralFeedbackList(userID){
     });//End of Ajax request
 }
 
+//method to handle the close send feedback button
+function clickCloseSendFeedback(e){
+	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
+		$('#sendFeedbackModal').modal('hide');
+	    }
+	else {
+		addHTMLforPopUpBox("send-feedback-modal");
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#sendFeedbackModal').modal('hide');
+              $("textarea").val("");
+              $("#sendingTo").tagsinput('removeAll');
+		    });
+	};
+}
+
+//method to handle the close send feedback button
+function clickCloseRequestFeedback(e){
+	if (checkEmptyID("requestingTo",false) && checkEmptyID("requestingText",false)){
+		$('#requestFeedbackModal').modal('hide');
+	    }
+	else {
+		addHTMLforPopUpBox("request-feedback-modal");
+		 var $form = $(this).closest('form');
+		  e.preventDefault();
+		  $('#confirm').modal({
+		      backdrop: 'static',
+		      keyboard: false
+		    })
+		    .one('click', '#close-modals', function(e) {
+		    	$('#requestFeedbackModal').modal('hide');
+              $("textarea").val("");
+              $("#requestingTo").tagsinput('removeAll');
+		    });
+	};
+}
+
 //-------------------------------- Development Needs ---------------------------------
 
 //Gets the List of Development Needs from the DB
