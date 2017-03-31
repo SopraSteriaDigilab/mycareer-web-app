@@ -1,6 +1,7 @@
 $(function() {
 	adjustDatePicker();
 	getEmailList();
+	getTags();
 });
 
 var emails = [];
@@ -17,8 +18,8 @@ var lastNoteID = 0;
 
 function adjustDatePicker(){
 	$.fn.datepicker.noConflict = function(){
-		   $.fn.datepicker = old;
-		   return this;
+	   $.fn.datepicker = old;
+	   return this;
 	};
 }
 
@@ -399,6 +400,57 @@ function addNoteToDB(userID, from, body, date){
             toastr.error(XMLHttpRequest.responseText);
         }
     });
+}
+
+//------------------------------------------------------------------------------------
+
+//--------------------------------------- Tags --------------------------------------
+
+
+//Method to make ajax call to add note to database
+function getTags(){
+	$.ajax({
+    	"async": true,
+        url: 'http://'+getEnvironment()+':8080/getTags/675590',
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+        	$.each(data, function(key, val){
+            	$.each(val, function(id, title){
+            		addToTagsList(key, id, title);
+                });
+            });
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+        }
+    });	
+}
+
+function addToTagsList(key, id, title){
+	if(key === "objectivesTags"){
+		$("#objectives-tags-checkboxes").append(tagsListItemHTML(id, title));
+	}else{
+		$("#development-needs-tags-checkboxes").append(tagsListItemHTML(id, title));
+	}
+}
+
+function tagsListItemHTML(id, title){
+	var HTML = " \
+		<div class='col-md-12 checkbox'> \
+		 <label> \
+		    <input class='tags-checkbox' type='checkbox' value=''> \
+		    " + title + " \
+		  </label> \
+		 </div>	\
+	    ";
+	return HTML
+}
+
+function clearTagsCheckboxes() {
+	$(".tags-checkbox").prop('checked', false);
 }
 
 //------------------------------------------------------------------------------------

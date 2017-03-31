@@ -101,28 +101,27 @@ function selectedFeedback(element){
 
 function feedbackSendersListHTML(id, sender, date, classDate, email){
 	var HTML = " \
-	        <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
-	        <input type='hidden' class='reviewer-filter' value='"+email+"'> \
-	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
+        <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
+        	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+        	<input type='hidden' class='date-filter' value='"+classDate+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
 	               <div class='col-md-7 wrap-text'><h5><b>"+ sender +"</b></h5></div> \
 	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
 	            </div> \
 	        </div> \
-	      </div> ";
+	     </div> ";
 	return HTML;
 }
 
 function feedbackReviewersListHTML(reviewer, email){
 	var HTML = " \
 		<div class='row'> \
-			<div class='col-md-10 wrap-only'> \
-				<label class='reviewer-label'>"+reviewer+"</label> \
-			</div> \
-			<div class='col-md-2'> \
-				 <input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"'> \
-			</div> \
+			<div class='col-md-12 wrap-only'> \
+				<label class='reviewer-label' style='max-width: 80%;''> \
+				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"' style='right:35px'> \
+				"+reviewer+" \
+				</label> \
 		</div>";
 	return HTML;
 }
@@ -130,12 +129,12 @@ function feedbackReviewersListHTML(reviewer, email){
 function feedbackDescriptionListHTML(id, sender, description, date, classDate, email){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
-	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
-    <input type='hidden' class='date-filter' value='"+classDate+"'> \
+		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
-				<div class='col-md-6'><h6><b>Objective Tags:</b></h6></div> \
-    			<div class='col-md-6'><h6 class='pull-right btn-link' style='cursor:pointer' onclick=''><b>Add Tags</b></h6></div> \
+				<div class='col-md-6'><h6>Tags: No tags with this feedback.</h6></div> \
+    			<div class='col-md-6'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModal()'><b>Add Tags</b></h6></div> \
     		</div> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
@@ -300,6 +299,10 @@ function openRequestFeedbackModal(){
 
 function openSendFeedbackModal(){
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function openAddTagModal(){
+    $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 //Email details sent through BE to request feedback.
