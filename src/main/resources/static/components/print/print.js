@@ -1,3 +1,6 @@
+$.fn.dataTable.moment( 'MMM YYYY' );
+$.fn.dataTable.moment( 'DD MMM YYYY' );
+
 //Function to get Objectives data of the user
 function getObjectivesData(){
 	$.ajax({
@@ -8,9 +11,10 @@ function getObjectivesData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printObjectivesHeader());
 	         $.each(data, function(key, val){
-	        	 if (val.archived === false){
-	        		 addObjectivesDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy);
-	        	 };
+	        	 var isArchived = val.archived;
+	        	 isArchived = isArchived ? 'Yes' : 'No';
+	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        	 	addObjectivesDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy, isArchived);
 	         }); 
 	         openPDF("objTable");
      },
@@ -52,9 +56,10 @@ function getDevelopmentNeedsData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
 	         $.each(data, function(key, val){
-	        	 if (val.archived === false){
-	        		 addDevelopmentNeedsDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.category);
-	        	 }
+	        	 var isArchived = val.archived;
+	        	 isArchived = isArchived ? 'Yes' : 'No';
+	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        		 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.category, isArchived);
 	         });
 	         openPDF("devNeedsTable");
      },
@@ -87,8 +92,8 @@ function getNotesData(){
 }
 
 //function to add objectives data to a list and append it on the HTML
-function addObjectivesDataToList(dueDate, title, description, progress, createdOn, proposedBy){
-    $("#objDetails").append(printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy));
+function addObjectivesDataToList(dueDate, title, description, progress, createdOn, proposedBy, isArchived){
+    $("#objDetails").append(printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy, isArchived));
 }
 
 //function to add feedback data to a list and append it on the HTML
@@ -97,8 +102,8 @@ function addFeedbackDataToList(providerEmail, providerName, feedbackDescription,
 }
 
 //function to add development needs data to a list and append it on the HTML
-function addDevelopmentNeedsDataToList(dueDate, title, description, progress, createdOn, category){
-    $("#devNeedsDetails").append(printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category));
+function addDevelopmentNeedsDataToList(dueDate, title, description, progress, createdOn, category, isArchived){
+    $("#devNeedsDetails").append(printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category, isArchived));
 }
 
 //function to add notes data to a list and append it on the HTML
@@ -118,6 +123,7 @@ function printObjectivesHeader(){
     		   <th>Progress</th> \
     		   <th>Created On</th> \
     		   <th>Proposed By</th> \
+    		   <th>Archived</th> \
             </tr> \
             </thead> \
             <tbody id='objDetails'> \
@@ -156,6 +162,7 @@ function printDevelopmentNeedsHeader(){
     		   <th>Progress</th> \
     		   <th>Created On</th> \
     		   <th>Category</th> \
+    		   <th>Archived</th> \
             </tr> \
             </thead> \
             <tbody id='devNeedsDetails'> \
@@ -184,14 +191,15 @@ function printNotesHeader(){
 }
 
 //Function that returns the objectives list in html format with the parameters given
-function printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy){
+function printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy, isArchived){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(dueDate)+"</td> \
+                <td>"+dueDate+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+proposedBy+"</td> \
+    		    <td>"+isArchived+"</td> \
             </tr> \
     "
     return html;
@@ -210,14 +218,15 @@ function printFeedbackList(providerEmail, providerName, feedbackDescription, pro
 }
 
 //Function that returns the  development needs list in html format with the parameters given
-function printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category){
+function printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category, isArchived){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(dueDate)+"</td> \
+                <td>"+dueDate+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"\n\n</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+category+"</td> \
+    		    <td>"+isArchived+"</td> \
             </tr> \
     "
     return html;
