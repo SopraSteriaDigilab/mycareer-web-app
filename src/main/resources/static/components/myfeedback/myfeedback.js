@@ -66,6 +66,7 @@ $(function() {
 	$("#submit-add-tags").click(function(){ clickSubmitTags() });
 	$("#close-tag-button, #close-tag-button-x").click(function(){ clearTagsCheckboxes() });
 	
+	initFeedbackTagFilter();
     
 });//End of Document Function
 
@@ -408,5 +409,6 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
     });
 }
 
-
-
+function initFeedbackTagFilter(){
+	$(".bootstrap-select").removeClass("fit-width");
+}

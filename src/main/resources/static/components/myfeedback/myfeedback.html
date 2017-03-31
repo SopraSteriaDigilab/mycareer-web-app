@@ -55,52 +55,55 @@
 								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('date')">Clear Filter</h6>
 							</div>
 						</div>
-						<div class="row" ><!-- DONT NEED THESE ROWS...? -->
-							<div class='col-sm-12'>
-								<div class="form-group" style="margin-top: 10px;">
-								<!--  <div class="row">
-									<div class="col-md-6">
-										<h6><b>From:</b></h6>
-									</div>
-								</div>-->
-								<div class="row">
-									<div class="col-md-3">
-										<h6><b>From:</b></h6>
-									</div>
-									<div class="col-md-9">
-										<div class='input-group date' id='feedback-start-date-picker'>
-											<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
-											<span class="input-group-addon"> 
-												<span class="glyphicon glyphicon-calendar"></span>
-											</span>
-										</div>
-									</div>	
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-3">
+								<h6><b>From:</b></h6>
+							</div>
+							<div class="col-md-9">
+								<div class='input-group date' id='feedback-start-date-picker'>
+									<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
 								</div>
+							</div>	
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-3" style="text-align: right;">
+								<h6><b>To:</b></h6>
+							</div>
+							<div class="col-md-9">
+								<div class='input-group date' id='feedback-end-date-picker'>
+									<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class='col-sm-12'>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-3" style="text-align: right;">
-											<h6><b>To:</b></h6>
-										</div>
-										<div class="col-md-9">
-											<div class='input-group date' id='feedback-end-date-picker'>
-												<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
-												<span class="input-group-addon"> 
-													<span class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
+						<div class="row" style="margin-top:10px;">
 							<div class='col-md-offset-6 col-md-6'>
 								<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+							</div>
+						</div>
+						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+							<div class="col-md-6">
+								<h5>Tags</h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" id="clear-tag-filter">Clear Filter</h6>
+							</div>
+						</div>
+						<div class="row" id="tags-dropdown" style="margin-top: 10px;">
+							<div class="col-md-12">
+								<select class="selectpicker" width="300px">
+								  <optgroup label="Objectives">
+								    <option>#1 - first objective...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option>
+								  </optgroup>
+								  <optgroup label="Development Needs">
+								 	 <option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option><option>#1 - first development need...</option>
+								  </optgroup>
+								</select>
 							</div>
 						</div>
 						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">

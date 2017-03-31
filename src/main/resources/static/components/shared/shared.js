@@ -420,6 +420,7 @@ function getTags(){
         	$.each(data, function(key, val){
             	$.each(val, function(id, title){
             		addToTagsList(key, id, title);
+   
                 });
             });
         },
