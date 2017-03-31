@@ -17,6 +17,8 @@ $(function() {
 	//onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
 
+
+	
 });
 
 //Function to load profile section

@@ -2,6 +2,8 @@ $(function() {
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
     
+	getTags();
+    
     //initialise Tags
     tags("requestingTo", emails);
     tags("sendingTo", emails);
@@ -16,6 +18,8 @@ $(function() {
 	$("#submit-date-filter").click(function (){ applyDateFilter() })
 
 	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
+	$("#objectives-tags-checkboxes").change(function(){ updateObjectivesTagsList(); });
+	$("#development-needs-tags-checkboxes").change(function(){ updateDevelopmentNeedsTagsList(); });
     
     //feedback request modal key preses
 	keypress('requestFeedbackModal');
@@ -58,6 +62,10 @@ $(function() {
     
     //onClick for Close request feedback modal
 	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
+	
+	$("#submit-add-tags").click(function(){ clickSubmitTags() });
+	$("#close-tag-button, #close-tag-button-x").click(function(){ clearTagsCheckboxes() });
+	
     
 });//End of Document Function
 
@@ -81,9 +89,9 @@ function initFeedbackDatePicker(id, start){
     $("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
 }
 
-function addGeneralFeedbackToList(id, sender, description, date, classDate, email){
+function addGeneralFeedbackToList(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email));
-      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds));
       if(!reviewerExists(email)){
     	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
       }
@@ -126,15 +134,15 @@ function feedbackReviewersListHTML(reviewer, email){
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate, email){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
 		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
-				<div class='col-md-6'><h6>Tags: No tags with this feedback.</h6></div> \
-    			<div class='col-md-6'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModal()'><b>Add Tags</b></h6></div> \
+				<div class='col-md-9'><h6>Tags: "+addTagsToFeedback(objTagIds, devNeedTagIds)+"</h6></div> \
+    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModal("+id+")'><b>Add Tags</b></h6></div> \
     		</div> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
@@ -146,6 +154,19 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 		 </div> \
 	</div> ";
 	return HTML
+}
+
+function addTagsToFeedback(objTagIds, devNeedTagIds){
+	HTML = "";
+	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+		HTML = "No tags with this feedback."
+	}else{
+		if(objTagIds.length > 0)
+			HTML += "Objectives: " + objTagIds + ". ";
+		if(devNeedTagIds.length > 0)
+			HTML += "Development Needs: " + devNeedTagIds + ".";
+	}
+	return HTML;
 }
 
 function updateEndDate(){
@@ -301,7 +322,8 @@ function openSendFeedbackModal(){
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
-function openAddTagModal(){
+function openAddTagModal(id){
+	$("#tag-feedback-id").val(id);
     $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
@@ -358,3 +380,33 @@ function submitSendFeedback(){
         });
         $('#sendFeedbackModal').modal('hide');
 }
+
+function clickSubmitTags() {
+	var id = $("#tag-feedback-id").val();
+	updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds);
+}
+
+function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/updateFeedbackTags/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'feedbackId': id,
+            'objectiveIds': objectiveTagIds.toString(),
+            'developmentNeedIds': developmentNeedTagIds.toString()
+        },
+        success: function(response){
+            toastr.success(response);
+            $('#add-tag-modal').modal('hide');
+            clearTagsCheckboxes();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+
+

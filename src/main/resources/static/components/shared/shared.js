@@ -1,7 +1,6 @@
 $(function() {
 	adjustDatePicker();
 	getEmailList();
-	getTags();
 });
 
 var emails = [];
@@ -14,6 +13,8 @@ var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-stud
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
 var nextDevNeedId = [];
 var nextObjId = [];
+var objectiveTagIds = [];
+var developmentNeedTagIds = [];
 var lastNoteID = 0;
 
 function adjustDatePicker(){
@@ -221,7 +222,7 @@ function getGeneralFeedbackList(userID){
                 var classDate = timeStampToClassDate(val.timestamp);
                 var longDate = timeStampToLongDate(new Date(val.timestamp));
                 var name = (val.providerName) ? val.providerName : val.providerEmail;
-                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail);   
+                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
             });//end of for each loop
             if(data.length == 0) {
 	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
@@ -431,18 +432,18 @@ function getTags(){
 
 function addToTagsList(key, id, title){
 	if(key === "objectivesTags"){
-		$("#objectives-tags-checkboxes").append(tagsListItemHTML(id, title));
+		$("#objectives-tags-checkboxes").append(tagsListItemHTML(id, title, "objective"));
 	}else{
-		$("#development-needs-tags-checkboxes").append(tagsListItemHTML(id, title));
+		$("#development-needs-tags-checkboxes").append(tagsListItemHTML(id, title, "development-need"));
 	}
 }
 
-function tagsListItemHTML(id, title){
+function tagsListItemHTML(id, title, type){
 	var HTML = " \
 		<div class='col-md-12 checkbox'> \
 		 <label> \
-		    <input class='tags-checkbox' type='checkbox' value=''> \
-		    " + title + " \
+		    <input class='"+type+"-tag-checkbox' type='checkbox' value='"+id+"'> \
+		    <b>#"+id+": </b>" + title + " \
 		  </label> \
 		 </div>	\
 	    ";
@@ -450,7 +451,34 @@ function tagsListItemHTML(id, title){
 }
 
 function clearTagsCheckboxes() {
-	$(".tags-checkbox").prop('checked', false);
+	$(".objective-tag-checkbox").prop('checked', false);
+	$(".development-need-tag-checkbox").prop('checked', false);
+	objectiveTagIds = [];
+	developmentNeedTagIds = [];
+}
+
+function updateObjectivesTagsList(){
+	$(".objective-tag-checkbox").each(function(){
+		if($(this).prop("checked") == true){
+			if(!(objectiveTagIds.indexOf(this.value) > -1))
+				objectiveTagIds.push(this.value);
+        }else{
+        	if(objectiveTagIds.indexOf(this.value) > -1)
+        		objectiveTagIds.splice(objectiveTagIds.indexOf(this.value), 1);
+        }
+	});
+}
+
+function updateDevelopmentNeedsTagsList(){
+	$(".development-need-tag-checkbox").each(function(){
+		if($(this).prop("checked") == true){
+			if(!(developmentNeedTagIds.indexOf(this.value) > -1))
+				developmentNeedTagIds.push(this.value);
+        }else{
+        	if(developmentNeedTagIds.indexOf(this.value) > -1)
+        		developmentNeedTagIds.splice(objectiveTagIds.indexOf(this.value), 1);
+        }
+	});
 }
 
 //------------------------------------------------------------------------------------

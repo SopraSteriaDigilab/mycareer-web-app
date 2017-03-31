@@ -238,10 +238,11 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" data-toggle="modal" onClick="clearTagsCheckboxes()">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" data-toggle="modal" id="close-tag-button-x">&times;</button>
 				<h4 class="modal-title">Add Tags</h4>
 			</div>
 			<div class="modal-body">
+            	<input type="hidden" id="tag-feedback-id" value="0">
 				<div class="row">
 					<div col="col-md-12">
 						<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
@@ -260,8 +261,8 @@
 			  	</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" data-dismiss="modal" class="btn btn-default pull-left" data-toggle="modal" onClick="clearTagsCheckboxes()">Close</button>
-				<button type="button" class="btn btn-default" id="submit-add-tags">Add Tags</button>
+				<button type="button" data-dismiss="modal" class="btn btn-default pull-left" data-toggle="modal" id="close-tag-button">Close</button>
+				<button type="button" class="btn btn-default" id="submit-add-tags">Update Tags</button>
 			</div>
 		</div><!-- End of Modal content-->
 	</div>
