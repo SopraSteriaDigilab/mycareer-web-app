@@ -294,9 +294,15 @@ function openDeleteObjectiveModal(id, title){
 
 //method to remove objective from list and close delete Modal 
 function removeObjectiveFromList(objID){
+    nextObjId.sort(function(a,b){ return a - b;});
+    var findId = nextObjId.indexOf(parseInt(objID));
+    if(findId > -1){
+        nextObjId.splice(findId, 1);
+    }
     $("#objective-item-"+objID).fadeOut(400, function() {
         $(this).remove();
     });
+    
     $("textarea").val("");
      $('#deleteModal').modal('hide');
 }
