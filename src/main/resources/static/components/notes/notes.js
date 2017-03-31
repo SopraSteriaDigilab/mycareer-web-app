@@ -35,8 +35,6 @@ var competencyList = ["Accountability", "Business Awareness", "Effective Communi
 var noteDateFilterApplied = false;
 //var noteTagFilterApplied = false;
 
-var firstNoteDate;
-
 
 function initResizable(){
 	$('[data-toggle="tooltip"]').tooltip();
@@ -65,11 +63,11 @@ function getNotesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-    	  firstNoteDate = timeStampToClassDate(data[0].timestamp);
+    	 // firstNoteDate = timeStampToClassDate(data[0].timestamp);
           lastNoteID = data.length;
           $.each(data, function(key, val){
           	var date = timeStampToDateTime(new Date(val.timestamp));
-          	var classDate = timeStampToClassDate(val.timestamp); 
+          	var classDate = timeStampToClassDate(val.timestamp);
           	addNoteToList(val.providerName, val.noteDescription, date, classDate);
           });
           if(data.length == 0)
@@ -217,12 +215,10 @@ function clearNoteFilter(filter){
 }
 
 function clearNoteDateFilter(){
-	$("#note-start-date").val(firstNoteDate);
-	$("#note-end-date").val(timeStampToClassDate(new Date()));
+	$("#note-start-date, #note-end-date").val(timeStampToClassDate(new Date()));
 	updateNoteEndDate();
 	$(".filterable-note").each(function(index){
-		$(this).closest('div').removeClass("filteredOutByDate");
+		$(this).removeClass("filteredOutByDate");
 	});
-	applyNoteDateFilter();
 	noteDateFilterApplied = false;
 }

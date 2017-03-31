@@ -134,6 +134,10 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
     <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
+				<div class='col-md-6'><h6><b>Objective Tags:</b></h6></div> \
+    			<div class='col-md-6'><h6 class='pull-right btn-link' style='cursor:pointer' onclick=''><b>Add Tags</b></h6></div> \
+    		</div> \
+			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
 				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
 			</div> \
