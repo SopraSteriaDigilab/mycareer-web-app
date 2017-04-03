@@ -25,8 +25,8 @@
 	<!--End of Page Header -->
     
 	<!-- Accordion sort half - added a test one, setting out layout -->
- 	<div class="col-md-3" style="margin-top: 10px">
-		<div class="panel-group" id="accordion-Date">
+ 	<div class="col-md-3" style="margin-top: 10px; margin-bottom:0px;">
+		<div class="panel-group" id="accordion-Date" style="margin-bottom:0px;">
 			<div class="panel panel-default">
 				<div class="panel-heading remove-padding">
 					<div class="panel-title">
@@ -52,55 +52,58 @@
 								<h5>Date</h5>
 							</div>
 							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('date')">Clear Filter</h6>
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearDateFilter()">Clear Filter</h6>
 							</div>
 						</div>
-						<div class="row" ><!-- DONT NEED THESE ROWS...? -->
-							<div class='col-sm-12'>
-								<div class="form-group" style="margin-top: 10px;">
-								<!--  <div class="row">
-									<div class="col-md-6">
-										<h6><b>From:</b></h6>
-									</div>
-								</div>-->
-								<div class="row">
-									<div class="col-md-3">
-										<h6><b>From:</b></h6>
-									</div>
-									<div class="col-md-9">
-										<div class='input-group date' id='feedback-start-date-picker'>
-											<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
-											<span class="input-group-addon"> 
-												<span class="glyphicon glyphicon-calendar"></span>
-											</span>
-										</div>
-									</div>	
-								</div>
-								</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-3">
+								<h6><b>From:</b></h6>
 							</div>
+							<div class="col-md-9">
+								<div class='input-group date' id='feedback-start-date-picker'>
+									<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>	
 						</div>
-						<div class="row">
-							<div class='col-sm-12'>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-3" style="text-align: right;">
-											<h6><b>To:</b></h6>
-										</div>
-										<div class="col-md-9">
-											<div class='input-group date' id='feedback-end-date-picker'>
-												<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
-												<span class="input-group-addon"> 
-													<span class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
-										</div>
-									</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-3" style="text-align: right;">
+								<h6><b>To:</b></h6>
+							</div>
+							<div class="col-md-9">
+								<div class='input-group date' id='feedback-end-date-picker'>
+									<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<div class="row" style="margin-top:10px;">
 							<div class='col-md-offset-6 col-md-6'>
 								<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+							</div>
+						</div>
+						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+							<div class="col-md-6">
+								<h5>Tags</h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" id="clear-tag-filter">Clear Filter</h6>
+							</div>
+						</div>
+						<div class="row" id="feedback-tags-dropdown" style="margin-top: 10px;">
+							<div class="col-md-12">
+								<select class="selectpicker">
+								  <optgroup label="Objectives">
+								    <option>#2: Present at Senior Manage...</option><option>#3: Go Live with MyCareer Ph...</option><option>#4: Million Makers </option><option>#5: OCP</option><option>#6: Buddy/Mentor</option>
+								  </optgroup>
+								  <optgroup label="Development Needs">
+								 	 <option>#1 - Test Development Need</option>
+								  </optgroup>
+								</select>
 							</div>
 						</div>
 						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
@@ -108,7 +111,7 @@
 								<h5>Reviewer</h5>
 							</div>
 							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('reviewer')">Clear Filter</h6>
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearReviewerFilter()">Clear Filter</h6>
 							</div>
 						</div>
 						<div class="row" id="resizable-reviewers">
@@ -221,9 +224,9 @@
 					</div>
                                     
 					<div class="form-group" id="text-validate">
-						<label for="sending-text" class="control-label">Feedback <span class="max-characters"> (max 5000 characters) </span>: </label>
+						<label for="sending-text" class="control-label">Feedback* <span class="max-characters"> (max 5000 characters) </span>: </label>
 						<textarea class="send-feedback-validate form-control" id="sendingText" placeholder="..." maxlength="5000" rows="5" spellcheck="true"></textarea>
-                        <button type="button" class="btn btn-link pull-right" id="view-feedback-suggestion-template" data-target="#feedbackTemplateModal">Feedback suggestion template</button>
+                        <button type="button" class="btn btn-link pull-right" id="view-feedback-suggestion-template" data-target="#feedbackTemplateModal">View Feedback Guide</button>
 					</div>
 				</form>
 			</div>
@@ -241,7 +244,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Feedback suggestion template</h4>
+                <h4 class="modal-title">Feedback Guide</h4>
             </div>
             <div class="modal-body">
             	<div class="row">

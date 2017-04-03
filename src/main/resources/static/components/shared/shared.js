@@ -11,11 +11,21 @@ var statusListDivIDs = ['proposed-obj', 'started-obj', 'completed-obj'];
 var modalStatusList = ['Add', 'Edit', 'Propose'];
 var categoryIDs = ['on-job-radio', 'classroom-radio', 'online-radio', 'self-study-radio', 'other-radio'];
 var categoryList = ['On Job Training', 'Classroom Training', 'Online or E-learning', 'Self Study', 'Other'];
+var competenciesDescriptions = [
+"Shows drive and commitment to achieve objectives. Is willing to act decisively and strives to find ways of overcoming obstacles. Takes ownership of issues and empowers team members by giving them an appropriate level of responsibility and autonomy. Does not give up and can be counted on to deliver. Is action oriented.",
+"Expresses ideas clearly, persuasively and with impact. Listens to others and convinces them to accept their ideas. Is open and honest with colleagues and clients. Able to write or present clearly and succinctly in a variety of communication settings and audiences. Gets messages across that have the desired effect. Is timely with provision of information.",
+"Provides clear direction and motivates and inspires others to succeed. Seeks to develop the skills and confidence of others and to recognise and develop talent. Acts as a role model and provides appropriate induction, feedback and coaching to team members. Is willing to confront and challenge poor performance and encourages team members to contribute ideas. Brings the best out of others.",
+"Builds Sopra Steria's reputation in the market by setting high standards of service and delivery. Knows what to measure and how to measure it and looks for opportunities for synergies. Is committed to Service Excellence.",
+"Is able to recognise opportunities to leverage Sopra Steria's capabilities to provide practical and profitable solutions to client's needs. Understands the key commercial issues that affect profitability and growth. Builds relationships with clients and seeks to understand their needs and priorities. Uses this knowledge to provide flexible and reliable solutions to meet and exceed clients' expectations and deliver value to Sopra Steria. Acts as a company Ambassador.",
+"Takes account of a wide range of long-term changes and trends in technology, the market-place and in the business and plans ahead accordingly. Has a clear view of where they want to get to in the medium and longer term. Understands competition. Anticipates consequences and trends.",
+"Shows flexibility and the desire to acquire new knowledge and ideas. Accepts and supports the need for change and looks for new ways of solving problems. Demonstrates the ability to lead and foster change within the organisation. Can act differently depending upon the situation and can handle uncertainty. Is committed to continuous improvement. Comes up with practical steps to implement own or others ideas.",
+"Works cooperatively with colleagues and considers their needs and the impact of decisions on them. Seeks to build relationships across the organisation and to work for the overall good of the business. Able to find common ground and gain trust. Encourages collaboration."];
 var nextDevNeedId = [];
 var nextObjId = [];
 var objectiveTagIds = [];
 var developmentNeedTagIds = [];
 var lastNoteID = 0;
+var emptyArray = [];
 
 function adjustDatePicker(){
 	$.fn.datepicker.noConflict = function(){
@@ -188,7 +198,7 @@ function getCompetencyList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,'test',val.selected);  
+                addCompetencyToList(val.id,val.title,competenciesDescriptions[val.id],val.selected);  
             });
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -394,7 +404,7 @@ function addNoteToDB(userID, from, body, date){
         		$("#general-notes-list").removeClass("text-center").empty();
             lastNoteID++;
             var classDate = timeStampToClassDate(new Date());
-            addNoteToList(from, body, date, classDate);
+            addNoteToList(lastNoteID++, from, body, date, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -420,6 +430,7 @@ function getTags(){
         	$.each(data, function(key, val){
             	$.each(val, function(id, title){
             		addToTagsList(key, id, title);
+   
                 });
             });
         },
@@ -731,4 +742,54 @@ function getEmailList(){
             toastr.error("Sorry, there was a problem getting emails, please try again later.");
         }
     });	
+}
+
+function addTags(objTagIds, devNeedTagIds){
+	HTML = "";
+	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+		HTML = "No tags with this feedback."
+	}else{
+		if(objTagIds.length > 0)
+			HTML += "Objectives: " + objTagIds + ". ";
+		if(devNeedTagIds.length > 0)
+			HTML += "Development Needs: " + devNeedTagIds + ".";
+	}
+	return HTML;
+}
+
+function openAddTagModal(id){
+	$("#tag-id").val(id);
+    $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function clickSubmitTags() {
+	var type = $("#tag-type").val();
+	var id = $("#tag-id").val();
+	if(type === "feedback"){
+		updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds);
+	}else{
+		updateNoteTags(id, objectiveTagIds, developmentNeedTagIds);
+	}
+}
+
+function updateTagCheckboxes(objTags, devNeedTags){
+	var oTags = objTags.split(',');
+	var dnTags = devNeedTags.split(',');
+	
+	$(".objective-tag-checkbox").each(function(index){
+		if(jQuery.inArray(this.value, oTags) > -1){
+			$(this).prop('checked', true);
+		}		
+	});
+	
+	$(".development-need-tag-checkbox").each(function(index){
+		if(jQuery.inArray(this.value, dnTags) > -1){
+			$(this).prop('checked', true);
+		}		
+	});
+	
+	if(objTags !== "")
+		objectiveTagIds = oTags;
+	if(devNeedTags !== "")
+		developmentNeedTagIds = dnTags;
 }

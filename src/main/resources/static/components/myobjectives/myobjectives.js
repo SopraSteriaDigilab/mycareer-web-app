@@ -3,6 +3,8 @@ $(function() {
 //	Get list of objectives
 	getObjectivesList(getADLoginID());
 	
+	getTags();
+	
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
@@ -72,7 +74,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 }
 
 //HTTP request for UPDATING an objective in DB
-function editObjectiveProgressOnDB(userID, objID, objStatus, title, completedText){
+function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completedText){
     $.ajax({
         url: "http://"+getEnvironment()+":8080/updateObjectiveProgress/"+userID,
         method: "POST",
@@ -85,11 +87,8 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, title, completedTex
         success: function(response){
             updateObjectiveStatusOnList(objID, objStatus);
             if(objStatus == 2){
-                if(completedText === ""){
-                    addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'.", timeStampToDateTime(new Date()));
-                }else{
-                    addNoteToList("Auto Generated", getADfullName()+ " has completed Objective '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
-                } 
+            	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
+                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             }
             toastr.success(response);
         },
@@ -113,11 +112,8 @@ function deleteObjective(userID, objID, objTitle, deletingText){
             //need to update objective list to remove
             removeObjectiveFromList(objID);
             //need to update note list
-            if(deletingText === ""){
-                    addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'.", timeStampToDateTime(new Date()));
-                }else{
-                    addNoteToList("Auto Generated", getADfullName()+ " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
-                } 
+            var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
+            addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -215,12 +211,12 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
 	}
     
     if(objStatus == 2){
-    $("#complete-id").empty().append(objID);
-    $("#complete-status").empty().append(objStatus);
-    $("#modal-confirmation").empty().append('Objective');
-    $("#modal-alert").empty().append('an Objective');;
-    $("#completedTitle").empty().append(title);
-    openCompleteObjectiveModal(objID, title);
+	    $("#complete-id").empty().append(objID);
+	    $("#complete-status").empty().append(objStatus);
+	    $("#modal-confirmation").empty().append('Objective');
+	    $("#modal-alert").empty().append('an Objective');;
+	    $("#completedTitle").empty().append(title);
+	    openCompleteObjectiveModal(objID, title);
     }else{
         var userID = getADLoginID();
         var completedText = "";

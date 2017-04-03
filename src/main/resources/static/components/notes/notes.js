@@ -26,7 +26,14 @@ $(function() {
 	
 	//Click listener to filter note
 	$('#filter-note').click(function(){ openNoteFilterModal(); });
-
+	
+	initTagFilterDropDown();
+	$("#submit-add-tags").click(function(){ clickSubmitTags() });
+	$("#close-tag-button, #close-tag-button-x").click(function(){ clearTagsCheckboxes() });
+	
+	$("#objectives-tags-checkboxes").change(function(){ updateObjectivesTagsList(); });
+	$("#development-needs-tags-checkboxes").change(function(){ updateDevelopmentNeedsTagsList(); });
+	
 });
 
 var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
@@ -68,7 +75,7 @@ function getNotesList(userID){
           $.each(data, function(key, val){
           	var date = timeStampToDateTime(new Date(val.timestamp));
           	var classDate = timeStampToClassDate(val.timestamp);
-          	addNoteToList(val.providerName, val.noteDescription, date, classDate);
+          	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
           });
           if(data.length == 0)
         	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
@@ -81,26 +88,53 @@ function getNotesList(userID){
   });
 }
 
+function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
+    $.ajax({
+        url: "http://"+getEnvironment()+":8080/updateNotesTags/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'noteId': id,
+            'objectiveIds': objectiveTagIds.toString(),
+            'developmentNeedIds': developmentNeedTagIds.toString()
+        },
+        success: function(response){
+            toastr.success(response);
+            $("#note-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds));
+            setNoteTagValues(id, objectiveTagIds, developmentNeedTagIds);
+            $('#add-tag-modal').modal('hide');
+            clearTagsCheckboxes();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+                                                                                                                                                                                                                                                                                                                                                                                                  
 //Method to add note to list directly
-function addNoteToList(fromWho, body, date, classDate){
-	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date, classDate));
+function addNoteToList(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){
+	$("#general-notes-list").prepend(notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds));
 }
 
 //Method to return html
-function notesListHTML(fromWho, body, date, classDate){	
+function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){	
 	var html = " \
-		  <li class='list-group-item filterable-note'> \
+		  <li class='list-group-item filterable-note' id='note-"+id+"'> \
 			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
+			  <input type='hidden' id='note-obj-tag-filter-"+id+"' class='notes-obj-tag-filter' value='"+objTagIds+"'> \
+			  <input type='hidden' id='note-dev-need-tag-filter-"+id+"' class='notes-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
 			  	<div class='row'> \
-					<div class='col-md-6 wrap-text'><h6><b>" + fromWho + "</b></h6></div> \
+					<div class='col-md-6 wrap-text'><h6><b>" + providerName + "</b></h6></div> \
 					<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 				</div> \
 				<div class='row'> \
 					<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
-		            </div> \
-		        <div class='row'> \
-		            <div class='col-md-8 wrap-text'><p id='linkedTags'></p><div> \
-		            <div class='col-md-4 pull-right> \
+	            </div> \
+			<div class='row'> \
+				<div class='col-md-9'><h6>Tags: <span id=note-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
+    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalNotes("+id+")'><b>Tags</b></h6></div> \
+    		</div> \
 		  </li> \
 	  ";
 	return html;
@@ -196,22 +230,10 @@ function updateNoteFilterView(){
 			note.show();
 		}
 	});
-//	var filterText = $("#filter-text");
-//	if(dateFilterApplied){
-//		filterText.text("Date: "+$("#note-start-date").val()+" to "+$("#note-end-date").val()+".");
-//	}else {
-//		filterText.text("No Filters Applied");
-//	}
 }
 
-function clearNoteFilter(filter){
-	if(filter === "date"){
-		clearNoteDateFilter();
-	}
-//	else{
-//		clearTagFilter();
-//	}
-	updateNoteFilterView();
+function clearAllNotesFilters(filter){
+	clearNoteDateFilter();
 }
 
 function clearNoteDateFilter(){
@@ -221,4 +243,24 @@ function clearNoteDateFilter(){
 		$(this).removeClass("filteredOutByDate");
 	});
 	noteDateFilterApplied = false;
+	updateNoteFilterView();
+}
+
+function initTagFilterDropDown(){
+	$(".bootstrap-select").removeClass("fit-width");
+	$(".bootstrap-select").css("width", "100%");
+}
+
+function openAddTagModalNotes(id){
+	var objTags = $("#note-obj-tag-filter-"+id).val();
+	var devNeedTags = $("#note-dev-need-tag-filter-"+id).val();
+	updateTagCheckboxes(objTags, devNeedTags);
+	$("#tag-type").val("note");
+	openAddTagModal(id);
+}
+
+function setNoteTagValues(id, objTags, devNeedTags){
+	$("#note-obj-tag-filter-"+id).val(objTags);
+	$("#note-dev-need-tag-filter-"+id).val(devNeedTags);
+	
 }

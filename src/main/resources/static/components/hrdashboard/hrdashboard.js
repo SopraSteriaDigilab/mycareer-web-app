@@ -1,5 +1,7 @@
 $(function() {
     
+	getTags();
+	
     //initialization of select picker
     $('.selectpicker').selectpicker();
     
