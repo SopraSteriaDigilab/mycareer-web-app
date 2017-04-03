@@ -3,6 +3,8 @@ $(function() {
 	//Get list of development needs
 	getDevelopmentNeedsList(getADLoginID());
 	
+	getTags();
+	
 	//Initialising the date picker
 	initDatePicker('development-need', new Date());
 	
@@ -97,11 +99,8 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         success: function(response){
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
             if(devNeedStatus == 2){
-                if(completedText === ""){
-                    addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'.", timeStampToDateTime(new Date()));
-                }else{
-                    addNoteToList("Auto Generated", getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'", timeStampToDateTime(new Date()));
-                } 
+            	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
+                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             }
             toastr.success(response);
         },
@@ -125,11 +124,8 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             //need to update dev need list to remove
             removeDevNeedFromList(devNeedID);
             //need to update note list
-            if(completedText === ""){
-                addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'.", timeStampToDateTime(new Date()));
-            }else{
-            addNoteToList("Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'", timeStampToDateTime(new Date()));
-            }
+            var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
+            addNoteToList(lastNoteID++, "Auto Generated", getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'.", timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){

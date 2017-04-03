@@ -25,6 +25,7 @@ var nextObjId = [];
 var objectiveTagIds = [];
 var developmentNeedTagIds = [];
 var lastNoteID = 0;
+var emptyArray = [];
 
 function adjustDatePicker(){
 	$.fn.datepicker.noConflict = function(){
@@ -403,7 +404,7 @@ function addNoteToDB(userID, from, body, date){
         		$("#general-notes-list").removeClass("text-center").empty();
             lastNoteID++;
             var classDate = timeStampToClassDate(new Date());
-            addNoteToList(from, body, date, classDate);
+            addNoteToList(lastNoteID++, from, body, date, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -735,4 +736,32 @@ function getEmailList(){
             toastr.error("Sorry, there was a problem getting emails, please try again later.");
         }
     });	
+}
+
+function addTags(objTagIds, devNeedTagIds){
+	HTML = "";
+	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+		HTML = "No tags with this feedback."
+	}else{
+		if(objTagIds.length > 0)
+			HTML += "Objectives: " + objTagIds + ". ";
+		if(devNeedTagIds.length > 0)
+			HTML += "Development Needs: " + devNeedTagIds + ".";
+	}
+	return HTML;
+}
+
+function openAddTagModalFeedback(id){
+	$("#tag-type").val("feedback");
+	openAddTagModal(id);
+}
+
+function openAddTagModalNotes(id){
+	$("#tag-type").val("note");
+	openAddTagModal(id);
+}
+
+function openAddTagModal(id){
+	$("#tag-id").val(id);
+    $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }

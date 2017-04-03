@@ -143,8 +143,8 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
-				<div class='col-md-9'><h6>Tags: "+addTagsToFeedback(objTagIds, devNeedTagIds)+"</h6></div> \
-    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModal("+id+")'><b>Add Tags</b></h6></div> \
+				<div class='col-md-9'><h6>Tags: "+addTags(objTagIds, devNeedTagIds)+"</h6></div> \
+    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalFeedback("+id+")'><b>Add Tags</b></h6></div> \
     		</div> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
@@ -156,19 +156,6 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 		 </div> \
 	</div> ";
 	return HTML
-}
-
-function addTagsToFeedback(objTagIds, devNeedTagIds){
-	HTML = "";
-	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
-		HTML = "No tags with this feedback."
-	}else{
-		if(objTagIds.length > 0)
-			HTML += "Objectives: " + objTagIds + ". ";
-		if(devNeedTagIds.length > 0)
-			HTML += "Development Needs: " + devNeedTagIds + ".";
-	}
-	return HTML;
 }
 
 function updateEndDate(){
@@ -322,11 +309,6 @@ function openRequestFeedbackModal(){
 
 function openSendFeedbackModal(){
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
-}
-
-function openAddTagModal(id){
-	$("#tag-feedback-id").val(id);
-    $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 //Email details sent through BE to request feedback.

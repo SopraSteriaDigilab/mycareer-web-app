@@ -68,7 +68,7 @@ function getNotesList(userID){
           $.each(data, function(key, val){
           	var date = timeStampToDateTime(new Date(val.timestamp));
           	var classDate = timeStampToClassDate(val.timestamp);
-          	addNoteToList(val.providerName, val.noteDescription, date, classDate);
+          	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
           });
           if(data.length == 0)
         	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
@@ -80,27 +80,28 @@ function getNotesList(userID){
       }
   });
 }
-
+                                                                                                                                                                                                                                                                                                                                                                                                  
 //Method to add note to list directly
-function addNoteToList(fromWho, body, date, classDate){
-	$("#general-notes-list").prepend(notesListHTML(fromWho, body, date, classDate));
+function addNoteToList(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){
+	$("#general-notes-list").prepend(notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds));
 }
 
 //Method to return html
-function notesListHTML(fromWho, body, date, classDate){	
+function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){	
 	var html = " \
 		  <li class='list-group-item filterable-note'> \
 			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
 			  	<div class='row'> \
-					<div class='col-md-6 wrap-text'><h6><b>" + fromWho + "</b></h6></div> \
+					<div class='col-md-6 wrap-text'><h6><b>" + providerName + "</b></h6></div> \
 					<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 				</div> \
 				<div class='row'> \
 					<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
-		            </div> \
-		        <div class='row'> \
-		            <div class='col-md-8 wrap-text'><p id='linkedTags'></p><div> \
-		            <div class='col-md-4 pull-right> \
+	            </div> \
+			<div class='row'> \
+				<div class='col-md-9'><h6>Tags: "+addTags(objTagIds, devNeedTagIds)+"</h6></div> \
+    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalNotes("+id+")'><b>Add Tags</b></h6></div> \
+    		</div> \
 		  </li> \
 	  ";
 	return html;
