@@ -3,8 +3,6 @@ $(function() {
 //	Get list of objectives
 	getObjectivesList(getADLoginID());
 	
-	getTags();
-	
 	//Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	

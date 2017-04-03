@@ -418,11 +418,11 @@ function addNoteToDB(userID, from, body, date){
 //--------------------------------------- Tags --------------------------------------
 
 
-//Method to make ajax call to add note to database
-function getTags(){
+//Method to make ajax call to get tags from database
+function getTags(userID){
 	$.ajax({
     	"async": true,
-        url: 'http://'+getEnvironment()+':8080/getTags/675590',
+        url: 'http://'+getEnvironment()+':8080/getTags/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},

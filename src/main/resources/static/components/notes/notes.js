@@ -1,7 +1,9 @@
 $(function() {
 	//initialise jquery ui resizable component
 	initResizable();
-
+	
+	getTags(getADLoginID());
+	
 	//Get general-notes and link ids
 	getNotesList(getADLoginID());
 	

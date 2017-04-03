@@ -3,8 +3,6 @@ $(function() {
 	//Get list of development needs
 	getDevelopmentNeedsList(getADLoginID());
 	
-	getTags();
-	
 	//Initialising the date picker
 	initDatePicker('development-need', new Date());
 	

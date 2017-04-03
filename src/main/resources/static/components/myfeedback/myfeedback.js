@@ -3,8 +3,6 @@ $(function() {
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
     
-	getTags();
-    
     //initialise Tags
     tags("requestingTo", emails);
     tags("sendingTo", emails);
