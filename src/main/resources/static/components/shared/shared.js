@@ -514,6 +514,12 @@ function formatDate(date) {
 	return fullMonths[d.getMonth()] + ' ' + d.getFullYear();
 }
 
+//Formatting from YYYY-MM date to 'MMM YYYY' with a short month (e.g '2016-12' to 'Dec 2016')
+function formatDateShort(date) {
+	var d = new Date(date);
+	return shortMonths[d.getMonth()] + ' ' + d.getFullYear();
+}
+
 //TimeStamp to dd/mm/yyyy hh:mm
 function timeStampToDateTime(date){
 	var d = new Date(date);

@@ -1,3 +1,6 @@
+$.fn.dataTable.moment( 'MMM YYYY' );
+$.fn.dataTable.moment( 'DD MMM YYYY' );
+
 //Function to get Objectives data of the user
 function getObjectivesData(){
 	$.ajax({
@@ -8,7 +11,10 @@ function getObjectivesData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printObjectivesHeader());
 	         $.each(data, function(key, val){
-	        	 addObjectivesDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy);
+	        	 var isArchived = val.archived;
+	        	 isArchived = isArchived ? 'Yes' : 'No';
+	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        	 	addObjectivesDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy, isArchived);
 	         }); 
 	         openPDF("objTable");
      },
@@ -19,23 +25,23 @@ function getObjectivesData(){
 	})
 }
 
-//Function to get Feedbacks data of the user
-function getFeedbacksData(){
+//Function to get Feedback data of the user
+function getFeedbackData(){
 	$.ajax({
     url: 'http://'+getEnvironment()+':8080/getFeedback/'+ getADLoginID(),
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},
     success: function(data){
-    	 	 $("#pdf-modal-body").append(printFeedbacksHeader());
+    	 	 $("#pdf-modal-body").append(printFeedbackHeader());
 	         $.each(data, function(key, val){
-	        	 addFeedbacksDataToList(val.providerEmail, val.providerName, val.feedbackDescription, val.timeStamp);
+	        	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, val.timestamp);
 	         }); 
 	         openPDF("feedTable");
      },
      error: function(XMLHttpRequest, textStatus, errorThrown){
          console.log('error', errorThrown);
-         toastr.error("Sorry, there was a problem getting Feedbacks data, please try again later.")
+         toastr.error("Sorry, there was a problem getting Feedback data, please try again later.")
      }
 	})
 }
@@ -50,7 +56,10 @@ function getDevelopmentNeedsData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
 	         $.each(data, function(key, val){
-	        	 addDevelopmentNeedsDataToList(val.dueDate, val.title, val.description, val.progress, val.createdOn, val.category);
+	        	 var isArchived = val.archived;
+	        	 isArchived = isArchived ? 'Yes' : 'No';
+	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        		 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.category, isArchived);
 	         });
 	         openPDF("devNeedsTable");
      },
@@ -83,18 +92,18 @@ function getNotesData(){
 }
 
 //function to add objectives data to a list and append it on the HTML
-function addObjectivesDataToList(dueDate, title, description, progress, createdOn, proposedBy){
-    $("#objDetails").append(printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy));
+function addObjectivesDataToList(dueDate, title, description, progress, createdOn, proposedBy, isArchived){
+    $("#objDetails").append(printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy, isArchived));
 }
 
-//function to add feedbacks data to a list and append it on the HTML
-function addFeedbacksDataToList(providerEmail, providerName, feedbackDescription, timeStamp){
-    $("#feedDetails").append(printFeedbacksList(providerEmail, providerName, feedbackDescription, timeStamp));
+//function to add feedback data to a list and append it on the HTML
+function addFeedbackDataToList(providerEmail, providerName, feedbackDescription, providedOn){
+    $("#feedDetails").append(printFeedbackList(providerEmail, providerName, feedbackDescription, providedOn));
 }
 
 //function to add development needs data to a list and append it on the HTML
-function addDevelopmentNeedsDataToList(dueDate, title, description, progress, createdOn, category){
-    $("#devNeedsDetails").append(printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category));
+function addDevelopmentNeedsDataToList(dueDate, title, description, progress, createdOn, category, isArchived){
+    $("#devNeedsDetails").append(printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category, isArchived));
 }
 
 //function to add notes data to a list and append it on the HTML
@@ -114,6 +123,7 @@ function printObjectivesHeader(){
     		   <th>Progress</th> \
     		   <th>Created On</th> \
     		   <th>Proposed By</th> \
+    		   <th>Archived</th> \
             </tr> \
             </thead> \
             <tbody id='objDetails'> \
@@ -123,8 +133,8 @@ function printObjectivesHeader(){
     return html;
 }
 
-//Function that returns the feedbacks table headings
-function printFeedbacksHeader(){
+//Function that returns the feedback table headings
+function printFeedbackHeader(){
     var html = " \
          <table class='table table-striped hidden' id='feedTable'> \
         <thead> \
@@ -152,6 +162,7 @@ function printDevelopmentNeedsHeader(){
     		   <th>Progress</th> \
     		   <th>Created On</th> \
     		   <th>Category</th> \
+    		   <th>Archived</th> \
             </tr> \
             </thead> \
             <tbody id='devNeedsDetails'> \
@@ -180,40 +191,42 @@ function printNotesHeader(){
 }
 
 //Function that returns the objectives list in html format with the parameters given
-function printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy){
+function printObjectivesList(dueDate, title, description, progress, createdOn, proposedBy, isArchived){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(dueDate)+"</td> \
+                <td>"+dueDate+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+proposedBy+"</td> \
+    		    <td>"+isArchived+"</td> \
             </tr> \
     "
     return html;
 }
 
-//Function that returns the feedbacks list in html format with the parameters given
-function printFeedbacksList(providerEmail, providerName, feedbackDescription, timeStamp){
+//Function that returns the feedback list in html format with the parameters given
+function printFeedbackList(providerEmail, providerName, feedbackDescription, providedOn){
     var html = " \
             <tr> \
                 <td><span style=\"font-weight: bold;\">"+providerName+"\n\n</span><br/>"+providerEmail+"</td> \
                 <td>"+feedbackDescription+"</td> \
-                <td>"+timeStampToLongDate(timeStamp)+"</td> \
+                <td>"+timeStampToLongDate(providedOn)+"</td> \
             </tr> \
     "
     return html;
 }
 
 //Function that returns the  development needs list in html format with the parameters given
-function printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category){
+function printDevelopmentNeedsList(dueDate, title, description, progress, createdOn, category, isArchived){
 	var html = " \
             <tr> \
-                <td>"+timeStampToLongDate(dueDate)+"</td> \
+                <td>"+dueDate+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"\n\n</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+category+"</td> \
+    		    <td>"+isArchived+"</td> \
             </tr> \
     "
     return html;
@@ -234,7 +247,7 @@ function printNotesList(providerName, noteDescription, timestamp){
 //Function that creates the table and opens the printable page in a new window
 function openPDF(id){
 	$('#'+id).DataTable({
-		dom: 'Brfti',
+		dom: 'Brftip',
 		   buttons: [{
 			   extend: 'print',
 			   exportOptions: {
@@ -259,7 +272,7 @@ function setDocumentTitle(id){
 		 return("My Objectives");
 	}
 	else if(id=== "feedTable"){
-		return("My Feedbacks");
+		return("My Feedback");
 	}
 	else if(id=== "devNeedsTable"){
 		return("My Development Needs");

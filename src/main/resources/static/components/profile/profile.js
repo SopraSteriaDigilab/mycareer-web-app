@@ -1,6 +1,11 @@
 $(function() {
 	populateProfile(getUserName(), getADfullName());
-
+	
+	//Prevents the menu to collapse when the user clicks on "Print"
+	$('#printOption').click(function(event){
+	     event.stopPropagation();
+	 });
+	
 	//onClick for opening modal
 	$('.pdf').click(function() {
 		var id = event.target.id;
@@ -9,7 +14,7 @@ $(function() {
 			 $('#print-modal-title-type').text('Objectives');
 		}
 		else if(id=== "feedPDF"){
-			 getFeedbacksData();
+			 getFeedbackData();
 			 $('#print-modal-title-type').text('Feedback');
 		}
 		else if(id=== "devPDF"){
