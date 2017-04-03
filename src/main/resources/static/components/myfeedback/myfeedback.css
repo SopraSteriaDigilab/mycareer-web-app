@@ -31,11 +31,11 @@
 }
 
 #resizable-reviewers {
-	max-height: calc(100vh - 484px);
+	max-height: calc(100vh - 563px);
 	/*flex: 1 1 auto;*/
 	overflow-y: auto;
 	overflow-x: hidden;
-	min-height: 90px;
+	min-height: 85px;
 }
 
 #fedback-descriptions .filterable-feedback {
@@ -43,5 +43,6 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 	min-height: 100px;
+	margin-bottom:0px;
 }
 
