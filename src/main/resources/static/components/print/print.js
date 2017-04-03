@@ -250,6 +250,7 @@ function openPDF(id){
 		dom: 'Brftip',
 		   buttons: [{
 			   extend: 'print',
+			   className: 'printButton',
 			   exportOptions: {
 			        stripHtml: false
 			    },
@@ -262,7 +263,7 @@ function openPDF(id){
 			   		   
 		   }]
 		 })
-	 $(".dt-buttons").appendTo(".modal-footer");
+	 $(".printButton").appendTo(".modal-footer");
 	 showTable(id);
 }
 
