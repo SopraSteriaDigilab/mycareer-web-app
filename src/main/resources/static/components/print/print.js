@@ -1,5 +1,5 @@
 $.fn.dataTable.moment( 'MMM YYYY' );
-$.fn.dataTable.moment( 'DD MMM YYYY' );
+$.fn.dataTable.moment( 'D MMM YYYY' );
 
 //Function to get Objectives data of the user
 function getObjectivesData(){
@@ -118,7 +118,7 @@ function printObjectivesHeader(){
          <table class='table table-striped hidden' id='objTable'> \
         <thead> \
             <tr> \
-               <th>Expected By</th> \
+               <th>Due Date</th> \
     	       <th>Title and Description</th> \
     		   <th>Progress</th> \
     		   <th>Created On</th> \
@@ -157,7 +157,7 @@ function printDevelopmentNeedsHeader(){
          <table class='table table-striped hidden' id='devNeedsTable'> \
         <thead> \
             <tr> \
-               <th>Expected By</th> \
+               <th>Due Date</th> \
     	       <th>Title and Description</th> \
     		   <th>Progress</th> \
     		   <th>Created On</th> \
@@ -195,7 +195,7 @@ function printObjectivesList(dueDate, title, description, progress, createdOn, p
 	var html = " \
             <tr> \
                 <td>"+dueDate+"</td> \
-                <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
+                <td><div class=\"wrap-text\"><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</div></td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+proposedBy+"</td> \
@@ -250,6 +250,7 @@ function openPDF(id){
 		dom: 'Brftip',
 		   buttons: [{
 			   extend: 'print',
+			   className: 'printButton',
 			   exportOptions: {
 			        stripHtml: false
 			    },
@@ -262,7 +263,7 @@ function openPDF(id){
 			   		   
 		   }]
 		 })
-	 $(".dt-buttons").appendTo(".modal-footer");
+	 $(".printButton").appendTo(".modal-footer");
 	 showTable(id);
 }
 
