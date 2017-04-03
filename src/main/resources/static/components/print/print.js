@@ -1,5 +1,5 @@
 $.fn.dataTable.moment( 'MMM YYYY' );
-$.fn.dataTable.moment( 'DD MMM YYYY' );
+$.fn.dataTable.moment( 'D MMM YYYY' );
 
 //Function to get Objectives data of the user
 function getObjectivesData(){
@@ -118,7 +118,7 @@ function printObjectivesHeader(){
          <table class='table table-striped hidden' id='objTable'> \
         <thead> \
             <tr> \
-               <th>Expected By</th> \
+               <th>Due Date</th> \
     	       <th>Title and Description</th> \
     		   <th>Progress</th> \
     		   <th>Created On</th> \
@@ -157,7 +157,7 @@ function printDevelopmentNeedsHeader(){
          <table class='table table-striped hidden' id='devNeedsTable'> \
         <thead> \
             <tr> \
-               <th>Expected By</th> \
+               <th>Due Date</th> \
     	       <th>Title and Description</th> \
     		   <th>Progress</th> \
     		   <th>Created On</th> \
