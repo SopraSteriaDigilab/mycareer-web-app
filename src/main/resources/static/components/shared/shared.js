@@ -751,17 +751,39 @@ function addTags(objTagIds, devNeedTagIds){
 	return HTML;
 }
 
-function openAddTagModalFeedback(id){
-	$("#tag-type").val("feedback");
-	openAddTagModal(id);
-}
-
-function openAddTagModalNotes(id){
-	$("#tag-type").val("note");
-	openAddTagModal(id);
-}
-
 function openAddTagModal(id){
 	$("#tag-id").val(id);
     $('#add-tag-modal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function clickSubmitTags() {
+	var type = $("#tag-type").val();
+	var id = $("#tag-id").val();
+	if(type === "feedback"){
+		updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds);
+	}else{
+		updateNoteTags(id, objectiveTagIds, developmentNeedTagIds);
+	}
+}
+
+function updateTagCheckboxes(objTags, devNeedTags){
+	var oTags = objTags.split(',');
+	var dnTags = devNeedTags.split(',');
+	
+	$(".objective-tag-checkbox").each(function(index){
+		if(jQuery.inArray(this.value, oTags) > -1){
+			$(this).prop('checked', true);
+		}		
+	});
+	
+	$(".development-need-tag-checkbox").each(function(index){
+		if(jQuery.inArray(this.value, dnTags) > -1){
+			$(this).prop('checked', true);
+		}		
+	});
+	
+	if(objTags !== "")
+		objectiveTagIds = oTags;
+	if(devNeedTags !== "")
+		developmentNeedTagIds = dnTags;
 }
