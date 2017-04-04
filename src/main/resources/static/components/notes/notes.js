@@ -39,28 +39,13 @@ $(function() {
 
 var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
 var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
-
 var noteDateFilterApplied = false;
-//var noteTagFilterApplied = false;
-
 
 function initResizable(){
-//	$('[data-toggle="tooltip"]').tooltip();
-	
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
 		 handles: "w"
 	});
-	
-//	$('.selectpicker').selectpicker({ 
-//		dropupAuto: false,
-//		width: 'fit'
-//	});
-	
-//	$('#note-type-picker').on('change', function(){
-//	    var selected = $(this).find("option:selected").val();
-//	    showSection(selected);
-//	  });
 }
 
 //Method to get the Notes list
