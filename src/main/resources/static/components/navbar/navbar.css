@@ -80,6 +80,10 @@ thead th {
 	white-space: nowrap; 
 }
 
+table.dataTable tbody td {
+  vertical-align: top;
+}
+
 .remove-padding{
 	padding-top: 0px;
 	padding-bottom: 0px;
