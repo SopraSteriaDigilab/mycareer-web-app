@@ -69,6 +69,7 @@ $(function() {
 //var emailList = [];
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
+var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 
 function initFeedbackDatePicker(id, start){
@@ -233,6 +234,7 @@ function applyFeedbackTagFilter(filter){
 				$(this).closest('div').addClass("filteredOutByFeedbackTags");
 			}	
 		});
+		feedbackTagFilterApplied = true;
 	}
 	updateFilterView();
 }
@@ -247,16 +249,28 @@ function updateFilterView(){
 		}
 	});
 	
-	var filterText = $("#filter-text");
-	if(dateFilterApplied && reviewerFilterApplied){
-		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
-	}else if(dateFilterApplied){
-		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
-	}else if(reviewerFilterApplied){
-		filterText.text("Reviewer.")
-	}else {
-		filterText.text("No Filters Applied");
+	
+	var filterText = "";
+	if(!dateFilterApplied && !reviewerFilterApplied && !feedbackTagFilterApplied){
+		filterText = "No Filters Applied";
+	}else{
+		if(dateFilterApplied)
+			filterText += "Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".";
+		if(reviewerFilterApplied)
+			filterText += " Reviewer.";
+		if(feedbackTagFilterApplied)
+			filterText += " Tags.";
 	}
+	$("#filter-text").text(filterText);
+//	if(dateFilterApplied && reviewerFilterApplied){
+//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
+//	}else if(dateFilterApplied){
+//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
+//	}else if(reviewerFilterApplied){
+//		filterText.text("Reviewer.")
+//	}else {
+//		filterText.text("No Filters Applied");
+//	}
 }
 
 function clearReviewerFilter(){
@@ -282,12 +296,15 @@ function clearFeedbackTagFilter(){
 	$(".feedback-tag-filter").each(function(){
 		$(this).closest('div').removeClass("filteredOutByFeedbackTags");
 	});
+	$(".tag-filter-dropdown").selectpicker('val', 0);
+	feedbackTagFilterApplied = false;
+	updateFilterView();
 }
 
 function clearAllFilters(){
 	clearReviewerFilter();
 	clearDateFilter();
-	clearFeedbackTagFilter;
+	clearFeedbackTagFilter();
 }
 
 function showGeneralFeedback(id){
