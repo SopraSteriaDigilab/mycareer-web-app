@@ -192,7 +192,7 @@ function printObjectivesList(dueDate, title, description, progress, createdOn, p
 	var html = " \
             <tr> \
                 <td>"+dueDate+"</td> \
-                <td><div class=\"wrap-text\"><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</div></td> \
+                <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</div></td> \
                 <td>"+progress+"</td> \
                 <td>"+timeStampToLongDate(createdOn)+"</td> \
                 <td>"+proposedBy+"</td> \
