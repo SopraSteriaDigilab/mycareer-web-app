@@ -427,12 +427,18 @@ function getTags(userID){
         method: 'GET',
         xhrFields: {'withCredentials': true},
         success: function(data){
+        	var optionsHTML = "<option value='0'>No Filter</option>";
         	$.each(data, function(key, val){
+        		optionsHTML += "<optgroup label='"+key+"'>";
             	$.each(val, function(id, title){
-            		addToTagsList(key, id, title);
-   
+            		addToTagsLists(key, id, title);
+            		optionsHTML += addToOptionsList(key, id, title);
                 });
+            	optionsHTML += "</optgroup>";
             });
+        	$(".tag-filter-selectpicker").html(optionsHTML).selectpicker('refresh');
+        	initTagFilterDropDown();
+        	alert(optionsHTML);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
@@ -441,15 +447,25 @@ function getTags(userID){
     });	
 }
 
-function addToTagsList(key, id, title){
+function addToTagsLists(key, id, title){
 	if(key === "objectivesTags"){
-		$("#objectives-tags-checkboxes").append(tagsListItemHTML(id, title, "objective"));
+		$("#objectives-tags-checkboxes").append(tagsCheckboxItemHTML(id, title, "objective"));
+//		$("#objectives-tags-options").append(tagsOptionItemHTML(id, title, "objective"));
 	}else{
-		$("#development-needs-tags-checkboxes").append(tagsListItemHTML(id, title, "development-need"));
+		$("#development-needs-tags-checkboxes").append(tagsCheckboxItemHTML(id, title, "development-need"));
+//		$("#development-needs-tags-options").append(tagsOptionItemHTML(id, title, "development-need"));
 	}
 }
 
-function tagsListItemHTML(id, title, type){
+function addToOptionsList(key, id, title){
+	if(key === "objectivesTags"){
+		return tagsOptionItemHTML(id, title);
+	}else{
+		return tagsOptionItemHTML(id, title);
+	}
+}
+
+function tagsCheckboxItemHTML(id, title, type){
 	var HTML = " \
 		<div class='col-md-12 checkbox'> \
 		 <label> \
@@ -459,6 +475,18 @@ function tagsListItemHTML(id, title, type){
 		 </div>	\
 	    ";
 	return HTML
+}
+
+function tagsOptionItemHTML(id, title){
+	var HTML = "<option value='"+id+"'>#"+id+": "+limilCharacters(title, 20)+"</option>";
+	return HTML;	
+}
+
+function limilCharacters(text, limit){
+	if(text.length >= 20){
+		text = text.substring(0,limit).concat("...");
+	}	
+	return text;
 }
 
 function clearTagsCheckboxes() {

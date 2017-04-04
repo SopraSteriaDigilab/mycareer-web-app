@@ -138,8 +138,8 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 		  <input type='hidden' id='feedback-dev-need-tag-filter-"+id+"' class='feedback-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
-				<div class='col-md-9'><h6>Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
-    			<div class='col-md-3'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalFeedback("+id+")'><b>Tags</b></h6></div> \
+				<div class='col-md-10'><h6 class='wrap-text' >Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
+    			<div class='col-md-2'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalFeedback("+id+")'><b>Tags</b></h6></div> \
     		</div> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \

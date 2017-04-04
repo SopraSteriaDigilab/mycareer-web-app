@@ -221,29 +221,26 @@
 								</div>
 							</div>
 						</div>
-						<div class="row ">
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-12">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="submit-note-date-filter">Apply Date Filter</button>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-md-12">
 								<h5><b>Tags:</b></h5>
 							</div>
 						</div>
 						<div class="row" id="notes-tags-dropdown" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<select class="selectpicker">
-								  <optgroup label="Objectives" id="objective-tags-list">
-								    <option>#2: Present at Senior Manage...</option><option>#3: Go Live with MyCareer Ph...</option><option>#4: Million Makers </option><option>#5: OCP</option><option>#6: Buddy/Mentor</option>
-								  </optgroup>
-								  <optgroup label="Development Needs" id="development-need-tags-list">
-								 	 <option>#1 - Test Development Need</option>
-								  </optgroup>
-								</select>
+								<select class="selectpicker tag-filter-selectpicker"></select>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close">Cancel</button>			
-				<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="submit-note-date-filter">Apply</button>	
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close">Close</button>			
 			</div>
 		</div>
 	</div>
