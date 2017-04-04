@@ -436,8 +436,7 @@ function getTags(userID){
                 });
             	optionsHTML += "</optgroup>";
             });
-        	$(".tag-filter-selectpicker").html(optionsHTML).selectpicker('refresh');
-        	initTagFilterDropDown();
+        	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
@@ -449,18 +448,16 @@ function getTags(userID){
 function addToTagsLists(key, id, title){
 	if(key === "objectivesTags"){
 		$("#objectives-tags-checkboxes").append(tagsCheckboxItemHTML(id, title, "objective"));
-//		$("#objectives-tags-options").append(tagsOptionItemHTML(id, title, "objective"));
 	}else{
 		$("#development-needs-tags-checkboxes").append(tagsCheckboxItemHTML(id, title, "development-need"));
-//		$("#development-needs-tags-options").append(tagsOptionItemHTML(id, title, "development-need"));
 	}
 }
 
 function addToOptionsList(key, id, title){
 	if(key === "objectivesTags"){
-		return tagsOptionItemHTML(id, title);
+		return tagsOptionItemHTML(id, title, "obj");
 	}else{
-		return tagsOptionItemHTML(id, title);
+		return tagsOptionItemHTML(id, title, "dev");
 	}
 }
 
@@ -476,8 +473,8 @@ function tagsCheckboxItemHTML(id, title, type){
 	return HTML
 }
 
-function tagsOptionItemHTML(id, title){
-	var HTML = "<option value='"+id+"'>#"+id+": "+limilCharacters(title, 20)+"</option>";
+function tagsOptionItemHTML(id, title, type){
+	var HTML = "<option value='"+type+"-"+id+"'>#"+id+": "+limilCharacters(title, 20)+"</option>";
 	return HTML;	
 }
 
@@ -819,4 +816,18 @@ function updateTagCheckboxes(objTags, devNeedTags){
 		objectiveTagIds = oTags;
 	if(devNeedTags !== "")
 		developmentNeedTagIds = dnTags;
+}
+
+function formatTagFilterValues(objTagIds, devNeedTagIds){
+	var filterValue = "";
+	
+	$(objTagIds).each(function(index){
+		filterValue += "obj-"+this+" ";
+	});
+	
+	$(devNeedTagIds).each(function(index){
+		filterValue += "dev-"+this+" ";
+	});
+	
+	return filterValue;
 }

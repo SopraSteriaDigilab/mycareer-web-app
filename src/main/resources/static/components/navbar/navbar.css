@@ -76,8 +76,25 @@
     word-wrap: break-word;
 }
 
-thead th { 
-	white-space: nowrap; 
+table.dataTable tbody td {
+  vertical-align: top;
+}
+
+thead th{
+  white-space: nowrap;
+}
+
+.HRtable {
+    table-layout:fixed;
+    width:100%;
+}
+
+.HRtable thead th{
+  white-space: initial;
+}
+
+.HRtable tbody td{
+  word-wrap: break-word;
 }
 
 .remove-padding{
