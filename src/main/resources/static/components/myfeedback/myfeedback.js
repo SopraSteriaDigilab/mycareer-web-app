@@ -137,8 +137,8 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
 		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
-		  <input type='hidden' id='feedback-obj-tag-filter-"+id+"' class='feedback-obj-tag-filter' value='"+objTagIds+"'> \
-		  <input type='hidden' id='feedback-dev-need-tag-filter-"+id+"' class='feedback-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
+    	<input type='hidden' id='feedback-obj-tags-"+id+"' value='"+objTagIds+"'> \
+    	<input type='hidden' id='feedback-dev-need-tags-"+id+"' value='"+devNeedTagIds+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
 				<div class='col-md-10'><h6 class='wrap-text' >Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
@@ -395,8 +395,8 @@ function submitSendFeedback(){
 }
 
 function openAddTagModalFeedback(id){
-	var objTags = $("#feedback-obj-tag-filter-"+id).val();
-	var devNeedTags = $("#feedback-dev-need-tag-filter-"+id).val();
+	var objTags = $("#feedback-obj-tags-"+id).val();
+	var devNeedTags = $("#feedback-dev-need-tags-"+id).val();
 	updateTagCheckboxes(objTags, devNeedTags);
 	$("#tag-type").val("feedback");
 	openAddTagModal(id);
@@ -427,7 +427,7 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
 }
 
 function setFeedbackTagValues(id, objTags, devNeedTags){
-	$("#feedback-obj-tag-filter-"+id).val(objTags);
-	$("#feedback-dev-need-tag-filter-"+id).val(devNeedTags);	
+	$("#feedback-obj-tags-"+id).val(objTags);
+	$("#feedback-dev-need-tags-"+id).val(devNeedTags);	
 }
 
