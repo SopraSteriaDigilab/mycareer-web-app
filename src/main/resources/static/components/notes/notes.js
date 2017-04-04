@@ -29,7 +29,6 @@ $(function() {
 	//Click listener to filter note
 	$('#filter-note').click(function(){ openNoteFilterModal(); });
 	
-	initTagFilterDropDown();
 	$("#submit-add-tags").click(function(){ clickSubmitTags() });
 	$("#close-tag-button, #close-tag-button-x").click(function(){ clearTagsCheckboxes() });
 	
@@ -46,22 +45,22 @@ var noteDateFilterApplied = false;
 
 
 function initResizable(){
-	$('[data-toggle="tooltip"]').tooltip();
+//	$('[data-toggle="tooltip"]').tooltip();
 	
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
 		 handles: "w"
 	});
 	
-	$('.selectpicker').selectpicker({ 
-		dropupAuto: false,
-		width: 'fit'
-	});
+//	$('.selectpicker').selectpicker({ 
+//		dropupAuto: false,
+//		width: 'fit'
+//	});
 	
-	$('#note-type-picker').on('change', function(){
-	    var selected = $(this).find("option:selected").val();
-	    showSection(selected);
-	  });
+//	$('#note-type-picker').on('change', function(){
+//	    var selected = $(this).find("option:selected").val();
+//	    showSection(selected);
+//	  });
 }
 
 //Method to get the Notes list
@@ -246,11 +245,6 @@ function clearNoteDateFilter(){
 	});
 	noteDateFilterApplied = false;
 	updateNoteFilterView();
-}
-
-function initTagFilterDropDown(){
-	$(".bootstrap-select").removeClass("fit-width");
-	$(".bootstrap-select").css("width", "100%");
 }
 
 function openAddTagModalNotes(id){

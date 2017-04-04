@@ -59,7 +59,10 @@ $(function() {
     
     //onClick for Close request feedback modal
 	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
-    
+	
+	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
+	$("#notes-tag-dropdown").on('change', function(){ alert($(this).val()); });
+	
 });//End of Document Function
 
 
@@ -105,8 +108,7 @@ function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, 
         <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
         	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
         	<input type='hidden' class='date-filter' value='"+classDate+"'> \
-	  		<input type='hidden' class='feedback-obj-tag-filter' value='"+objTagIds+"'> \
-	  		<input type='hidden' class='feedback-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
+	  		<input type='hidden' class='feedback-tag-filter' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
 	               <div class='col-md-7 wrap-text'><h5><b>"+ sender +"</b></h5></div> \
@@ -219,10 +221,26 @@ function applyReviewerFilter(){
 	updateFilterView();
 }
 
+function applyFeedbackTagFilter(filter){
+	if(filter == 0){
+		clearFeedbackTagFilter();
+	}else{
+		$(".feedback-tag-filter").each(function(){
+			var tags = $(this).val();
+			if(tags.indexOf(filter) > -1){
+				$(this).closest('div').removeClass("filteredOutByFeedbackTags");
+			}else{
+				$(this).closest('div').addClass("filteredOutByFeedbackTags");
+			}	
+		});
+	}
+	updateFilterView();
+}
+
 function updateFilterView(){
 	$(".filterable-feedback").each(function(index){
 		var feedback = $(this);
-		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer")){
+		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer") || feedback.hasClass("filteredOutByFeedbackTags")){
 			feedback.hide();
 		}else{
 			feedback.show();
@@ -260,9 +278,16 @@ function clearDateFilter(){
 	updateFilterView();
 }
 
+function clearFeedbackTagFilter(){
+	$(".feedback-tag-filter").each(function(){
+		$(this).closest('div').removeClass("filteredOutByFeedbackTags");
+	});
+}
+
 function clearAllFilters(){
-	clearReviewerFilter()
+	clearReviewerFilter();
 	clearDateFilter();
+	clearFeedbackTagFilter;
 }
 
 function showGeneralFeedback(id){
@@ -386,7 +411,6 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
 
 function setFeedbackTagValues(id, objTags, devNeedTags){
 	$("#feedback-obj-tag-filter-"+id).val(objTags);
-	$("#feedback-dev-need-tag-filter-"+id).val(devNeedTags);
-	
+	$("#feedback-dev-need-tag-filter-"+id).val(devNeedTags);	
 }
 
