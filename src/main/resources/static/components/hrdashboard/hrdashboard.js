@@ -298,7 +298,7 @@ function showHrOverviewList(){
 //Function that returns HR Overview list in html format with the parameters given
 function hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, usersWithNotes, usersWithCompetencies, usersWithFeedbackRequests, usersWithFeedback){
     var html = " \
-    <table class='table table-striped hidden' id='hrOverviewTable'> \
+    <table class='table table-striped hidden HRtable' id='hrOverviewTable'> \
         <thead> \
             <tr> \
                <th>Overview of MyCareer</th> \
@@ -378,7 +378,7 @@ function showHrEmployeeList(){
 //Function that returns the table headings
 function hrEmployeeHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrEmployeeTable'> \
+        <table class='table table-striped hidden HRtable' id='hrEmployeeTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -452,7 +452,7 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrObjectivesTable'> \
+        <table class='table table-striped hidden HRtable' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -562,7 +562,7 @@ function showHrDevelopmentNeedsBreakdownList(){
 //Function that returns the table headings for dev needs overview
 function hrDevNeedsHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrDevNeedsTable'> \
+        <table class='table table-striped hidden HRtable' id='hrDevNeedsTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -586,7 +586,7 @@ function hrDevNeedsHeader(){
 //Function that returns the table headings for dev needs breakdown
 function hrDevNeedsBreakdownHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrDevNeedsBreakdownTable'> \
+        <table class='table table-striped hidden HRtable' id='hrDevNeedsBreakdownTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -678,7 +678,7 @@ function showHrFeedbackList(){
 //Function that returns the table headings
 function hrFeedbackHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrFeedbackTable'> \
+        <table class='table table-striped hidden HRtable' id='hrFeedbackTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -746,7 +746,7 @@ function showHrSuperSectorList(){
 
 function hrSuperSectorHeader(){
     var html = " \
-    <table class='table table-striped hidden' id='hrSuperSectorTable'> \
+    <table class='table table-striped hidden HRtable' id='hrSuperSectorTable'> \
         <thead> \
             <tr> \
                <th>Super Sector</th> \
