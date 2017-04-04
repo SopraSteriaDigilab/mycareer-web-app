@@ -438,7 +438,6 @@ function getTags(userID){
             });
         	$(".tag-filter-selectpicker").html(optionsHTML).selectpicker('refresh');
         	initTagFilterDropDown();
-        	alert(optionsHTML);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
