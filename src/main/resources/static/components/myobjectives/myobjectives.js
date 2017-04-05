@@ -23,9 +23,7 @@ $(function() {
     
     //onclick to complete objective
     $('#submit-completed-status-note').click(function(){ 
-    	var objID= $("#complete-id").text();
-    	editObjectiveProgressOnDB(getADLoginID(), objID, $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val());
-    	$("#edit-objective-button-"+objID).remove();
+    	editObjectiveProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val());
     });
 });
 
@@ -91,6 +89,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completed
             if(objStatus == 2){
             	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
                 addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+                $("#edit-objective-button-"+objID).remove();
             }
             toastr.success(response);
         },
@@ -375,27 +374,27 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     return html;
 }
 
+function addEditObjButton(status, id){
+	if(status !== 2 && status !=='2'){
+		var editButton = " \
+		<div class=' col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default' id='edit-objective-button-"+id+"' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
+        </div>";
+		return(editButton);
+	}
+	else{
+		return("");
+	}
+}
+
 function objectivesButtonsHTML(id, isArchived, status, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
-        </div> \
-        <div class=' col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default' id='edit-objective-button-"+id+"' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
-        </div> \
-    </div> \
-";
-	if(status === 2 || status ==='2'){
-		var editButton = " \
-	    <div class='col-md-12'> \
-			<div class='col-sm-6'> \
-	        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
-	        </div> \
-	    </div> \
-	";
-		return(editButton);
-	}
+        </div>"
+        +addEditObjButton(status, id)+
+   "</div>";
 	
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \

@@ -32,9 +32,7 @@ $(function() {
     
     //onclick to complete development need
     $('#submit-completed-status-note').click(function(){ 
-    	var devNeedID= $("#complete-id").text();
-    	editDevelopmentNeedProgressOnDB(getADLoginID(), devNeedID, $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); 
-    	$("#edit-dev-need-button-"+devNeedID).remove();
+    	editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); 
     });
     
 });
@@ -103,6 +101,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
             if(devNeedStatus == 2){
             	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
                 addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+                $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
         },
@@ -399,28 +398,27 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
     return html;
 }
 
+function addEditDevNeedButton(status, devNeedID){
+	if(status !== 2 && status !=='2'){
+		var editButton = " \
+		<div class=' col-sm-6'> \
+        	<button type='button' class='btn btn-block btn-default' id='edit-dev-need-button-"+devNeedID+"' onClick='openEditDevelopmentNeedModal("+devNeedID+")'>Edit</button> \
+        </div>";
+        return(editButton);
+	}
+	else{
+		return("");
+	}
+}
+
 function devNeedsButtonsHTML(devNeedID, isArchived, status, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
-        </div> \
-        <div class=' col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default' id='edit-dev-need-button-"+devNeedID+"' onClick='openEditDevelopmentNeedModal("+devNeedID+")'>Edit</button> \
-        </div> \
-    </div> \
-";
-	
-	if(status === 2 || status ==='2'){
-		var editButton = " \
-	    <div class='col-md-12'> \
-		<div class='col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
-        </div> \
-    </div> \
-	";
-		return(editButton);
-	}
+        </div>"
+        	+addEditDevNeedButton(status, devNeedID)+
+    "</div>";
 	
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
