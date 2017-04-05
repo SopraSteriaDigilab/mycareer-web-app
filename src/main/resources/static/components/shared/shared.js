@@ -557,11 +557,11 @@ function formatDateShort(date) {
 //TimeStamp to dd/mm/yyyy hh:mm
 function timeStampToDateTime(date){
 	var d = new Date(Date.parse(date)).toUTCString();
-	var date = d.substring(d.indexOf(",") +1, d.length -7);
+	var formattedDate = d.substring(d.indexOf(",") +1, d.length -7);
 	
 //	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
 	
-	return date;
+	return formattedDate;
 }
 
 //TimeStamp to dd mmm yyyy
