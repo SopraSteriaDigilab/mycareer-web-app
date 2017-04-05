@@ -440,7 +440,7 @@ function getTags(userID){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             console.log('error', errorThrown);
-            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+            toastr.error("Sorry, there was a problem getting tags, please try again later.");
         }
     });	
 }
@@ -557,8 +557,10 @@ function formatDateShort(date) {
 
 //TimeStamp to dd/mm/yyyy hh:mm
 function timeStampToDateTime(date){
-	var d = new Date(date);
-	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
+	var d = new Date(Date.parse(date)).toUTCString();
+	var date = d.substring(d.indexOf(",") +1, d.length -7);
+	
+//	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
 	
 	return date;
 }

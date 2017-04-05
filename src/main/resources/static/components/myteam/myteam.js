@@ -2,8 +2,6 @@ $(function() {
 	//Get list of reportees
 	getReportees();
 	
-	getTags();
-	
 	//Add Proposed Button
 	addProposed();
 	
