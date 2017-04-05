@@ -770,10 +770,10 @@ function getEmailList(){
     });	
 }
 
-function addTags(objTagIds, devNeedTagIds){
+function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";
 	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
-		HTML = "No tags with this feedback."
+		HTML = "No tags with this " + type + "."
 	}else{
 		if(objTagIds.length > 0)
 			HTML += "Objectives: " + objTagIds + ". ";

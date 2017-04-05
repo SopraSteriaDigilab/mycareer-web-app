@@ -89,7 +89,7 @@ function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
         },
         success: function(response){
             toastr.success(response);
-            $("#note-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds));
+            $("#note-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "note"));
             setNoteTagValues(id, objectiveTagIds, developmentNeedTagIds);
             $('#add-tag-modal').modal('hide');
             clearTagsCheckboxes();
@@ -122,7 +122,7 @@ function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNe
 					<div class='col-md-12 wrap-text'><p>" + body + "</p></div> \
 	            </div> \
 			<div class='row'> \
-				<div class='col-md-10'><h6 class='wrap-text'>Tags: <span id=note-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
+				<div class='col-md-10'><h6 class='wrap-text'>Tags: <span id=note-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds, "note")+"</span></h6></div> \
     			<div class='col-md-2'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalNotes("+id+")'><b>Tags</b></h6></div> \
     		</div> \
 		  </li> \

@@ -124,3 +124,7 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
     overflow-y: auto;
    	overflow-x: hidden;
 }
+
+.dropdown-menu {
+	z-index: 100000;
+}

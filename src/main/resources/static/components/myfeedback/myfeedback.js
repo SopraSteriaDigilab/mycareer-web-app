@@ -141,7 +141,7 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
     	<input type='hidden' id='feedback-dev-need-tags-"+id+"' value='"+devNeedTagIds+"'> \
 		<div class='panel-body'> \
 			<div class='row'> \
-				<div class='col-md-10'><h6 class='wrap-text' >Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds)+"</span></h6></div> \
+				<div class='col-md-10'><h6 class='wrap-text' >Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds, "feedback")+"</span></h6></div> \
     			<div class='col-md-2'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalFeedback("+id+")'><b>Tags</b></h6></div> \
     		</div> \
 			<div class='row'> \
@@ -404,7 +404,7 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
         },
         success: function(response){
             toastr.success(response);
-            $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds));
+            $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "feedback"));
             setFeedbackTagValues(id, objectiveTagIds, developmentNeedTagIds);
             
             $('#add-tag-modal').modal('hide');
