@@ -22,7 +22,11 @@ $(function() {
     $('#delete').click(function(){ deleteObjective(getADLoginID(), $("#delete-id").text(), $("#deleteTitle").text(), $("#deletingText").val()); });
     
     //onclick to complete objective
-    $('#submit-completed-status-note').click(function(){ editObjectiveProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); });
+    $('#submit-completed-status-note').click(function(){ 
+    	var objID= $("#complete-id").text();
+    	editObjectiveProgressOnDB(getADLoginID(), objID, $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val());
+    	$("#edit-objective-button-"+objID).remove();
+    });
 });
 
 //HTTP request for INSERTING an objective to DB
@@ -212,7 +216,7 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
 	    $("#complete-id").empty().append(objID);
 	    $("#complete-status").empty().append(objStatus);
 	    $("#modal-confirmation").empty().append('Objective');
-	    $("#modal-alert").empty().append('an Objective');;
+	    $("#modal-alert").empty().append('an Objective');
 	    $("#completedTitle").empty().append(title);
 	    openCompleteObjectiveModal(objID, title);
     }else{
@@ -361,7 +365,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
                             <p id='obj-text-"+id+"'>"+description+"</p> \
                         </div> \
                     </div> \
-                    " + objectivesButtonsHTML(id, isArchived, title); + " \
+                    " + objectivesButtonsHTML(id, isArchived, status, title); + " \
                 </div> \
             </div> \
          \
@@ -371,29 +375,40 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     return html;
 }
 
-function objectivesButtonsHTML(id, isArchived, title){
+function objectivesButtonsHTML(id, isArchived, status, title){
 	var HTML = " \
     <div class='col-md-12'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div> \
         <div class=' col-sm-6'> \
-        	<button type='button' class='btn btn-block btn-default' id='edit-objective-button' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
+        	<button type='button' class='btn btn-block btn-default' id='edit-objective-button-"+id+"' onClick='openEditObjectiveModal("+id+")'>Edit</button> \
         </div> \
     </div> \
 ";
+	if(status === 2 || status ==='2'){
+		var editButton = " \
+	    <div class='col-md-12'> \
+			<div class='col-sm-6'> \
+	        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
+	        </div> \
+	    </div> \
+	";
+		return(editButton);
+	}
+	
 	if(isArchived === true || isArchived ==='true'){
 		var unArchiveButton = " \
 		    <div class='col-md-12'> \
 		        <div class=' col-sm-6'> \
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Restore</button> \
 		        </div> \
-                <div class=' col-sm-6'> \
-                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteObjective("+id+", \""+title+"\")' id='delete-obj'>Delete</button> \
-                </div> \
+	            <div class=' col-sm-6'> \
+	                <button type='button' class='btn btn-block btn-default' onClick='clickDeleteObjective("+id+", \""+title+"\")' id='delete-obj'>Delete</button> \
+	            </div> \
 		    </div> \
 		";
 		return(unArchiveButton);
-	}
+		}
 	return(HTML);
 }
