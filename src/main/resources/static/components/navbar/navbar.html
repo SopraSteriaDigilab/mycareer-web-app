@@ -190,9 +190,17 @@
 			<div class="modal-body" id="filter-modal-body">
 				<div class="panel-body remove-padding" >
 					<div id="collapse-filter" class="panel-collapse collapse in">
+						<div class="row">
+							<div class="col-md-12" >
+								<h6><b>Filtered By: </b><span class="notes-filter-text">No Filters Applied</span></h6>
+							</div>
+						</div>
 						<div class="row ">
-							<div class="col-md-12">
+							<div class="col-md-6">
 								<h5><b>Date:</b></h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearNotesDateFilter()">Clear Filter</h6>
 							</div>
 						</div>
 						<div class="row">
@@ -201,7 +209,7 @@
 							</div>
 							<div class="col-md-9">
 								<div class='input-group date' id='note-start-date-picker'>
-									<input type='text' class="form-control" id='note-start-date' readonly="readonly" />
+									<input type='text' class="form-control" id='notes-start-date' readonly="readonly" />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -214,7 +222,7 @@
 							</div>
 							<div class='col-md-9'>
 								<div class='input-group date' id='note-end-date-picker'>
-									<input type='text' class="form-control" id='note-end-date' readonly="readonly" />
+									<input type='text' class="form-control" id='notes-end-date' readonly="readonly" />
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -223,17 +231,20 @@
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="submit-note-date-filter">Apply Date Filter</button>
+								<button type="button" class="btn btn-default pull-right" id="submit-note-date-filter">Apply Date Filter</button>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-12">
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-6">
 								<h5><b>Tags:</b></h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearNotesTagFilter()">Clear Filter</h6>
 							</div>
 						</div>
 						<div class="row" id="notes-tags-dropdown" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<select class="selectpicker tag-filter-dropdown" id="notes-tag-dropdown"></select>
+								<select class="selectpicker tag-filter-dropdown" id="notes-tag-dropdown" data-width="100%"></select>
 							</div>
 						</div>
 					</div>

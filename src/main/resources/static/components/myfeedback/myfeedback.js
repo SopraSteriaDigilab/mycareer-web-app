@@ -61,7 +61,6 @@ $(function() {
 	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
 	
 	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
-	$("#notes-tag-dropdown").on('change', function(){ alert($(this).val()); });
 	
 });//End of Document Function
 
@@ -250,7 +249,6 @@ function updateFilterView(){
 		}
 	});
 	
-	
 	var filterText = "";
 	if(!dateFilterApplied && !reviewerFilterApplied && !feedbackTagFilterApplied){
 		filterText = "No Filters Applied";
@@ -263,15 +261,6 @@ function updateFilterView(){
 			filterText += " Tags.";
 	}
 	$("#filter-text").text(filterText);
-//	if(dateFilterApplied && reviewerFilterApplied){
-//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
-//	}else if(dateFilterApplied){
-//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
-//	}else if(reviewerFilterApplied){
-//		filterText.text("Reviewer.")
-//	}else {
-//		filterText.text("No Filters Applied");
-//	}
 }
 
 function clearReviewerFilter(){
