@@ -61,7 +61,6 @@ $(function() {
 	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
 	
 	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
-	$("#notes-tag-dropdown").on('change', function(){ alert($(this).val()); });
 	
 });//End of Document Function
 
@@ -109,7 +108,7 @@ function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, 
         <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
         	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
         	<input type='hidden' class='date-filter' value='"+classDate+"'> \
-	  		<input type='hidden' class='feedback-tag-filter' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
+	  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
 	               <div class='col-md-7 wrap-text'><h5><b>"+ sender +"</b></h5></div> \
@@ -137,6 +136,7 @@ function feedbackDescriptionListHTML(id, sender, description, date, classDate, e
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
 		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
+  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
     	<input type='hidden' id='feedback-obj-tags-"+id+"' value='"+objTagIds+"'> \
     	<input type='hidden' id='feedback-dev-need-tags-"+id+"' value='"+devNeedTagIds+"'> \
 		<div class='panel-body'> \
@@ -249,7 +249,6 @@ function updateFilterView(){
 		}
 	});
 	
-	
 	var filterText = "";
 	if(!dateFilterApplied && !reviewerFilterApplied && !feedbackTagFilterApplied){
 		filterText = "No Filters Applied";
@@ -262,15 +261,6 @@ function updateFilterView(){
 			filterText += " Tags.";
 	}
 	$("#filter-text").text(filterText);
-//	if(dateFilterApplied && reviewerFilterApplied){
-//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
-//	}else if(dateFilterApplied){
-//		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
-//	}else if(reviewerFilterApplied){
-//		filterText.text("Reviewer.")
-//	}else {
-//		filterText.text("No Filters Applied");
-//	}
 }
 
 function clearReviewerFilter(){
@@ -416,6 +406,7 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
             toastr.success(response);
             $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds));
             setFeedbackTagValues(id, objectiveTagIds, developmentNeedTagIds);
+            
             $('#add-tag-modal').modal('hide');
             clearTagsCheckboxes();
         },
@@ -428,6 +419,7 @@ function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
 
 function setFeedbackTagValues(id, objTags, devNeedTags){
 	$("#feedback-obj-tags-"+id).val(objTags);
-	$("#feedback-dev-need-tags-"+id).val(devNeedTags);	
+	$("#feedback-dev-need-tags-"+id).val(devNeedTags);
+	$(".feedback-tag-filter-"+id).val(formatTagFilterValues(objTags, devNeedTags));
 }
 

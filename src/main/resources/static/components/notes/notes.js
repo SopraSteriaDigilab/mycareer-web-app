@@ -22,7 +22,7 @@ $(function() {
 	initNoteDatePicker("note-end", new Date());
 	
 	//Keep end date updated
-	$("#note-start-date").change(function (d){ updateNoteEndDate() });
+	$("#notes-start-date").change(function (d){ updateNoteEndDate() });
 	
 	$("#submit-note-date-filter").click(function (){ applyNoteDateFilter() });
 	
@@ -35,32 +35,20 @@ $(function() {
 	$("#objectives-tags-checkboxes").change(function(){ updateObjectivesTagsList(); });
 	$("#development-needs-tags-checkboxes").change(function(){ updateDevelopmentNeedsTagsList(); });
 	
+	$("#notes-tag-dropdown").on('change', function(){ applyNotesTagFilter($(this).val()); });
+	
 });
 
 var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
 var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
-
 var noteDateFilterApplied = false;
-//var noteTagFilterApplied = false;
-
+var notesTagFilterApplied = false;
 
 function initResizable(){
-//	$('[data-toggle="tooltip"]').tooltip();
-	
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
 		 handles: "w"
 	});
-	
-//	$('.selectpicker').selectpicker({ 
-//		dropupAuto: false,
-//		width: 'fit'
-//	});
-	
-//	$('#note-type-picker').on('change', function(){
-//	    var selected = $(this).find("option:selected").val();
-//	    showSection(selected);
-//	  });
 }
 
 //Method to get the Notes list
@@ -125,7 +113,8 @@ function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNe
 			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
 			  <input type='hidden' id='note-obj-tag-filter-"+id+"' class='notes-obj-tag-filter' value='"+objTagIds+"'> \
 			  <input type='hidden' id='note-dev-need-tag-filter-"+id+"' class='notes-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
-			  	<div class='row'> \
+	  		  <input type='hidden' class='notes-tag-filter notes-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
+  		  		<div class='row'> \
 					<div class='col-md-6 wrap-text'><h6><b>" + providerName + "</b></h6></div> \
 					<div class='col-md-6'><h6 class='pull-right'><b>" + date + "</b></h6></div> \
 				</div> \
@@ -173,24 +162,22 @@ function initNoteDatePicker(id, start){
        orientation: 'bottom',
        autoclose: true,
     });	
-    $("#note-start-date, #note-end-date").val(timeStampToClassDate(new Date()));
+    $("#notes-start-date, #notes-end-date").val(timeStampToClassDate(new Date()));
 }
 
 function updateNoteEndDate(){
-	var startDate = formatNoteDate($("#note-start-date").val());
-	var endDate = formatNoteDate($("#note-end-date").val());
+	var startDate = formatNoteDate($("#notes-start-date").val());
+	var endDate = formatNoteDate($("#notes-end-date").val());
 	
 	if(startDate > endDate){
-		$("#note-end-date").val(timeStampToClassDate(startDate));
+		$("#notes-end-date").val(timeStampToClassDate(startDate));
 	}
-	$("#note-end-date-picker").datepicker('setStartDate', startDate);
+	$("#notes-end-date-picker").datepicker('setStartDate', startDate);
 }
 
 //Function to open filter modal
 function openNoteFilterModal(){
-	$('#filter-modal').modal(
-			{backdrop: 'static', keyboard: false, show: true}
-	);
+	$('#filter-modal').modal({keyboard: false, show: true});
 }
 
 //From dd-mm-yyyy to timestamp
@@ -203,8 +190,8 @@ function formatNoteDate(date){
 
 function applyNoteDateFilter(){
 	var dateRangeList = [];
-	var startDate = new formatNoteDate($("#note-start-date").val());
-	var endDate = new formatNoteDate($("#note-end-date").val());
+	var startDate = new formatNoteDate($("#notes-start-date").val());
+	var endDate = new formatNoteDate($("#notes-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
 		dateRangeList.push(timeStampToClassDate(date));
@@ -222,23 +209,25 @@ function applyNoteDateFilter(){
 	updateNoteFilterView();
 }
 
-function updateNoteFilterView(){
-	$(".filterable-note").each(function(index){
-		var note = $(this);
-		if(note.hasClass("filteredOutByDate")){
-			note.hide();
-		}else{
-			note.show();
-		}
-	});
+function applyNotesTagFilter(filter){
+	if(filter == 0){
+		clearNotesTagFilter();
+	}else{
+		$(".notes-tag-filter").each(function(){
+			var tags = $(this).val();
+			if(tags.indexOf(filter) > -1){
+				$(this).closest('li').removeClass("filteredOutByNotesTags");
+			}else{
+				$(this).closest('li').addClass("filteredOutByNotesTags");
+			}	
+		});
+		notesTagFilterApplied = true;
+	}
+	updateNoteFilterView();
 }
 
-function clearAllNotesFilters(filter){
-	clearNoteDateFilter();
-}
-
-function clearNoteDateFilter(){
-	$("#note-start-date, #note-end-date").val(timeStampToClassDate(new Date()));
+function clearNotesDateFilter(){
+	$("#notes-start-date, #notes-end-date").val(timeStampToClassDate(new Date()));
 	updateNoteEndDate();
 	$(".filterable-note").each(function(index){
 		$(this).removeClass("filteredOutByDate");
@@ -246,6 +235,43 @@ function clearNoteDateFilter(){
 	noteDateFilterApplied = false;
 	updateNoteFilterView();
 }
+
+function clearNotesTagFilter(){
+	$(".notes-tag-filter").each(function(){
+		$(this).closest('li').removeClass("filteredOutByNotesTags");
+	});
+	$(".tag-filter-dropdown").selectpicker('val', 0);
+	notesTagFilterApplied = false;
+	updateNoteFilterView();
+}
+
+function clearAllNotesFilters(filter){
+	clearNotesDateFilter();
+	clearNotesTagFilter();
+}
+
+function updateNoteFilterView(){
+	$(".filterable-note").each(function(index){
+		var note = $(this);
+		if(note.hasClass("filteredOutByDate") || note.hasClass("filteredOutByNotesTags")){
+			note.hide();
+		}else{
+			note.show();
+		}
+	});
+	
+	var filterText = "";
+	if(!notesTagFilterApplied && !noteDateFilterApplied){
+		filterText = "No Filters Applied";
+	}else{
+		if(noteDateFilterApplied)
+			filterText += "Date: "+$("#notes-start-date").val()+" to "+$("#notes-end-date").val()+".";
+		if(notesTagFilterApplied)
+			filterText += " Tags.";
+	}
+	$(".notes-filter-text").text(filterText);
+}
+
 
 function openAddTagModalNotes(id){
 	var objTags = $("#note-obj-tag-filter-"+id).val();
@@ -258,5 +284,5 @@ function openAddTagModalNotes(id){
 function setNoteTagValues(id, objTags, devNeedTags){
 	$("#note-obj-tag-filter-"+id).val(objTags);
 	$("#note-dev-need-tag-filter-"+id).val(devNeedTags);
-	
+	$(".notes-tag-filter-"+id).val(formatTagFilterValues(objTags, devNeedTags));
 }
