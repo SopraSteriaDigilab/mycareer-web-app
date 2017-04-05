@@ -111,8 +111,8 @@ function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNe
 	var html = " \
 		  <li class='list-group-item filterable-note' id='note-"+id+"'> \
 			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
-			  <input type='hidden' id='note-obj-tag-filter-"+id+"' class='notes-obj-tag-filter' value='"+objTagIds+"'> \
-			  <input type='hidden' id='note-dev-need-tag-filter-"+id+"' class='notes-dev-need-tag-filter' value='"+devNeedTagIds+"'> \
+			  <input type='hidden' id='note-obj-tags-"+id+"' class='notes-obj-tag' value='"+objTagIds+"'> \
+			  <input type='hidden' id='note-dev-need-tags-"+id+"' class='notes-dev-need-tag' value='"+devNeedTagIds+"'> \
 	  		  <input type='hidden' class='notes-tag-filter notes-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
   		  		<div class='row'> \
 					<div class='col-md-6 wrap-text'><h6><b>" + providerName + "</b></h6></div> \
@@ -274,15 +274,15 @@ function updateNoteFilterView(){
 
 
 function openAddTagModalNotes(id){
-	var objTags = $("#note-obj-tag-filter-"+id).val();
-	var devNeedTags = $("#note-dev-need-tag-filter-"+id).val();
+	var objTags = $("#note-obj-tags-"+id).val();
+	var devNeedTags = $("#note-dev-need-tags-"+id).val();
 	updateTagCheckboxes(objTags, devNeedTags);
 	$("#tag-type").val("note");
 	openAddTagModal(id);
 }
 
 function setNoteTagValues(id, objTags, devNeedTags){
-	$("#note-obj-tag-filter-"+id).val(objTags);
-	$("#note-dev-need-tag-filter-"+id).val(devNeedTags);
+	$("#note-obj-tags-"+id).val(objTags);
+	$("#note-dev-need-tags-"+id).val(devNeedTags);
 	$(".notes-tag-filter-"+id).val(formatTagFilterValues(objTags, devNeedTags));
 }

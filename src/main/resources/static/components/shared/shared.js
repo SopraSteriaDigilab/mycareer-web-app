@@ -402,9 +402,8 @@ function addNoteToDB(userID, from, body, date){
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
-            lastNoteID++;
             var classDate = timeStampToClassDate(new Date());
-            addNoteToList(lastNoteID++, from, body, date, classDate, emptyArray, emptyArray);
+            addNoteToList(++lastNoteID, from, body, date, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -463,7 +462,7 @@ function addToOptionsList(key, id, title){
 
 function tagsCheckboxItemHTML(id, title, type){
 	var HTML = " \
-		<div class='col-md-12 checkbox'> \
+		<div class='col-md-12 checkbox' id='checkbox-"+type+"-"+id+"'> \
 		 <label> \
 		    <input class='"+type+"-tag-checkbox' type='checkbox' value='"+id+"'> \
 		    <b>#"+id+": </b>" + title + " \
@@ -833,3 +832,49 @@ function formatTagFilterValues(objTagIds, devNeedTagIds){
 	
 	return filterValue;
 }
+
+function deleteTag(id, type){	
+	$("#checkbox-"+type+"-"+id).remove();
+	removeNoteTagValues(id,type);
+	removeNoteTagFilter(id,type);
+}
+
+
+function removeNoteTagValues(id, type){	
+	$(".filterable-note").each(function(index){
+		var noteId = this.id.replace("note-","");
+		var objIds = $("#note-obj-tags-"+noteId).val().split(',');
+		var devIds = $("#note-dev-need-tags-"+noteId).val().split(',');
+		if(type === "objective"){
+			var index = objIds.indexOf(id);
+			if(index > -1){
+				objIds.splice(index, 1);
+				$("#note-obj-tags-"+noteId).val(objIds);
+			}
+		}else{
+			var index = devIds.indexOf(id);
+			if(index > -1){
+				devIds.splice(index, 1);
+				$("#note-dev-need-tags-"+noteId).val(devIds);
+			}
+		}
+		$("#note-tag-text-"+noteId).text(addTags(objIds, devIds, "note"));	
+	});
+	
+}
+
+
+function removeNoteTagFilter(id, type){
+	var shortType = (type === "objective") ? "obj" : "dev";
+	
+	$("#notes-tag-dropdown").find("[value="+shortType+"-"+id+"]").remove();
+	$("#notes-tag-dropdown").selectpicker("refresh");
+}
+
+
+
+
+
+
+
+

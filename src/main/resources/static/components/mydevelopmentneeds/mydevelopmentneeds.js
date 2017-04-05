@@ -127,6 +127,7 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             //need to update note list
             var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
             addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            deleteTag(devNeedID, "development-need");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
