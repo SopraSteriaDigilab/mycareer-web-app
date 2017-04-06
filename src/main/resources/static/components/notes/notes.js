@@ -18,8 +18,8 @@ $(function() {
 	$('#submit-note').click(function(){ clickSubmitNote(); });
 	
 	//Initialising the date pickers
-	initNoteDatePicker("note-start", '');
-	initNoteDatePicker("note-end", new Date());
+	initNoteDatePicker("notes-start", '');
+	initNoteDatePicker("notes-end", new Date());
 	
 	//Keep end date updated
 	$("#notes-start-date").change(function (d){ updateNoteEndDate() });
@@ -36,7 +36,6 @@ $(function() {
 	$("#development-needs-tags-checkboxes").change(function(){ updateDevelopmentNeedsTagsList(); });
 	
 	$("#notes-tag-dropdown").on('change', function(){ applyNotesTagFilter($(this).val()); });
-	
 });
 
 var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
@@ -59,7 +58,6 @@ function getNotesList(userID){
       method: 'GET',
       xhrFields: {'withCredentials': true},
       success: function(data){
-    	 // firstNoteDate = timeStampToClassDate(data[0].timestamp);
           lastNoteID = data.length;
           $.each(data, function(key, val){
           	var date = timeStampToDateTime(new Date(val.timestamp));
@@ -190,12 +188,13 @@ function formatNoteDate(date){
 
 function applyNoteDateFilter(){
 	var dateRangeList = [];
-	var startDate = new formatNoteDate($("#notes-start-date").val());
-	var endDate = new formatNoteDate($("#notes-end-date").val());
+	var startDate = formatNoteDate($("#notes-start-date").val());
+	var endDate = formatNoteDate($("#notes-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
 		dateRangeList.push(timeStampToClassDate(date));
 	}
+	
 	$(".date-filter").each(function(index){
 		var date = $(this).val()
 
