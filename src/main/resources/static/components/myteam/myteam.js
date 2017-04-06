@@ -161,14 +161,19 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
                 toastr.error(response);
                }else{
             	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
-            		addObjectiveToList((++lastObjID), objTitle, objText, objDate, 0, false);
+            		addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
             	}
                 toastr.success(response);
                }
            },
            error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
+        	   var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+       			if(errorMessage.indexOf("objective proposed") > -1){
+       				toastr.warning(XMLHttpRequest.responseText);
+       			}else{
+       				toastr.error(errorMessage);
+       			}
+           },
     });
 }
 

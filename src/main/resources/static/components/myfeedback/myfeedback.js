@@ -374,7 +374,12 @@ function submitSendFeedback(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	$("#nav-bar-buttons").empty();
-            toastr.error(XMLHttpRequest.responseText);
+        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+        	if(errorMessage.indexOf("feedback added") > -1){
+        		toastr.warning(XMLHttpRequest.responseText);
+        	}else{
+        		toastr.error(errorMessage);
+        	}
         },
     });
         $('#send-feedback').click(function() {
