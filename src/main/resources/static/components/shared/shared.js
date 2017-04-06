@@ -568,7 +568,7 @@ function timeStampToDateTime(date){
 }
 
 function timeStampToDateTimeGMT(date) {
-	var d = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes());
+	var d =  addZero(date.getDate()) + ' ' +  shortMonths[date.getMonth()] + ' ' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes());
 	return d;
 }
 
