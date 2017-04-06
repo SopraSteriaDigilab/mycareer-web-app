@@ -327,6 +327,7 @@ function openRequestFeedbackModal(){
 }
 
 function openSendFeedbackModal(){
+	$('#submit-send-feedback').prop("disabled", true);
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
