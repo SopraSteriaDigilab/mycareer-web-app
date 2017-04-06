@@ -52,8 +52,11 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
         success: function(response){
             if(nextDevNeedId.length == 0)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList(nextDevelopmentNeedID(), devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
+            var Id = nextDevelopmentNeedID();
+            addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
+		    $("#developmentNeedsTags-group").append(tagsOptionItemHTML(Id, devNeedTitle, "dev"));
+		    $("#notes-tag-dropdown").selectpicker("refresh");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -77,6 +80,8 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
         },
         success: function(response){
             editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+            $("#developmentNeedsTags-group").find("[value=dev-"+devNeedID+"]").text("#"+devNeedID+": " + limilCharacters(devNeedTitle, 20));
+        	$("#notes-tag-dropdown").selectpicker("refresh");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){

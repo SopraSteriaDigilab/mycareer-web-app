@@ -429,12 +429,13 @@ function getTags(userID){
         success: function(data){
         	var optionsHTML = "<option value='0'>No Filter</option>";
         	$.each(data, function(key, val){
-        		optionsHTML += "<optgroup label='"+key+"'>";
+        		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
             	$.each(val, function(id, title){
             		addToTagsLists(key, id, title);
             		optionsHTML += addToOptionsList(key, id, title);
                 });
             	optionsHTML += "</optgroup>";
+            	
             });
         	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
         },

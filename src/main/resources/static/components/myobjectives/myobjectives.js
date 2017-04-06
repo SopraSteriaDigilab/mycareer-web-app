@@ -41,8 +41,11 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
         success: function(response){
             if(nextObjId.length == 0)
         		$("#all-obj").removeClass("text-center").empty();
-            addObjectiveToList(nextObjectiveID(), objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
+            var Id = nextObjectiveID();
+            addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 		    showProposedObjTab();
+		    $("#objectivesTags-group").append(tagsOptionItemHTML(Id, objTitle, "obj"));
+		    $("#notes-tag-dropdown").selectpicker("refresh");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -65,6 +68,8 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
         },
         success: function(response){
             editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
+        	$("#objectivesTags-group").find("[value=obj-"+objID+"]").text("#"+objID+": " + limilCharacters(objTitle, 20));
+        	$("#notes-tag-dropdown").selectpicker("refresh");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -125,7 +130,7 @@ function deleteObjective(userID, objID, objTitle, deletingText){
 }
 
 //Function to set up and open ADD objective modal
-function openAddObjectiveModal(){
+function openAddObjectiveModal(){	
 	$("#obj-modal-type").val('add');
 	setObjectiveModalContent('', '', '', getToday(), 0, 0);
 	showObjectiveModal(true);
