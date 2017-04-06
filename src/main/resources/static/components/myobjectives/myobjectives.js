@@ -91,7 +91,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completed
             updateObjectiveStatusOnList(objID, objStatus);
             if(objStatus == 2){
             	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
-                addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            	addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
                 $("#edit-objective-button-"+objID).remove();
             }
             toastr.success(response);
@@ -117,7 +117,7 @@ function deleteObjective(userID, objID, objTitle, deletingText){
             removeObjectiveFromList(objID);
             //need to update note list
             var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
-            addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             deleteTag(objID, "objective");
             toastr.success(response);
         },

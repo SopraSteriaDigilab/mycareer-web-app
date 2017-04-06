@@ -103,7 +103,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
             if(devNeedStatus == 2){
             	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
-                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
                 $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
@@ -129,7 +129,7 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             removeDevNeedFromList(devNeedID);
             //need to update note list
             var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
-            addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTime(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
             deleteTag(devNeedID, "development-need");
             toastr.success(response);
         },
