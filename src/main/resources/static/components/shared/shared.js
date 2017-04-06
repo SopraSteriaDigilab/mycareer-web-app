@@ -403,8 +403,9 @@ function addNoteToDB(userID, from, body, date){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             clearAllNotesFilters();
+            var dateFormatted = timeStampToDateTimeGMT(date);
             var classDate = timeStampToClassDate(new Date());
-            addNoteToList(++lastNoteID, from, body, date, classDate, emptyArray, emptyArray);
+            addNoteToList(++lastNoteID, from, body, dateFormatted, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -564,6 +565,11 @@ function timeStampToDateTime(date){
 //	var date = d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
 	
 	return formattedDate;
+}
+
+function timeStampToDateTimeGMT(date) {
+	var d = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes());
+	return d;
 }
 
 //TimeStamp to dd mmm yyyy

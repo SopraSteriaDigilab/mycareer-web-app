@@ -135,7 +135,7 @@ function clickSubmitNote(){
 	var userID = getADLoginID();
 	var note = $('#note-text').val().trim();
 	var from = getADfullName();
-	var date = timeStampToDateTime(new Date());
+	var date = new Date();
 	
 	addNoteToDB(userID, from, note, date);
     
