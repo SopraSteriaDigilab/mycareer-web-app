@@ -55,8 +55,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             var Id = nextDevelopmentNeedID();
             addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
-		    $("#developmentNeedsTags-group").append(tagsOptionItemHTML(Id, devNeedTitle, "dev"));
-		    $("#notes-tag-dropdown").selectpicker("refresh");
+		    addTag(Id, devNeedTitle, "dev");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -80,8 +79,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
         },
         success: function(response){
             editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-            $("#developmentNeedsTags-group").find("[value=dev-"+devNeedID+"]").text("#"+devNeedID+": " + limilCharacters(devNeedTitle, 20));
-        	$("#notes-tag-dropdown").selectpicker("refresh");
+            editTag(devNeedID, devNeedTitle, "dev");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){

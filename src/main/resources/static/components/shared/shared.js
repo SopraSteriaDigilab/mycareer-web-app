@@ -468,7 +468,7 @@ function tagsCheckboxItemHTML(id, title, type){
 		<div class='col-md-12 checkbox' id='checkbox-"+type+"-"+id+"'> \
 		 <label> \
 		    <input class='"+type+"-tag-checkbox' type='checkbox' value='"+id+"'> \
-		    <b>#"+id+": </b>" + title + " \
+		    <b>#"+id+": </b><span class='checkbox-title'>" + title + "</span> \
 		  </label> \
 		 </div>	\
 	    ";
@@ -476,11 +476,11 @@ function tagsCheckboxItemHTML(id, title, type){
 }
 
 function tagsOptionItemHTML(id, title, type){
-	var HTML = "<option value='"+type+"-"+id+"'>#"+id+": "+limilCharacters(title, 20)+"</option>";
+	var HTML = "<option value='"+type+"-"+id+"'>#"+id+": "+limitCharacters(title, 20)+"</option>";
 	return HTML;	
 }
 
-function limilCharacters(text, limit){
+function limitCharacters(text, limit){
 	if(text.length >= 20){
 		text = text.substring(0,limit).concat("...");
 	}	
@@ -842,7 +842,6 @@ function formatTagFilterValues(objTagIds, devNeedTagIds){
 }
 
 function deleteTag(id, type){	
-	$("#checkbox-"+type+"-"+id).remove();
 	removeNoteTagValues(id,type);
 	removeNoteTagFilter(id,type);
 }
@@ -875,10 +874,42 @@ function removeNoteTagValues(id, type){
 function removeNoteTagFilter(id, type){
 	var shortType = (type === "objective") ? "obj" : "dev";
 	
+	$("#checkbox-"+type+"-"+id).remove();
 	$("#notes-tag-dropdown").find("[value="+shortType+"-"+id+"]").remove();
 	$("#notes-tag-dropdown").selectpicker("refresh");
 }
 
+function addTag(Id, title, type) {
+	addNoteTagCheckbox(Id, title, type);
+	addNoteTagFilter(Id, title, type);
+}
+
+function addNoteTagCheckbox(Id, title, type){
+	var key = (type === "obj") ? "objectivesTags" : "developmentNeedsTags";
+	addToTagsLists(key, Id, title);
+}
+
+function addNoteTagFilter(Id, title, type){
+	var group = (type === "obj") ? "objectivesTags-group" : "developmentNeedsTags-group";
+	$("#"+group).append(tagsOptionItemHTML(Id, title, type));
+	$("#notes-tag-dropdown").selectpicker("refresh");
+}
+
+function editTag(Id, title, type) {
+	editNoteTagCheckbox(Id, title, type);
+	editNoteTagFilter(Id, title, type);
+}
+
+function editNoteTagCheckbox(Id, title, type){
+	var key = (type === "obj") ? "objective" : "development-need";
+	$("#checkbox-"+key+"-"+Id).find(".checkbox-title").text(limitCharacters(title, 20));	
+}
+
+function editNoteTagFilter(Id, title, type){
+	var group = (type === "obj") ? "objectivesTags-group" : "developmentNeedsTags-group";
+	$("#"+group).find("[value="+type+"-"+Id+"]").text("#"+Id+": " + limitCharacters(title, 20));
+	$("#notes-tag-dropdown").selectpicker("refresh");
+}
 
 
 
