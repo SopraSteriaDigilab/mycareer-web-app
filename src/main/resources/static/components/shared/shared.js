@@ -402,6 +402,7 @@ function addNoteToDB(userID, from, body, date){
         success: function(response){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
+            clearAllNotesFilters();
             var classDate = timeStampToClassDate(new Date());
             addNoteToList(++lastNoteID, from, body, date, classDate, emptyArray, emptyArray);
             toastr.success(response);
