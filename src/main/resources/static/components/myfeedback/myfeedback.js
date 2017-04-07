@@ -227,7 +227,7 @@ function applyFeedbackTagFilter(filter){
 		clearFeedbackTagFilter();
 	}else{
 		$(".feedback-tag-filter").each(function(){
-			var tags = $(this).val();
+			var tags = $(this).val().split(' ');
 			if(tags.indexOf(filter) > -1){
 				$(this).closest('div').removeClass("filteredOutByFeedbackTags");
 			}else{
