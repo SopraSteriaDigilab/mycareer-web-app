@@ -53,7 +53,7 @@ function initResizable(){
 //Method to get the Notes list
 function getNotesList(userID){
   $.ajax({
-      url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+      url: 'http://'+getEnvironment()+'/getNotes/'+userID,
       cache: false,
       method: 'GET',
       xhrFields: {'withCredentials': true},
@@ -77,7 +77,7 @@ function getNotesList(userID){
 
 function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateNotesTags/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/updateNotesTags/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {

@@ -30,7 +30,7 @@ $(function() {
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addObjective/"+userID,
+        url: "http://"+getEnvironment()+"/addObjective/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -56,7 +56,7 @@ function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/editObjective/"+userID,
+        url: "http://"+getEnvironment()+"/editObjective/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -79,7 +79,7 @@ function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus,
 //HTTP request for UPDATING an objective in DB
 function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completedText){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateObjectiveProgress/"+userID,
+        url: "http://"+getEnvironment()+"/updateObjectiveProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -105,7 +105,7 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completed
     //function request for DELETING a development need in DB
 function deleteObjective(userID, objID, objTitle, deletingText){
         $.ajax({
-        url: "http://"+getEnvironment()+":8080/deleteObjective/"+userID,
+        url: "http://"+getEnvironment()+"/deleteObjective/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -172,7 +172,7 @@ function clickArchiveObjective(objID, archive){
 
 function editObjectiveArchiveOnDB(objID, archive){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/toggleObjectiveArchive/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/toggleObjectiveArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {

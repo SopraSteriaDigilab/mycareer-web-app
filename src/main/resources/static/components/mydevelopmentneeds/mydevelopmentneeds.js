@@ -40,7 +40,7 @@ $(function() {
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addDevelopmentNeed/"+userID,
+        url: "http://"+getEnvironment()+"/addDevelopmentNeed/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -67,7 +67,7 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/editDevelopmentNeed/"+userID,
+        url: "http://"+getEnvironment()+"/editDevelopmentNeed/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -91,7 +91,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
 //HTTP request for UPDATING a development need in DB
 function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateDevelopmentNeedProgress/"+userID,
+        url: "http://"+getEnvironment()+"/updateDevelopmentNeedProgress/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -117,7 +117,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
 //function request for DELETING a development need in DB
 function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
         $.ajax({
-        url: "http://"+getEnvironment()+":8080/deleteDevelopmentNeed/"+userID,
+        url: "http://"+getEnvironment()+"/deleteDevelopmentNeed/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -187,7 +187,7 @@ function clickArchiveDevNeed(devNeedID, archive){
 
 function editDevNeedArchiveOnDB(devNeedID, archive){
     $.ajax({
-        url:"http://"+getEnvironment()+":8080/toggleDevelopmentNeedArchive/"+getADLoginID(),
+        url:"http://"+getEnvironment()+"/toggleDevelopmentNeedArchive/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials':true},
         data: {
@@ -319,7 +319,7 @@ function removeDevNeedFromList(devNeedID){
 
 function getTimeStamp(id){
 	$.ajax({
-    url: 'http://'+getEnvironment()+':8080/getdevelopmentNeeds/'+id,
+    url: 'http://'+getEnvironment()+'/getdevelopmentNeeds/'+id,
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},

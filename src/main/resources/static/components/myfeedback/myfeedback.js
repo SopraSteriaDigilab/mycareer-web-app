@@ -335,7 +335,7 @@ function openSendFeedbackModal(){
 function submitFeedbackRequest(){
 	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/generateFeedbackRequest/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -362,7 +362,7 @@ function submitFeedbackRequest(){
 function submitSendFeedback(){
     $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addFeedback/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/addFeedback/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -400,7 +400,7 @@ function openAddTagModalFeedback(id){
 
 function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateFeedbackTags/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/updateFeedbackTags/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {

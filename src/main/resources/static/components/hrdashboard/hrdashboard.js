@@ -123,7 +123,7 @@ function verifyUser(){
 //function to get the general HR stats of mycareer
 function getMyCareerStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getMyCareerStats',
+       url: 'http://'+getEnvironment()+'/hr/getMyCareerStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -140,7 +140,7 @@ function getMyCareerStats(){
 //function to get HR Employee stats of mycareer
 function getEmployeeStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getEmployeeStats',
+       url: 'http://'+getEnvironment()+'/hr/getEmployeeStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -165,7 +165,7 @@ function getEmployeeStats(){
 //function to get HR Objectives stats of mycareer
 function getHRObjectivesStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getObjectiveStats',
+       url: 'http://'+getEnvironment()+'/hr/getObjectiveStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -185,7 +185,7 @@ function getHRObjectivesStats(){
 //function to get HR Development Needs stats of mycareer
 function getHRDevNeedsStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedStats',
+       url: 'http://'+getEnvironment()+'/hr/getDevelopmentNeedStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -205,7 +205,7 @@ function getHRDevNeedsStats(){
 //function to get HR Development Need breakdown stats of mycareer
 function getHRDevNeedBreakdown(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedBreakDown',
+       url: 'http://'+getEnvironment()+'/hr/getDevelopmentNeedBreakDown',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -225,7 +225,7 @@ function getHRDevNeedBreakdown(){
 //function to get HR feedback stats of mycareer
 function getHRFeedbackStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getFeedbackStats',
+       url: 'http://'+getEnvironment()+'/hr/getFeedbackStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -245,7 +245,7 @@ function getHRFeedbackStats(){
 //function to get the Super Sector HR stats of mycareer
 function getHRSuperSectorStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getSectorBreakDown',
+       url: 'http://'+getEnvironment()+'/hr/getSectorBreakDown',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},

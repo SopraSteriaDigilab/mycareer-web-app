@@ -24,7 +24,7 @@ var selectedReporteeEmail = "";
 function getReportees(){
 		$("#reportee-list").append("<h5>Loading Reportees...</h5>");
 	    $.ajax({
-	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
+	        url: 'http://'+getEnvironment()+'/getReportees/'+getADLoginID(),
             cache: false,
 	        method: 'GET',
 	        xhrFields: {'withCredentials': true},
@@ -102,7 +102,7 @@ function getReporteeCareer(id, name, emailAddress, element) {
 
 function getReporteeCompetencyList(userID){
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -125,7 +125,7 @@ function getReporteeCompetencyList(userID){
 ////Method to get the Notes list
 function getReporteeNotesList(userID){
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+        url: 'http://'+getEnvironment()+'/getNotes/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -145,7 +145,7 @@ function getReporteeNotesList(userID){
 //Method to propose objective
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/proposeObjective/"+userID,
+        url: "http://"+getEnvironment()+"/proposeObjective/"+userID,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
@@ -180,7 +180,7 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
 //Method to make ajax call to add note to database
 function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/addNoteToReportee/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data:{

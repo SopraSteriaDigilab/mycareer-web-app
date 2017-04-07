@@ -1,7 +1,7 @@
 //Function to get Objectives data of the user
 function getObjectivesData(){
 	$.ajax({
-	url: 'http://'+getEnvironment()+':8080/getObjectives/'+ getADLoginID(),
+	url: 'http://'+getEnvironment()+'/getObjectives/'+ getADLoginID(),
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},
@@ -25,7 +25,7 @@ function getObjectivesData(){
 //Function to get Feedback data of the user
 function getFeedbackData(){
 	$.ajax({
-    url: 'http://'+getEnvironment()+':8080/getFeedback/'+ getADLoginID(),
+    url: 'http://'+getEnvironment()+'/getFeedback/'+ getADLoginID(),
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},
@@ -46,7 +46,7 @@ function getFeedbackData(){
 //Function to get Development Needs data of the user
 function getDevelopmentNeedsData(){
 	$.ajax({
-	url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+ getADLoginID(),
+	url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+ getADLoginID(),
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},
@@ -70,7 +70,7 @@ function getDevelopmentNeedsData(){
 //Function to get Notes data of the user
 function getNotesData(){
 	$.ajax({
-	url: 'http://'+getEnvironment()+':8080/getNotes/'+ getADLoginID(),
+	url: 'http://'+getEnvironment()+'/getNotes/'+ getADLoginID(),
     cache: false,
     method: 'GET',
     xhrFields: {'withCredentials': true},

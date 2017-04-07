@@ -39,7 +39,7 @@ function adjustDatePicker(){
 //HTTP request for RETRIEVING list of objectives from DB
 function getObjectivesList(userID){
   $.ajax({
-      url: 'http://'+getEnvironment()+':8080/getObjectives/'+userID,
+      url: 'http://'+getEnvironment()+'/getObjectives/'+userID,
       cache: false,
       method: 'GET',
       xhrFields: {'withCredentials': true},
@@ -192,7 +192,7 @@ function clickCloseObjective(e){
 //Gets the list of Competencies from the DB
 function getCompetencyList(userID){
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -223,7 +223,7 @@ function checkSelected(isSelected){
 function getGeneralFeedbackList(userID){
     //Gets the List of General Feedback from the DB 
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getFeedback/'+userID,
+        url: 'http://'+getEnvironment()+'/getFeedback/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -295,7 +295,7 @@ function clickCloseRequestFeedback(e){
 //Gets the List of Development Needs from the DB
 function getDevelopmentNeedsList(userID){
 	$.ajax({
-	    url: 'http://'+getEnvironment()+':8080/getDevelopmentNeeds/'+userID,
+	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
         cache: false,
 	    method: 'GET',
 	    xhrFields: {'withCredentials': true},
@@ -392,7 +392,7 @@ function nextDevelopmentNeedID(){
 //Method to make ajax call to add note to database
 function addNoteToDB(userID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addNote/"+userID,
+        url: "http://"+getEnvironment()+"/addNote/"+userID,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data:{
@@ -423,7 +423,7 @@ function addNoteToDB(userID, from, body, date){
 function getTags(userID){
 	$.ajax({
     	"async": true,
-        url: 'http://'+getEnvironment()+':8080/getTags/'+userID,
+        url: 'http://'+getEnvironment()+'/getTags/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -763,7 +763,7 @@ function checkIfPastDate (date){
 function getEmailList(){
 	$.ajax({
     	"async": true,
-        url: 'http://'+getEnvironment()+':8080/data/getAllEmailAddresses',
+        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
