@@ -522,7 +522,7 @@ function updateDevelopmentNeedsTagsList(){
 				developmentNeedTagIds.push(this.value);
         }else{
         	if(developmentNeedTagIds.indexOf(this.value) > -1)
-        		developmentNeedTagIds.splice(objectiveTagIds.indexOf(this.value), 1);
+        		developmentNeedTagIds.splice(developmentNeedTagIds.indexOf(this.value), 1);
         }
 	});
 }
