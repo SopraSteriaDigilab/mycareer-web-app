@@ -213,7 +213,7 @@ function applyNotesTagFilter(filter){
 		clearNotesTagFilter();
 	}else{
 		$(".notes-tag-filter").each(function(){
-			var tags = $(this).val();
+			var tags = $(this).val().split(' ');
 			if(tags.indexOf(filter) > -1){
 				$(this).closest('li').removeClass("filteredOutByNotesTags");
 			}else{

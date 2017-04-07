@@ -64,6 +64,11 @@ function getObjectivesList(userID){
 
 //Function that finds the largest ID for objectives and finds the next one
 function nextObjectiveID(){
+	if(nextObjId.length <1){
+		nextObjId.push(1);
+		return 1;
+	}
+	
     //numerical sort
     nextObjId.sort(function(a,b){ return a - b;});
     //finds the last id in the list
@@ -376,6 +381,10 @@ function showProposedDevelopmentTab(){
 
 //Function that finds the largest ID for objectives and finds the next one
 function nextDevelopmentNeedID(){
+	if(nextDevNeedId.length <1){
+		nextDevNeedId.push(1);
+		return 1;
+	}
     //numerical sort
     nextDevNeedId.sort(function(a,b){ return a - b;});
     //finds the last id in the list
