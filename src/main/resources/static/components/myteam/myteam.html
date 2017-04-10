@@ -4,56 +4,55 @@
 <!--Containter for full page -->
 <div class="container">
 
-<!--Page Header -->
-<div class="row">
-	<div class="col-md-12" >
-		<div class="col-md-3">
-			<h2 >My Team</h2>
-		</div>
-		<div class="col-md-7">
-			<div class="" id="reportee-header">
-				<br/>
-				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
-					<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
-					<li><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
-					<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
-				</ul>
+	<!--Page Header -->
+	<div class="row">
+		<div class="col-md-12" >
+			<div class="col-md-3">
+				<h2 >My Team</h2>
 			</div>
-		</div>
-		<div class="col-md-2 vertical-centre ">
-				<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
-		</div>
-	</div>
-</div>
-
-<!--End of Page Header -->
-
-
-	<div class="col-md-3" id='reportee-list' style="margin-top: 10px"></div>
-	
-	<div id="info-holder" class="col-md-7" style="margin-top: 10px">
-		<div class="tab-content hidden" id="reportee-body">
-			<div id="reportee-obj-tab" class="tab-pane fade in active">
-				<div class="row">
-					<div class="col-md-12">
-						<h5><b>Competency Focus: </b><span id="reportee-comp-list"></span></h5>
-					</div>
+			<div class="col-md-7">
+				<div class="" id="reportee-header">
+					<br/>
+					<ul class="nav nav-tabs nav-justified" id="navTab">
+						<li class="active"><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
+						<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
+						<li><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
+						<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
+					</ul>
 				</div>
-				<div id="reportee-obj-list"></div>
 			</div>
-			<!--<div id="reportee-comp-list" class="tab-pane fade in "></div> -->
-			<div id="reportee-feed-list" class="tab-pane fade in "></div>
-			<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
-			<div id="reportee-notes-tab" class="tab-pane fade in ">
-				<div class="row">
-					<div class="col-md-12">
-						<button type="button" class="btn btn-link pull-right" id="add-reportee-note"><u>Add Note for <span class="reportee-name"></span></u></button>
+			<div class="col-md-2 vertical-centre ">
+					<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
+			</div>
+		</div>
+	</div><!--End of Page Header -->
+
+	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+		<div class="col-md-3" id='reportee-list'></div>
+		
+		<div id="info-holder" class="col-md-7">
+			<div class="tab-content hidden" id="reportee-body">
+				<div id="reportee-obj-tab" class="tab-pane fade in active">
+					<div class="row">
+						<div class="col-md-12">
+							<h5><b>Competency Focus: </b><span id="reportee-comp-list"></span></h5>
+						</div>
 					</div>
+					<div id="reportee-obj-list"></div>
 				</div>
-				<div id="reportee-notes-list"></div>
-			</div>
-    	</div>
+				<!--<div id="reportee-comp-list" class="tab-pane fade in "></div> -->
+				<div id="reportee-feed-list" class="tab-pane fade in "></div>
+				<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
+				<div id="reportee-notes-tab" class="tab-pane fade in ">
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-link pull-right" id="add-reportee-note"><u>Add Note for <span class="reportee-name"></span></u></button>
+						</div>
+					</div>
+					<div id="reportee-notes-list"></div>
+				</div>
+	    	</div>
+		</div>
 	</div>
 
 </div><!--end of container -->
