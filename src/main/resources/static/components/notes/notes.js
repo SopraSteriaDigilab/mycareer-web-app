@@ -36,6 +36,13 @@ $(function() {
 	$("#development-needs-tags-checkboxes").change(function(){ updateDevelopmentNeedsTagsList(); });
 	
 	$("#notes-tag-dropdown").on('change', function(){ applyNotesTagFilter($(this).val()); });
+	
+	//Detect window resizing and reposition the Notes side bar if it is opened
+	$(window).on('resize', function(){
+		var sidebarWidth = $("#resizable").width();
+		screenWidth = $(window).width();
+		repositionNotesBar(sidebarWidth,screenWidth);
+	});
 });
 
 var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
