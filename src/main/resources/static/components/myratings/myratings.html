@@ -23,13 +23,18 @@
 			  </div>
 			  <div class="panel-body rating-panel-body" >
 			  	<div id="self-evaluation-text"></div>
-			  	<textarea id="self-evaluation-input"  type="text" class="form-control" rows="15" style="display: none;"></textarea>
+			  	<textarea id="self-evaluation-input" placeholder="Self Evaluation" type="text" class="form-control" rows="15" style="display: none;"></textarea>
 			  </div>
 			  <div class="panel-footer rating-panel-footer">
 			  	<div class="row">
-			  		<div class="col-md-3 col-md-offset-9">
+			  		<div class="col-md-3 col-md-offset-9 edit-buttons">
 			   			<button type="button" class="btn btn-default btn-block pull-right" id="edit-self-evaluation">Edit</button>
-			   			<button type="button" class="btn btn-default btn-block pull-right" id="save-self-evaluation" style="display: none; margin-top:0px">Save</button>
+			   		</div>
+			   		<div class="col-md-3 col-md-offset-6 save-cancel-buttons" style="display:none">
+			   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-self-evaluation"  style="margin-top:0px">cancel</button>
+		   			</div>
+		   			<div class="col-md-3 save-cancel-buttons" style="display:none">
+			   			<button type="button" class="btn btn-default btn-block pull-right" id="save-self-evaluation"  style="margin-top:0px">Save</button>
 			   		</div>
 			   	</div>
 		   	  </div>
@@ -42,7 +47,7 @@
 			  </div>
 			  <div class="panel-body rating-panel-body" id="manager-evaluation-text"></div>
 			  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px;">
-			  	<span id="manager-evaluation-score"></span>
+			  	<span id="evaluation-score"></span>
 			  </div>
 			</div>
 		</div>
