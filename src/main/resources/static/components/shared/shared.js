@@ -724,11 +724,17 @@ function openNotesBar(){
 	var screenWidth = $(document).width();
 	var sidebarWidth = $("#resizable").width();
 	$("#resizable").animate({'left':screenWidth-(sidebarWidth+3) + 'px'});
+	$("#resizable").addClass("visibleBar");
 }
 
 function closeNotesBar(){
 	var width = $("#resizable").width();
 	$("#resizable").animate({'left':'100vw'});
+	$("#resizable").removeClass("visibleBar");
+}
+
+function repositionNotesBar(sidebarWidth,screenWidth){
+	$(".visibleBar").css('left',screenWidth-(sidebarWidth+3) + 'px');
 }
 
 function validEmails(requestingTo){
