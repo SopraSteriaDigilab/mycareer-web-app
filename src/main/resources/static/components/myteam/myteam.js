@@ -62,6 +62,9 @@ function demoManager(){
 	if(getADLoginID() == 675590){
 		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
 	}
+	if(getADLoginID == 674936){
+		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
+	}
 }
 
 //method to remove apostrophe from names so can be clicked on in my team
