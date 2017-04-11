@@ -18,3 +18,8 @@
 .nav-justified > li {
 	height: 100%;
 }
+
+.rating-panel-body{
+	min-height: 150px;
+	height: calc(100vh - 641px);
+}

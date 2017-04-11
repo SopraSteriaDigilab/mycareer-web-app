@@ -1,24 +1,33 @@
 $(function() {
-	//Get list of reportees
-	getReportees();
-	
-	//Add Proposed Button
-	addProposed();
-	
-	//onClick for opening modal
-	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
-
-	//Validation for the add reportee modal
-	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
-	
-	//onClick for Submit modal
-	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
-    
+	init();
 });//End of Document Function
+
+
+/** DOM element references */
+var $editButtons = $(".edit-buttons");
+var $saveCancelButtons = $(".save-cancel-buttons");
+var $managerEvaluationText = $("#manager-evaluation-text");
+var $managerEvaluationInput = $("#manager-evaluation-input");
+var $reporteeEvaluationText = $("#self-evaluation-text");
+var $evaluationScore = $("#evaluation-score");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
+
+function init(){
+	getReportees();
+	addProposed();
+	
+	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
+	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
+	
+	$("#edit-manager-evaluation").click(function(){ editManagerEvaluation(); });
+	$("#save-manager-evaluation").click(function(){ saveManagerEvaluation(); });
+	$("#cancel-manager-evaluation").click(function(){ closeManagerEvaluation(false); });
+	
+	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+}
 
 //Method to get the Reportee list
 function getReportees(){
@@ -471,3 +480,31 @@ function addProposed(){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+
+/** Make self evaluation editable. */
+function editManagerEvaluation(){
+	$editButtons.hide();
+	$managerEvaluationText.hide();
+	$saveCancelButtons.show();
+	$managerEvaluationInput.show();
+}
+
+/** Save self evaluation to the database. */
+//function saveManagerEvaluation(){
+//	console.log("saving my self evaluation: " + $selfEvaluationInput.val());
+//	//TODO Ajax request to save self evaluation.
+//	closeSelfEvaluation(true); //In Success function 
+//}
+
+/**
+ * Hide editable self evaluations
+ * @param save true to save, false to cancel
+ */
+//function closeManagerEvaluation(save){
+//	$saveCancelButtons.hide();
+//	$selfEvaluationInput.hide();
+//	$editButtons.show();
+//	if(save) 
+//		setSelfEvaluationLabel($selfEvaluationInput.val());
+//	$selfEvaluationText.show()
+//}

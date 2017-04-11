@@ -52,7 +52,47 @@
 					</div>
 					<div id="reportee-notes-list"></div>
 				</div>
-				<div id="reportee-ratings-tab" class="tab-pane fade in "></div>
+				<div id="reportee-ratings-tab" class="tab-pane fade in ">
+				
+					<div class="row"  >
+						<div class="col-md-12">
+							<div class="panel panel-default">
+							  <div class="panel-heading">
+							    <h3 class="panel-title"><b><span class="reportee-name"></span> - Self Evaluation</b></h3>
+							  </div>
+							  <div class="panel-body rating-panel-body" id="reportee-evaluation-text">Reportee Evaluation</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="panel panel-default" style="margin-bottom:0px">
+							  <div class="panel-heading">
+							    <h3 class="panel-title"><b>Manager Evaluation</b></h3>
+							  </div>
+							  <div class="panel-body rating-panel-body" id="manager-panel-body">
+								  <div id="manager-evaluation-text"> Manager Evaluation</div>
+								  <textarea id="manager-evaluation-input" placeholder="Manager Evaluation" type="text" class="form-control" rows="7" style="display: none;"></textarea>
+							  </div>
+							  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px;">
+								  <div class="row">
+							  		<div class="col-md-3 col-md-offset-9 edit-buttons">
+						   				<button type="button" class="btn btn-default btn-block pull-right" id="edit-manager-evaluation">Edit</button>
+							   		</div>
+							   		<div class="col-md-3 col-md-offset-6 save-cancel-buttons" style="display:none">
+							   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">cancel</button>
+						   			</div>
+						   			<div class="col-md-3 save-cancel-buttons" style="display:none">
+							   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
+							   		</div>
+							   	</div>
+							  	<span id="evaluation-score"></span>
+							  </div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
 	    	</div>
 		</div>
 	</div>
@@ -82,4 +122,3 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-

@@ -16,9 +16,6 @@ var $selfEvaluationInput = $("#self-evaluation-input");
 var $managerEvaluationText = $("#manager-evaluation-text");
 var $evaluationScore = $("#evaluation-score");
 
-/** Variables */
-var tempSelfEvaluation = "";
-
 /** Initialise MyRatings Page. */
 function init(){
 	getMyRatings();
@@ -26,6 +23,18 @@ function init(){
 	$("#edit-self-evaluation").click(function(){ editSelfEvaluation(); });
 	$("#save-self-evaluation").click(function(){ saveSelfEvaluation(); });
 	$("#cancel-self-evaluation").click(function(){ closeSelfEvaluation(false); });
+}
+
+/** Retrieve MyRatings details from database and update relevant DOM Elements. */
+function getMyRatings(){
+	console.log("getting my ratings");
+	const data = {
+		"selfEvaluation":"",
+		"managerEvaluation":"",
+		"evaluationScore": 0 
+	};
+	//TODO Ajax Request to get ratings.
+	setMyRatings(data.selfEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
 }
 
 /** Sets the three evaluations in the HTML */
@@ -45,16 +54,12 @@ function setSelfEvaluationLabel(selfEvaluation){
 	$selfEvaluationText.text(self);
 }
 
-/** Retrieve MyRatings details from database and update relevant DOM Elements. */
-function getMyRatings(){
-	console.log("getting my ratings");
-	const data = {
-		"selfEvaluation":"",
-		"managerEvaluation":"",
-		"evaluationScore": 0 
-	};
-	//TODO Ajax Request to get ratings.
-	setMyRatings(data.selfEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+/** Make self evaluation editable. */
+function editSelfEvaluation(){
+	$editButtons.hide();
+	$selfEvaluationText.hide();
+	$saveCancelButtons.show();
+	$selfEvaluationInput.show();
 }
 
 /** Save self evaluation to the database. */
@@ -62,15 +67,6 @@ function saveSelfEvaluation(){
 	console.log("saving my self evaluation: " + $selfEvaluationInput.val());
 	//TODO Ajax request to save self evaluation.
 	closeSelfEvaluation(true); //In Success function 
-}
-
-/** Make self evaluation editable. */
-function editSelfEvaluation(){
-	$editButtons.hide();
-	$selfEvaluationText.hide();
-	$saveCancelButtons.show();
-	$selfEvaluationInput.show();
-	tempEvaluation = $selfEvaluationInput.val();
 }
 
 /**
@@ -81,10 +77,7 @@ function closeSelfEvaluation(save){
 	$saveCancelButtons.hide();
 	$selfEvaluationInput.hide();
 	$editButtons.show();
-	if(save) {
+	if(save) 
 		setSelfEvaluationLabel($selfEvaluationInput.val());
-	}else{
-		$selfEvaluationInput.val(tempSelfEvaluation);
-	}
 	$selfEvaluationText.show()
 }
