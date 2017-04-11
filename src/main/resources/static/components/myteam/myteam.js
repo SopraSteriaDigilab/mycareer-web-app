@@ -2,13 +2,18 @@ $(function() {
 	init();
 });//End of Document Function
 
+/** Constants */
+const NO_REPORTEE_EVALUATION = "No self evaluation has been written.";
+const NO_MANAGER_EVALUATION = "No manager evaluation has been written.";
+const NO_RATING = "No Rating Entered";
+const RATING = "Rating: ";
 
 /** DOM element references */
 var $editButtons = $(".edit-buttons");
 var $saveCancelButtons = $(".save-cancel-buttons");
 var $managerEvaluationText = $("#manager-evaluation-text");
 var $managerEvaluationInput = $("#manager-evaluation-input");
-var $reporteeEvaluationText = $("#self-evaluation-text");
+var $reporteeEvaluationText = $("#reportee-evaluation-text");
 var $evaluationScore = $("#evaluation-score");
 
 var reporteeSectionHidden = true;
@@ -17,7 +22,8 @@ var selectedReporteeEmail = "";
 
 function init(){
 	getReportees();
-	addProposed();
+	loadingProposedButton();
+	getEmailList();
 	
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
 	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
@@ -106,6 +112,7 @@ function getReporteeCareer(id, name, emailAddress, element) {
 		getGeneralFeedbackList(id);
 		getDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
+		getReporteeRatings(id);
 	}
 }
 
@@ -476,12 +483,50 @@ function reporteeNotesListHTML(fromWho, body, date){
 }
 
 function addProposed(){
+	$("#nav-bar-buttons").empty();
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
 
-/** Make self evaluation editable. */
+function initialiseTags() {
+	addProposed();
+}
+
+function loadingProposedButton(){
+	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+}
+
+/** Retrieve MyRatings details from database and update relevant DOM Elements. */
+function getReporteeRatings(userId){
+	console.log("getting my ratings for : " + userId);
+	const data = {
+		"selfEvaluation":"",
+		"managerEvaluation":"",
+		"evaluationScore": 0 
+	};
+	//TODO Ajax Request to get ratings.
+	setMyRatings(data.selfEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+}
+
+/** Sets the three evaluations in the HTML */
+function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore){
+	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : managerEvaluation;
+	var score = (evaluationScore == 0) ? NO_RATING : RATING + evaluationScore;
+	
+	setManagerEvaluationLabel(managerEvaluation);
+	$managerEvaluationInput.val(managerEvaluation);
+	$reporteeEvaluationText.text(reportee);
+	$evaluationScore.text(score);
+}
+
+/** Sets the self evaluation label */
+function setManagerEvaluationLabel(reporteeEvaluation){
+	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : reporteeEvaluation;
+	$reporteeEvaluationText.text(reportee);
+}
+
+/** Make manager evaluation editable. */
 function editManagerEvaluation(){
 	$editButtons.hide();
 	$managerEvaluationText.hide();
@@ -489,7 +534,7 @@ function editManagerEvaluation(){
 	$managerEvaluationInput.show();
 }
 
-/** Save self evaluation to the database. */
+/** Save manager evaluation to the database. */
 //function saveManagerEvaluation(){
 //	console.log("saving my self evaluation: " + $selfEvaluationInput.val());
 //	//TODO Ajax request to save self evaluation.
@@ -497,7 +542,7 @@ function editManagerEvaluation(){
 //}
 
 /**
- * Hide editable self evaluations
+ * Hide editable manager evaluations
  * @param save true to save, false to cancel
  */
 //function closeManagerEvaluation(save){
@@ -508,3 +553,5 @@ function editManagerEvaluation(){
 //		setSelfEvaluationLabel($selfEvaluationInput.val());
 //	$selfEvaluationText.show()
 //}
+
+

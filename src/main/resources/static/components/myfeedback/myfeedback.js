@@ -2,11 +2,8 @@ $(function() {
 	
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-    
-    //initialise Tags
-    tags("requestingTo", emails);
-    tags("sendingTo", emails);
-    
+	getEmailList();
+	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -334,7 +331,7 @@ function openSendFeedbackModal(){
 //Email details sent through BE to request feedback.
 function submitFeedbackRequest(){
 	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
-    $.ajax({
+	$.ajax({
         url: "http://"+getEnvironment()+"/generateFeedbackRequest/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
@@ -350,12 +347,12 @@ function submitFeedbackRequest(){
         	$("#nav-bar-buttons").empty();
             toastr.error(XMLHttpRequest.responseText);
         },
+	});
+    $('#request-feedback').click(function() {
+        $("textarea").val("");
+        $("#requestingTo").tagsinput('removeAll');
     });
-        $('#request-feedback').click(function() {
-            $("textarea").val("");
-            $("#requestingTo").tagsinput('removeAll');
-        });
-        $('#requestFeedbackModal').modal('hide');
+    $('#requestFeedbackModal').modal('hide');
 }
 
 //Email details sent to BE to send feedback
@@ -427,5 +424,10 @@ function setFeedbackTagValues(id, objTags, devNeedTags){
 	$("#feedback-obj-tags-"+id).val(objTags);
 	$("#feedback-dev-need-tags-"+id).val(devNeedTags);
 	$(".feedback-tag-filter-"+id).val(formatTagFilterValues(objTags, devNeedTags));
+}
+
+function initialiseTags(){
+    tags("requestingTo", emails);
+    tags("sendingTo", emails);
 }
 
