@@ -61,12 +61,14 @@ function getReportees(){
 	    });
 }
 
-function demoManager(){
+function demoManager(){	
 	if(getADLoginID() == 675590){
 		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
+		addReporteeToList(674936, "Finlay Harris", "fharris", "finlay.harris@soprasteria.com");
 	}
-	if(getADLoginID == 674936){
+	if(getADLoginID() == 674936){
 		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
+		addReporteeToList(674936, "Finlay Harris", "fharris", "finlay.harris@soprasteria.com");
 	}
 }
 
