@@ -16,12 +16,12 @@ function logMeIn(){
 		"method": "GET",
 		xhrFields: { 'withCredentials': true },
 		success: function(data){
-			ADfullName = data.fullName;
-			ADLoginID = data.employeeID;
-			ADUsername = data.username;
-			isManager = Boolean(data.isManager);
+			ADfullName = "Alison MCLAUGHLIN";
+			ADLoginID = 660577;
+			ADUsername = "amclaughlin";
+			isManager = true;
 			demoManager(data.employeeID) //REMOVE ME!!!!
-			hasHRDash = Boolean(data.hasHRDash);
+			hasHRDash = false;
 			loadPage($("#section").text());  
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){

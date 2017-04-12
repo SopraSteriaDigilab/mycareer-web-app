@@ -22,6 +22,8 @@ var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
 var selectedReporteeName = "";
+var selectedReporteeUsername = "";
+var initialReporteeList = [];
 
 function init(){
 	getReportees(getADLoginID(), false, "");
@@ -41,6 +43,7 @@ function init(){
 
 //Method to get the Reportee list
 function getReportees(userId, isSubReportee){
+	if(isSubReportee) loadingSubReporteeList();
     $.ajax({
         url: 'http://'+getEnvironment()+'/getReportees/'+userId,
         cache: false,
@@ -56,11 +59,13 @@ function getReportees(userId, isSubReportee){
                  	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
                  });  
         	}else{
-        		addSubReporteeToList(data);
+        		updateSelectedSubReportee(userId);
+        		addSubReporteesToList(data);
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	$("#reportee-list").empty();
+        	
             console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting reportees, please try again later.");
         }
@@ -105,6 +110,11 @@ function demoManager(){
 	}];
 }
 
+function loadingSubReporteeList(){
+	$('#reportee-sub-selected').html("<h5>Loading...</h5>");
+	$('#reportee-sub-list').empty();
+}
+
 //method to remove apostrophe from names so can be clicked on in my team
 function removeApostrophe(fullName){
     if(fullName.indexOf("'") != -1){
@@ -114,11 +124,11 @@ function removeApostrophe(fullName){
 }
 
 function addReporteeToList(employeeID, fullName, userName, emailAddress){
+	initialReporteeList.push(employeeID);
 	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
 }
 
-function addSubReporteeToList(data){
-	console.log("adding to sub list... ")
+function addSubReporteesToList(data) {
 	var subList = "";
 	if(data.length > 0) {
 		subList = "<h5><b> "+selectedReporteeName+" - Team </b></h5>";
@@ -129,9 +139,20 @@ function addSubReporteeToList(data){
 	$('#reportee-sub-list').html(subList);
 }
 
+
+function updateSelectedSubReportee(userId){
+	if(jQuery.inArray(userId, initialReporteeList) == -1){
+		$('#reportee-sub-selected').html( "<h5><b>Selected Employee</b></h5>" + 
+				reporteeListItemHTML(userId, selectedReporteeName, selectedReporteeUserName, selectedReporteeEmail));
+		$('#panel-'+userId).addClass("selected-panel");
+	}else{
+		$('#reportee-sub-selected').empty();
+	}
+}
+
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\",  \""+userName+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -155,8 +176,8 @@ function selectedReportee(element){
 	});     
 }
 
-function getReporteeCareer(id, name, emailAddress, element) {
-	if(checkSelectedUser(parseInt(id), emailAddress, name)){
+function getReporteeCareer(id, name, emailAddress, userName, element) {
+	if(checkSelectedUser(parseInt(id), emailAddress, name, userName)){
 		selectedReportee(element);
 		clearReporteeLists();
 		showReporteeView(name)
@@ -167,7 +188,6 @@ function getReporteeCareer(id, name, emailAddress, element) {
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
 		getReportees(id, true);
-		
 	}
 }
 
@@ -276,13 +296,14 @@ function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
 
-function checkSelectedUser(id, emailAddress, name){
+function checkSelectedUser(id, emailAddress, name, userName){
 	if(selectedReporteeID == id){
 		return false;
 	}
 	selectedReporteeID = id;
 	selectedReporteeEmail = emailAddress;
 	selectedReporteeName = name;
+	selectedReporteeUserName = userName;
 	return true;
 }
 
