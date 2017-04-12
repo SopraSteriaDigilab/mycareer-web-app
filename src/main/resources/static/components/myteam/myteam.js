@@ -50,7 +50,8 @@ function getReportees(userId, isSubReportee){
         method: 'GET',
         xhrFields: {'withCredentials': true},
         success: function(data){
-        	if(userId == 675590){data = demoManager();}
+        	if(userId == 675590){data = demoManager1();}
+        	if(userId == 674936){data = demoManager2();}
         	
         	if(!isSubReportee){
         		$("#reportee-list").empty();
@@ -72,7 +73,46 @@ function getReportees(userId, isSubReportee){
     });
 }
 
-function demoManager(){	
+function demoManager1(){	
+	return [{
+		"employeeID": 678124,
+		"surname": "BRARD",
+		"forename": "Alexandre",
+		"username": "abrard",
+		"emailAddresses": [
+		"alexandre.brard@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Alexandre BRARD"
+	},{
+		"employeeID": 675715,
+		"surname": "MCINTYRE",
+		"forename": "Chris",
+		"username": "chmcinty",
+		"emailAddresses": [
+		"chris.mcintyre@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Chris MCINTYRE"
+	}];
+}
+
+
+function demoManager2(){	
 	return [{
 		"employeeID": 675590,
 		"surname": "NACEF",
@@ -91,12 +131,12 @@ function demoManager(){
 		"accountExpires": null,
 		"fullName": "Ridhwan NACEF"
 	},{
-		"employeeID": 674936,
-		"surname": "HARRIS",
-		"forename": "Finlay",
-		"username": "fharris",
+		"employeeID": 676783,
+		"surname": "MEHMET",
+		"forename": "Mehmet",
+		"username": "mmehmet",
 		"emailAddresses": [
-		"finlay.harris@soprasteria.com"
+		"mehmet.mehmet@soprasteria.com"
 		],
 		"isManager": false,
 		"hasHRDash": true,
@@ -106,7 +146,7 @@ function demoManager(){
 		"superSector": "SS Government (GOV)",
 		"reporteeCNs": [],
 		"accountExpires": null,
-		"fullName": "Finlay HARRIS"
+		"fullName": "Mehmet MEHMET"
 	}];
 }
 
