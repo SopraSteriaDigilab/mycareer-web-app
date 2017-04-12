@@ -21,9 +21,10 @@ var $evaluationScoreInput = $("#evaluation-score-input");
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
+var selectedReporteeName = "";
 
 function init(){
-	getReportees();
+	getReportees(getADLoginID(), false, "");
 	loadingProposedButton();
 	getEmailList();
 	initSelect();
@@ -39,37 +40,69 @@ function init(){
 }
 
 //Method to get the Reportee list
-function getReportees(){
-		$("#reportee-list").append("<h5>Loading Reportees...</h5>");
-	    $.ajax({
-	        url: 'http://'+getEnvironment()+'/getReportees/'+getADLoginID(),
-            cache: false,
-	        method: 'GET',
-	        xhrFields: {'withCredentials': true},
-	        success: function(data){
-	        	$("#reportee-list").empty();
-	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-	        	demoManager(); //REMOVE ME!!!!
-	            $.each(data, function(key, val){
-	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-	            });  
-	        },
-	        error: function(XMLHttpRequest, textStatus, errorThrown){
-	            console.log('error', errorThrown);
-	            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
-	        }
-	    });
+function getReportees(userId, isSubReportee){
+    $.ajax({
+        url: 'http://'+getEnvironment()+'/getReportees/'+userId,
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+        	if(userId == 675590){data = demoManager();}
+        	
+        	if(!isSubReportee){
+        		$("#reportee-list").empty();
+            	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+            	 $.each(data, function(key, val){
+                 	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+                 });  
+        	}else{
+        		addSubReporteeToList(data);
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#reportee-list").empty();
+            console.log('error', errorThrown);
+            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
+        }
+    });
 }
 
 function demoManager(){	
-	if(getADLoginID() == 675590){
-		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
-		addReporteeToList(674936, "Finlay Harris", "fharris", "finlay.harris@soprasteria.com");
-	}
-	if(getADLoginID() == 674936){
-		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
-		addReporteeToList(674936, "Finlay Harris", "fharris", "finlay.harris@soprasteria.com");
-	}
+	return [{
+		"employeeID": 675590,
+		"surname": "NACEF",
+		"forename": "Ridhwan",
+		"username": "rnacef",
+		"emailAddresses": [
+		"ridhwan.nacef@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Ridhwan NACEF"
+	},{
+		"employeeID": 674936,
+		"surname": "HARRIS",
+		"forename": "Finlay",
+		"username": "fharris",
+		"emailAddresses": [
+		"finlay.harris@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Finlay HARRIS"
+	}];
 }
 
 //method to remove apostrophe from names so can be clicked on in my team
@@ -82,6 +115,18 @@ function removeApostrophe(fullName){
 
 function addReporteeToList(employeeID, fullName, userName, emailAddress){
 	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
+}
+
+function addSubReporteeToList(data){
+	console.log("adding to sub list... ")
+	var subList = "";
+	if(data.length > 0) {
+		subList = "<h5><b> "+selectedReporteeName+" - Team </b></h5>";
+		 $.each(data, function(key, val){
+	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddress);
+	      });
+	}
+	$('#reportee-sub-list').html(subList);
 }
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
@@ -111,8 +156,8 @@ function selectedReportee(element){
 }
 
 function getReporteeCareer(id, name, emailAddress, element) {
-	if(checkSelectedUser(parseInt(id), emailAddress)){
-		selectedReportee(element)
+	if(checkSelectedUser(parseInt(id), emailAddress, name)){
+		selectedReportee(element);
 		clearReporteeLists();
 		showReporteeView(name)
 		getObjectivesList(id);
@@ -121,6 +166,8 @@ function getReporteeCareer(id, name, emailAddress, element) {
 		getDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
+		getReportees(id, true);
+		
 	}
 }
 
@@ -229,12 +276,13 @@ function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
 
-function checkSelectedUser(id, emailAddress){
+function checkSelectedUser(id, emailAddress, name){
 	if(selectedReporteeID == id){
 		return false;
 	}
 	selectedReporteeID = id;
 	selectedReporteeEmail = emailAddress;
+	selectedReporteeName = name;
 	return true;
 }
 

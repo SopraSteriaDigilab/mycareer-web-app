@@ -7,7 +7,7 @@
 	height: 100%;
 }
 
-#reportee-list, #info-holder {
+#reportee-list-container, #info-holder {
   height: calc(100vh - 193px);
   overflow-y: auto;
   overflow-x: hidden;
