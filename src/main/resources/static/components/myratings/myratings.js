@@ -9,6 +9,9 @@ const NO_RATING = "No Rating Entered";
 const RATING = "Rating: ";
 
 /** DOM element references */
+var $selfEvaluationOptions = $(".self-evaluation-options");
+var $selfEvaluationLabels = $(".self-evaluation-labels");
+
 var $editButtons = $(".edit-buttons");
 var $saveCancelButtons = $(".save-cancel-buttons");
 var $selfEvaluationText = $("#self-evaluation-text");
@@ -56,15 +59,13 @@ function setSelfEvaluationLabel(selfEvaluation){
 
 /** Make self evaluation editable. */
 function editSelfEvaluation(){
-	$editButtons.hide();
-	$selfEvaluationText.hide();
-	$saveCancelButtons.show();
-	$selfEvaluationInput.show();
+	$selfEvaluationLabels.hide();
+	$selfEvaluationOptions.show();
 }
 
 /** Save self evaluation to the database. */
 function saveSelfEvaluation(){
-	console.log("saving my self evaluation: " + $selfEvaluationInput.val());
+	console.log("Saving my self evaluation. Evaluation: " + $selfEvaluationInput.val());
 	//TODO Ajax request to save self evaluation.
 	closeSelfEvaluation(true); //In Success function 
 }
@@ -74,10 +75,8 @@ function saveSelfEvaluation(){
  * @param save true to save, false to cancel
  */
 function closeSelfEvaluation(save){
-	$saveCancelButtons.hide();
-	$selfEvaluationInput.hide();
-	$editButtons.show();
+	$selfEvaluationOptions.hide();
 	if(save) 
 		setSelfEvaluationLabel($selfEvaluationInput.val());
-	$selfEvaluationText.show()
+	$selfEvaluationLabels.show();
 }

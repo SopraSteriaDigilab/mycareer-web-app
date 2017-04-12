@@ -9,12 +9,14 @@ const NO_RATING = "No Rating Entered";
 const RATING = "Rating: ";
 
 /** DOM element references */
-var $editButtons = $(".edit-buttons");
-var $saveCancelButtons = $(".save-cancel-buttons");
+var $managerEvaluationOptions = $(".manager-evaluation-options");
+var $managerEvaluationLabels = $(".manager-evaluation-labels");
+
 var $managerEvaluationText = $("#manager-evaluation-text");
 var $managerEvaluationInput = $("#manager-evaluation-input");
 var $reporteeEvaluationText = $("#reportee-evaluation-text");
-var $evaluationScore = $("#evaluation-score");
+var $evaluationScoreText = $("#evaluation-score-text");
+var $evaluationScoreInput = $("#evaluation-score-input");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -24,6 +26,7 @@ function init(){
 	getReportees();
 	loadingProposedButton();
 	getEmailList();
+	initSelect();
 	
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
 	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
@@ -504,57 +507,64 @@ function loadingProposedButton(){
 function getReporteeRatings(userId){
 	console.log("getting my ratings for : " + userId);
 	const data = {
-		"selfEvaluation":"",
+		"reporteeEvaluation":"",
 		"managerEvaluation":"",
 		"evaluationScore": 0 
 	};
 	//TODO Ajax Request to get ratings.
-	setMyRatings(data.selfEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+	setMyRatings(data.reporteeEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
 }
 
 /** Sets the three evaluations in the HTML */
 function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore){
 	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : managerEvaluation;
-	var score = (evaluationScore == 0) ? NO_RATING : RATING + evaluationScore;
 	
 	setManagerEvaluationLabel(managerEvaluation);
 	$managerEvaluationInput.val(managerEvaluation);
 	$reporteeEvaluationText.text(reportee);
-	$evaluationScore.text(score);
+	setEvaluationScoreLabel(evaluationScore);
+	$evaluationScoreInput.selectpicker('val', evaluationScore);
 }
 
-/** Sets the self evaluation label */
-function setManagerEvaluationLabel(reporteeEvaluation){
-	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : reporteeEvaluation;
-	$reporteeEvaluationText.text(reportee);
+/** Sets the manager evaluation label */
+function setManagerEvaluationLabel(managerEvaluation) {
+	var label = (managerEvaluation == "") ? NO_MANAGER_EVALUATION : managerEvaluation;
+	$managerEvaluationText.text(label);
+}
+
+/** Sets the evaluation score label */
+function setEvaluationScoreLabel(evaluationScore) {
+	var label = (evaluationScore == 0) ? NO_RATING : RATING + evaluationScore;
+	$evaluationScoreText.text(label);
 }
 
 /** Make manager evaluation editable. */
 function editManagerEvaluation(){
-	$editButtons.hide();
-	$managerEvaluationText.hide();
-	$saveCancelButtons.show();
-	$managerEvaluationInput.show();
+	$managerEvaluationLabels.hide();
+	$managerEvaluationOptions.show();
 }
 
 /** Save manager evaluation to the database. */
-//function saveManagerEvaluation(){
-//	console.log("saving my self evaluation: " + $selfEvaluationInput.val());
-//	//TODO Ajax request to save self evaluation.
-//	closeSelfEvaluation(true); //In Success function 
-//}
+function saveManagerEvaluation(){
+	console.log("Saving manager evaluation: Evaluation: " + $managerEvaluationInput.val() + ". Score: " + $evaluationScoreInput.val());
+	//TODO Ajax request to save manager evaluation.
+	closeManagerEvaluation(true); //In Success function 
+}
 
 /**
  * Hide editable manager evaluations
  * @param save true to save, false to cancel
  */
-//function closeManagerEvaluation(save){
-//	$saveCancelButtons.hide();
-//	$selfEvaluationInput.hide();
-//	$editButtons.show();
-//	if(save) 
-//		setSelfEvaluationLabel($selfEvaluationInput.val());
-//	$selfEvaluationText.show()
-//}
+function closeManagerEvaluation(save){
+	$managerEvaluationOptions.hide();
+	if(save) {
+		setManagerEvaluationLabel($managerEvaluationInput.val());
+		setEvaluationScoreLabel($evaluationScoreInput.val());
+	}
+	$managerEvaluationLabels.show();
+}
 
+function initSelect(){
+	$("#evaluation-score-input").selectpicker({'width': '40%'});
+}
 

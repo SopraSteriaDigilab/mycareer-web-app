@@ -71,25 +71,34 @@
 							    <h3 class="panel-title"><b>Manager Evaluation</b></h3>
 							  </div>
 							  <div class="panel-body rating-panel-body" id="manager-panel-body">
-								  <div id="manager-evaluation-text"> Manager Evaluation</div>
-								  <textarea id="manager-evaluation-input" placeholder="Manager Evaluation" type="text" class="form-control" style="display: none; height:100%"></textarea>
+								  <div id="manager-evaluation-text" class="manager-evaluation-labels"> Manager Evaluation</div>
+								  <textarea id="manager-evaluation-input" placeholder="Manager Evaluation" type="text" class="form-control manager-evaluation-options" style="display: none; height:100%"></textarea>
 							  </div>
 							  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px;">
 								  <div class="row">
-							  		<div class="col-md-3 edit-buttons">
+							  		<div class="col-md-3 manager-evaluation-labels">
 						   				<button type="button" class="btn btn-default btn-block" id="edit-manager-evaluation">Edit</button>
 							   		</div>
-							   		<div class="col-md-3 save-cancel-buttons" style="display:none">
+							   		<div class="col-md-3 manager-evaluation-options" style="display:none">
 							   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">cancel</button>
 						   			</div>
-						   			<div class="col-md-3 save-cancel-buttons" style="display:none">
+						   			<div class="col-md-3 manager-evaluation-options" style="display:none">
 							   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
 							   		</div>
 							   		<div class="col-md-6 pull-right">
-							   			<span id="evaluation-score"></span>
+							   			<span id="evaluation-score-text" class="manager-evaluation-labels"></span>
+							   			<div id="evaluation-score-container" class="manager-evaluation-options" style="display:none">
+								   			<select id="evaluation-score-input" class="selectpicker">
+								   				<option class="text-center" value="0">No Rating</option>
+											  	<option class="text-center" value="1">1</option>
+											  	<option class="text-center" value="2">2</option>
+											  	<option class="text-center" value="3">3</option>
+											  	<option class="text-center" value="4">4</option>
+											  	<option class="text-center" value="5">5</option>
+											</select>
+										</div>
 						   			</div>
 							   	</div>
-							  	
 							  </div>
 							</div>
 						</div>
