@@ -3,41 +3,41 @@
 
 <div class="container">
 
-		<!--Page Header -->
-		<div class="row">
-			<div class="col-md-7" >
-				<div class="col-md-6">
-					<h2 >My Objectives</h2>
-				</div>
-				<div class="col-md-6 vertical-centre">
-					<button type="button" class="btn btn-default pull-right" id="add-obj">Add Objective</button>
-				</div>
+	<!--Page Header -->
+	<div class="row">
+		<div class="col-md-7" >
+			<div class="col-md-6">
+				<h2 >My Objectives</h2>
 			</div>
-			<!--  <div id="profile"></div>-->
-			<div class="col-md-5 vertical-centre">
-				<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
+			<div class="col-md-6 vertical-centre">
+				<button type="button" class="btn btn-default pull-right" id="add-obj">Add Objective</button>
 			</div>
 		</div>
-		<!--End of Page Header -->
-		
-		<!-- Nav Pills header -->
-		<div class="row"  style="margin-top: 10px">
-			<div class="col-md-7">
-				<ul id="nav-item-list" class="nav nav-tabs nav-justified" style='cursor:pointer'>
-					<li id="obj-all-tab"class="active"><a data-target=".unarchived-obj-item" data-toggle="tab"> All </a></li>
-					<li id="obj-proposed-tab"><a  data-target=".proposed" data-toggle="tab"> Proposed </a></li>
-					<li id="obj-started-tab"><a data-target=".started" data-toggle="tab"> In-Progress  </a></li>
-					<li id="obj-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed </a></li>
-					<li onClick='updateArchiveTab()'><a data-target="#obj-archived" data-toggle="tab"> Archived </a></li>
-				</ul>
-			</div>
-			<div class="col-md-5">
-			    <h2 class="text-center">Competencies</h2>
-			</div>
+		<!--  <div id="profile"></div>-->
+		<div class="col-md-5 vertical-centre">
+			<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 		</div>
-		<!-- End of Nav Pills header -->
+	</div>
+	<!--End of Page Header -->
 		
-	<div class='row'>
+	<!-- Nav Pills header -->
+	<div class="row"  style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+		<div class="col-md-7">
+			<ul id="nav-item-list" class="nav nav-tabs nav-justified" style='cursor:pointer'>
+				<li id="obj-all-tab"class="active"><a data-target=".unarchived-obj-item" data-toggle="tab"> All </a></li>
+				<li id="obj-proposed-tab"><a  data-target=".proposed" data-toggle="tab"> Proposed </a></li>
+				<li id="obj-started-tab"><a data-target=".started" data-toggle="tab"> In-Progress  </a></li>
+				<li id="obj-completed-tab"><a data-target=".completed" data-toggle="tab"> Completed </a></li>
+				<li onClick='updateArchiveTab()'><a data-target="#obj-archived" data-toggle="tab"> Archived </a></li>
+			</ul>
+		</div>
+		<div class="col-md-5">
+		    <h2 class="text-center">Competencies</h2>
+		</div>
+	</div>
+	<!-- End of Nav Pills header -->
+		
+	<div class='row' style="padding-left: 15px;">
 		<!-- My Objectives half  -->
 		<div class='col-md-7 scrollable-obj-dev'>
 			<div id="all-obj" class="tab-content">

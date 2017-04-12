@@ -1,6 +1,5 @@
 $(function() {
 	adjustDatePicker();
-	getEmailList();
 });
 
 var emails = [];
@@ -686,8 +685,9 @@ function enableSubmit(type){
     return true;
 }
 
-function tags(id, data){
+function tags(id, data){ 
     //sets email addresses to use bootstrap tag input
+	console.log(emails);
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
@@ -696,9 +696,8 @@ function tags(id, data){
     	   source: data,
            afterSelect: function() {
                this.$element[0].value = '';
-           },
-       },
-
+           }
+       }
     });
 }
 
@@ -784,8 +783,10 @@ function getEmailList(){
         xhrFields: {'withCredentials': true},
         success: function(data){
         	emails = data;
+			initialiseTags();
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
+        	addProposed();
             console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting emails, please try again later.");
         }

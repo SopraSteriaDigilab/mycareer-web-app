@@ -1,0 +1,10 @@
+.rating-panel-body {
+	max-height: calc(100vh - 297px);
+    overflow-y: auto;
+    overflow-x: hidden;
+   	min-height: 350px;
+}
+
+.rating-panel-footer {
+	height: 55px !important;
+}

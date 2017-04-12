@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../components/notes/myratings.css"/>
-<script type="text/javascript" src="../components/notes/myratings.js"></script>
+<link rel="stylesheet" href="../components/myratings/myratings.css"/>
+<script type="text/javascript" src="../components/myratings/myratings.js"></script>
 
 <div class="container">
 
@@ -10,10 +10,49 @@
 				<h2>My Ratings</h2>
 			</div>
 		</div>
-		<div class="col-md-5 vertical-centre ">
+		<div class="col-md-5 vertical-centre">
 			<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 		</div>
 	</div>
 	<!--End of Page Header -->
+	<div class="row"  style="margin-top: 10px">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size:24px">Self Evaluation</h3>
+			  </div>
+			  <div class="panel-body rating-panel-body" >
+			  	<div id="self-evaluation-text" class="self-evaluation-labels wrap-text"></div>
+			  	<textarea id="self-evaluation-input" placeholder="Self Evaluation" type="text" class="form-control self-evaluation-options" rows="15" style="display: none;"></textarea>
+			  </div>
+			  <div class="panel-footer rating-panel-footer">
+			  	<div class="row">
+			  		<div class="col-md-3 col-md-offset-9 self-evaluation-labels">
+			   			<button type="button" class="btn btn-default btn-block pull-right" id="edit-self-evaluation">Edit</button>
+			   		</div>
+			   		<div class="col-md-3 col-md-offset-6 self-evaluation-options" style="display:none">
+			   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-self-evaluation"  style="margin-top:0px">cancel</button>
+		   			</div>
+		   			<div class="col-md-3 self-evaluation-options" style="display:none">
+			   			<button type="button" class="btn btn-default btn-block pull-right" id="save-self-evaluation"  style="margin-top:0px">Save</button>
+			   		</div>
+			   	</div>
+		   	  </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size:24px">Manager Evaluation</h3>
+			  </div>
+			  <div class="panel-body rating-panel-body" >
+			  	<div id="manager-evaluation-text" class="wrap-text"></div>
+			  </div>
+			  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px;">
+			  	<span id="evaluation-score"></span>
+			  </div>
+			</div>
+		</div>
+	</div>
 	
 </div>

@@ -1,8 +1,10 @@
 #obj-link,
 #feed-link,
 #dev-link,
-#notes-link {
+#notes-link,
+#ratings-link {
 	color: #337ab7;
+	height: 100%;
 }
 
 #reportee-list, #info-holder {
@@ -10,4 +12,17 @@
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 455px
+}
+
+.nav-justified > li {
+	height: 100%;
+}
+
+.rating-panel-body{
+	min-height: 150px;
+	height: calc(100vh - 641px);
+}
+
+.bootstrap-select.btn-group .btn .filter-option {
+    text-align: center; /* to override text-align: left; */
 }

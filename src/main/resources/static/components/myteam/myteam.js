@@ -1,24 +1,42 @@
 $(function() {
-	//Get list of reportees
-	getReportees();
-	
-	//Add Proposed Button
-	addProposed();
-	
-	//onClick for opening modal
-	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
-
-	//Validation for the add reportee modal
-	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
-	
-	//onClick for Submit modal
-	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
-    
+	init();
 });//End of Document Function
+
+/** Constants */
+const NO_REPORTEE_EVALUATION = "No self evaluation has been written.";
+const NO_MANAGER_EVALUATION = "No manager evaluation has been written.";
+const NO_RATING = "No Rating Entered";
+const RATING = "Rating: ";
+
+/** DOM element references */
+var $managerEvaluationOptions = $(".manager-evaluation-options");
+var $managerEvaluationLabels = $(".manager-evaluation-labels");
+
+var $managerEvaluationText = $("#manager-evaluation-text");
+var $managerEvaluationInput = $("#manager-evaluation-input");
+var $reporteeEvaluationText = $("#reportee-evaluation-text");
+var $evaluationScoreText = $("#evaluation-score-text");
+var $evaluationScoreInput = $("#evaluation-score-input");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
+
+function init(){
+	getReportees();
+	loadingProposedButton();
+	getEmailList();
+	initSelect();
+	
+	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
+	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
+	
+	$("#edit-manager-evaluation").click(function(){ editManagerEvaluation(); });
+	$("#save-manager-evaluation").click(function(){ saveManagerEvaluation(); });
+	$("#cancel-manager-evaluation").click(function(){ closeManagerEvaluation(false); });
+	
+	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+}
 
 //Method to get the Reportee list
 function getReportees(){
@@ -45,6 +63,9 @@ function getReportees(){
 
 function demoManager(){
 	if(getADLoginID() == 675590){
+		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
+	}
+	if(getADLoginID == 674936){
 		addReporteeToList(675590, "Ridhwan Nacef", "rnacef", "ridhwan.nacef@soprasteria.com");
 	}
 }
@@ -97,6 +118,7 @@ function getReporteeCareer(id, name, emailAddress, element) {
 		getGeneralFeedbackList(id);
 		getDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
+		getReporteeRatings(id);
 	}
 }
 
@@ -467,7 +489,82 @@ function reporteeNotesListHTML(fromWho, body, date){
 }
 
 function addProposed(){
+	$("#nav-bar-buttons").empty();
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+
+function initialiseTags() {
+	addProposed();
+}
+
+function loadingProposedButton(){
+	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+}
+
+/** Retrieve MyRatings details from database and update relevant DOM Elements. */
+function getReporteeRatings(userId){
+	console.log("getting my ratings for : " + userId);
+	const data = {
+		"reporteeEvaluation":"",
+		"managerEvaluation":"",
+		"evaluationScore": 0 
+	};
+	//TODO Ajax Request to get ratings.
+	setMyRatings(data.reporteeEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+}
+
+/** Sets the three evaluations in the HTML */
+function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore){
+	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : managerEvaluation;
+	
+	setManagerEvaluationLabel(managerEvaluation);
+	$managerEvaluationInput.val(managerEvaluation);
+	$reporteeEvaluationText.text(reportee);
+	setEvaluationScoreLabel(evaluationScore);
+	$evaluationScoreInput.selectpicker('val', evaluationScore);
+}
+
+/** Sets the manager evaluation label */
+function setManagerEvaluationLabel(managerEvaluation) {
+	var label = (managerEvaluation == "") ? NO_MANAGER_EVALUATION : managerEvaluation;
+	$managerEvaluationText.text(label);
+}
+
+/** Sets the evaluation score label */
+function setEvaluationScoreLabel(evaluationScore) {
+	var label = (evaluationScore == 0) ? NO_RATING : RATING + evaluationScore;
+	$evaluationScoreText.text(label);
+}
+
+/** Make manager evaluation editable. */
+function editManagerEvaluation(){
+	$managerEvaluationLabels.hide();
+	$managerEvaluationOptions.show();
+}
+
+/** Save manager evaluation to the database. */
+function saveManagerEvaluation(){
+	console.log("Saving manager evaluation: Evaluation: " + $managerEvaluationInput.val() + ". Score: " + $evaluationScoreInput.val());
+	//TODO Ajax request to save manager evaluation.
+	closeManagerEvaluation(true); //In Success function 
+}
+
+/**
+ * Hide editable manager evaluations
+ * @param save true to save, false to cancel
+ */
+function closeManagerEvaluation(save){
+	$managerEvaluationOptions.hide();
+	if(save) {
+		setManagerEvaluationLabel($managerEvaluationInput.val());
+		setEvaluationScoreLabel($evaluationScoreInput.val());
+	}
+	$managerEvaluationLabels.show();
+}
+
+function initSelect(){
+	$("#evaluation-score-input").selectpicker({'width': '40%'});
+}
+

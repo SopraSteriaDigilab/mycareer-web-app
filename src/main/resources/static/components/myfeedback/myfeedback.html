@@ -4,7 +4,7 @@
 <!--Containter for full page -->
 <div class="container">
 
-<!--Page Header -->
+	<!--Page Header -->
 	<div class="row">
            <div class="col-md-6">
 		     <div class="col-md-5">
@@ -24,114 +24,117 @@
 	</div>
 	<!--End of Page Header -->
     
-	<!-- Accordion sort half - added a test one, setting out layout -->
- 	<div class="col-md-3" style="margin-top: 10px; margin-bottom:0px;">
-		<div class="panel-group" id="accordion-Date" style="margin-bottom:0px;">
-			<div class="panel panel-default">
-				<div class="panel-heading remove-padding">
-					<div class="panel-title">
-						<div class="row">
-							<div class="col-md-8">
-								<h6><b>Filtered by:</b></h6>
-							</div>
-							<div class="col-md-4">	
-								<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearAllFilters()'><b>Show All</b></h6>
-							</div>
-						
-							<div class="col-md-12">
-								<h6><b><span id="filter-text">No Filters Applied</span></b></h6>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div id="collapse-filter" class="panel-collapse collapse in">
-					<div class="panel-body remove-padding" >
-						<div class="row " style="background-color:rgb(245, 245, 245);">
-							<div class="col-md-6">
-								<h5>Date</h5>
-							</div>
-							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearDateFilter()">Clear Filter</h6>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 10px;">
-							<div class="col-md-3">
-								<h6><b>From:</b></h6>
-							</div>
-							<div class="col-md-9">
-								<div class='input-group date' id='feedback-start-date-picker'>
-									<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
-									<span class="input-group-addon"> 
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
-								</div>
-							</div>	
-						</div>
-						<div class="row" style="margin-top: 10px;">
-							<div class="col-md-3" style="text-align: right;">
-								<h6><b>To:</b></h6>
-							</div>
-							<div class="col-md-9">
-								<div class='input-group date' id='feedback-end-date-picker'>
-									<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
-									<span class="input-group-addon"> 
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="row" style="margin-top:10px;">
-							<div class='col-md-offset-6 col-md-6'>
-								<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
-							</div>
-						</div>
-						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
-							<div class="col-md-6">
-								<h5>Tags</h5>
-							</div>
-							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFeedbackTagFilter()">Clear Filter</h6>
-							</div>
-						</div>
-						<div class="row" id="feedback-tags-dropdown" style="margin-top: 10px;">
-							<div class="col-md-12">
-								<select class="selectpicker tag-filter-dropdown" id="feedback-tag-dropdown" data-width="100%" ></select>
-							</div>
-						</div>
-						<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
-							<div class="col-md-6">
-								<h5>Reviewer</h5>
-							</div>
-							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearReviewerFilter()">Clear Filter</h6>
-							</div>
-						</div>
-						<div class="row" id="resizable-reviewers">
-							<div id=reviewers>
-								<div class="checkbox" id="general-reviewer-list"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>					
-	</div>
-
-	<!-- List of Feedback -->
-	<div id="feedback-scroll-list" class="col-md-3 scrollable-feedback" style="margin-top: 10px">
-        <div class="tab-content">
-            <div id="general-feedback-tab" class="tab-pane fade in active"></div>
-        </div><!--end of tab content -->
-	</div><!--end of col-md-3 -->
-
-	<!-- Section that will show the feedback -->
-	<div id="fedback-descriptions" class="col-md-6" style="margin-top: 10px; padding-right: 0px;">
-        <div class="tab-content">
-            <div class="tab-pane fade in active" id="generalFeeDescription"></div>
-        </div>
-	</div>
     
+    <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+		<!-- Accordion sort -->
+	 	<div class="col-md-3" style="margin-bottom:0px;">
+			<div class="panel-group" id="accordion-Date" style="margin-bottom:0px;">
+				<div class="panel panel-default">
+					<div class="panel-heading remove-padding">
+						<div class="panel-title">
+							<div class="row">
+								<div class="col-md-8">
+									<h6><b>Filtered by:</b></h6>
+								</div>
+								<div class="col-md-4">	
+									<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearAllFilters()'><b>Show All</b></h6>
+								</div>
+							
+								<div class="col-md-12">
+									<h6><b><span id="filter-text">No Filters Applied</span></b></h6>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+					<div id="collapse-filter" class="panel-collapse collapse in">
+						<div class="panel-body remove-padding" >
+							<div class="row " style="background-color:rgb(245, 245, 245);">
+								<div class="col-md-6">
+									<h5>Date</h5>
+								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearDateFilter()">Clear Filter</h6>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-md-3">
+									<h6><b>From:</b></h6>
+								</div>
+								<div class="col-md-9">
+									<div class='input-group date' id='feedback-start-date-picker'>
+										<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
+										<span class="input-group-addon"> 
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>	
+							</div>
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-md-3" style="text-align: right;">
+									<h6><b>To:</b></h6>
+								</div>
+								<div class="col-md-9">
+									<div class='input-group date' id='feedback-end-date-picker'>
+										<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
+										<span class="input-group-addon"> 
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin-top:10px;">
+								<div class='col-md-offset-6 col-md-6'>
+									<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+								</div>
+							</div>
+							<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+								<div class="col-md-6">
+									<h5>Tags</h5>
+								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFeedbackTagFilter()">Clear Filter</h6>
+								</div>
+							</div>
+							<div class="row" id="feedback-tags-dropdown" style="margin-top: 10px;">
+								<div class="col-md-12">
+									<select class="selectpicker tag-filter-dropdown" id="feedback-tag-dropdown" data-width="100%" ></select>
+								</div>
+							</div>
+							<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+								<div class="col-md-6">
+									<h5>Reviewer</h5>
+								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearReviewerFilter()">Clear Filter</h6>
+								</div>
+							</div>
+							<div class="row" id="resizable-reviewers">
+								<div id=reviewers>
+									<div class="checkbox" id="general-reviewer-list"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>					
+		</div>
+	
+		<!-- List of Feedback -->
+		<div id="feedback-scroll-list" class="col-md-3 scrollable-feedback">
+	        <div class="tab-content">
+	            <div id="general-feedback-tab" class="tab-pane fade in active"></div>
+	        </div><!--end of tab content -->
+		</div><!--end of col-md-3 -->
+	
+		<!-- Section that will show the feedback -->
+		<div id="fedback-descriptions" class="col-md-6" style="padding-right: 0px;">
+	        <div class="tab-content">
+	            <div class="tab-pane fade in active" id="generalFeeDescription"></div>
+	        </div>
+		</div>
+	</div>
+	
 </div><!--end of container -->
 
 <!-- Request Feedback Modal -->

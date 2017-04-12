@@ -34,6 +34,9 @@ function demoManager(employeeID){
 	if(employeeID == 675590){
 	  isManager = true;
 	}
+	if(employeeID == 674936){
+		isManager = true;
+	}
 }
 
 function getEnvironment(){
