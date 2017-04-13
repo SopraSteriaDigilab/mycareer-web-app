@@ -80,7 +80,7 @@ function demoManager1(){
 		"forename": "Alexandre",
 		"username": "abrard",
 		"emailAddresses": [
-		"alexandre.brard@soprasteria.com"
+          "alexandre.brard@soprasteria.com"
 		],
 		"isManager": false,
 		"hasHRDash": true,
@@ -97,7 +97,7 @@ function demoManager1(){
 		"forename": "Chris",
 		"username": "chmcinty",
 		"emailAddresses": [
-		"chris.mcintyre@soprasteria.com"
+		  "chris.mcintyre@soprasteria.com"
 		],
 		"isManager": false,
 		"hasHRDash": true,
@@ -108,6 +108,23 @@ function demoManager1(){
 		"reporteeCNs": [],
 		"accountExpires": null,
 		"fullName": "Chris MCINTYRE"
+	},{
+		"employeeID": 674936,
+		"surname": "HARRIS",
+		"forename": "Finlay",
+		"username": "fharris",
+		"emailAddresses": [
+		"finlay.harris@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Finlay HARRIS"
 	}];
 }
 
@@ -220,7 +237,7 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 	if(checkSelectedUser(parseInt(id), emailAddress, name, userName)){
 		selectedReportee(element);
 		clearReporteeLists();
-		showReporteeView(name)
+		showReporteeView(id, name)
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
 		getGeneralFeedbackList(id);
@@ -347,10 +364,15 @@ function checkSelectedUser(id, emailAddress, name, userName){
 	return true;
 }
 
-function showReporteeView(name){
+function showReporteeView(id, name){
 	$(".reportee-name").each(function(){
 		$(this).text(name);
 	});
+	
+	$("#reportee-notes-add-button").empty();
+	if(jQuery.inArray(id, initialReporteeList) > -1){
+		showEditOptions();
+	}
 	
 	if(reporteeSectionHidden){
 		$("#info-message").remove();
@@ -384,8 +406,6 @@ function clickSubmitReporteeNote(){
 	var linkID = 0;
 	
 	addNoteToReporteeDB(reporteeID, from, note, date);
-
-	
 	showReporteeNoteModal(false);
 }
 
@@ -679,3 +699,18 @@ function initSelect(){
 	$("#evaluation-score-input").selectpicker({'width': '40%'});
 }
 
+function showEditOptions(){
+	$("#reportee-notes-add-button").append(addNotesHTML());
+}
+
+function addNotesHTML(){
+	var HTML = " \
+		<div class='row'> \
+			<div class='col-md-12'> \
+				<button type='button' class='btn btn-link pull-right' onClick='openAddReporteeNoteModal()'><u>Add Note for "+selectedReporteeName+"</u></button> \
+			</div> \
+		</div> \
+		";
+	return HTML;
+
+}

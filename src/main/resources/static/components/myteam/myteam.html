@@ -22,13 +22,13 @@
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-2 vertical-centre ">
+			<div class="col-md-2 vertical-centre" style="padding-right:0px;">
 					<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 			</div>
 		</div>
 	</div><!--End of Page Header -->
 
-	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+	<div class="row" style="margin-top: 10px; padding-left: 15px;">
 		<div class="col-md-3" id="reportee-list-container" >
 			<div id='reportee-list'><h5>Loading Reportees...</h5></div>
 			<div id="reportee-sub-selected"></div>
@@ -48,15 +48,10 @@
 				<div id="reportee-feed-list" class="tab-pane fade in "></div>
 				<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
 				<div id="reportee-notes-tab" class="tab-pane fade in ">
-					<div class="row">
-						<div class="col-md-12">
-							<button type="button" class="btn btn-link pull-right" id="add-reportee-note"><u>Add Note for <span class="reportee-name"></span></u></button>
-						</div>
-					</div>
+					<div id="reportee-notes-add-button"></div>
 					<div id="reportee-notes-list"></div>
 				</div>
 				<div id="reportee-ratings-tab" class="tab-pane fade in ">
-				
 					<div class="row"  >
 						<div class="col-md-12">
 							<div class="panel panel-default">
@@ -112,6 +107,7 @@
 				</div>
 	    	</div>
 		</div>
+		<div class="col-md-2" id="activity-feed"></div>
 	</div>
 
 </div><!--end of container -->
