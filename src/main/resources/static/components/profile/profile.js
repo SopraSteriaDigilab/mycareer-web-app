@@ -191,6 +191,9 @@ function closeExtraEmail(){
 function saveExtraEmail(){
 	console.log("saving my extra email address: " + $addEmailInput.val());
 	//TODO Ajax request to save extra email address.
+	
+	setExtraEmailLabel($addEmailInput.val());
+	
 	if ($addEmailInput.val()===""){
 		$addEmailButton.show()
 		$addEmailText.show();
@@ -198,7 +201,6 @@ function saveExtraEmail(){
 		$addEmailInput.hide();
 	}
 	else{
-		setExtraEmailLabel($addEmailInput.val());
 		$editDeleteEmailButtons.show();
 		$addEmailText.show()
 		$saveCancelEmailButtons.hide();
