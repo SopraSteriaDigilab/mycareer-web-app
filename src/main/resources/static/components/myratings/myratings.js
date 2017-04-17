@@ -61,8 +61,10 @@ function editSelfEvaluation(){
 /** Save self evaluation to the database. */
 function saveSelfEvaluation(){
 	console.log("Saving my self evaluation. Evaluation: " + $selfEvaluationInput.val());
-	//TODO Ajax request to save self evaluation.
-	closeSelfEvaluation(true); //In Success function 
+	addSelfEvaluationAction(getADLoginID(), $selfEvaluationInput.val(), function(respons){
+		closeSelfEvaluation(true);
+	});
+	
 }
 
 /**

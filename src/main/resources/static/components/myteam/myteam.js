@@ -672,10 +672,10 @@ function editManagerEvaluation(){
 }
 
 /** Save manager evaluation to the database. */
-function saveManagerEvaluation(){
-	console.log("Saving manager evaluation: Evaluation: " + $managerEvaluationInput.val() + ". Score: " + $evaluationScoreInput.val());
-	//TODO Ajax request to save manager evaluation.
-	closeManagerEvaluation(true); //In Success function 
+function saveManagerEvaluation(){	
+	addManagerEvaluationAction(getADLoginID(), selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
+		closeManagerEvaluation(true);
+	});
 }
 
 /**
