@@ -9,7 +9,7 @@ $(function() {
 	initDatePicker('objective', new Date());
     
     //modal validation.
-	$('.objective-modal-validate').keyup(function() { validateForm('objective-modal-validate', 'submit-obj'); });
+	$('.objective-modal-validate').on('input', function() { validateForm('objective-modal-validate', 'submit-obj'); });
     
     //onClick for Submit modal
 	$('#submit-obj').click(function(){ clickSubmitObjective(); });

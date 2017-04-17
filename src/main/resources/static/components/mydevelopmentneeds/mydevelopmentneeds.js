@@ -10,7 +10,7 @@ $(function() {
 	$('#add-dev-need').click(function() { openAddDevelopmentNeedModal(); });
 	
 	//modal validation.
-	$('.development-need-modal-validate').keyup(function() { validateForm('development-need-modal-validate', 'submit-dev-need'); });
+	$('.development-need-modal-validate').on('input', function() { validateForm('development-need-modal-validate', 'submit-dev-need'); });
 	
 	//hide/show date field
 	$('#timeframe-radio').change(function(){ toggleInputeDate($('#timeframe-radio input:radio:checked').val()); });
