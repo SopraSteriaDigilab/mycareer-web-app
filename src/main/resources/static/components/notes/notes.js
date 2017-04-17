@@ -12,7 +12,7 @@ $(function() {
     $("#notes-close").click(function(e) { closeNotesBar() });
     
 	//Validate note
-	$('.note-validate').keyup(function() { validateForm('note-validate', 'submit-note'); });
+	$('.note-validate').on('input', function() { validateForm('note-validate', 'submit-note'); });
 	
 	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });

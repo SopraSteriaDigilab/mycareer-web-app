@@ -20,7 +20,7 @@ $(function() {
     keypress('sendFeedbackModal');
     
     //modal validation
-    $('.send-feedback-validate').keyup(function() { validateForm('send-feedback-validate', 'submit-send-feedback'); });
+    $('.send-feedback-validate').on('input', function(){ validateForm('send-feedback-validate', 'submit-send-feedback'); });
 	 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
