@@ -58,7 +58,6 @@ var $editDeleteEmailButtons = $(".edit-delete-email-buttons");
 var $saveCancelEmailButtons = $(".save-cancel-email-buttons");
 var $addEmailText = $("#add-email-text");
 var $addEmailInput = $("#add-email-input");
-var $incorrectEmail = $(".incorrect-email");
 
 var hasExtraEmailAddress = false;
 var currentOperation = null;
