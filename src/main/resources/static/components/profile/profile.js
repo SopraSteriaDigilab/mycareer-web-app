@@ -144,14 +144,22 @@ function setEmailAddresses(sopraSteriaEmailAddresses,preferedEmailAddress){
 
 /** Sets extra email label */
 function setExtraEmailLabel(extraEmail){
-	var extra = (extraEmail == "") ? NO_EXTRA_EMAIL_ADDRESS : extraEmail;
-	$addEmailText.text(extra);
+	if (extraEmail!==NO_EXTRA_EMAIL_ADDRESS){
+		$addEmailText.text(extraEmail);
+	}
+	else {
+		$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
+	}
+//	var extra = (extraEmail == "") ? NO_EXTRA_EMAIL_ADDRESS : isValidEmailAddress(extraEmail);
+	
 }
-
 
 /** Make extra email address editable. */
 function editExtraEmail(){
 	currentOperation="edit";
+	if ($addEmailText.text() !== NO_EXTRA_EMAIL_ADDRESS){
+		$addEmailInput.val($addEmailText.text());
+	}
 	$editDeleteEmailButtons.hide();
 	$addEmailText.hide();
 	$saveCancelEmailButtons.show();
@@ -159,6 +167,7 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
+	$addEmailInput.val('');
 	$editDeleteEmailButtons.hide();
 	$addEmailButton.show();
 	$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
@@ -173,6 +182,7 @@ function addExtraEmail(){
 }
 
 function closeExtraEmail(){
+	$addEmailInput.val('');
 	if (currentOperation==="edit"){
 		$saveCancelEmailButtons.hide();
 		$editDeleteEmailButtons.show();
@@ -189,21 +199,31 @@ function closeExtraEmail(){
 
 /** Save extra email address to the database. */
 function saveExtraEmail(){
-	console.log("saving my extra email address: " + $addEmailInput.val());
-	//TODO Ajax request to save extra email address.
-	
-	setExtraEmailLabel($addEmailInput.val());
-	
+
 	if ($addEmailInput.val()===""){
-		$addEmailButton.show()
+		$saveCancelEmailButtons.hide();
+		$addEmailInput.hide();
+		$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
 		$addEmailText.show();
-		$saveCancelEmailButtons.hide();
-		$addEmailInput.hide();
+		$addEmailButton.show();	
 	}
-	else{
-		$editDeleteEmailButtons.show();
-		$addEmailText.show()
-		$saveCancelEmailButtons.hide();
-		$addEmailInput.hide();
-	}	
+	
+	else {
+		var validEmail=isValidEmailAddress($addEmailInput.val());	
+		
+		if ((!validEmail) && ($addEmailInput.val() !=="")){
+			toastr.error("Email format is incorrect");
+			return;
+		}
+			
+		else {
+			console.log("saving my extra email address: " + $addEmailInput.val());
+			//TODO Ajax request to save extra email address.
+			setExtraEmailLabel($addEmailInput.val());
+			$saveCancelEmailButtons.hide();
+			$addEmailInput.hide();
+			$editDeleteEmailButtons.show();
+			$addEmailText.show()
+		}
+	}
 }
