@@ -59,6 +59,9 @@ function setSelfEvaluationLabel(selfEvaluation){
 
 /** Make self evaluation editable. */
 function editSelfEvaluation(){
+	if ($selfEvaluationText.text() !== NO_SELF_EVALUATION){
+		$selfEvaluationInput.val($selfEvaluationText.text());
+	}
 	$selfEvaluationLabels.hide();
 	$selfEvaluationOptions.show();
 }
@@ -76,7 +79,12 @@ function saveSelfEvaluation(){
  */
 function closeSelfEvaluation(save){
 	$selfEvaluationOptions.hide();
-	if(save) 
+	if(save) {
 		setSelfEvaluationLabel($selfEvaluationInput.val());
 	$selfEvaluationLabels.show();
+	}
+	else{
+		$selfEvaluationInput.val('');
+		$selfEvaluationLabels.show();
+	}
 }

@@ -157,6 +157,9 @@ function setExtraEmailLabel(extraEmail){
 /** Make extra email address editable. */
 function editExtraEmail(){
 	currentOperation="edit";
+	if ($addEmailText.text() !== NO_EXTRA_EMAIL_ADDRESS){
+		$addEmailInput.val($addEmailText.text());
+	}
 	$editDeleteEmailButtons.hide();
 	$addEmailText.hide();
 	$saveCancelEmailButtons.show();
@@ -164,6 +167,7 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
+	$addEmailInput.val('');
 	$editDeleteEmailButtons.hide();
 	$addEmailButton.show();
 	$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
@@ -178,6 +182,7 @@ function addExtraEmail(){
 }
 
 function closeExtraEmail(){
+	$addEmailInput.val('');
 	if (currentOperation==="edit"){
 		$saveCancelEmailButtons.hide();
 		$editDeleteEmailButtons.show();
