@@ -637,19 +637,14 @@ function loadingProposedButton(){
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
 function getReporteeRatings(userId){
-	console.log("getting my ratings for : " + userId);
-	const data = {
-		"reporteeEvaluation":"",
-		"managerEvaluation":"",
-		"evaluationScore": 0 
-	};
-	//TODO Ajax Request to get ratings.
-	setMyRatings(data.reporteeEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+	getCurrentRatingAction(userId, function(data){ 
+		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score);
+	});
 }
 
 /** Sets the three evaluations in the HTML */
 function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore){
-	var reportee = (reporteeEvaluation == "") ? NO_REPORTEE_EVALUATION : managerEvaluation;
+	var reportee = (reporteeEvaluation === "") ? NO_REPORTEE_EVALUATION : reporteeEvaluation;
 	
 	setManagerEvaluationLabel(managerEvaluation);
 	$managerEvaluationInput.val(managerEvaluation);

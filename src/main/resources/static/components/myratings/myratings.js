@@ -21,7 +21,7 @@ var $evaluationScore = $("#evaluation-score");
 
 /** Initialise MyRatings Page. */
 function init(){
-	getMyRatings();
+	getCurrentRating();
 	
 	$("#edit-self-evaluation").click(function(){ editSelfEvaluation(); });
 	$("#save-self-evaluation").click(function(){ saveSelfEvaluation(); });
@@ -29,15 +29,10 @@ function init(){
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
-function getMyRatings(){
-	console.log("getting my ratings");
-	const data = {
-		"selfEvaluation":"",
-		"managerEvaluation":"",
-		"evaluationScore": 0 
-	};
-	//TODO Ajax Request to get ratings.
-	setMyRatings(data.selfEvaluation, data.managerEvaluation, data.evaluationScore); //In success function
+function getCurrentRating(){
+	getCurrentRatingAction(getADLoginID(), function(data){ 
+		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score);
+	});
 }
 
 /** Sets the three evaluations in the HTML */
