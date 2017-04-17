@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-uglify": "^2.1.2"
+    "gulp-uglify": "^2.1.2",
+    "pump": "^1.0.2"
   }
 }
