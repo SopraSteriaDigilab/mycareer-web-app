@@ -7,15 +7,31 @@ buildscript {
     }
 }
 
+plugins {
+  id "com.moowork.gulp" version "0.13"
+  id "com.moowork.node" version "0.13"
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
+build.dependsOn gulp_minify
+build.mustRunAfter gulp_minify
+
 jar {
     baseName = 'mycareer-web-app'
-    version =  '1.2.4'
+    version =  '1.2.4-test'
 }
+
+//node {
+//    // Version of node to use.
+//    version = '4.6.0'
+//
+//    // Enabled the automatic download. False is the default (for now).
+//    download = true
+//}
 
 repositories {
     mavenCentral()
@@ -29,3 +45,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-devtools")
     testCompile("junit:junit")
 }
+
+
+

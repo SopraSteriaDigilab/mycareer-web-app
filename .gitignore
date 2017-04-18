@@ -4,6 +4,7 @@
 /build/
 /gradle/
 /node_modules/
+/dist/
 .classpath
 .project
 gradlew
