@@ -119,7 +119,6 @@ function initEmailModal(){
 
 /** Retrieve email details from database and update relevant DOM Elements. */
 function getEmails(){
-	console.log("getting emails");
 	const data = {
 		"sopraSteriaEmailAddresses":["alexandre.brard@soprasteria.com","alexandre.brard2@soprasteria.com"],
 //		"preferedEmailAddress":"alexandre.brard@something.else",
