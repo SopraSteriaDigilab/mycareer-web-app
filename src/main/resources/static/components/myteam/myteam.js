@@ -38,7 +38,7 @@ function init(){
 	$("#save-manager-evaluation").click(function(){ saveManagerEvaluation(); });
 	$("#cancel-manager-evaluation").click(function(){ closeManagerEvaluation(false); });
 	
-	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
 }
 
 //Method to get the Reportee list
