@@ -3,6 +3,7 @@
 /bin/
 /build/
 /gradle/
+/node_modules/
 .classpath
 .project
 gradlew
