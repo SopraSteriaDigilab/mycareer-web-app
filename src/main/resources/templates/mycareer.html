@@ -14,8 +14,6 @@
 		<link rel="stylesheet" href="../vendor/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css"/>
 		<link rel="stylesheet" href="../vendor/bootstrap-select-1.12.1/dist/css/bootstrap-select.min.css"/>
         <link rel="stylesheet" href="../vendor/datatables/css/datatables.min.css"/>
-        
-		<link rel="stylesheet" href="../components/shared/shared.css"/>
 	
 	</head>
 	
@@ -44,8 +42,13 @@
         <script src="../vendor/pdfmake/vfs_fonts.js"></script>
         <script src="../vendor/momentjs-2.15.1-dist/datetime-moment.js"></script>
         
-		<script src="../components/mycareer/mycareer.js"></script>
-		<script src="../components/shared/shared.js"></script>
+        <script src="./actions/loadScriptActions.js"></script>
+   
+		<script>
+			loadStyle("shared");
+			loadScript("shared");
+			loadScript("mycareer");
+		</script>
 		
 	</body>
 

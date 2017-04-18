@@ -66,8 +66,6 @@ function getReportees(userId, isSubReportee){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	$("#reportee-list").empty();
-        	
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting reportees, please try again later.");
         }
     });
@@ -264,7 +262,6 @@ function getReporteeCompetencyList(userID){
             addCompetenciesToList(competencyList);
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
@@ -284,7 +281,6 @@ function getReporteeNotesList(userID){
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting notes, please try again later.");
         }
     });

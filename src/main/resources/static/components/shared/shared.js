@@ -55,7 +55,6 @@ function getObjectivesList(userID){
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log('error', errorThrown);
           toastr.error("Sorry, there was a problem getting objectives, please try again later.");
       }
   });	
@@ -206,7 +205,6 @@ function getCompetencyList(userID){
             });
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
@@ -245,7 +243,6 @@ function getGeneralFeedbackList(userID){
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting feedback, please try again later.");
         }
         
@@ -315,7 +312,6 @@ function getDevelopmentNeedsList(userID){
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown){
-	        console.log('error', errorThrown);
 	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
 	    }
 	});	
@@ -449,7 +445,6 @@ function getTags(userID){
         	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting tags, please try again later.");
         }
     });	
@@ -687,7 +682,6 @@ function enableSubmit(type){
 
 function tags(id, data){ 
     //sets email addresses to use bootstrap tag input
-	console.log(emails);
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
@@ -787,7 +781,6 @@ function getEmailList(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	addProposed();
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting emails, please try again later.");
         }
     });	

@@ -76,7 +76,6 @@ function getNotesList(userID){
       	
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log('error', errorThrown);
           toastr.error("Sorry, there was a problem getting notes, please try again later.");
       }
   });
