@@ -7,6 +7,8 @@ var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
+var emailSet = new Set();
+var userAddress = null;
 
 function logMeIn(){	
 	$.ajax({
@@ -22,6 +24,10 @@ function logMeIn(){
 			isManager = data.isManager;
 			demoManager(data.employeeID) //REMOVE ME!!!!
 			hasHRDash = data.hasHRDash;
+			mail=data.emailAddresses.mail;
+			targetAddress=data.emailAddresses.targetAddress;
+			emailSet.add(mail.toString()).add(targetAddress.toString());
+			userAddress = data.emailAddresses.userAddress;
 			loadPage($("#section").text());  
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -88,4 +94,12 @@ function isUserManager(){
 
 function userHasHrDash(){
     return hasHRDash;
+}
+
+function getEmailSet(){
+    return emailSet;
+}
+
+function getUserAddress(){
+    return userAddress;
 }
