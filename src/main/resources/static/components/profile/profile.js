@@ -163,7 +163,7 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
-	deleteExtraEmailAction(deleteExtraEmailSuccess());
+	deleteExtraEmailAction(function(){deleteExtraEmailSuccess()});
 }
 
 function deleteExtraEmailSuccess(){
@@ -217,7 +217,8 @@ function saveExtraEmail(){
 			return;
 		}
 		else {
-			saveExtraEmailAction(extraEmailInput, saveExtraEmailSuccess(extraEmailInput));
+			saveExtraEmailAction(extraEmailInput, function(extraEmailInput){
+				saveExtraEmailSuccess(extraEmailInput)});
 		}
 	}
 }
