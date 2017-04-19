@@ -204,6 +204,7 @@ function closeExtraEmail(){
 function saveExtraEmail(){
 	var extraEmailInput=$addEmailInput.val();
 	if (extraEmailInput===""){
+		deleteExtraEmail();
 		$saveCancelEmailButtons.hide();
 		$addEmailInput.hide();
 		$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
