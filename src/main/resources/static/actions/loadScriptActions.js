@@ -1,32 +1,31 @@
 const SERVER = "server";
 const LOCAL = "local";
-const EMPTY_STRING ="";
 
-const PROD_SCRIPT_PATH = "../dist/{0}/{0}.min.js";
-const DEV_SCRIPT_PATH = "../components/{0}/{0}.js";
+const PROD_SCRIPT_PATH = "../dist/{0}.min.js"; // change to take in path
+const DEV_SCRIPT_PATH = "../{0}.js"; // change to take in path
 
-const PROD_STYLE_PATH = "../dist/{0}/{0}.min.css";
-const DEV_STYLE_PATH = "../components/{0}/{0}.css";
+const PROD_STYLE_PATH = "../dist/{0}.min.css"; // change to take in path
+const DEV_STYLE_PATH = "../{0}.css"; 
 
 const STYLESHEET_LINK = "<link rel='stylesheet' type='text/css' href='{0}'/>";
 
-function loadScript(component){
+function loadScript(path){ // TODO change to 'path' variable...
 	var script = "";
 	if(getHost() === SERVER){
-		script = String.format(PROD_SCRIPT_PATH, component);
+		script = String.format(PROD_SCRIPT_PATH, path);
 	}else{
-		script = String.format(DEV_SCRIPT_PATH, component);
+		script = String.format(DEV_SCRIPT_PATH, path);
 	}
 	$.getScript(script);
 	
 }
 
-function loadStyle(component){
+function loadStyle(path){ //TODO mimic script
 	var styleSheet = "";
 	if(getHost() === SERVER){
-		styleSheet = String.format(PROD_STYLE_PATH, component)
+		styleSheet = String.format(PROD_STYLE_PATH, path)
 	}else{
-		styleSheet = String.format(DEV_STYLE_PATH, component)
+		styleSheet = String.format(DEV_STYLE_PATH, path)
 	}
 	$(String.format(STYLESHEET_LINK, styleSheet)).appendTo("head");
 }

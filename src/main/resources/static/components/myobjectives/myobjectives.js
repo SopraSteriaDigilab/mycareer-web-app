@@ -1,5 +1,4 @@
 $(function() {
-	
 	// Get list of objectives
 	getObjectivesList(getADLoginID());
 	

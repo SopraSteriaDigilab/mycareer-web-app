@@ -1,5 +1,5 @@
 $(function() {
-	
+
 	$("sidebar").resizable();
 	loadProfile();
 	
