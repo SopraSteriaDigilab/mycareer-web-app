@@ -123,7 +123,7 @@ function getEmails(){
 	
 	var emailSet=getEmailSet();
 	var userAddress=getUserAddress();
-	if (userAddress !== null){hasExtraEmailAddress = true};
+	if (!(userAddress === null || userAddress === '')){hasExtraEmailAddress = true};
 	setEmailAddresses(emailSet,userAddress); //In success function
 }
 
@@ -131,7 +131,7 @@ function getEmails(){
 function setEmailAddresses(sopraSteriaEmailAddresses,preferedEmailAddress){
 	
 	var sopraSteriaEmailsHTML = '<ul><li class="ui-menu-item" role="menuitem">' + Array.from(sopraSteriaEmailAddresses).join('</li><li>') + '</li></ul>';
-	var extraEmail = (preferedEmailAddress == null) ? NO_EXTRA_EMAIL_ADDRESS : preferedEmailAddress;
+	var extraEmail = (preferedEmailAddress == null || preferedEmailAddress == '') ? NO_EXTRA_EMAIL_ADDRESS : preferedEmailAddress;
 
 	$addEmailInput.val(preferedEmailAddress);
 	setExtraEmailLabel(extraEmail);
@@ -163,10 +163,17 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
+	deleteExtraEmailAction(deleteExtraEmailSuccess());
+}
+
+function deleteExtraEmailSuccess(){
 	$addEmailInput.val('');
 	$editDeleteEmailButtons.hide();
 	$addEmailButton.show();
 	$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
+}
+
+function deleteExtraEmailError(){
 }
 
 function addExtraEmail(){
@@ -195,9 +202,7 @@ function closeExtraEmail(){
 
 /** Save extra email address to the database. */
 function saveExtraEmail(){
-	
 	var extraEmailInput=$addEmailInput.val();
-	
 	if (extraEmailInput===""){
 		$saveCancelEmailButtons.hide();
 		$addEmailInput.hide();
@@ -205,37 +210,25 @@ function saveExtraEmail(){
 		$addEmailText.show();
 		$addEmailButton.show();	
 	}
-	
 	else {
 		var validEmail=isValidEmailAddress(extraEmailInput);	
-		
 		if ((!validEmail) && (extraEmailInput !=="")){
 			toastr.error("Email format is incorrect");
 			return;
 		}
-			
 		else {
-			console.log("saving my extra email address: " + extraEmailInput);
-			//TODO Ajax request to save extra email address.
-			$.ajax({
-		        url: "http://"+getEnvironment()+"/editUserEmailAddress/"+getADLoginID(),
-		        method: "POST",
-		        xhrFields: {'withCredentials': true},
-		        data: {
-		            'emailAddress': extraEmailInput,
-		        },
-		        success: function(response){
-		        	toastr.success(response)
-		        	setExtraEmailLabel(extraEmailInput);
-					$saveCancelEmailButtons.hide();
-					$addEmailInput.hide();
-					$editDeleteEmailButtons.show();
-					$addEmailText.show()
-		        },
-		        error: function(XMLHttpRequest, textStatus, errorThrown){
-		            toastr.error(XMLHttpRequest.responseText);
-		        },
-		    });
+			saveExtraEmailAction(extraEmailInput, saveExtraEmailSuccess(extraEmailInput));
 		}
 	}
+}
+
+function saveExtraEmailSuccess(extraEmailInput){
+	setExtraEmailLabel(extraEmailInput);
+	$saveCancelEmailButtons.hide();
+	$addEmailInput.hide();
+	$editDeleteEmailButtons.show();
+	$addEmailText.show()
+}
+
+function saveExtraEmailError(){
 }
