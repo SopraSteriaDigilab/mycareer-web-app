@@ -920,6 +920,34 @@ function editNoteTagFilter(Id, title, type){
 	$("#notes-tag-dropdown").selectpicker("refresh");
 }
 
+function openWarningModal(title, body, buttonText, buttonFunction){
+	$('#warning-modal').html(warningModalHTML(title, body, buttonText, buttonFunction));
+	$('#warning-modal-action').click(function(){ buttonFunction() })
+	$('#warning-modal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function closeWarningModal(){
+	$('#warning-modal').html();
+	$('#warning-modal').modal('hide');
+}
+
+function warningModalHTML(title, body, buttonText, buttonFunction){
+	var HTML = " \
+		<div class='modal-dialog modal-sm'> \
+	    	<div class='modal-content'> \
+				<div class='modal-header'> \
+					<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>×</span></button> \
+					<h4 class='modal-title'>"+title+"</h4> \
+				</div> \
+				<div class='modal-body'>"+body+"</div> \
+			    <div class='modal-footer'> \
+					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Close</button> \
+					<button type='button' class='btn btn-default pull-right' id='warning-modal-action'>"+buttonText+"</button> \
+				</div> \
+			</div> \
+		</div>";
+	return HTML;
+}
 
 
 
