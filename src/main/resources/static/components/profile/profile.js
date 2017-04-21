@@ -61,7 +61,7 @@ var $addEmailInput = $("#add-email-input");
 
 var hasExtraEmailAddress = false;
 var currentOperation = null;
-
+var currentExtraEmail=getUserAddress();
 
 function populateProfile(userName, fullName){
 	$("#userProfileName").append("<h4 class='profile-centre' >" + fullName + " ");
@@ -167,6 +167,7 @@ function deleteExtraEmail(){
 }
 
 function deleteExtraEmailSuccess(){
+	currentExtraEmail="";
 	$addEmailInput.val('');
 	$editDeleteEmailButtons.hide();
 	$addEmailButton.show();
@@ -202,25 +203,56 @@ function closeExtraEmail(){
 
 /** Save extra email address to the database. */
 function saveExtraEmail(){
+	
 	var extraEmailInput=$addEmailInput.val();
-	if (extraEmailInput===""){
-		deleteExtraEmail();
-		$saveCancelEmailButtons.hide();
-		$addEmailInput.hide();
-		$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
-		$addEmailText.show();
-		$addEmailButton.show();	
+	var extraEmailText=$addEmailText.text();
+	
+	if (isExtraEmailUpdated(extraEmailInput)){
+		if (extraEmailInput===""){
+			currentExtraEmail=extraEmailInput;
+			deleteExtraEmail();
+			$saveCancelEmailButtons.hide();
+			$addEmailInput.hide();
+			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
+			$addEmailText.show();
+			$addEmailButton.show();	
+		}	
+		else{
+			var validEmail=isValidEmailAddress(extraEmailInput);	
+			if (!validEmail){
+				toastr.error("Email format is incorrect");
+				return;
+			}
+			else {
+				currentExtraEmail=extraEmailInput;
+				saveExtraEmailAction(extraEmailInput, function(extraEmailInput){
+					saveExtraEmailSuccess(extraEmailInput)});
+			}
+		}
 	}
 	else {
-		var validEmail=isValidEmailAddress(extraEmailInput);	
-		if ((!validEmail) && (extraEmailInput !=="")){
-			toastr.error("Email format is incorrect");
-			return;
-		}
+		if (extraEmailInput===""){
+			$saveCancelEmailButtons.hide();
+			$addEmailInput.hide();
+			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
+			$addEmailText.show();
+			$addEmailButton.show();	
+		}	
 		else {
-			saveExtraEmailAction(extraEmailInput, function(extraEmailInput){
-				saveExtraEmailSuccess(extraEmailInput)});
+			$saveCancelEmailButtons.hide();
+			$addEmailInput.hide();
+			$addEmailText.show();
+			$editDeleteEmailButtons.show();	
 		}
+	}
+}
+
+function isExtraEmailUpdated(extraEmailInput){
+	if(extraEmailInput===currentExtraEmail){
+		return false;
+	}
+	else{
+		return true;
 	}
 }
 
