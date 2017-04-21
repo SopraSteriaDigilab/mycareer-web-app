@@ -16,7 +16,7 @@ function getCurrentRatingAction(userId, successFunction, errorFunction){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){        	
             toastr.error("Sorry, there was a problem getting ratings, please try again later.");
-            errorFunction();
+            errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
         }
     });
 }
@@ -33,7 +33,7 @@ function getCurrentRatingAction(userId, successFunction, errorFunction){
  */
 function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score, successFunction, errorFunction){
     $.ajax({
-        url: "http://"+getEnvironment()+"/addManagerEvaluation/"+userId,
+        url: "http://"+getEnvironment()+"/manager/addManagerEvaluation/"+userId,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
@@ -44,11 +44,11 @@ function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score
         success: function(response){
         	toastr.success(response);
         	successFunction(response);
-           },
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-               toastr.error(errorThrown);
-               errorFunction(errorThrown);
-           },
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
+        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
+        },
     });
 }
 
@@ -73,10 +73,52 @@ function addSelfEvaluationAction(userId, selfEvaluation, successFunction, errorF
         success: function(response){
         	toastr.success(response);
         	successFunction(response);
-           },
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-               toastr.error(errorThrown);
-               errorFunction(errorThrown);
-           },
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
+        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
+        },
     });
 }
+
+function submitSelfEvaluationAction(userId, successFunction, errorFunction){
+    $.ajax({
+    	url: "http://"+getEnvironment()+"/submitSelfEvaluation/"+userId,
+        method: 'POST',
+        xhrFields: {'withCredentials': true},         
+        success: function(response){
+        	toastr.success(response);
+        	successFunction(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
+        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
+        },
+    });
+}
+
+
+function submitManagerEvaluationAction(userId, reporteeId, successFunction, errorFunction){
+    $.ajax({
+        url: "http://"+getEnvironment()+"/manager/submitManagerEvaluation/"+userId,
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+        	"reporteeId": reporteeId
+        },
+        success: function(response){
+        	toastr.success(response);
+        	successFunction(response);
+       },
+       error: function(XMLHttpRequest, textStatus, errorThrown){
+           toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
+           errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
+       },
+    });
+}
+
+
+
+
+
+

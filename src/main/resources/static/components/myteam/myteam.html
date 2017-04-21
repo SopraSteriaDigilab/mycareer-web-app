@@ -1,6 +1,8 @@
-<link rel="stylesheet" href="../components/myteam/myteam.css"/>
-<script type="text/javascript" src="../actions/ratingactions.js"></script>
-<script type="text/javascript" src="../components/myteam/myteam.js"></script>
+<script>
+	loadScript("actions/ratingactions");
+	loadStyle("components/myteam/myteam");
+	loadScript("components/myteam/myteam");
+</script>
 
 <!--Containter for full page -->
 <div class="container">
@@ -57,7 +59,14 @@
 						<div class="col-md-12">
 							<div class="panel panel-default">
 							  <div class="panel-heading">
-							    <h3 class="panel-title"><b><span class="reportee-name"></span> - Self Evaluation</b></h3>
+							  	<div class="row">
+							  		<div class="col-md-9">
+							   			<h3 class="panel-title"><b><span class="reportee-name"></span> - Self Evaluation</b></h3>
+							   		</div>
+							   		<div class="col-md-3 text-right" id="reportee-evaluation-submitted" hidden>
+							   			<h3 class="panel-title"><b>Submitted</b></h3>
+							   		</div>
+						   		</div>
 							  </div>
 							  <div class="panel-body rating-panel-body" >
 							  	<div id="reportee-evaluation-text" class="wrap-text evaluation-body" ></div>
@@ -69,32 +78,44 @@
 						<div class="col-md-12">
 							<div class="panel panel-default" style="margin-bottom:0px">
 							  <div class="panel-heading">
-							    <h3 class="panel-title"><b>Manager Evaluation</b></h3>
+							  	<div class="row">
+								    <div class="col-md-9">
+						   				<h3 class="panel-title"><b>Manager Evaluation</b></h3>
+							   		</div>
+								    <div class="col-md-3 text-right" id="manager-evaluation-submitted" hidden>
+						   				<h3 class="panel-title"><b>Submitted</b></h3>
+						   			</div>
+							  	</div>
 							  </div>
 							  <div class="panel-body rating-panel-body" id="manager-panel-body">
 								  <div id="manager-evaluation-text" class="manager-evaluation-labels wrap-text evaluation-body"></div>
 								  <textarea id="manager-evaluation-input" placeholder="Manager Evaluation" type="text" class="form-control manager-evaluation-options" style="display: none; height:100%" maxlength="10000"></textarea>
 							  </div>
-							  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px;">
-								  <div class="row">
-							  		<div class="col-md-3 manager-evaluation-labels">
-						   				<button type="button" class="btn btn-default btn-block" id="edit-manager-evaluation">Edit</button>
-							   		</div>
-							   		<div class="col-md-3 manager-evaluation-options" style="display:none">
-							   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">cancel</button>
-						   			</div>
-						   			<div class="col-md-3 manager-evaluation-options" style="display:none">
-							   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
-							   		</div>
-						   			<div class="col-md-6 pull right manager-evaluation-options" style="display:none">
-							   			<select id="evaluation-score-input" class="selectpicker">
-							   				<option class="text-center" value="0">No Rating</option>
-										  	<option class="text-center" value="1">1</option>
-										  	<option class="text-center" value="2">2</option>
-										  	<option class="text-center" value="3">3</option>
-										  	<option class="text-center" value="4">4</option>
-										  	<option class="text-center" value="5">5</option>
-										</select>
+							  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px; height: 55px">
+								  <div class="row" id="manager-evaluation-footer" hidden>
+								  	<div id="manager-options">
+								  		<div class="col-md-3 manager-evaluation-labels">
+							   				<button type="button" class="btn btn-default btn-block" id="edit-manager-evaluation">Edit</button>
+								   		</div>
+								   		<div class="col-md-3 manager-evaluation-labels">
+							   				<button type="button" class="btn btn-default btn-block" id="submit-manager-evaluation">Submit</button>
+								   		</div>
+								   		<div class="col-md-3 manager-evaluation-options" style="display:none">
+								   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">cancel</button>
+							   			</div>
+							   			<div class="col-md-3 manager-evaluation-options" style="display:none">
+								   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
+								   		</div>
+							   			<div class="col-md-6 pull right manager-evaluation-options" style="display:none">
+								   			<select id="evaluation-score-input" class="selectpicker">
+								   				<option class="text-center" value="0">No Rating</option>
+											  	<option class="text-center" value="1">1</option>
+											  	<option class="text-center" value="2">2</option>
+											  	<option class="text-center" value="3">3</option>
+											  	<option class="text-center" value="4">4</option>
+											  	<option class="text-center" value="5">5</option>
+											</select>
+							   			</div>
 						   			</div>
 						   			<div class="col-md-6 pull-right manager-evaluation-labels">
 							   			<span id="evaluation-score-text"></span>

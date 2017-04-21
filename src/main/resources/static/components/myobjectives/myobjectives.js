@@ -1,12 +1,11 @@
 $(function() {
-	
-//	Get list of objectives
+	// Get list of objectives
 	getObjectivesList(getADLoginID());
 	
-	//Load competencies section
+	// Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
 	
-	//onClick for opening modal
+	// onClick for opening modal
 	$('#add-obj').click(function() { openAddObjectiveModal(); });
     
     //Ensuring all the objectives items are shown
@@ -15,7 +14,7 @@ $(function() {
     $("#obj-started-tab").click(function(){ $('.started').css({'display':''}); });
     $("#obj-completed-tab").click(function(){ $('.completed').css({'display':''}); });
     
-      //onClick for Close modal
+    // onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
     
     //onclick to delete objectives
@@ -28,7 +27,7 @@ $(function() {
 });
 
 //HTTP request for INSERTING an objective to DB
-function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy){
+function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy) {
     $.ajax({
         url: "http://"+getEnvironment()+"/addObjective/"+userID,
         method: "POST",

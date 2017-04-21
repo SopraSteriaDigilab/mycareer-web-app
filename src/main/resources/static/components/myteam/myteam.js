@@ -3,7 +3,8 @@ $(function() {
 });//End of Document Function
 
 /** Constants */
-const NO_REPORTEE_EVALUATION = "No self evaluation has been written.";
+const NO_REPORTEE_EVALUATION_ADDED = "No self evaluation was added.";
+const NO_REPORTEE_EVALUATION_SUBMITTED = "Self evaluation has not yet been submitted."
 const NO_MANAGER_EVALUATION = "No manager evaluation has been written.";
 const NO_RATING = "No Rating Entered";
 const RATING = "Rating: ";
@@ -17,6 +18,15 @@ var $managerEvaluationInput = $("#manager-evaluation-input");
 var $reporteeEvaluationText = $("#reportee-evaluation-text");
 var $evaluationScoreText = $("#evaluation-score-text");
 var $evaluationScoreInput = $("#evaluation-score-input");
+var $reporteeEvaluationsSubmitted = $("#reportee-evaluation-submitted");
+var $managerEvaluationSubmitted = $("#manager-evaluation-submitted");
+var $managerEvaluationFooter = $("#manager-evaluation-footer");
+var $managerOptions = $("#manager-options");
+
+var $editButton = $("#edit-manager-evaluation");
+var $submitButton = $("#submit-manager-evaluation");
+var $saveButton = $("#save-manager-evaluation");
+var $cancelButton = $("#cancel-manager-evaluation");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -34,9 +44,10 @@ function init(){
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
 	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
 	
-	$("#edit-manager-evaluation").click(function(){ editManagerEvaluation(); });
-	$("#save-manager-evaluation").click(function(){ saveManagerEvaluation(); });
-	$("#cancel-manager-evaluation").click(function(){ closeManagerEvaluation(false); });
+	$editButton.click(function(){ editManagerEvaluation(); });
+	$submitButton.click(function(){ submitManagerEvaluation(); });
+	$saveButton.click(function(){ saveManagerEvaluation(); });
+	$cancelButton.click(function(){ closeManagerEvaluation(false); });
 	
 	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
 }
@@ -45,7 +56,7 @@ function init(){
 function getReportees(userId, isSubReportee){
 	if(isSubReportee) loadingSubReporteeList();
     $.ajax({
-        url: 'http://'+getEnvironment()+'/getReportees/'+userId,
+        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -66,8 +77,6 @@ function getReportees(userId, isSubReportee){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	$("#reportee-list").empty();
-        	
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting reportees, please try again later.");
         }
     });
@@ -264,7 +273,6 @@ function getReporteeCompetencyList(userID){
             addCompetenciesToList(competencyList);
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
@@ -284,7 +292,6 @@ function getReporteeNotesList(userID){
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting notes, please try again later.");
         }
     });
@@ -293,7 +300,7 @@ function getReporteeNotesList(userID){
 //Method to propose objective
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     $.ajax({
-        url: "http://"+getEnvironment()+"/proposeObjective/"+userID,
+        url: "http://"+getEnvironment()+"/manager/proposeObjective/"+userID,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
@@ -328,7 +335,7 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
 //Method to make ajax call to add note to database
 function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+"/addNoteToReportee/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/manager/addNoteToReportee/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data:{
@@ -638,19 +645,27 @@ function loadingProposedButton(){
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
 function getReporteeRatings(userId){
 	getCurrentRatingAction(userId, function(data){ 
-		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score);
+		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
 	});
 }
 
 /** Sets the three evaluations in the HTML */
-function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore){
-	var reportee = (reporteeEvaluation === "") ? NO_REPORTEE_EVALUATION : reporteeEvaluation;
-	
+function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore, isReporteeEvaluationSubmitted, isManagerEvaluationSubmitted){
 	setManagerEvaluationLabel(managerEvaluation);
 	$managerEvaluationInput.val(managerEvaluation);
-	$reporteeEvaluationText.text(reportee);
 	setEvaluationScoreLabel(evaluationScore);
 	$evaluationScoreInput.selectpicker('val', evaluationScore);
+	
+	if(isReporteeEvaluationSubmitted == true) {
+		setReporteeEvaluation(reporteeEvaluation);
+	}else{
+		setReporteeEvaluation(NO_REPORTEE_EVALUATION_SUBMITTED)
+	}
+	
+	reporteeEvaluationSubmitted(isReporteeEvaluationSubmitted);
+	managerEvaluationSubmitted(isManagerEvaluationSubmitted);
+	
+	$managerEvaluationFooter.show();
 }
 
 /** Sets the manager evaluation label */
@@ -665,10 +680,51 @@ function setEvaluationScoreLabel(evaluationScore) {
 	$evaluationScoreText.text(label);
 }
 
+function setReporteeEvaluation(reporteeEvaluation){
+	var label = (reporteeEvaluation === "") ? NO_REPORTEE_EVALUATION_ADDED : reporteeEvaluation;
+	$reporteeEvaluationText.text(label);
+}
+
+function reporteeEvaluationSubmitted(isReporteeEvaluationSubmitted){
+	if(isReporteeEvaluationSubmitted == true){
+		$reporteeEvaluationsSubmitted.show();
+	}else{
+		$reporteeEvaluationsSubmitted.hide();
+	}
+}
+
+function managerEvaluationSubmitted(isManagerEvaluationSubmitted){
+	if(isManagerEvaluationSubmitted == true){
+		$managerEvaluationSubmitted.show();
+		$managerOptions.hide();
+	}else{
+		$managerEvaluationSubmitted.hide();
+		$managerOptions.show();
+	}
+}
+
 /** Make manager evaluation editable. */
 function editManagerEvaluation(){
 	$managerEvaluationLabels.hide();
 	$managerEvaluationOptions.show();
+}
+
+/** Open confirmation model. */
+function submitManagerEvaluation(){
+	var title = "Submit Evaluation";
+	var body = "<h5>Once you have submitted your manager evlauation, you will no longer be able to edit this.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var buttonText = "Submit";
+	var buttonFunction = function(){ confirmSubmitEvaluation() }
+	
+	openWarningModal(title, body, buttonText, buttonFunction);
+}
+
+/** Update rating on database to submit self evaluation */
+function confirmSubmitEvaluation(){
+	submitManagerEvaluationAction(getADLoginID(), selectedReporteeID, function(){
+		managerEvaluationSubmitted(true);
+		closeWarningModal();
+	}, function(){});
 }
 
 /** Save manager evaluation to the database. */

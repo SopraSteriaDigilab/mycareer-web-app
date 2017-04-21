@@ -5,24 +5,36 @@ var rename = require("gulp-rename");
 var cleanCSS = require('gulp-clean-css');
 
 gulp.task('minify-js', function(cb) {
-  pump([
-  		gulp.src('src/main/resources/static/components/**/*.js'),
-  		uglify(),
-  		rename({ suffix: '.min' }),
-  		gulp.dest('./src/main/resources/static/dist')
-  	],
-  	cb
+	var files = [
+	    'src/main/resources/static/**/*.js', 
+	    '!src/main/resources/static/vendor/**',
+	    '!src/main/resources/static/**/*.min.js'
+    ];
+	
+	pump([
+	      gulp.src(files),
+	      uglify(),
+	      rename({ suffix: '.min' }),
+	      gulp.dest('./src/main/resources/static/dist')
+      ],
+      cb
 	);
 });
 
 gulp.task('minify-css', function(cb) {
-  pump([
-  		gulp.src('src/main/resources/static/components/**/*.css'),
-  		cleanCSS(),
-  		rename({ suffix: '.min' }),
-  		gulp.dest('./src/main/resources/static/dist')
-  	],
-  	cb
+	var files = [
+ 	    'src/main/resources/static/**/*.css', 
+ 	    '!src/main/resources/static/vendor/**',
+ 	    '!src/main/resources/static/**/*min.css'
+     ];
+	
+	pump([
+	      gulp.src(files),
+	      cleanCSS(),
+	      rename({ suffix: '.min' }),
+	      gulp.dest('./src/main/resources/static/dist')
+      ],
+      cb
 	);
 });
 

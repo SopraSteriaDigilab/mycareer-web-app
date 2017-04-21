@@ -55,7 +55,6 @@ function getObjectivesList(userID){
         	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
-          console.log('error', errorThrown);
           toastr.error("Sorry, there was a problem getting objectives, please try again later.");
       }
   });	
@@ -206,7 +205,6 @@ function getCompetencyList(userID){
             });
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
@@ -245,7 +243,6 @@ function getGeneralFeedbackList(userID){
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting feedback, please try again later.");
         }
         
@@ -315,7 +312,6 @@ function getDevelopmentNeedsList(userID){
 	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown){
-	        console.log('error', errorThrown);
 	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
 	    }
 	});	
@@ -449,7 +445,6 @@ function getTags(userID){
         	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting tags, please try again later.");
         }
     });	
@@ -687,7 +682,6 @@ function enableSubmit(type){
 
 function tags(id, data){ 
     //sets email addresses to use bootstrap tag input
-	console.log(emails);
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
@@ -787,7 +781,6 @@ function getEmailList(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
         	addProposed();
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting emails, please try again later.");
         }
     });	
@@ -927,6 +920,34 @@ function editNoteTagFilter(Id, title, type){
 	$("#notes-tag-dropdown").selectpicker("refresh");
 }
 
+function openWarningModal(title, body, buttonText, buttonFunction){
+	$('#warning-modal').html(warningModalHTML(title, body, buttonText, buttonFunction));
+	$('#warning-modal-action').click(function(){ buttonFunction() })
+	$('#warning-modal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+function closeWarningModal(){
+	$('#warning-modal').html();
+	$('#warning-modal').modal('hide');
+}
+
+function warningModalHTML(title, body, buttonText, buttonFunction){
+	var HTML = " \
+		<div class='modal-dialog modal-sm'> \
+	    	<div class='modal-content'> \
+				<div class='modal-header'> \
+					<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>×</span></button> \
+					<h4 class='modal-title'>"+title+"</h4> \
+				</div> \
+				<div class='modal-body'>"+body+"</div> \
+			    <div class='modal-footer'> \
+					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Close</button> \
+					<button type='button' class='btn btn-default pull-right' id='warning-modal-action'>"+buttonText+"</button> \
+				</div> \
+			</div> \
+		</div>";
+	return HTML;
+}
 
 
 
