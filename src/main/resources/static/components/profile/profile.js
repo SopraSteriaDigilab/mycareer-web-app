@@ -267,7 +267,7 @@ function isExtraEmailUpdated(extraEmailInput){
 
 function saveExtraEmailSuccess(extraEmailInput){
 	setExtraEmailLabel(extraEmailInput);
-	saveCancelToAdd();
+	saveCancelToEditDelete();
 }
 
 function saveExtraEmailError(){
