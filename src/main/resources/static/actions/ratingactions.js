@@ -33,7 +33,7 @@ function getCurrentRatingAction(userId, successFunction, errorFunction){
  */
 function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score, successFunction, errorFunction){
     $.ajax({
-        url: "http://"+getEnvironment()+"/addManagerEvaluation/"+userId,
+        url: "http://"+getEnvironment()+"/manager/addManagerEvaluation/"+userId,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
@@ -100,7 +100,7 @@ function submitSelfEvaluationAction(userId, successFunction, errorFunction){
 
 function submitManagerEvaluationAction(userId, reporteeId, successFunction, errorFunction){
     $.ajax({
-        url: "http://"+getEnvironment()+"/submitManagerEvaluation/"+userId,
+        url: "http://"+getEnvironment()+"/manager/submitManagerEvaluation/"+userId,
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {

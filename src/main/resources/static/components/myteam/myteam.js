@@ -56,7 +56,7 @@ function init(){
 function getReportees(userId, isSubReportee){
 	if(isSubReportee) loadingSubReporteeList();
     $.ajax({
-        url: 'http://'+getEnvironment()+'/getReportees/'+userId,
+        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -300,7 +300,7 @@ function getReporteeNotesList(userID){
 //Method to propose objective
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     $.ajax({
-        url: "http://"+getEnvironment()+"/proposeObjective/"+userID,
+        url: "http://"+getEnvironment()+"/manager/proposeObjective/"+userID,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
@@ -335,7 +335,7 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
 //Method to make ajax call to add note to database
 function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+"/addNoteToReportee/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/manager/addNoteToReportee/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data:{
@@ -694,7 +694,6 @@ function reporteeEvaluationSubmitted(isReporteeEvaluationSubmitted){
 }
 
 function managerEvaluationSubmitted(isManagerEvaluationSubmitted){
-	
 	if(isManagerEvaluationSubmitted == true){
 		$managerEvaluationSubmitted.show();
 		$managerOptions.hide();
