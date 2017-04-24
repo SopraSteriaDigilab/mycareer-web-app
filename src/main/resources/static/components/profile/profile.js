@@ -148,16 +148,41 @@ function setExtraEmailLabel(extraEmail){
 	
 }
 
+function addToSaveCancel(){
+	$addEmailText.hide();
+	$addEmailButton.hide();
+	$saveCancelEmailButtons.show();
+	$addEmailInput.show();
+}
+
+function editDeleteToSaveCancel(){
+	$editDeleteEmailButtons.hide();
+	$addEmailText.hide();
+	$saveCancelEmailButtons.show();
+	$addEmailInput.show();
+}
+
+function saveCancelToEditDelete(){
+	$saveCancelEmailButtons.hide();
+	$addEmailInput.hide();
+	$addEmailText.show();
+	$editDeleteEmailButtons.show();	
+}
+
+function saveCancelToAdd(){
+	$saveCancelEmailButtons.hide();
+	$addEmailInput.hide();
+	$addEmailText.show();
+	$addEmailButton.show();	
+}
+
 /** Make extra email address editable. */
 function editExtraEmail(){
 	currentOperation="edit";
 	if ($addEmailText.text() !== NO_EXTRA_EMAIL_ADDRESS){
 		$addEmailInput.val($addEmailText.text());
 	}
-	$editDeleteEmailButtons.hide();
-	$addEmailText.hide();
-	$saveCancelEmailButtons.show();
-	$addEmailInput.show();
+	editDeleteToSaveCancel()
 }
 
 function deleteExtraEmail(){
@@ -177,25 +202,16 @@ function deleteExtraEmailError(){
 
 function addExtraEmail(){
 	currentOperation="add";
-	$addEmailText.hide();
-	$addEmailButton.hide();
-	$saveCancelEmailButtons.show();
-	$addEmailInput.show();
+	addToSaveCancel();
 }
 
 function closeExtraEmail(){
 	$addEmailInput.val('');
 	if (currentOperation==="edit"){
-		$saveCancelEmailButtons.hide();
-		$editDeleteEmailButtons.show();
-		$addEmailInput.hide();
-		$addEmailText.show();
+		saveCancelToEditDelete()
 	}
 	if (currentOperation==="add"){
-		$saveCancelEmailButtons.hide();
-		$addEmailButton.show();
-		$addEmailInput.hide();
-		$addEmailText.show();
+		saveCancelToAdd();
 	}
 }
 
@@ -209,11 +225,8 @@ function saveExtraEmail(){
 		if (extraEmailInput===""){
 			currentExtraEmail=extraEmailInput;
 			deleteExtraEmail();
-			$saveCancelEmailButtons.hide();
-			$addEmailInput.hide();
 			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
-			$addEmailText.show();
-			$addEmailButton.show();	
+			saveCancelToAdd();
 		}	
 		else{
 			var validEmail=isValidEmailAddress(extraEmailInput);	
@@ -224,23 +237,19 @@ function saveExtraEmail(){
 			else {
 				currentExtraEmail=extraEmailInput;
 				saveExtraEmailAction(extraEmailInput, function(extraEmailInput){
-					saveExtraEmailSuccess(extraEmailInput)});
+					saveExtraEmailSuccess(extraEmailInput)
+					}
+				);
 			}
 		}
 	}
 	else {
 		if (extraEmailInput===""){
-			$saveCancelEmailButtons.hide();
-			$addEmailInput.hide();
 			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
-			$addEmailText.show();
-			$addEmailButton.show();	
+			saveCancelToAdd();
 		}	
 		else {
-			$saveCancelEmailButtons.hide();
-			$addEmailInput.hide();
-			$addEmailText.show();
-			$editDeleteEmailButtons.show();	
+			saveCancelToEditDelete();			
 		}
 	}
 }
@@ -256,10 +265,7 @@ function isExtraEmailUpdated(extraEmailInput){
 
 function saveExtraEmailSuccess(extraEmailInput){
 	setExtraEmailLabel(extraEmailInput);
-	$saveCancelEmailButtons.hide();
-	$addEmailInput.hide();
-	$editDeleteEmailButtons.show();
-	$addEmailText.show()
+	saveCancelToEditDelete();
 }
 
 function saveExtraEmailError(){
