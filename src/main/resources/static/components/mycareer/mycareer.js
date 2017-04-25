@@ -7,7 +7,7 @@ var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
-var emailSet = new Set();
+var emailSet = [];
 var userAddress = null;
 
 function logMeIn(){	
@@ -26,7 +26,13 @@ function logMeIn(){
 			hasHRDash = data.hasHRDash;
 			mail=data.emailAddresses.mail;
 			targetAddress=data.emailAddresses.targetAddress;
-			emailSet.add(mail.toString()).add(targetAddress.toString());
+			if (mail===targetAddress){
+				emailSet.push(mail.toString());
+			}
+			else{
+				emailSet.push(mail.toString());
+				emailSet.push(targetAddress.toString());
+			}
 			userAddress = data.emailAddresses.userAddress;
 			loadPage($("#section").text());  
 		},
