@@ -377,7 +377,9 @@ function showReporteeView(id, name){
 	});
 	
 	$("#reportee-notes-add-button").empty();
-	$("#edit-manager-evaluation").hide();
+	$editButton.hide();
+	$submitButton.hide();
+	
 	if(jQuery.inArray(id, initialReporteeList) > -1){
 		showEditOptions();
 	}
@@ -753,7 +755,8 @@ function initSelect(){
 
 function showEditOptions(){
 	$("#reportee-notes-add-button").append(addNotesHTML());
-	$("#edit-manager-evaluation").show();
+	$editButton.show();
+	$submitButton.show();
 }
 
 function addNotesHTML(){
