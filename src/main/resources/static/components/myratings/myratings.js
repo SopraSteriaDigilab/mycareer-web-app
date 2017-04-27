@@ -51,6 +51,7 @@ function setMyRatings(selfEvaluation, managerEvaluation, evaluationScore, isSelf
 	$selfEvaluationInput.val(selfEvaluation);
 	if(isManagerEvaluationSubmitted) {
 		setManagerEvaluation(managerEvaluation, evaluationScore);
+		$selfEvaluationFooter.html('');
 	}else{
 		setManagerEvaluation(MANAGER_RATING_NOT_SUBMITTED, 0);
 	}
