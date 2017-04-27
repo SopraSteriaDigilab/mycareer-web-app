@@ -28,12 +28,15 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
+var $activityFeed = $("#ativity-feed");
+
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
 var selectedReporteeName = "";
 var selectedReporteeUsername = "";
 var initialReporteeList = [];
+var activityFeedVisible = false;
 
 function init(){
 	getReportees(getADLoginID(), false, "");
@@ -788,5 +791,14 @@ function addNotesHTML(){
 		</div> \
 		";
 	return HTML;
+}
 
+function toggleActivityFeed(){
+	if(activityFeedVisible){
+		activityFeedVisible = false;
+		$activityFeed.hide();
+	}else{
+		activityFeedVisible = true;
+		$activityFeed.show();
+	}
 }
