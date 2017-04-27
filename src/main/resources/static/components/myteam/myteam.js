@@ -134,7 +134,27 @@ function demoManager1(){
 		"reporteeCNs": [],
 		"accountExpires": null,
 		"fullName": "Finlay HARRIS"
-	}];
+	},{
+		"employeeID": 604970,
+		"surname": "RAO",
+		"forename": "Hanumant",
+		"username": "harao",
+		"emailAddresses": {
+		"mail": "hanumant.rao@soprasteria.com",
+		"targetAddress": "hanumant.rao@soprasteria.com",
+		"userAddress": null,
+		"preferred": "hanumant.rao@soprasteria.com"
+		},
+		"isManager": false,
+		"hasHRDash": false,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Justice People (DPC509)",
+		"sector": "GOV2",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Hanumant RAO"
+		}];
 }
 
 
