@@ -140,10 +140,6 @@ function closeSelfEvaluation(save){
 }
 
 function clickClose(){
-	if($selfEvaluationInput.val() === ""){
-		closeSelfEvaluation(false);
-		return true;
-	}
 	var title = "Cancel Evaluation";
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";

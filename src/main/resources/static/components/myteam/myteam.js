@@ -37,6 +37,7 @@ var selectedReporteeName = "";
 var selectedReporteeUsername = "";
 var initialReporteeList = [];
 var activityFeedVisible = false;
+var editingRating = false;
 
 function init(){
 	getReportees(getADLoginID(), false, "");
@@ -241,7 +242,7 @@ function updateSelectedSubReportee(userId){
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\",  \""+userName+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='clickReportee("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\",  \""+userName+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -265,7 +266,24 @@ function selectedReportee(element){
 	});     
 }
 
+function clickReportee(id, name, emailAddress, userName, element){
+	if(editingRating){
+		var title = "Cancel Evaluation";
+		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+		var buttonText = "Continue";
+		var buttonFunction = function(){ 
+			closeManagerEvaluation(false);
+			getReporteeCareer(id, name, emailAddress, userName, element);
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}else{
+		getReporteeCareer(id, name, emailAddress, userName, element);
+	}	
+}
+
 function getReporteeCareer(id, name, emailAddress, userName, element) {
+	closeWarningModal();
 	if(checkSelectedUser(parseInt(id), emailAddress, name, userName)){
 		selectedReportee(element);
 		clearReporteeLists();
@@ -745,6 +763,7 @@ function managerEvaluationSubmitted(isManagerEvaluationSubmitted){
 function editManagerEvaluation(){
 	$managerEvaluationLabels.hide();
 	$managerEvaluationOptions.show();
+	editingRating = true;
 }
 
 /** Open confirmation model. */
@@ -788,14 +807,11 @@ function closeManagerEvaluation(save){
 	}
 	$managerEvaluationLabels.show();
 	
+	editingRating = false;
 	closeWarningModal();
 }
 
 function clickClose(){
-	if($managerEvaluationInput.val() === ""){
-		closeManagerEvaluation(false);
-		return true;
-	}
 	var title = "Cancel Evaluation";
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
