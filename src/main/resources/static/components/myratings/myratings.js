@@ -34,7 +34,7 @@ function init(){
 	$editButton.click(function(){ editSelfEvaluation(); });
 	$submitButton.click(function(){ submitSelfEvaluation(); });
 	$saveButton.click(function(){ saveSelfEvaluation(); });
-	$cancelButton.click(function(){ closeSelfEvaluation(false); });
+	$cancelButton.click(function(){ clickClose(); });
 	
 }
 
@@ -48,7 +48,7 @@ function getCurrentRating(){
 /** Sets the three evaluations in the HTML */
 function setMyRatings(selfEvaluation, managerEvaluation, evaluationScore, isSelfEvaluationSubmitted, isManagerEvaluationSubmitted){
 	setSelfEvaluationLabel(selfEvaluation);
-	$selfEvaluationInput.val(selfEvaluation);
+	setSelfEvaluationInput(selfEvaluation);
 	if(isManagerEvaluationSubmitted) {
 		setManagerEvaluation(managerEvaluation, evaluationScore);
 		$selfEvaluationFooter.html('');
@@ -64,8 +64,14 @@ function setMyRatings(selfEvaluation, managerEvaluation, evaluationScore, isSelf
 
 /** Sets the self evaluation label */
 function setSelfEvaluationLabel(selfEvaluation){
-	var self = (selfEvaluation == "") ? NO_SELF_EVALUATION : selfEvaluation;
+	var self = (selfEvaluation === "") ? NO_SELF_EVALUATION : selfEvaluation;
 	$selfEvaluationText.text(self);
+}
+
+/** Sets the self evaluation label */
+function setSelfEvaluationInput(selfEvaluation){
+	var self = (selfEvaluation === NO_SELF_EVALUATION) ? "" : selfEvaluation;
+	$selfEvaluationInput.val(self);
 }
 
 function setManagerEvaluation(managerEvaluation, evaluationScore){
@@ -123,7 +129,25 @@ function saveSelfEvaluation(){
  */
 function closeSelfEvaluation(save){
 	$selfEvaluationOptions.hide();
-	if(save) 
+	if(save) {
 		setSelfEvaluationLabel($selfEvaluationInput.val());
+	}else{
+		setSelfEvaluationInput($selfEvaluationText.text())
+	}
 	$selfEvaluationLabels.show();
+	
+	closeWarningModal();
+}
+
+function clickClose(){
+	if($selfEvaluationInput.val() === ""){
+		closeSelfEvaluation(false);
+		return true;
+	}
+	var title = "Cancel Evaluation";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var buttonText = "Continue";
+	var buttonFunction = function(){ closeSelfEvaluation(false) }
+	
+	openWarningModal(title, body, buttonText, buttonFunction);
 }
