@@ -50,7 +50,7 @@ function init(){
 	$editButton.click(function(){ editManagerEvaluation(); });
 	$submitButton.click(function(){ submitManagerEvaluation(); });
 	$saveButton.click(function(){ saveManagerEvaluation(); });
-	$cancelButton.click(function(){ closeManagerEvaluation(false); });
+	$cancelButton.click(function(){ clickClose(); });
 	
 	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
 }
@@ -677,9 +677,9 @@ function getReporteeRatings(userId){
 /** Sets the three evaluations in the HTML */
 function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore, isReporteeEvaluationSubmitted, isManagerEvaluationSubmitted){
 	setManagerEvaluationLabel(managerEvaluation);
-	$managerEvaluationInput.val(managerEvaluation);
+	setManagerEvaluationInput(managerEvaluation);
 	setEvaluationScoreLabel(evaluationScore);
-	$evaluationScoreInput.selectpicker('val', evaluationScore);
+	setManagerEvaluationScore(evaluationScore);
 	
 	if(isReporteeEvaluationSubmitted == true) {
 		setReporteeEvaluation(reporteeEvaluation);
@@ -698,6 +698,19 @@ function setManagerEvaluationLabel(managerEvaluation) {
 	var label = (managerEvaluation == "") ? NO_MANAGER_EVALUATION : managerEvaluation;
 	$managerEvaluationText.text(label);
 }
+
+/** Sets the self evaluation label */
+function setManagerEvaluationInput(managerEvaluation){
+	var manager = (managerEvaluation === NO_MANAGER_EVALUATION) ? "" : managerEvaluation;
+	$managerEvaluationInput.val(manager);
+}
+
+/** Sets the self evaluation label */
+function setManagerEvaluationScore(evaluationScore){
+	var score = (evaluationScore === NO_RATING) ? 0 : evaluationScore;
+	$evaluationScoreInput.selectpicker('val', score);
+}
+
 
 /** Sets the evaluation score label */
 function setEvaluationScoreLabel(evaluationScore) {
@@ -768,8 +781,27 @@ function closeManagerEvaluation(save){
 	if(save) {
 		setManagerEvaluationLabel($managerEvaluationInput.val());
 		setEvaluationScoreLabel($evaluationScoreInput.val());
+	}else{
+		setManagerEvaluationInput($managerEvaluationText.text())
+		var s = $evaluationScoreText.text();
+		setManagerEvaluationScore(s.substring(s.length-1,s.length));
 	}
 	$managerEvaluationLabels.show();
+	
+	closeWarningModal();
+}
+
+function clickClose(){
+	if($managerEvaluationInput.val() === ""){
+		closeManagerEvaluation(false);
+		return true;
+	}
+	var title = "Cancel Evaluation";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var buttonText = "Continue";
+	var buttonFunction = function(){ closeManagerEvaluation(false) }
+	
+	openWarningModal(title, body, buttonText, buttonFunction);
 }
 
 function initSelect(){
@@ -802,3 +834,5 @@ function toggleActivityFeed(){
 		$activityFeed.show();
 	}
 }
+
+
