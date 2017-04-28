@@ -664,7 +664,7 @@ function initialiseTags() {
 }
 
 function loadingProposedButton(){
-	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+	$("#nav-bar-buttons").html('').append("<h5 class='pull-right'> Loading... <h5>");
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
