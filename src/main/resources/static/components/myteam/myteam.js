@@ -28,7 +28,7 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
-var $activityFeed = $("#ativity-feed");
+var $activityFeed = $("#activity-feed");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -44,6 +44,7 @@ function init(){
 	loadingProposedButton();
 	getEmailList();
 	initSelect();
+	getActivityFeed();
 	
 	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
 	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
@@ -84,6 +85,23 @@ function getReportees(userId, isSubReportee){
             toastr.error("Sorry, there was a problem getting reportees, please try again later.");
         }
     });
+}
+
+function getActivityFeed(){
+	
+	var id = getADLoginID();
+	var success = function(data){ addActivityFeed(data); }
+	var error = function(){}
+	
+	getActivityFeedAction(id, success, error);
+}
+
+function addActivityFeed(data){
+	var activityHTML = "";
+	$.each(data, function(key, val){
+		activityHTML += activityFeedItem(val.description, timeStampToDateTime(val.timestamp));
+	});
+	$activityFeed.html(activityHTML);
 }
 
 function demoManager1(){	

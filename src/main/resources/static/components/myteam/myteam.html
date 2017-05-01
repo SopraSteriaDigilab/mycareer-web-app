@@ -1,5 +1,7 @@
 <script>
 	loadScript("actions/ratingactions");
+	loadScript("actions/myteamactions");
+	loadScript("components/myteam/myteamtemplates");
 	loadStyle("components/myteam/myteam");
 	loadScript("components/myteam/myteam");
 </script>
@@ -132,59 +134,10 @@
 		<div class="col-md-2">
 			<div class="row" style="cursor:pointer;" onClick="toggleActivityFeed()">
 				<div class="col-md-12 text-center">
-					<h3>Activity Feed</h3>
+					<h3 id="acticitiy-feed-link">Activity Feed  <span class="caret"></span> </h3>
 				</div>
 			</div>
-			<div id="ativity-feed" class="text-right" hidden>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Finlay HARRIS</b> added objective <b>#1</b>: <i>Deliver on MyCareer internal project...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Mehmet MEHMET</b> edited development need<b>#4</b>: <i>Deliver on MyCareer internal...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Finlay HARRIS</b> added objective <b>#1</b>: <i>Deliver on MyCareer internal project...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Mehmet MEHMET</b> edited development need<b>#4</b>: <i>Deliver on MyCareer internal...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Finlay HARRIS</b> added objective <b>#1</b>: <i>Deliver on MyCareer internal project...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h6 style="margin-top:0px; margin-bottom:0px"><b>Mehmet MEHMET</b> edited development need<b>#4</b>: <i>Deliver on MyCareer internal...</i></h6>
-					</div>
-					<div class="col-md-12">
-						<h6 style="margin-top:5px"><b>26 Apr 2017 09:48</b></h6>
-					</div>
-				</div>
-			</div>
+			<div id="activity-feed" class="text-right" hidden></div>
 		</div>
 	</div>
 
