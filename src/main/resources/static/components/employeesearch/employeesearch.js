@@ -3,11 +3,13 @@ $(function() {
 });
 
 var $employeeSelectPicker = $('#employee-search-seletpicker');
-var $tabs = $(".tab-pane");
-
 var $objectivesTable = ("#objectives-table");
-
-var table = "";
+var $feedbackTable = ("#feedback-table");
+var $developmentNeedsTable = ("#development-needs-table");
+var $notesTable = ("#notes-table");
+var $ratingsTable = ("#ratings-table");
+var $employeeDataContainer = $("#employee-data-container");
+var $placeholderContainter = $("#placeholder-container");
 
 var retrievedEmployees = [];
 
@@ -21,10 +23,9 @@ function init(){
 
 	//listeners
 	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()) });
-	
 }
 
-function selectEmployee(employeeId){
+function selectEmployee(employeeId){		
 	if(!employeeRetrieved(employeeId)){
 		getEmployeeCareer(employeeId);
 	}else{
@@ -39,12 +40,13 @@ function getEmployeeCareer(employeeId){
 }
 
 function addEmployee(employeeId, data){
+	initialSelect();
+	
 	retrievedEmployees[employeeId] = data;
 	updateEmployeeView(employeeId, data);
 }
 
 function getTable(selectorId, dataset, columnsList){
-
 	if ($.fn.dataTable.isDataTable(selectorId) ) {
 	    table = $(selectorId).dataTable();
 	    table.fnClearTable();
@@ -68,4 +70,11 @@ function employeeRetrieved(employeeId){
 	}
 	console.log("already exists : " + employeeId);
 	return true;
+}
+
+function initialSelect(){
+	if(retrievedEmployees.length < 1) {
+		$placeholderContainter.remove();
+		$employeeDataContainer.prop("hidden", false);
+	}
 }
