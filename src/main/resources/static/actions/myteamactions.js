@@ -14,9 +14,9 @@ function getActivityFeedAction(userId, successFunction, errorFunction){
         success: function(data){
         	successFunction(data);
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown){        	
+        error: function(jqXHR, textStatus){        	
             toastr.error("Sorry, there was a problem getting ratings, please try again later.");
-            errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
+            errorFunction(jqXHR.responseJSON.error);
         }
     });
 }

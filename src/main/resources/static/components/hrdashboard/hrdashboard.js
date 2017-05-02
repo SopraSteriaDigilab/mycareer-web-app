@@ -2,13 +2,11 @@ $(function() {
 	init();
 });
 
-$employeeSearchButton = $("");
-
 function init(){
     //verifies that the user has access to HR Dashboard
     verifyUser();
 	
-    //initialization of select picker
+    //initialisation of select picker
     $('.selectpicker').selectpicker();
     
     //gets HR data
@@ -20,7 +18,7 @@ function init(){
     getHRDevNeedsStats();
     getHRDevNeedBreakdown();
 
-    //click functions to display specific report and initialization of specific datatable with added button to export to excel
+    //click functions to display specific report and initialisation of specific datatable with added button to export to excel
     $('.selectpicker').on('change', function(){
     	if($(this).val() === "MyCareer Overview"){
           showHrOverviewList(); 
