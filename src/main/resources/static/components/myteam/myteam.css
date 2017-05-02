@@ -1,6 +1,47 @@
 #obj-link,
 #feed-link,
 #dev-link,
-#notes-link {
+#notes-link,
+#ratings-link {
 	color: #337ab7;
+	height: 100%;
+}
+
+#reportee-list-container, #info-holder {
+  height: calc(100vh - 193px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 455px
+}
+
+.nav-justified > li {
+	height: 100%;
+}
+
+.rating-panel-body{
+	min-height: 150px;
+	height: calc(100vh - 641px);
+}
+
+.bootstrap-select.btn-group .btn .filter-option {
+    text-align: center; /* to override text-align: left; */
+}
+
+
+.evaluation-body {
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 100%;
+}
+
+#acticitiy-feed-link:hover{
+	border-radius:4px;
+	background-color: #eee;
+}
+
+#activity-feed {
+	height: calc(100vh - 249px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 399px;
 }

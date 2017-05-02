@@ -1,10 +1,9 @@
 $(function() {
+	
 	//Get list of general feedback
     getGeneralFeedbackList(getADLoginID());
-    
-    //initialise Tags
-    tags("requestingTo", emails);
-    
+	getEmailList();
+	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
 	initFeedbackDatePicker("feedback-end", new Date());
@@ -18,9 +17,16 @@ $(function() {
     
     //feedback request modal key preses
 	keypress('requestFeedbackModal');
+    keypress('sendFeedbackModal');
+    
+    //modal validation
+    $('.send-feedback-validate').on('input', function(){ validateForm('send-feedback-validate', 'submit-send-feedback'); });
 	 
     //click to open up feedback request modal
     $('#request-feedback').click(function(){ openRequestFeedbackModal() });
+    
+    //click to open up feedback sent modal
+    $('#send-feedback').click(function(){ openSendFeedbackModal() });
     
     //click to submit feedback request
     $('#submit-request-feedback').click(function(){ 
@@ -28,29 +34,38 @@ $(function() {
             submitFeedbackRequest();
         }else{
             toastr.error("One or more email addresses entered are not valid");
+        }
+     });
+    
+    //click to submit send feedback
+    $('#submit-send-feedback').click(function(){ 
+       if (validEmails($('#sendingTo').val())){
+            submitSendFeedback();
+        }else{
+            toastr.error("One or more email addresses entered are not valid");
         }    
      });
-    //when these are clicked it clears the feedback request modal
-    $("#close-feedback-request-modal").click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
-    });
-    $("#cancel").click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
-    });
     
     //click to open a modal that shows the feedback email template
     $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    //click to open a modal that shows the feedback suggestion template
+    $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
     
+    //onClick for Close send feedback modal
+	$('#cancelSendModal, #close-feedback-send-modal').on('click', function(e) { clickCloseSendFeedback(e); });
     
-
+    //onClick for Close request feedback modal
+	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
+	
+	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
+	
 });//End of Document Function
 
 
 //var emailList = [];
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
+var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 
 function initFeedbackDatePicker(id, start){
@@ -67,9 +82,9 @@ function initFeedbackDatePicker(id, start){
     $("#feedback-start-date, #feedback-end-date").val(timeStampToClassDate(new Date()));
 }
 
-function addGeneralFeedbackToList(id, sender, description, date, classDate, email){
-      $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email));
-      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email));
+function addGeneralFeedbackToList(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
+      $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds));
+      $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds));
       if(!reviewerExists(email)){
     	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
       }
@@ -85,40 +100,47 @@ function selectedFeedback(element){
 	});     
 }
 
-function feedbackSendersListHTML(id, sender, date, classDate, email){
+function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
-	        <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
-	        <input type='hidden' class='reviewer-filter' value='"+email+"'> \
-	        <input type='hidden' class='date-filter' value='"+classDate+"'> \
+        <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
+        	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+        	<input type='hidden' class='date-filter' value='"+classDate+"'> \
+	  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
 	            <div class='row'> \
 	               <div class='col-md-7 wrap-text'><h5><b>"+ sender +"</b></h5></div> \
 	               <div class='col-md-5'><h6 class='pull-right'><b>"+ date +"</b></h6></div> \
 	            </div> \
 	        </div> \
-	      </div> ";
+	     </div> ";
 	return HTML;
 }
 
 function feedbackReviewersListHTML(reviewer, email){
 	var HTML = " \
 		<div class='row'> \
-			<div class='col-md-10 wrap-only'> \
-				<label class='reviewer-label'>"+reviewer+"</label> \
-			</div> \
-			<div class='col-md-2'> \
-				 <input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"'> \
-			</div> \
+			<div class='col-md-12 wrap-only'> \
+				<label class='reviewer-label' style='max-width: 80%;''> \
+				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"' style='right:35px'> \
+				"+reviewer+" \
+				</label> \
 		</div>";
 	return HTML;
 }
 
-function feedbackDescriptionListHTML(id, sender, description, date, classDate, email){
+function feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
-	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
-    <input type='hidden' class='date-filter' value='"+classDate+"'> \
+		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
+  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
+    	<input type='hidden' id='feedback-obj-tags-"+id+"' value='"+objTagIds+"'> \
+    	<input type='hidden' id='feedback-dev-need-tags-"+id+"' value='"+devNeedTagIds+"'> \
 		<div class='panel-body'> \
+			<div class='row'> \
+				<div class='col-md-10'><h6 class='wrap-text' >Tags: <span id=feedback-tag-text-"+id+">"+addTags(objTagIds, devNeedTagIds, "feedback")+"</span></h6></div> \
+    			<div class='col-md-2'><h6 class='pull-right btn-link' style='cursor:pointer' onclick='openAddTagModalFeedback("+id+")'><b>Tags</b></h6></div> \
+    		</div> \
 			<div class='row'> \
 				<div class='col-md-6'><h6 id='from-"+id+"'><b>"+ sender +"</b></h6></div> \
 				<div class='col-md-6'><h6 class='pull-right' id='date-rec-"+id+"'><b>"+ date +"</b></h6></div> \
@@ -197,35 +219,45 @@ function applyReviewerFilter(){
 	updateFilterView();
 }
 
+function applyFeedbackTagFilter(filter){
+	if(filter == 0){
+		clearFeedbackTagFilter();
+	}else{
+		$(".feedback-tag-filter").each(function(){
+			var tags = $(this).val().split(' ');
+			if(tags.indexOf(filter) > -1){
+				$(this).closest('div').removeClass("filteredOutByFeedbackTags");
+			}else{
+				$(this).closest('div').addClass("filteredOutByFeedbackTags");
+			}	
+		});
+		feedbackTagFilterApplied = true;
+	}
+	updateFilterView();
+}
+
 function updateFilterView(){
 	$(".filterable-feedback").each(function(index){
 		var feedback = $(this);
-		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer")){
+		if(feedback.hasClass("filteredOutByDate") || feedback.hasClass("filteredOutByReviewer") || feedback.hasClass("filteredOutByFeedbackTags")){
 			feedback.hide();
 		}else{
 			feedback.show();
 		}
 	});
 	
-	var filterText = $("#filter-text");
-	if(dateFilterApplied && reviewerFilterApplied){
-		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+". Reviewer.");
-	}else if(dateFilterApplied){
-		filterText.text("Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".")
-	}else if(reviewerFilterApplied){
-		filterText.text("Reviewer.")
-	}else {
-		filterText.text("No Filters Applied");
-	}
-}
-
-function clearFilter(filter){
-	if(filter === "date"){
-		clearDateFilter();
+	var filterText = "";
+	if(!dateFilterApplied && !reviewerFilterApplied && !feedbackTagFilterApplied){
+		filterText = "No Filters Applied";
 	}else{
-		clearReviewerFilter();
+		if(dateFilterApplied)
+			filterText += "Date: "+$("#feedback-start-date").val()+" to "+$("#feedback-end-date").val()+".";
+		if(reviewerFilterApplied)
+			filterText += " Reviewer.";
+		if(feedbackTagFilterApplied)
+			filterText += " Tags.";
 	}
-	updateFilterView();
+	$("#filter-text").text(filterText);
 }
 
 function clearReviewerFilter(){
@@ -234,6 +266,7 @@ function clearReviewerFilter(){
 		$(this).closest('div').removeClass("filteredOutByReviewer");
 	});
 	reviewerFilterApplied = false;
+	updateFilterView();
 }
 
 function clearDateFilter(){
@@ -243,12 +276,22 @@ function clearDateFilter(){
 		$(this).closest('div').removeClass("filteredOutByDate");
 	});
 	dateFilterApplied = false;
+	updateFilterView();
+}
+
+function clearFeedbackTagFilter(){
+	$(".feedback-tag-filter").each(function(){
+		$(this).closest('div').removeClass("filteredOutByFeedbackTags");
+	});
+	$(".tag-filter-dropdown").selectpicker('val', 0);
+	feedbackTagFilterApplied = false;
+	updateFilterView();
 }
 
 function clearAllFilters(){
-	clearReviewerFilter()
+	clearReviewerFilter();
 	clearDateFilter();
-	updateFilterView();
+	clearFeedbackTagFilter();
 }
 
 function showGeneralFeedback(id){
@@ -280,11 +323,16 @@ function openRequestFeedbackModal(){
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
-//Email details sent through back-end.
+function openSendFeedbackModal(){
+	$('#submit-send-feedback').prop("disabled", true);
+    $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
+}
+
+//Email details sent through BE to request feedback.
 function submitFeedbackRequest(){
 	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
-    $.ajax({
-        url: "http://"+getEnvironment()+":8080/generateFeedbackRequest/"+getADLoginID(),
+	$.ajax({
+        url: "http://"+getEnvironment()+"/generateFeedbackRequest/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
@@ -299,10 +347,87 @@ function submitFeedbackRequest(){
         	$("#nav-bar-buttons").empty();
             toastr.error(XMLHttpRequest.responseText);
         },
+	});
+    $('#request-feedback').click(function() {
+        $("textarea").val("");
+        $("#requestingTo").tagsinput('removeAll');
     });
-        $('#request-feedback').click(function() {
-            $("textarea").val("");
-            $("#requestingTo").tagsinput('removeAll');
-        });
-        $('#requestFeedbackModal').modal('hide');
+    $('#requestFeedbackModal').modal('hide');
 }
+
+//Email details sent to BE to send feedback
+function submitSendFeedback(){
+    $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+    $.ajax({
+        url: "http://"+getEnvironment()+"/addFeedback/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'emails': $('#sendingTo').val(),
+            'feedback': $('#sendingText').val(),
+        },
+        success: function(response){
+        	$("#nav-bar-buttons").empty();
+            toastr.success(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
+        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+        	if(errorMessage.indexOf("feedback added") > -1){
+        		toastr.warning(XMLHttpRequest.responseText);
+        	}else{
+        		toastr.error(errorMessage);
+        	}
+        },
+    });
+        $('#send-feedback').click(function() {
+            $("textarea").val("");
+            $("#sendingTo").tagsinput('removeAll');
+        });
+        $('#sendFeedbackModal').modal('hide');
+}
+
+function openAddTagModalFeedback(id){
+	var objTags = $("#feedback-obj-tags-"+id).val();
+	var devNeedTags = $("#feedback-dev-need-tags-"+id).val();
+	updateTagCheckboxes(objTags, devNeedTags);
+	$("#tag-type").val("feedback");
+	openAddTagModal(id);
+}
+
+function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
+    $.ajax({
+        url: "http://"+getEnvironment()+"/updateFeedbackTags/"+getADLoginID(),
+        method: "POST",
+        xhrFields: {'withCredentials': true},
+        data: {
+            'feedbackId': id,
+            'objectiveIds': objectiveTagIds.toString(),
+            'developmentNeedIds': developmentNeedTagIds.toString()
+        },
+        success: function(response){
+            toastr.success(response);
+            $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "feedback"));
+            setFeedbackTagValues(id, objectiveTagIds, developmentNeedTagIds);
+            
+            $('#add-tag-modal').modal('hide');
+            clearTagsCheckboxes();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#nav-bar-buttons").empty();
+            toastr.error(XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function setFeedbackTagValues(id, objTags, devNeedTags){
+	$("#feedback-obj-tags-"+id).val(objTags);
+	$("#feedback-dev-need-tags-"+id).val(devNeedTags);
+	$(".feedback-tag-filter-"+id).val(formatTagFilterValues(objTags, devNeedTags));
+}
+
+function initialiseTags(){
+    tags("requestingTo", emails);
+    tags("sendingTo", emails);
+}
+

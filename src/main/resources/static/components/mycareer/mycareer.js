@@ -7,39 +7,66 @@ var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
+var emailSet = [];
+var userAddress = null;
 
 function logMeIn(){	
-		 $.ajax({
-		  "async": true,
-		  "crossDomain": true,
-		  "url": "http://"+getEnvironment()+":8080/logMeIn",
-		  "method": "GET",
-		   xhrFields: { 'withCredentials': true },
-	      success: function(data){
-	    	  ADfullName = data.fullName;
-	    	  ADLoginID = data.employeeID;
-	    	  ADUsername = data.username;
-	    	  isManager = Boolean(data.isManager); 
-              hasHRDash = Boolean(data.hasHRDash);
-	    	  loadPage($("#section").text());  
-	      },
-	      error: function(XMLHttpRequest, textStatus, errorThrown){
-	    	  window.location.replace("/access-issue");
-	      }
-	  });
+	$.ajax({
+		"async": true,
+		"crossDomain": true,
+		"url": "http://"+getEnvironment()+"/logMeIn",
+		"method": "GET",
+		xhrFields: { 'withCredentials': true },
+		success: function(data){
+			ADfullName = data.fullName;
+			ADLoginID = data.employeeID;
+			ADUsername = data.username;
+			isManager = data.isManager;
+			demoManager(data.employeeID) //REMOVE ME!!!!
+			hasHRDash = data.hasHRDash;
+			mail=data.emailAddresses.mail;
+			targetAddress=data.emailAddresses.targetAddress;
+			if (mail===targetAddress){
+				emailSet.push(mail.toString());
+			}
+			else{
+				emailSet.push(mail.toString());
+				emailSet.push(targetAddress.toString());
+			}
+			userAddress = data.emailAddresses.userAddress;
+			loadPage($("#section").text());  
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			window.location.replace("/access-issue");
+		}
+	});
+}
+
+function demoManager(employeeID){
+	if(employeeID == 675590){
+	  isManager = true;
+	}
+	if(employeeID == 674936){
+		isManager = true;
+	}
+	if(employeeID == 678124){
+		isManager = true;
+	}
 }
 
 function getEnvironment(){
 	var host = $("#env").text();
+	var port = "8080";
+	
 	switch (host) {
 		case "ldunsmycareerdev01":
-			return "ldunsmycareerdev01.duns.uk.sopra";
+			return "ldunsmycareerdev01.duns.uk.sopra:"+port;
 		case "ldunsmycareeruat01":
-			return "mycareer-uat.duns.uk.sopra";
+			return "mycareer-uat.duns.uk.sopra:"+port;
 		case "ldunsmycareer01":
-			return "mycareer.uk.corp.sopra";
+			return "mycareer.uk.corp.sopra:"+port;
 		default:
-			return "localhost";
+			return "localhost:"+port;
 	}
 }
 
@@ -73,4 +100,12 @@ function isUserManager(){
 
 function userHasHrDash(){
     return hasHRDash;
+}
+
+function getEmailSet(){
+    return emailSet;
+}
+
+function getUserAddress(){
+    return userAddress;
 }

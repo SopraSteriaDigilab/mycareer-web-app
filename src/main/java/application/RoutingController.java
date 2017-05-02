@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RoutingController {
 	
-	private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "myteam", "hrdashboard");
+	private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "myratings", "myteam", "hrdashboard", "myhistory");
 	private String host;
 	
     @RequestMapping("")

@@ -13,11 +13,36 @@
 }
 
 .scrollable-feedback{
-    height: 465px;
-    overflow-y: scroll;
+    height: calc(100vh - 193px);
+    overflow-y: auto;
+   	overflow-x: hidden;
+   	min-height: 381px
 }
 
 .bg-info{
     padding: 5px;
     border-radius: 5px;
 }
+
+#reviewers {
+  display: flex;
+  flex-flow: column;
+  margin-top: -5px;
+}
+
+#resizable-reviewers {
+	max-height: calc(100vh - 563px);
+	/*flex: 1 1 auto;*/
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 85px;
+}
+
+#fedback-descriptions .filterable-feedback {
+	max-height: calc(100vh - 193px);
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 100px;
+	margin-bottom:0px;
+}
+

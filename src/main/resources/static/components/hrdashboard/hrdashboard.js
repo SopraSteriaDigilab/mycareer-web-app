@@ -1,10 +1,15 @@
 $(function() {
-    
-    //initialization of select picker
-    $('.selectpicker').selectpicker();
-    
+	init();
+});
+
+$employeeSearchButton = $("");
+
+function init(){
     //verifies that the user has access to HR Dashboard
     verifyUser();
+	
+    //initialization of select picker
+    $('.selectpicker').selectpicker();
     
     //gets HR data
     getMyCareerStats();
@@ -15,103 +20,103 @@ $(function() {
     getHRDevNeedsStats();
     getHRDevNeedBreakdown();
 
-//    //click functions to display specific report and initializarion of specific datatable with added button to export to excel
-      $('.selectpicker').on('change', function(){
-          if($(this).val() === "MyCareer Overview"){
-            showHrOverviewList(); 
+    //click functions to display specific report and initialization of specific datatable with added button to export to excel
+    $('.selectpicker').on('change', function(){
+    	if($(this).val() === "MyCareer Overview"){
+          showHrOverviewList(); 
+        }
+        if($(this).val() === "Super Sector"){
+           if ( $.fn.dataTable.isDataTable( '#hrSuperSectorTable' ) ) {
+                  table = $('#hrSuperSectorTable').DataTable( showHrSuperSectorList() );    
+            }
+            else {
+                  table = $('#hrSuperSectorTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrSuperSectorList(); 
+            }
+        }
+        if($(this).val() === "Total Accounts"){
+            if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
+                  table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
+            }
+            else {
+                  table = $('#hrEmployeeTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrEmployeeList(); 
+            }
           }
-          if($(this).val() === "Super Sector"){
-             if ( $.fn.dataTable.isDataTable( '#hrSuperSectorTable' ) ) {
-                    table = $('#hrSuperSectorTable').DataTable( showHrSuperSectorList() );    
-              }
-              else {
-                    table = $('#hrSuperSectorTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrSuperSectorList(); 
-              }
+        if($(this).val() === "Objectives"){
+            if ( $.fn.dataTable.isDataTable( '#hrObjectivesTable' ) ) {
+                  table = $('#hrObjectivesTable').DataTable( showHrObjectivesList() );    
+            }
+            else {
+                  table = $('#hrObjectivesTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrObjectivesList(); 
+            }
           }
-          if($(this).val() === "Total Accounts"){
-              if ( $.fn.dataTable.isDataTable( '#hrEmployeeTable' ) ) {
-                    table = $('#hrEmployeeTable').DataTable( showHrEmployeeList() );    
-              }
-              else {
-                    table = $('#hrEmployeeTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrEmployeeList(); 
-              }
+        if($(this).val() === "Development Needs Overview"){
+            if ( $.fn.dataTable.isDataTable( '#hrDevNeedsTable' ) ) {
+                  table = $('#hrDevNeedsTable').DataTable( showHrDevelopmentNeedsList() );    
             }
-          if($(this).val() === "Objectives"){
-              if ( $.fn.dataTable.isDataTable( '#hrObjectivesTable' ) ) {
-                    table = $('#hrObjectivesTable').DataTable( showHrObjectivesList() );    
-              }
-              else {
-                    table = $('#hrObjectivesTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrObjectivesList(); 
-              }
+            else {
+                  table = $('#hrDevNeedsTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrDevelopmentNeedsList(); 
             }
-          if($(this).val() === "Development Needs Overview"){
-              if ( $.fn.dataTable.isDataTable( '#hrDevNeedsTable' ) ) {
-                    table = $('#hrDevNeedsTable').DataTable( showHrDevelopmentNeedsList() );    
-              }
-              else {
-                    table = $('#hrDevNeedsTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrDevelopmentNeedsList(); 
-              }
-            }          
-          if($(this).val() === "Development Needs Breakdown"){
-              if ( $.fn.dataTable.isDataTable( '#hrDevNeedsBreakdownTable' ) ) {
-                    table = $('#hrDevNeedsBreakdownTable').DataTable( showHrDevelopmentNeedsBreakdownList() );    
-              }
-              else {
-                    table = $('#hrDevNeedsBreakdownTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrDevelopmentNeedsBreakdownList(); 
-              }
+          }          
+        if($(this).val() === "Development Needs Breakdown"){
+            if ( $.fn.dataTable.isDataTable( '#hrDevNeedsBreakdownTable' ) ) {
+                  table = $('#hrDevNeedsBreakdownTable').DataTable( showHrDevelopmentNeedsBreakdownList() );    
             }
-          if($(this).val() === "Feedback"){
-              if ( $.fn.dataTable.isDataTable( '#hrFeedbackTable' ) ) {
-                    table = $('#hrFeedbackTable').DataTable( showHrFeedbackList() );    
-              }
-              else {
-                    table = $('#hrFeedbackTable').DataTable( {
-                        dom: 'Bfrtip',
-                        buttons: [{
-                        extend: 'csvHtml5',
-                        text: 'Export to Excel'
-                        }]
-                    });
-                showHrFeedbackList(); 
-              }
-            }          
-          });//end of selectpicker change function
-});
+            else {
+                  table = $('#hrDevNeedsBreakdownTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrDevelopmentNeedsBreakdownList(); 
+            }
+          }
+        if($(this).val() === "Feedback"){
+            if ( $.fn.dataTable.isDataTable( '#hrFeedbackTable' ) ) {
+                  table = $('#hrFeedbackTable').DataTable( showHrFeedbackList() );    
+            }
+            else {
+                  table = $('#hrFeedbackTable').DataTable( {
+                      dom: 'Bfrtip',
+                      buttons: [{
+                      extend: 'csvHtml5',
+                      text: 'Export to Excel'
+                      }]
+                  });
+              showHrFeedbackList(); 
+            }
+          }          
+        });//end of selectpicker change function
+}
 
 //verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
 function verifyUser(){
@@ -123,7 +128,7 @@ function verifyUser(){
 //function to get the general HR stats of mycareer
 function getMyCareerStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getMyCareerStats',
+       url: 'http://'+getEnvironment()+'/hr/getMyCareerStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -140,7 +145,7 @@ function getMyCareerStats(){
 //function to get HR Employee stats of mycareer
 function getEmployeeStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getEmployeeStats',
+       url: 'http://'+getEnvironment()+'/hr/getEmployeeStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -165,7 +170,7 @@ function getEmployeeStats(){
 //function to get HR Objectives stats of mycareer
 function getHRObjectivesStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getObjectiveStats',
+       url: 'http://'+getEnvironment()+'/hr/getObjectiveStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -185,7 +190,7 @@ function getHRObjectivesStats(){
 //function to get HR Development Needs stats of mycareer
 function getHRDevNeedsStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedStats',
+       url: 'http://'+getEnvironment()+'/hr/getDevelopmentNeedStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -205,7 +210,7 @@ function getHRDevNeedsStats(){
 //function to get HR Development Need breakdown stats of mycareer
 function getHRDevNeedBreakdown(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getDevelopmentNeedBreakDown',
+       url: 'http://'+getEnvironment()+'/hr/getDevelopmentNeedBreakDown',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -225,7 +230,7 @@ function getHRDevNeedBreakdown(){
 //function to get HR feedback stats of mycareer
 function getHRFeedbackStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getFeedbackStats',
+       url: 'http://'+getEnvironment()+'/hr/getFeedbackStats',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -245,7 +250,7 @@ function getHRFeedbackStats(){
 //function to get the Super Sector HR stats of mycareer
 function getHRSuperSectorStats(){
     $.ajax({
-       url: 'http://'+getEnvironment()+':8080/hr/getSectorBreakDown',
+       url: 'http://'+getEnvironment()+'/hr/getSectorBreakDown',
        cache: false,
        method: 'GET',
        xhrFields: {'withCredentials': true},
@@ -298,7 +303,7 @@ function showHrOverviewList(){
 //Function that returns HR Overview list in html format with the parameters given
 function hrOverviewList(totalAccounts, usersWithObjectives, usersWithDevNeeds, usersWithNotes, usersWithCompetencies, usersWithFeedbackRequests, usersWithFeedback){
     var html = " \
-    <table class='table table-striped hidden' id='hrOverviewTable'> \
+    <table class='table table-striped HRtable' id='hrOverviewTable'> \
         <thead> \
             <tr> \
                <th>Overview of MyCareer</th> \
@@ -378,7 +383,7 @@ function showHrEmployeeList(){
 //Function that returns the table headings
 function hrEmployeeHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrEmployeeTable'> \
+        <table class='table table-striped hidden HRtable' id='hrEmployeeTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -452,7 +457,7 @@ function showHrObjectivesList(){
 //Function that returns the table headings
 function hrObjectivesHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrObjectivesTable'> \
+        <table class='table table-striped hidden HRtable' id='hrObjectivesTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -562,7 +567,7 @@ function showHrDevelopmentNeedsBreakdownList(){
 //Function that returns the table headings for dev needs overview
 function hrDevNeedsHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrDevNeedsTable'> \
+        <table class='table table-striped hidden HRtable' id='hrDevNeedsTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -586,7 +591,7 @@ function hrDevNeedsHeader(){
 //Function that returns the table headings for dev needs breakdown
 function hrDevNeedsBreakdownHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrDevNeedsBreakdownTable'> \
+        <table class='table table-striped hidden HRtable' id='hrDevNeedsBreakdownTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -678,7 +683,7 @@ function showHrFeedbackList(){
 //Function that returns the table headings
 function hrFeedbackHeader(){
     var html = " \
-        <table class='table table-striped hidden' id='hrFeedbackTable'> \
+        <table class='table table-striped hidden HRtable' id='hrFeedbackTable'> \
             <thead> \
                 <tr> \
                    <th>Employee ID</th> \
@@ -746,7 +751,7 @@ function showHrSuperSectorList(){
 
 function hrSuperSectorHeader(){
     var html = " \
-    <table class='table table-striped hidden' id='hrSuperSectorTable'> \
+    <table class='table table-striped hidden HRtable' id='hrSuperSectorTable'> \
         <thead> \
             <tr> \
                <th>Super Sector</th> \
