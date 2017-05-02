@@ -12,19 +12,7 @@
         	<div class="col-md-3">
             	<h2>Employee Search</h2>
            	</div>
-           	<div class="col-md-7" style="padding-right: 0;">
-				<div id="reportee-header">
-					<br/>
-					<ul class="nav nav-tabs nav-justified" id="navTab">
-						<li class="active "><a id="obj-link" href="#employee-objectives-containter" data-toggle="tab"> Objectives </a></li>
-						<li><a id="feed-link" href="#employee-feedback-containter" data-toggle="tab"> Feedback </a></li>
-						<li style="width: 2%;"><a id="dev-link" href="#employee-development-needs-containter" data-toggle="tab"> Development Needs </a></li>
-						<li><a id="notes-link" href="#employee-notes-containter" data-toggle="tab"> Notes </a></li>
-						<li><a id="ratings-link" href="#employee-ratings-containter" data-toggle="tab"> Ratings </a></li>
-					</ul>
-				</div>
-			</div>
-	        <div class="col-md-2 vertical-centre" style="padding-right: 0px;">
+	        <div class="col-md-2 col-md-offset-7 vertical-centre" style="padding-right: 0px;">
 				<a type="button" class="btn btn-default pull-right" href="hrdashboard">Back to HR Dashboard</a>
 			</div>
 		</div>
@@ -35,19 +23,49 @@
 		<div class="col-md-3">
 	        <div class="btn-group">
 	            <select id="employee-search-seletpicker" class="selectpicker" title="Please select an employee..." data-live-search="true" data-size="14">
-	                <option value="1103186">Ridhwan Nacef</option>
+	                <option value="675590">Ridhwan Nacef</option>
 	                <option value="678124">Alexandre Brard</option>
 	                <option value="676783">Mehmet Mehmet</option>
 	                <option value="674936">Finlay Harris</option>
 	            </select>
 	        </div>
         </div>
-        <div id="employee-data-container" class="col-md-7 tab-content">
-	   		<div id="employee-objectives-containter" class="tab-pane fade in active">Objectives</div>
-	   		<div id="employee-feedback-containter" class="tab-pane fade">Feedback</div>
-	   		<div id="employee-development-needs-containter" class="tab-pane fade">Development Needs</div>
-	   		<div id="employee-notes-containter" class="tab-pane fade">Notes</div>
-	   		<div id="employee-ratings-containter" class="tab-pane fade">Ratings</div>
+        
+	</div>
+	
+	<div class="row" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
+		<div class="col-md-12" style="padding-right: 0;">
+			<div id="reportee-header">
+				<ul class="nav nav-tabs nav-justified" id="navTab">
+					<li class="active "><a id="obj-link" href="#employee-objectives-containter" data-toggle="tab"> Objectives </a></li>
+					<li><a id="feed-link" href="#employee-feedback-containter" data-toggle="tab"> Feedback </a></li>
+					<li><a id="dev-link" href="#employee-development-needs-containter" data-toggle="tab"> Development Needs </a></li>
+					<li><a id="notes-link" href="#employee-notes-containter" data-toggle="tab"> Notes </a></li>
+					<li><a id="ratings-link" href="#employee-ratings-containter" data-toggle="tab"> Ratings </a></li>
+				</ul>
+			</div>
+		</div>
+	 	<div id="employee-data-container" class="col-md-12 tab-content" style="padding-right: 0; padding-top: 20px;">
+	   		<div id="employee-objectives-containter" class="tab-pane fade in active">
+				<table id="objectives-table" class="table table-striped" cellspacing="0" width="100%">
+				 	<thead>
+			            <tr>
+			                <th>ID</th>
+			                <th>Title</th>
+			                <th>Description</th>
+			                <th>Progress</th>
+			                <th>Due Date</th>
+			                <th>Created On</th>
+			                <th>Proposed By</th>
+			                <th>Archived</th>
+			            </tr>
+			        </thead>
+        		</table>
+			</div>
+	   		<div id="employee-feedback-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
+	   		<div id="employee-development-needs-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
+	   		<div id="employee-notes-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
+	   		<div id="employee-ratings-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
         </div>
 	</div>
 

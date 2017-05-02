@@ -248,21 +248,20 @@ function openPDF(id){
 	
 	$('#'+id).DataTable({
 		dom: 'Brftip',
-		   buttons: [{
-			   extend: 'print',
-			   className: 'printButton',
-			   exportOptions: {
-			        stripHtml: false
-			    },
-			   customize: function (win) {
-		            $(win.document.body).find('table').css('font-size', '10pt');
-				   },
-			   download: 'open',
-			   text: 'Print',
-			   title: setDocumentTitle(id),
-			   		   
-		   }]
-		 })
+		buttons: [{
+		   extend: 'print',
+		   className: 'printButton',
+		   exportOptions: {
+		        stripHtml: false
+		    },
+		   customize: function (win) {
+	            $(win.document.body).find('table').css('font-size', '10pt');
+			   },
+		   download: 'open',
+		   text: 'Print',
+		   title: setDocumentTitle(id),
+		}]
+	});
 	 $(".printButton").appendTo(".modal-footer");
 	 showTable(id);
 }
