@@ -23,7 +23,7 @@ build.mustRunAfter gulp_minify
 jar {
     baseName = 'mycareer-web-app'
 //    version =  '1.2.4'
-// test
+//	test
 }
 
 //node {
