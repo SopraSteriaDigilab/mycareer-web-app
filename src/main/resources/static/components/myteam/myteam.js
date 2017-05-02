@@ -98,9 +98,13 @@ function getActivityFeed(){
 
 function addActivityFeed(data){
 	var activityHTML = "";
-	$.each(data, function(key, val){
-		activityHTML += activityFeedItem(val.description, timeStampToDateTime(val.timestamp));
-	});
+	if(data.length < 1) {
+		activityHTML = "<h5 class='text-center'>No activity from your team.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			activityHTML += activityFeedItem(val.description, timeStampToDateTime(val.timestamp));
+		});
+	}
 	$activityFeed.html(activityHTML);
 }
 
