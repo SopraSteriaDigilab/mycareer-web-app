@@ -28,102 +28,63 @@ $(function() {
 
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy) {
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'title': objTitle,
-            'description': objText,
-            'dueDate': objDate,
-        },
-        success: function(response){
+	addObjectiveToDBAction(userID, objTitle, objText, objDate, proposedBy, addObjectiveToDBSuccess);
+}
+
+function addObjectiveToDBSuccess(objTitle, objText, objDate){
             if(nextObjId.length == 0)
         		$("#all-obj").removeClass("text-center").empty();
             var Id = nextObjectiveID();
             addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 		    showProposedObjTab();
 		    addTag(Id, objTitle, "obj");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
+}
+
+function addObjectiveError(){
 }
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/editObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'title': objTitle,
-            'description': objText,
-            'dueDate': objDate,
-        },
-        success: function(response){
-            editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
-            editTag(objID, objTitle, "obj");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	editObjectiveOnDBAction(userID, objID, objTitle, objText, objDate, objStatus, proposedBy, editObjectiveOnDBSuccess)
+}
+
+function editObjectiveOnDBSuccess(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
+    editObjectiveOnList(userID, objID, objTitle, objText, objDate, objStatus);
+    editTag(objID, objTitle, "obj");
+}
+
+function editObjectiveOnDBError(){
 }
 
 //HTTP request for UPDATING an objective in DB
 function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completedText){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateObjectiveProgress/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'progress': objStatus,
-            'comment': completedText,
-        },
-        success: function(response){
-            updateObjectiveStatusOnList(objID, objStatus);
-            if(objStatus == 2){
-            	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
-            	addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
-                $("#edit-objective-button-"+objID).remove();
-            }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	editObjectiveProgressOnDBAction(userID, objID, objStatus, objTitle, completedText, editObjectiveProgressOnDBSuccess)
 }
-    
+
+function editObjectiveProgressOnDBSuccess(){
+	updateObjectiveStatusOnList(objID, objStatus);
+    if(objStatus == 2){
+    	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
+    	addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+        $("#edit-objective-button-"+objID).remove();
+    }
+}
+
+function editObjectiveProgressOnDBError(){
+}
+
     //function request for DELETING a development need in DB
 function deleteObjective(userID, objID, objTitle, deletingText){
-        $.ajax({
-        url: "http://"+getEnvironment()+"/deleteObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'comment': deletingText,
-        },
-        success: function(response){
-            //need to update objective list to remove
-            removeObjectiveFromList(objID);
-            //need to update note list
-            var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
-            addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
-            deleteTag(objID, "objective");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	deleteObjectiveAction(userID, objID, objTitle, deletingText, deleteObjectiveSuccess);
+}
+
+function deleteObjectiveSuccess(userID, objID, objTitle, deletingText){
+	//need to update objective list to remove
+    removeObjectiveFromList(objID);
+    //need to update note list
+    var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
+    addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+    deleteTag(objID, "objective");
 }
 
 //Function to set up and open ADD objective modal
@@ -170,24 +131,14 @@ function clickArchiveObjective(objID, archive){
 }
 
 function editObjectiveArchiveOnDB(objID, archive){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/toggleObjectiveArchive/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-        },
-        success: function(response){
-            updateObjectiveList(objID);
-            if(!archive){
-		          updateArchiveTab();
-	        }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
+	editObjectiveArchiveOnDBAction(objID, archive, editObjectiveArchiveOnDBSuccess);
+}
+
+function editObjectiveArchiveOnDBSuccess(objID, archive){
+	 updateObjectiveList(objID);
+     if(!archive){
+	          updateArchiveTab();
+     }
 }
 
 function updateObjectiveList(objID){
