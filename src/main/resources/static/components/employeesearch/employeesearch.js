@@ -13,8 +13,11 @@ var $placeholderContainter = $("#placeholder-container");
 
 var retrievedEmployees = [];
 
-var objectivesColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, { data: "archived" }]
-
+var objectivesColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, { data: "archived" }];
+var feedbackColumnList = [ { data: "id" }, { data: "providerEmail" }, { data: "feedbackDescription" }, {data: "timestamp"}];
+var developmentNeedsColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, {data: "category"}, { data: "archived" }];
+var notesColumnList = [ { data: "id" }, { data: "providerName" }, { data: "noteDescription" }, {data: "timestamp"} ];
+var ratingsColumnList = [ { data: "year" }, { data: "selfEvaluation" }, { data: "managerEvaluation" }, { data: "score" }];
 
 function init(){
 	
@@ -61,6 +64,10 @@ function getTable(selectorId, dataset, columnsList){
 
 function updateEmployeeView(employeeId, data){
 	getTable($objectivesTable, data.objectives, objectivesColumnList);
+	getTable($feedbackTable, data.feedback, feedbackColumnList);
+	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList);
+	getTable($notesTable, data.notes, notesColumnList);
+	getTable($ratingsTable, data.ratings, ratingsColumnList);
 }
 
 function employeeRetrieved(employeeId){
