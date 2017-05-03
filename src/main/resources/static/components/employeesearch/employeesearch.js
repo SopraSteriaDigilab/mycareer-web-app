@@ -3,16 +3,21 @@ $(function() {
 });
 
 var $employeeSelectPicker = $('#employee-search-seletpicker');
-var $tabs = $(".tab-pane");
-
 var $objectivesTable = ("#objectives-table");
-
-var table = "";
+var $feedbackTable = ("#feedback-table");
+var $developmentNeedsTable = ("#development-needs-table");
+var $notesTable = ("#notes-table");
+var $ratingsTable = ("#ratings-table");
+var $employeeDataContainer = $("#employee-data-container");
+var $placeholderContainter = $("#placeholder-container");
 
 var retrievedEmployees = [];
 
-var objectivesColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, { data: "archived" }]
-
+var objectivesColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, { data: "archived" }];
+var feedbackColumnList = [ { data: "id" }, { data: "providerEmail" }, { data: "feedbackDescription" }, {data: "timestamp"}];
+var developmentNeedsColumnList = [ { data: "id" }, { data: "title" }, { data: "description" }, { data: "progress" }, { data: "dueDate" }, { data: "createdOnAsDate" }, { data: "proposedBy" }, {data: "category"}, { data: "archived" }];
+var notesColumnList = [ { data: "id" }, { data: "providerName" }, { data: "noteDescription" }, {data: "timestamp"} ];
+var ratingsColumnList = [ { data: "year" }, { data: "selfEvaluation" }, { data: "managerEvaluation" }, { data: "score" }];
 
 function init(){
 	
@@ -21,10 +26,9 @@ function init(){
 
 	//listeners
 	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()) });
-	
 }
 
-function selectEmployee(employeeId){
+function selectEmployee(employeeId){		
 	if(!employeeRetrieved(employeeId)){
 		getEmployeeCareer(employeeId);
 	}else{
@@ -39,12 +43,13 @@ function getEmployeeCareer(employeeId){
 }
 
 function addEmployee(employeeId, data){
+	initialSelect();
+	
 	retrievedEmployees[employeeId] = data;
 	updateEmployeeView(employeeId, data);
 }
 
 function getTable(selectorId, dataset, columnsList){
-
 	if ($.fn.dataTable.isDataTable(selectorId) ) {
 	    table = $(selectorId).dataTable();
 	    table.fnClearTable();
@@ -59,6 +64,10 @@ function getTable(selectorId, dataset, columnsList){
 
 function updateEmployeeView(employeeId, data){
 	getTable($objectivesTable, data.objectives, objectivesColumnList);
+	getTable($feedbackTable, data.feedback, feedbackColumnList);
+	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList);
+	getTable($notesTable, data.notes, notesColumnList);
+	getTable($ratingsTable, data.ratings, ratingsColumnList);
 }
 
 function employeeRetrieved(employeeId){
@@ -68,4 +77,11 @@ function employeeRetrieved(employeeId){
 	}
 	console.log("already exists : " + employeeId);
 	return true;
+}
+
+function initialSelect(){
+	if(retrievedEmployees.length < 1) {
+		$placeholderContainter.remove();
+		$employeeDataContainer.prop("hidden", false);
+	}
 }

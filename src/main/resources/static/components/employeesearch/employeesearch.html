@@ -13,7 +13,7 @@
             	<h2>Employee Search</h2>
            	</div>
 	        <div class="col-md-2 col-md-offset-7 vertical-centre" style="padding-right: 0px;">
-				<a type="button" class="btn btn-default pull-right" href="hrdashboard">Back to HR Dashboard</a>
+				<a type="button" class="btn btn-default pull-right" href="hrdashboard" style="text-decoration:none; color: black;">Back to HR Dashboard</a>
 			</div>
 		</div>
     </div>
@@ -30,7 +30,6 @@
 	            </select>
 	        </div>
         </div>
-        
 	</div>
 	
 	<div class="row" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
@@ -45,7 +44,10 @@
 				</ul>
 			</div>
 		</div>
-	 	<div id="employee-data-container" class="col-md-12 tab-content" style="padding-right: 0; padding-top: 20px;">
+		<div id="placeholder-container" class="col-md-12 text-center">
+			<h5 class="text-center">Please select an employee</h5>
+		</div>
+	 	<div id="employee-data-container" class="col-md-12 tab-content" style="padding-right: 0; padding-top: 20px;" hidden>
 	   		<div id="employee-objectives-containter" class="tab-pane fade in active">
 				<table id="objectives-table" class="table table-striped" cellspacing="0" width="100%">
 				 	<thead>
@@ -62,10 +64,59 @@
 			        </thead>
         		</table>
 			</div>
-	   		<div id="employee-feedback-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
-	   		<div id="employee-development-needs-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
-	   		<div id="employee-notes-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
-	   		<div id="employee-ratings-containter" class="tab-pane fade"><h5 class='text-center'>Please select an Employee</h5></div>
+	   		<div id="employee-feedback-containter" class="tab-pane fade">
+	   			<table id="feedback-table" class="table table-striped" cellspacing="0" width="100%">
+				 	<thead>
+			            <tr>
+			                <th>ID</th>
+			                <th>Provider Email</th>
+			                <th>Feedback Description</th>
+			                <th>Date</th>
+			            </tr>
+			        </thead>
+        		</table>
+        	</div>
+	   		<div id="employee-development-needs-containter" class="tab-pane fade">
+	   			<table id="development-needs-table" class="table table-striped" cellspacing="0" width="100%">
+				 	<thead>
+			            <tr>
+			                <th>ID</th>
+			                <th>Title</th>
+			                <th>Description</th>
+			                <th>Progress</th>
+			                <th>Due Date</th>
+			                <th>Created On</th>
+			                <th>Proposed By</th>
+			                <th>Category</th>
+			                <th>Archived</th>
+			            </tr>
+			        </thead>
+        		</table>
+       		</div>
+	   		<div id="employee-notes-containter" class="tab-pane fade">
+	   			<table id="notes-table" class="table table-striped" cellspacing="0" width="100%">
+				 	<thead>
+			            <tr>
+			                <th>ID</th>
+			                <th>Provider Email</th>
+			                <th>Note Description</th>
+			                <th>Date</th>
+			            </tr>
+			        </thead>
+        		</table>
+       		</div>
+	   		<div id="employee-ratings-containter" class="tab-pane fade">
+	   			<table id="ratings-table" class="table table-striped" cellspacing="0" width="100%">
+				 	<thead>
+			            <tr>
+			                <th>Year</th>
+			                <th>Self Evaluation</th>
+			                <th>Manager Evaluation</th>
+			                <th>Score</th>
+			            </tr>
+			        </thead>
+        		</table>
+        	</div>
         </div>
 	</div>
 
