@@ -1,5 +1,5 @@
-const HR = "/hr";
-const GETMYCAREER = "/getMyCareer/";
+const DATA = "/data";
+const GET_ALL_NAMES_AND_IDS = "/getAllNamesAndIds";
 
 /**
  *Ajax GET call get history for a user.
@@ -8,14 +8,14 @@ const GETMYCAREER = "/getMyCareer/";
  * @param successFuntion function if call succeeds
  * @param errorFunction function if call fails
  */
-function getEmployeeCareerAction(userId, successFunction, errorFunction){
-	var url = HR + GETMYCAREER + userId;
+function getEmployeeNamesAdnIDsAction(successFunction, errorFunction){
+	var url = DATA + GET_ALL_NAMES_AND_IDS;
 	var request = $get(url);
 	request.done( function(data){ 
 		successFunction(data)
 	})
 	request.fail(function(jqXHR, textStatus) {
-        toastr.error(jqXHR.responseJSON.error);
+        toastr.error("Sorry, there was a problem getting employee names and ids.");
         errorFunction(jqXHR.responseJSON.error);
 	});
 }

@@ -1,4 +1,5 @@
 <script>
+	loadScript("actions/employeesearchactions");
 	loadScript("actions/hractions");
 	loadStyle("components/employeesearch/employeesearch");
 	loadScript("components/employeesearch/employeesearch");
@@ -22,11 +23,12 @@
     <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
 		<div class="col-md-3">
 	        <div class="btn-group">
-	            <select id="employee-search-seletpicker" class="selectpicker" title="Please select an employee..." data-live-search="true" data-size="14">
-	                <option value="675590">Ridhwan Nacef</option>
-	                <option value="678124">Alexandre Brard</option>
-	                <option value="676783">Mehmet Mehmet</option>
-	                <option value="674936">Finlay Harris</option>
+        		<h5 id="loading-employee-name-ids">Loading...</h5>
+	            <select id="employee-search-seletpicker" class="selectpicker" title="Please select an employee..." data-live-search="true" data-size="14" >
+	                <option value="675590"  data-subtext="675590">Ridhwan Nacef</option>
+	                <option value="678124"  data-subtext="678124">Alexandre Brard</option>
+	                <option value="676783"  data-subtext="676783">Mehmet Mehmet</option>
+	                <option value="674936"  data-subtext="674936">Finlay Harris</option>
 	            </select>
 	        </div>
         </div>
@@ -47,12 +49,11 @@
 		<div id="placeholder-container" class="col-md-12 text-center">
 			<h5 class="text-center">Please select an employee</h5>
 		</div>
-	 	<div id="employee-data-container" class="col-md-12 tab-content" style="padding-right: 0; padding-top: 20px;" hidden>
+	 	<div id="employee-data-container" class="col-md-12 tab-content" style="padding-right: 0; padding-top: 20px; width:100%" hidden>
 	   		<div id="employee-objectives-containter" class="tab-pane fade in active">
 				<table id="objectives-table" class="table table-striped" cellspacing="0" width="100%">
 				 	<thead>
 			            <tr>
-			                <th>ID</th>
 			                <th>Title</th>
 			                <th>Description</th>
 			                <th>Progress</th>
@@ -68,7 +69,6 @@
 	   			<table id="feedback-table" class="table table-striped" cellspacing="0" width="100%">
 				 	<thead>
 			            <tr>
-			                <th>ID</th>
 			                <th>Provider Email</th>
 			                <th>Feedback Description</th>
 			                <th>Date</th>
@@ -80,7 +80,6 @@
 	   			<table id="development-needs-table" class="table table-striped" cellspacing="0" width="100%">
 				 	<thead>
 			            <tr>
-			                <th>ID</th>
 			                <th>Title</th>
 			                <th>Description</th>
 			                <th>Progress</th>
@@ -97,7 +96,6 @@
 	   			<table id="notes-table" class="table table-striped" cellspacing="0" width="100%">
 				 	<thead>
 			            <tr>
-			                <th>ID</th>
 			                <th>Provider Email</th>
 			                <th>Note Description</th>
 			                <th>Date</th>
