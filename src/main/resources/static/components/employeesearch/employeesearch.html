@@ -1,4 +1,5 @@
 <script>
+	loadScript("actions/employeesearchactions");
 	loadScript("actions/hractions");
 	loadStyle("components/employeesearch/employeesearch");
 	loadScript("components/employeesearch/employeesearch");
@@ -22,6 +23,7 @@
     <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
 		<div class="col-md-3">
 	        <div class="btn-group">
+        		<h5 id="loading-employee-name-ids">Loading...</h5>
 	            <select id="employee-search-seletpicker" class="selectpicker" title="Please select an employee..." data-live-search="true" data-size="14" >
 	                <option value="675590"  data-subtext="675590">Ridhwan Nacef</option>
 	                <option value="678124"  data-subtext="678124">Alexandre Brard</option>
