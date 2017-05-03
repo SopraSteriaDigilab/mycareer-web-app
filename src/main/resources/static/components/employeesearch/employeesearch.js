@@ -33,9 +33,11 @@ function init(){
 }
 
 function getEmployeeNamesAndIds(){
-	getEmployeeNamesAdnIDsAction(function(data){
-		initialiseSelectPicker(data);
-	}, function(error){});
+	
+	var success = function(data){ initialiseSelectPicker(data); }
+	var error = function(error) {}
+	
+	getEmployeeNamesAdnIDsAction(success, error);
 }
 
 function initialiseSelectPicker(data){
@@ -61,9 +63,11 @@ function selectEmployee(employeeId){
 }
 
 function getEmployeeCareer(employeeId){
-	getEmployeeCareerAction(employeeId, function(data){
-		addEmployee(employeeId, data)
-	}, function(error){});
+	
+	var success = function(data){ addEmployee(employeeId, data); }
+	var error = function(error){}
+	
+	getEmployeeCareerAction(employeeId, success, error);
 }
 
 function addEmployee(employeeId, data){

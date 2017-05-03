@@ -102,10 +102,20 @@ function addActivityFeed(data){
 		activityHTML = "<h5 class='text-center'>No activity from your team.</h5>";
 	}else{
 		$.each(data, function(key, val){
-			activityHTML += activityFeedItem(val.description, timeStampToDateTime(val.timestamp));
+			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), timeStampToDateTime(val.timestamp));
 		});
 	}
 	$activityFeed.html(activityHTML);
+}
+
+function shortenTitleActivityFeed(description){
+	var i = description.indexOf(":");
+	var action = description.substring(0, i);
+	var title = description.substring(i, description.length);
+	if(title.length > 25)
+		title = title.substring(0, 25) + "...";
+	
+	return action + " " + title;
 }
 
 function demoManager1(){	
