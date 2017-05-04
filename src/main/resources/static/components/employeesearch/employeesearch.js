@@ -37,7 +37,7 @@ function getEmployeeNamesAndIds(){
 	var success = function(data){ initialiseSelectPicker(data); }
 	var error = function(error) {}
 	
-	getEmployeeNamesAdnIDsAction(success, error);
+	getEmployeeNamesAndIDsAction(success, error);
 }
 
 function initialiseSelectPicker(data){

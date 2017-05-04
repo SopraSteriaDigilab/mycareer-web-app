@@ -15,6 +15,7 @@ function logMeIn(){
 		"async": true,
 		"crossDomain": true,
 		"url": "http://"+getEnvironment()+"/logMeIn",
+		"cache": false,
 		"method": "GET",
 		xhrFields: { 'withCredentials': true },
 		success: function(data){

@@ -8,7 +8,7 @@ const GET_ALL_NAMES_AND_IDS = "/getAllNamesAndIds";
  * @param successFuntion function if call succeeds
  * @param errorFunction function if call fails
  */
-function getEmployeeNamesAdnIDsAction(successFunction, errorFunction){
+function getEmployeeNamesAndIDsAction(successFunction, errorFunction){
 	var url = DATA + GET_ALL_NAMES_AND_IDS;
 	var request = $get(url);
 	request.done( function(data){ 
