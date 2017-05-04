@@ -21,15 +21,15 @@ var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, typ
 var ratingsColumnDefs = [{ width: "30%", targets: [1,2] }];
 
 function init() {
-    $('.selectpicker').selectpicker();
     getMyCareer();
 }
 
 function getMyCareer(){
 	var employeeId = getADLoginID();
-	getEmployeeCareerAction(employeeId, function(data){
-		getTables(data);
-	}, function(error){});
+	var success = function(data){ getTables(data); }
+	var error = function(error){}
+	
+	getEmployeeCareerAction(employeeId, success, error);
 }
 
 function getTables(data){
