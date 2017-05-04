@@ -65,3 +65,39 @@
 	transform: translateY(10%);
 	padding-right: 10px;
 }
+
+#pdf-modal-dialog{
+	width : 800px;
+}
+
+#pdf-modal-body{
+	max-height : 500px;
+    overflow: auto ;
+    word-wrap: break-word;
+}
+
+table.dataTable tbody td {
+  vertical-align: top;
+}
+
+thead th{
+  white-space: nowrap;
+}
+
+.HRtable {
+    table-layout:fixed;
+    width:100%;
+}
+
+.HRtable thead th{
+  white-space: initial;
+}
+
+.HRtable tbody td{
+  word-wrap: break-word;
+}
+
+.remove-padding{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}

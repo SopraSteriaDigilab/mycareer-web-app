@@ -15,7 +15,7 @@ function addCompetencyToList(id,title,compentencyDescription,isSelected){
 //Method to return competency html
 function competenciesListHTML(id,title,compentencyDescription,isSelected){
     var html = " \
-        <div class='panel panel-default'> \
+        <div class='panel panel-default competency-item'> \
             <div class='panel-heading panel-heading-sm'> \
                 <div class='panel-title'> \
                     <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
@@ -46,12 +46,11 @@ function starChanger(id){
 //Method to make Ajax call and return clicked competencies to DB
 function updateCompetencyStatus(userID, id, title, status){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/updateCompetency/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/toggleCompetency/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data: {
-            'title': title,
-            'status': status
+            'competencyTitle': title,
         },
         success: function(response){
             toastr.success("'" + title + "' competency has been updated");

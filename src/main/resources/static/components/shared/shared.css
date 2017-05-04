@@ -117,3 +117,14 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 .max-characters{
     font-size: 11px;
 }
+
+.scrollable-obj-dev {
+    height: calc(100vh - 256px);
+    min-height: 392px;
+    overflow-y: auto;
+   	overflow-x: hidden;
+}
+
+.dropdown-menu {
+	z-index: 100000;
+}

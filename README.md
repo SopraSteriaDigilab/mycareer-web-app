@@ -12,4 +12,8 @@ This project hold the my career web app. This application uses the [MyCareer Web
 1. Clone the repository using `git clone git@slnxlrgceglab01:mycareer/mycareer-web-app.git`
 2. `cd mycareer-web-app`
 3. `gradle bootRun`
-4. The web app should now be available at [localhost:8000](http://localhost:8000/)
+4. The web app will now be available at [localhost:8000](http://localhost:8000/)
+
+### Notes:
+You can build this project using `gradle build`
+This will build an executable file in the `/build/libs` directory.

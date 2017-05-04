@@ -1,45 +1,240 @@
 $(function() {
-	//Get list of reportees
-	getReportees();
-	
-	//Add Proposed Button
-	addProposed();
-	
-	//onClick for opening modal
-	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });
-
-	//Validation for the add reportee modal
-	$('.reportee-note-validate').keyup(function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
-	
-	//onClick for Submit modal
-	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
-    
+	init();
 });//End of Document Function
+
+/** Constants */
+const NO_REPORTEE_EVALUATION_ADDED = "No self evaluation was added.";
+const NO_REPORTEE_EVALUATION_SUBMITTED = "Self evaluation has not yet been submitted."
+const NO_MANAGER_EVALUATION = "No manager evaluation has been written.";
+const NO_RATING = "No Rating Entered";
+const RATING = "Rating: ";
+
+/** DOM element references */
+var $managerEvaluationOptions = $(".manager-evaluation-options");
+var $managerEvaluationLabels = $(".manager-evaluation-labels");
+
+var $managerEvaluationText = $("#manager-evaluation-text");
+var $managerEvaluationInput = $("#manager-evaluation-input");
+var $reporteeEvaluationText = $("#reportee-evaluation-text");
+var $evaluationScoreText = $("#evaluation-score-text");
+var $evaluationScoreInput = $("#evaluation-score-input");
+var $reporteeEvaluationsSubmitted = $("#reportee-evaluation-submitted");
+var $managerEvaluationSubmitted = $("#manager-evaluation-submitted");
+var $managerEvaluationFooter = $("#manager-evaluation-footer");
+var $managerOptions = $("#manager-options");
+
+var $editButton = $("#edit-manager-evaluation");
+var $submitButton = $("#submit-manager-evaluation");
+var $saveButton = $("#save-manager-evaluation");
+var $cancelButton = $("#cancel-manager-evaluation");
+
+var $activityFeed = $("#activity-feed");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
 var selectedReporteeEmail = "";
+var selectedReporteeName = "";
+var selectedReporteeUsername = "";
+var initialReporteeList = [];
+var activityFeedVisible = false;
+var editingRating = false;
+
+function init(){
+	getReportees(getADLoginID(), false, "");
+	loadingProposedButton();
+	getEmailList();
+	initSelect();
+	getActivityFeed();
+	
+	$('#add-reportee-note').click(function() { openAddReporteeNoteModal(); });	
+	$('#submit-reportee-note').click(function(){ clickSubmitReporteeNote(); });
+	
+	$editButton.click(function(){ editManagerEvaluation(); });
+	$submitButton.click(function(){ submitManagerEvaluation(); });
+	$saveButton.click(function(){ saveManagerEvaluation(); });
+	$cancelButton.click(function(){ clickClose(); });
+	
+	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+}
 
 //Method to get the Reportee list
-function getReportees(){
-		$("#reportee-list").append("<h5>Loading Reportees...</h5>");
-	    $.ajax({
-	        url: 'http://'+getEnvironment()+':8080/getReportees/'+getADLoginID(),
-            cache: false,
-	        method: 'GET',
-	        xhrFields: {'withCredentials': true},
-	        success: function(data){
-	        	$("#reportee-list").empty();
-	        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-	            $.each(data, function(key, val){
-	            	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-	            });  
-	        },
-	        error: function(XMLHttpRequest, textStatus, errorThrown){
-	            console.log('error', errorThrown);
-	            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
-	        }
-	    });
+function getReportees(userId, isSubReportee){
+	if(isSubReportee) loadingSubReporteeList();
+    $.ajax({
+        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
+        cache: false,
+        method: 'GET',
+        xhrFields: {'withCredentials': true},
+        success: function(data){
+        	if(userId == 675590){data = demoManager1();}
+        	if(userId == 674936){data = demoManager2();}
+        	
+        	if(!isSubReportee){
+        		$("#reportee-list").empty();
+            	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+            	 $.each(data, function(key, val){
+                 	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+                 });  
+        	}else{
+        		updateSelectedSubReportee(userId);
+        		addSubReporteesToList(data);
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	$("#reportee-list").empty();
+            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
+        }
+    });
+}
+
+function getActivityFeed(){
+	
+	var id = getADLoginID();
+	var success = function(data){ addActivityFeed(data); }
+	var error = function(){}
+	
+	getActivityFeedAction(id, success, error);
+}
+
+function addActivityFeed(data){
+	var activityHTML = "";
+	if(data.length < 1) {
+		activityHTML = "<h5 class='text-center'>No activity from your team.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), timeStampToDateTime(val.timestamp));
+		});
+	}
+	$activityFeed.html(activityHTML);
+}
+
+function shortenTitleActivityFeed(description){
+	var i = description.indexOf(":");
+	var action = description.substring(0, i);
+	var title = description.substring(i, description.length);
+	if(title.length > 25)
+		title = title.substring(0, 25) + "...";
+	
+	return action + " " + title;
+}
+
+function demoManager1(){	
+	return [{
+		"employeeID": 678124,
+		"surname": "BRARD",
+		"forename": "Alexandre",
+		"username": "abrard",
+		"emailAddresses": [
+          "alexandre.brard@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Alexandre BRARD"
+	},{
+		"employeeID": 675715,
+		"surname": "MCINTYRE",
+		"forename": "Chris",
+		"username": "chmcinty",
+		"emailAddresses": [
+		  "chris.mcintyre@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Chris MCINTYRE"
+	},{
+		"employeeID": 674936,
+		"surname": "HARRIS",
+		"forename": "Finlay",
+		"username": "fharris",
+		"emailAddresses": [
+		"finlay.harris@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Finlay HARRIS"
+	},{
+		"employeeID": 604970,
+		"surname": "RAO",
+		"forename": "Hanumant",
+		"username": "harao",
+		"emailAddresses": {
+		"mail": "hanumant.rao@soprasteria.com",
+		"targetAddress": "hanumant.rao@soprasteria.com",
+		"userAddress": null,
+		"preferred": "hanumant.rao@soprasteria.com"
+		},
+		"isManager": false,
+		"hasHRDash": false,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Justice People (DPC509)",
+		"sector": "GOV2",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Hanumant RAO"
+		}];
+}
+
+
+function demoManager2(){	
+	return [{
+		"employeeID": 675590,
+		"surname": "NACEF",
+		"forename": "Ridhwan",
+		"username": "rnacef",
+		"emailAddresses": [
+		"ridhwan.nacef@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Ridhwan NACEF"
+	},{
+		"employeeID": 676783,
+		"surname": "MEHMET",
+		"forename": "Mehmet",
+		"username": "mmehmet",
+		"emailAddresses": [
+		"mehmet.mehmet@soprasteria.com"
+		],
+		"isManager": false,
+		"hasHRDash": true,
+		"company": "Sopra Steria Limited",
+		"steriaDepartment": "Scotland People (DPC181)",
+		"sector": "GOV5",
+		"superSector": "SS Government (GOV)",
+		"reporteeCNs": [],
+		"accountExpires": null,
+		"fullName": "Mehmet MEHMET"
+	}];
+}
+
+function loadingSubReporteeList(){
+	$('#reportee-sub-selected').html("<h5>Loading...</h5>");
+	$('#reportee-sub-list').empty();
 }
 
 //method to remove apostrophe from names so can be clicked on in my team
@@ -51,12 +246,35 @@ function removeApostrophe(fullName){
 }
 
 function addReporteeToList(employeeID, fullName, userName, emailAddress){
+	initialReporteeList.push(employeeID);
 	$('#reportee-list').append(reporteeListItemHTML(employeeID, fullName, userName, emailAddress));
+}
+
+function addSubReporteesToList(data) {
+	var subList = "";
+	if(data.length > 0) {
+		subList = "<h5><b> "+selectedReporteeName+" - Team </b></h5>";
+		 $.each(data, function(key, val){
+	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddress);
+	      });
+	}
+	$('#reportee-sub-list').html(subList);
+}
+
+
+function updateSelectedSubReportee(userId){
+	if(jQuery.inArray(userId, initialReporteeList) == -1){
+		$('#reportee-sub-selected').html( "<h5><b>Selected Employee</b></h5>" + 
+				reporteeListItemHTML(userId, selectedReporteeName, selectedReporteeUserName, selectedReporteeEmail));
+		$('#panel-'+userId).addClass("selected-panel");
+	}else{
+		$('#reportee-sub-selected').empty();
+	}
 }
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='getReporteeCareer("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='clickReportee("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\",  \""+userName+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -80,22 +298,41 @@ function selectedReportee(element){
 	});     
 }
 
-function getReporteeCareer(id, name, emailAddress, element) {
-	if(checkSelectedUser(parseInt(id), emailAddress)){
-		selectedReportee(element)
+function clickReportee(id, name, emailAddress, userName, element){
+	if(editingRating){
+		var title = "Cancel Evaluation";
+		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+		var buttonText = "Continue";
+		var buttonFunction = function(){ 
+			closeManagerEvaluation(false);
+			getReporteeCareer(id, name, emailAddress, userName, element);
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}else{
+		getReporteeCareer(id, name, emailAddress, userName, element);
+	}	
+}
+
+function getReporteeCareer(id, name, emailAddress, userName, element) {
+	closeWarningModal();
+	if(checkSelectedUser(parseInt(id), emailAddress, name, userName)){
+		selectedReportee(element);
 		clearReporteeLists();
-		showReporteeView(name)
+		showReporteeView(id, name)
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
 		getGeneralFeedbackList(id);
 		getDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
+		getReporteeRatings(id);
+		getReportees(id, true);
 	}
 }
 
 function getReporteeCompetencyList(userID){
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getCompetencies/'+userID,
+        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -109,7 +346,6 @@ function getReporteeCompetencyList(userID){
             addCompetenciesToList(competencyList);
     },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting competencies, please try again later.");
         }
     });
@@ -118,7 +354,7 @@ function getReporteeCompetencyList(userID){
 ////Method to get the Notes list
 function getReporteeNotesList(userID){
     $.ajax({
-        url: 'http://'+getEnvironment()+':8080/getNotes/'+userID,
+        url: 'http://'+getEnvironment()+'/getNotes/'+userID,
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
@@ -129,7 +365,6 @@ function getReporteeNotesList(userID){
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            console.log('error', errorThrown);
             toastr.error("Sorry, there was a problem getting notes, please try again later.");
         }
     });
@@ -138,13 +373,13 @@ function getReporteeNotesList(userID){
 //Method to propose objective
 function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addProposedObjective/"+userID,
+        url: "http://"+getEnvironment()+"/manager/proposeObjective/"+userID,
         method: 'POST',
         xhrFields: {'withCredentials': true},
         data: {
             'title': objTitle,
             'description': objText,
-            'completedBy': objDate,
+            'dueDate': objDate,
             'emails': proposedTo
         },            
         success: function(response){
@@ -154,21 +389,26 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
                 toastr.error(response);
                }else{
             	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
-            		addObjectiveToList((++lastObjID), objTitle, objText, objDate, 0, false);
+            		addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
             	}
                 toastr.success(response);
                }
            },
            error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
+        	   var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+       			if(errorMessage.indexOf("objective proposed") > -1){
+       				toastr.warning(XMLHttpRequest.responseText);
+       			}else{
+       				toastr.error(errorMessage);
+       			}
+           },
     });
 }
 
 //Method to make ajax call to add note to database
 function addNoteToReporteeDB(reporteeID, from, body, date){
     $.ajax({
-        url: "http://"+getEnvironment()+":8080/addNoteToReportee/"+getADLoginID(),
+        url: "http://"+getEnvironment()+"/manager/addNoteToReportee/"+getADLoginID(),
         method: "POST",
         xhrFields: {'withCredentials': true},
         data:{
@@ -193,19 +433,29 @@ function clearReporteeLists(){
 	$("#reportee-obj-list, #reportee-comp-list, #reportee-feed-list, #reportee-dev-needs-list, #reportee-notes-list").empty();
 }
 
-function checkSelectedUser(id, emailAddress){
+function checkSelectedUser(id, emailAddress, name, userName){
 	if(selectedReporteeID == id){
 		return false;
 	}
 	selectedReporteeID = id;
 	selectedReporteeEmail = emailAddress;
+	selectedReporteeName = name;
+	selectedReporteeUserName = userName;
 	return true;
 }
 
-function showReporteeView(name){
+function showReporteeView(id, name){
 	$(".reportee-name").each(function(){
 		$(this).text(name);
 	});
+	
+	$("#reportee-notes-add-button").empty();
+	$editButton.hide();
+	$submitButton.hide();
+	
+	if(jQuery.inArray(id, initialReporteeList) > -1){
+		showEditOptions();
+	}
 	
 	if(reporteeSectionHidden){
 		$("#info-message").remove();
@@ -239,8 +489,6 @@ function clickSubmitReporteeNote(){
 	var linkID = 0;
 	
 	addNoteToReporteeDB(reporteeID, from, note, date);
-
-	
 	showReporteeNoteModal(false);
 }
 
@@ -455,7 +703,184 @@ function reporteeNotesListHTML(fromWho, body, date){
 }
 
 function addProposed(){
+	$("#nav-bar-buttons").empty();
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
+
+function initialiseTags() {
+	addProposed();
+}
+
+function loadingProposedButton(){
+	$("#nav-bar-buttons").html('').append("<h5 class='pull-right'> Loading... <h5>");
+}
+
+/** Retrieve MyRatings details from database and update relevant DOM Elements. */
+function getReporteeRatings(userId){
+	getCurrentRatingAction(userId, function(data){ 
+		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
+	});
+}
+
+/** Sets the three evaluations in the HTML */
+function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore, isReporteeEvaluationSubmitted, isManagerEvaluationSubmitted){
+	setManagerEvaluationLabel(managerEvaluation);
+	setManagerEvaluationInput(managerEvaluation);
+	setEvaluationScoreLabel(evaluationScore);
+	setManagerEvaluationScore(evaluationScore);
+	
+	if(isReporteeEvaluationSubmitted == true) {
+		setReporteeEvaluation(reporteeEvaluation);
+	}else{
+		setReporteeEvaluation(NO_REPORTEE_EVALUATION_SUBMITTED)
+	}
+	
+	reporteeEvaluationSubmitted(isReporteeEvaluationSubmitted);
+	managerEvaluationSubmitted(isManagerEvaluationSubmitted);
+	
+	$managerEvaluationFooter.show();
+}
+
+/** Sets the manager evaluation label */
+function setManagerEvaluationLabel(managerEvaluation) {
+	var label = (managerEvaluation == "") ? NO_MANAGER_EVALUATION : managerEvaluation;
+	$managerEvaluationText.text(label);
+}
+
+/** Sets the self evaluation label */
+function setManagerEvaluationInput(managerEvaluation){
+	var manager = (managerEvaluation === NO_MANAGER_EVALUATION) ? "" : managerEvaluation;
+	$managerEvaluationInput.val(manager);
+}
+
+/** Sets the self evaluation label */
+function setManagerEvaluationScore(evaluationScore){
+	var score = (evaluationScore === NO_RATING) ? 0 : evaluationScore;
+	$evaluationScoreInput.selectpicker('val', score);
+}
+
+
+/** Sets the evaluation score label */
+function setEvaluationScoreLabel(evaluationScore) {
+	var label = (evaluationScore == 0) ? NO_RATING : RATING + evaluationScore;
+	$evaluationScoreText.text(label);
+}
+
+function setReporteeEvaluation(reporteeEvaluation){
+	var label = (reporteeEvaluation === "") ? NO_REPORTEE_EVALUATION_ADDED : reporteeEvaluation;
+	$reporteeEvaluationText.text(label);
+}
+
+function reporteeEvaluationSubmitted(isReporteeEvaluationSubmitted){
+	if(isReporteeEvaluationSubmitted == true){
+		$reporteeEvaluationsSubmitted.show();
+	}else{
+		$reporteeEvaluationsSubmitted.hide();
+	}
+}
+
+function managerEvaluationSubmitted(isManagerEvaluationSubmitted){
+	if(isManagerEvaluationSubmitted == true){
+		$managerEvaluationSubmitted.show();
+		$managerOptions.hide();
+	}else{
+		$managerEvaluationSubmitted.hide();
+		$managerOptions.show();
+	}
+}
+
+/** Make manager evaluation editable. */
+function editManagerEvaluation(){
+	$managerEvaluationLabels.hide();
+	$managerEvaluationOptions.show();
+	editingRating = true;
+}
+
+/** Open confirmation model. */
+function submitManagerEvaluation(){
+	var title = "Submit Evaluation";
+	var body = "<h5>Once you have submitted your manager evlauation, you will no longer be able to edit this.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var buttonText = "Submit";
+	var buttonFunction = function(){ confirmSubmitEvaluation() }
+	
+	openWarningModal(title, body, buttonText, buttonFunction);
+}
+
+/** Update rating on database to submit self evaluation */
+function confirmSubmitEvaluation(){
+	submitManagerEvaluationAction(getADLoginID(), selectedReporteeID, function(){
+		managerEvaluationSubmitted(true);
+		closeWarningModal();
+	}, function(){});
+}
+
+/** Save manager evaluation to the database. */
+function saveManagerEvaluation(){	
+	addManagerEvaluationAction(getADLoginID(), selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
+		closeManagerEvaluation(true);
+	});
+}
+
+/**
+ * Hide editable manager evaluations
+ * @param save true to save, false to cancel
+ */
+function closeManagerEvaluation(save){
+	$managerEvaluationOptions.hide();
+	if(save) {
+		setManagerEvaluationLabel($managerEvaluationInput.val());
+		setEvaluationScoreLabel($evaluationScoreInput.val());
+	}else{
+		setManagerEvaluationInput($managerEvaluationText.text())
+		var s = $evaluationScoreText.text();
+		setManagerEvaluationScore(s.substring(s.length-1,s.length));
+	}
+	$managerEvaluationLabels.show();
+	
+	editingRating = false;
+	closeWarningModal();
+}
+
+function clickClose(){
+	var title = "Cancel Evaluation";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var buttonText = "Continue";
+	var buttonFunction = function(){ closeManagerEvaluation(false) }
+	
+	openWarningModal(title, body, buttonText, buttonFunction);
+}
+
+function initSelect(){
+	$("#evaluation-score-input").selectpicker({'width': '40%'});
+}
+
+function showEditOptions(){
+	$("#reportee-notes-add-button").append(addNotesHTML());
+	$editButton.show();
+	$submitButton.show();
+}
+
+function addNotesHTML(){
+	var HTML = " \
+		<div class='row'> \
+			<div class='col-md-12'> \
+				<button type='button' class='btn btn-link pull-right' onClick='openAddReporteeNoteModal()'><u>Add Note for "+selectedReporteeName+"</u></button> \
+			</div> \
+		</div> \
+		";
+	return HTML;
+}
+
+function toggleActivityFeed(){
+	if(activityFeedVisible){
+		activityFeedVisible = false;
+		$activityFeed.hide();
+	}else{
+		activityFeedVisible = true;
+		$activityFeed.show();
+	}
+}
+
+
