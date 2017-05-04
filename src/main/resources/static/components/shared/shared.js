@@ -949,7 +949,12 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 	return HTML;
 }
 
-
+//verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
+function verifyUser(){
+    if(userHasHrDash() === "false" || userHasHrDash() == false){
+         window.location ="/myobjectives";
+    }
+}
 
 
 

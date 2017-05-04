@@ -27,6 +27,7 @@ var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, typ
 var ratingsColumnDefs = [{ width: "30%", targets: [1,2] }];
 
 function init(){
+	verifyUser();
 	getEmployeeNamesAndIds();
 	
 	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()); });

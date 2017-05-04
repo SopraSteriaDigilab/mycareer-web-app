@@ -116,12 +116,7 @@ function init(){
         });//end of selectpicker change function
 }
 
-//verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
-function verifyUser(){
-    if(userHasHrDash() === "false" || userHasHrDash() == false){
-         window.location ="/myobjectives";
-    }
-}
+
 
 //function to get the general HR stats of mycareer
 function getMyCareerStats(){
