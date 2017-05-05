@@ -233,7 +233,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
     $("#modal-confirmation").empty().append('Development Need');
     $("#modal-alert").empty().append('Development Need');;
     $("#completedTitle").empty().append(title);
-    openCompleteDevelopmentNeedModal(devNeedID, title);
+    openCompleteDevelopmentNeedModal();
     }else{
         var userID = getADLoginID();
         var completedText = "";
@@ -241,7 +241,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
     }
 }
 
-function openCompleteDevelopmentNeedModal(id, title){
+function openCompleteDevelopmentNeedModal(){
     $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
     $("textarea").val("");
 }
@@ -362,7 +362,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \""+title+"\")'> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \""+title.replace(/"/g, '\\"').replace(/'/g, '\\"')+"\")'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
@@ -431,7 +431,7 @@ function devNeedsButtonsHTML(devNeedID, isArchived, status, title){
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", false)' id='archive-dev-need'>Restore</button> \
 		        </div> \
                 <div class=' col-sm-6'> \
-                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \""+title+"\")' id='delete-obj'>Delete</button> \
+                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \""+title.replace(/"/g, '\\"').replace(/'/g, '\\"')+"\")' id='delete-obj'>Delete</button> \
                 </div> \
 		    </div> \
 		";
