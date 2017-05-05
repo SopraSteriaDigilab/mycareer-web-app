@@ -1,5 +1,6 @@
 $(function() {
 	adjustDatePicker();
+	adjustDataTablesMomentJs();
 });
 
 var emails = [];
@@ -31,6 +32,13 @@ function adjustDatePicker(){
 	   $.fn.datepicker = old;
 	   return this;
 	};
+}
+
+function adjustDataTablesMomentJs(){
+	$.fn.dataTable.moment( 'MMM YYYY' );
+	$.fn.dataTable.moment( 'MMMM YYYY' );
+	$.fn.dataTable.moment( 'DD MMM YYYY' );	
+	$.fn.dataTable.moment( 'DD MMM YYYY HH:mm' );
 }
 
 //------------------------------------- Objectives -------------------------------------

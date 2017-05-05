@@ -20,10 +20,10 @@ var developmentNeedsColumnList = [ { data: "title" }, { data: "description" }, {
 var notesColumnList = [ { data: "providerName" }, { data: "noteDescription" }, {data: "timestamp"} ];
 var ratingsColumnList = [ { data: "year" }, { data: "selfEvaluation" }, { data: "managerEvaluation" }, { data: "score" }];
 
-var objectivesColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return formatDate(data)}, targets:3}, {render: function(data, type, row){ return timeStampToLongDate(data)}, targets:4}];
-var feedbackColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
-var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return formatDate(data)}, targets:3}, {render: function(data, type, row){ return timeStampToLongDate(data)}, targets:4}];
-var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
+var objectivesColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return moment(data).format('MMMM YYYY')}, targets:3}, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY')}, targets:4}];
+var feedbackColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY HH:mm')}, targets:2}];
+var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return moment(data).format('MMMM YYYY')}, targets:3}, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY')}, targets:4}];
+var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY HH:mm')}, targets:2}];
 var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
 
 var emptyCareer = {objectives : [], developmentNeeds: [], competencies: [], notes: [], feedback:[], ratings:[]}
@@ -79,11 +79,7 @@ function addEmployee(employeeId, data){
 	updateEmployeeView(employeeId, data);
 }
 
-function getTable(selectorId, dataset, columnsList, columnDefs){
-	$.fn.dataTable.moment( 'MMM YYYY' );
-	$.fn.dataTable.moment( 'MMMM YYYY' );
-	$.fn.dataTable.moment( 'dd MMM YYYY' );	
-	$.fn.dataTable.moment( 'dd MMM YYYY HH:mm' );
+function getTable(selectorId, dataset, columnsList, columnDefs){	
 	var table;
 	if ($.fn.dataTable.isDataTable(selectorId) ) {
 	    table = $(selectorId).dataTable();
@@ -100,15 +96,10 @@ function getTable(selectorId, dataset, columnsList, columnDefs){
 }
 
 function updateEmployeeView(employeeId, data){
-	console.log("objectives")
 	getTable($objectivesTable, data.objectives, objectivesColumnList, objectivesColumnDefs);
-	console.log("feedback")
 	getTable($feedbackTable, data.feedback, feedbackColumnList, feedbackColumnDefs);
-	console.log("developmentNeeds")
 	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
-	console.log("notes")
 	getTable($notesTable, data.notes, notesColumnList, notesColumnDefs);
-	console.log("ratings")
 	getTable($ratingsTable, showIfSubmitted(data.ratings), ratingsColumnList, ratingsColumnDefs);
 }
 
