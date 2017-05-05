@@ -148,7 +148,7 @@ function getEmployeeStats(){
                if(val.lastLogon === "Never"){
                    var lastLogged = val.lastLogon;
                }else{
-                   var lastLogged = timeStampToLongDate(val.lastLogon);
+                   var lastLogged = moment(val.lastLogon).format('D MMMM YYYY');
                }
                addHrEmployeeToList(val.employeeID, val.fullName, val.company, val.superSector, val.department, lastLogged, val.currentEmployee);
             }); 
