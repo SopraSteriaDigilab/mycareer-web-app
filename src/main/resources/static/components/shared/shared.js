@@ -764,7 +764,7 @@ function validEmails(requestingTo){
 //validates to ensure email format
 function isValidEmailAddress(requestingTo){
     var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return pattern.test(requestingTo);
+    return pattern.test(requestingTo.trim());
 }
 
 function checkIfPastDate (date){

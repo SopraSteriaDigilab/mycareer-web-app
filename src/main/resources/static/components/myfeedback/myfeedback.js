@@ -85,8 +85,8 @@ function initFeedbackDatePicker(id, start){
 function addGeneralFeedbackToList(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds));
       $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds));
-      if(!reviewerExists(email)){
-    	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
+      if(!reviewerExists(sender)){
+    	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender));
       }
 }
 
@@ -103,7 +103,7 @@ function selectedFeedback(element){
 function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
         <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
-        	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+        	<input type='hidden' class='reviewer-filter' value='"+sender+"'> \
         	<input type='hidden' class='date-filter' value='"+classDate+"'> \
 	  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
@@ -116,12 +116,12 @@ function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, 
 	return HTML;
 }
 
-function feedbackReviewersListHTML(reviewer, email){
+function feedbackReviewersListHTML(reviewer){
 	var HTML = " \
 		<div class='row'> \
 			<div class='col-md-12 wrap-only'> \
 				<label class='reviewer-label' style='max-width: 80%;''> \
-				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"' style='right:35px'> \
+				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+reviewer+"' style='right:35px'> \
 				"+reviewer+" \
 				</label> \
 		</div>";
@@ -131,7 +131,7 @@ function feedbackReviewersListHTML(reviewer, email){
 function feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
-		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+		<input type='hidden' class='reviewer-filter' value='"+sender+"'> \
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
   		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
     	<input type='hidden' id='feedback-obj-tags-"+id+"' value='"+objTagIds+"'> \
