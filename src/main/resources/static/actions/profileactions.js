@@ -5,7 +5,8 @@
  * @param successFunction function if call succeeds
  * @param errorFunction function if call fails
  */
-function saveExtraEmailAction(extraEmailInput, successFunction, errorFunction){
+function saveExtraEmailAction(extraEmail, successFunction, errorFunction){
+	extraEmailInput=extraEmail.trim();
 	$.ajax({
 	    url: "http://"+getEnvironment()+"/editUserEmailAddress/"+getADLoginID(),
 	    method: "POST",
