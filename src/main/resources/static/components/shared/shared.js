@@ -100,6 +100,10 @@ function checkComplete(status, item){
 	return "";
 }
 
+function escapeStr(str){
+	return str.replace(/"/g, '\\&quot;').replace(/'/g, '\\&apos;');
+}
+
 //Method to set and show content of modal
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
