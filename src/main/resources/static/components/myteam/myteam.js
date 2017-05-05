@@ -801,7 +801,7 @@ function editManagerEvaluation(){
 /** Open confirmation model. */
 function submitManagerEvaluation(){
 	var title = "Submit Evaluation";
-	var body = "<h5>Once you have submitted your manager evlauation, you will no longer be able to edit this.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var body = "<h5>Once you have submitted your manager evlauation, the rating process will be complete and can no longer be edited.<br><br><b>Are you sure you want to submit?</b></h5>";
 	var buttonText = "Submit";
 	var buttonFunction = function(){ confirmSubmitEvaluation() }
 	
