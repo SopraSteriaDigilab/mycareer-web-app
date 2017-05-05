@@ -45,6 +45,7 @@ function getTable(selectorId, dataset, columnsList, columnDefs){
 	$.fn.dataTable.moment( 'MMMM YYYY' );
 	$.fn.dataTable.moment( 'dd MMM YYYY' );	
 	$.fn.dataTable.moment( 'dd MMM YYYY HH:mm' );
+	
 	 table = $(selectorId).dataTable({
 		columnDefs: columnDefs,
         data: dataset,

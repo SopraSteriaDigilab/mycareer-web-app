@@ -18,6 +18,12 @@ function init(){
     getHRDevNeedsStats();
     getHRDevNeedBreakdown();
 
+    
+	$.fn.dataTable.moment( 'MMM YYYY' );
+	$.fn.dataTable.moment( 'MMMM YYYY' );
+	$.fn.dataTable.moment( 'dd MMM YYYY' );	
+	$.fn.dataTable.moment( 'dd MMM YYYY HH:mm' );
+    
     //click functions to display specific report and initialisation of specific datatable with added button to export to excel
     $('.selectpicker').on('change', function(){
     	if($(this).val() === "MyCareer Overview"){
