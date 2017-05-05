@@ -66,7 +66,7 @@ function selectEmployee(employeeId){
 function getEmployeeCareer(employeeId){
 	
 	var success = function(data){ addEmployee(employeeId, data); }
-	var error = function(error){}
+	var error = function(error){ updateEmployeeView(0, {}) }
 	
 	getEmployeeCareerAction(employeeId, success, error);
 }
