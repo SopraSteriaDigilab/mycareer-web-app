@@ -244,7 +244,9 @@ function printNotesList(providerName, noteDescription, timestamp){
 //Function that creates the table and opens the printable page in a new window
 function openPDF(id){
 	$.fn.dataTable.moment( 'MMM YYYY' );
-	$.fn.dataTable.moment( 'D MMM YYYY' );
+	$.fn.dataTable.moment( 'MMMM YYYY' );
+	$.fn.dataTable.moment( 'dd MMM YYYY' );	
+	$.fn.dataTable.moment( 'dd MMM YYYY HH:mm' );
 	
 	$('#'+id).DataTable({
 		dom: 'Brftip',
