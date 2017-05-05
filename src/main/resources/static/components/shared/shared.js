@@ -582,7 +582,7 @@ function timeStampToDateTimeGMT(date) {
 //TimeStamp to dd mmm yyyy
 function timeStampToLongDate(date){
 	var d = new Date(date);
-	var date = d.getDate() + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
+	var date = addZero(d.getDate()) + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
 
 	return date;
 }
