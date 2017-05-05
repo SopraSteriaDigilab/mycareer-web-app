@@ -37,7 +37,7 @@ function getTables(data){
 	getTable($historyFeedbackTable, data.feedback, feedbackColumnList, feedbackColumnDefs);
 	getTable($historyDevelopmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
 	getTable($historyNotesTable, data.notes, notesColumnList, notesColumnDefs);
-	getTable($historyRatingsTable, data.ratings, ratingsColumnList, ratingsColumnDefs);
+	getTable($historyRatingsTable, showIfSubmitted(data.ratings), ratingsColumnList, ratingsColumnDefs);
 }
 
 function getTable(selectorId, dataset, columnsList, columnDefs){
@@ -46,4 +46,23 @@ function getTable(selectorId, dataset, columnsList, columnDefs){
         data: dataset,
         columns: columnsList
 	 });
+}
+
+function showIfSubmitted(ratings){
+	var updatedRatings = [];
+	
+	for(var i = 0; i < ratings.length; i++){
+		var rating = ratings[i];
+		
+		if(!rating.managerEvaluationSubmitted){
+			rating.managerEvaluation = "Not Submitted";
+			rating.score = "Not Submitted";
+		}
+		if(!rating.selfEvaluationSubmitted){
+			rating.selfEvaluation = "Not Submitted";
+		}
+		updatedRatings.push(rating);
+	}
+	
+	return updatedRatings;
 }

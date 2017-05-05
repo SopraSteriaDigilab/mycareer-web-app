@@ -24,7 +24,7 @@ var objectivesColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(
 var feedbackColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
 var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return formatDate(data)}, targets:3}, {render: function(data, type, row){ return timeStampToLongDate(data)}, targets:4}];
 var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
-var ratingsColumnDefs = [{ width: "30%", targets: [1,2] }];
+var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
 
 function init(){
 	verifyUser();
@@ -98,7 +98,7 @@ function updateEmployeeView(employeeId, data){
 	getTable($feedbackTable, data.feedback, feedbackColumnList, feedbackColumnDefs);
 	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
 	getTable($notesTable, data.notes, notesColumnList, notesColumnDefs);
-	getTable($ratingsTable, data.ratings, ratingsColumnList, ratingsColumnDefs);
+	getTable($ratingsTable, showIfSubmitted(data.ratings), ratingsColumnList, ratingsColumnDefs);
 }
 
 function employeeRetrieved(employeeId){
@@ -113,4 +113,23 @@ function initialSelect(){
 		$placeholderContainter.remove();
 		$employeeDataContainer.prop("hidden", false);
 	}
+}
+
+function showIfSubmitted(ratings){
+	var updatedRatings = [];
+	
+	for(var i = 0; i < ratings.length; i++){
+		var rating = ratings[i];
+		
+		if(!rating.managerEvaluationSubmitted){
+			rating.managerEvaluation = "Not Submitted";
+			rating.score = "Not Submitted";
+		}
+		if(!rating.selfEvaluationSubmitted){
+			rating.selfEvaluation = "Not Submitted";
+		}
+		updatedRatings.push(rating);
+	}
+	
+	return updatedRatings;
 }
