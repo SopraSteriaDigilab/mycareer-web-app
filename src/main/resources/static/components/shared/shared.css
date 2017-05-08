@@ -1,5 +1,6 @@
 body {
 	height: 100vh;
+	-ms-overflow-style: scrollbar;
 }
 
 textarea {
