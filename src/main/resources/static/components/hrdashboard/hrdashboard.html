@@ -19,8 +19,8 @@
   	
 	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">    
 	       	
-		<div class="col-md-6">
-      		<div class="btn-group">
+		<div id="selectpicker-container" class="col-md-6" hidden>
+      		<div class="btn-group" >
           		<select id="hr-dashboard-selectpicker" class="selectpicker">
 					<option value="overview">MyCareer Overview</option>
 					<option value="super-sector">Super Sector</option>
@@ -37,8 +37,48 @@
      	
     </div>
     
-    <div class="hr-dashboard" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
-    	<div id=overview-container class="hr-container">overview-container</div>
+    <div style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
+    	<h4 class="text-center" id="dashboard-loading-text">Loading...</h4>
+    	<div id=overview-container class="hr-container" hidden>
+  	    	<table class='table table-striped HRtable' id='hrOverviewTable'>
+		        <thead>
+		            <tr>
+		               <th>Overview of MyCareer</th>
+		    	       <th>Number of Users</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr>
+		                <td>Total Accounts Accessed</td>
+		                <td id=account-accessed></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one objective</td>
+		                <td id=users-with-objective></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one development need</td>
+		                <td id=users-with-development-need></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one note</td>
+		                <td id=users-with-note></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have clicked a competency</td>
+		                <td id=users-with-competency></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have submitted a feedback request</td>
+		                <td id=users-with-feedback-request></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have received feedback</td>
+		                <td id=users-with-feedback></td>
+		            </tr>
+		        </tbody>
+		    </table>
+    	</div>
     	<div id=super-sector-container class="hr-container" hidden>super-sector-container</div>
     	<div id=total-accounts-container class="hr-container" hidden>total-accounts-container</div>
     	<div id=objectives-overview-container class="hr-container" hidden>objectives-overview-container</div>
