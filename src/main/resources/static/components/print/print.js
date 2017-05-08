@@ -10,7 +10,7 @@ function getObjectivesData(){
 	         $.each(data, function(key, val){
 	        	 var isArchived = val.archived;
 	        	 isArchived = isArchived ? 'Yes' : 'No';
-	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
 	        	 	addObjectivesDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy, isArchived);
 	         }); 
 	         openPDF("objTable");
@@ -55,7 +55,7 @@ function getDevelopmentNeedsData(){
 	         $.each(data, function(key, val){
 	        	 var isArchived = val.archived;
 	        	 isArchived = isArchived ? 'Yes' : 'No';
-	        	 var dueDate = formatDateShort((val.dueDate).slice(0, 7));
+	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
 	        		 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.category, isArchived);
 	         });
 	         openPDF("devNeedsTable");
