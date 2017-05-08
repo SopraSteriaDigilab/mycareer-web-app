@@ -1,41 +1,50 @@
 <script>
+	loadScript("actions/hractions");
 	loadStyle("components/hrdashboard/hrdashboard");
 	loadScript("components/hrdashboard/hrdashboard");
 </script>
 
 <div class="container">
     
-    <!--Page Header -->
-    <div class="row">
-        <div class="col-md-7">
-        	<div class="col-md-6">
-            	<h2>HR Dashboard</h2>
-           	</div>
-        </div>
-        <div class="col-md-5 vertical-centre">
+	<div class="row">
+    	<div class="col-md-7">
+    		<div class="col-md-6">
+          		<h2>HR Dashboard</h2>
+        	</div>
+      	</div>
+      	<div class="col-md-5 vertical-centre">
 			<a type="button" class="btn btn-default pull-right" href="employeesearch">Employee Search</a>
 		</div>
+	</div>
+  	
+	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">    
+	       	
+		<div class="col-md-6">
+      		<div class="btn-group">
+          		<select id="hr-dashboard-selectpicker" class="selectpicker">
+					<option value="overview">MyCareer Overview</option>
+					<option value="super-sector">Super Sector</option>
+					<option value="total-accounts">Total Accounts</option>
+					<option value="objectives-overview">Objectives Overview</option>
+					<option value="feedback">Feedback</option>
+             		<optgroup label="Development Needs">
+						<option value="development-needs-overview">Development Needs Overview</option>
+                  		<option value="development-needs-breakdown">Development Needs Breakdown</option>
+              		</optgroup>  
+          		</select>
+      		</div>
+     	</div>
+     	
     </div>
-    <!--End of Page header-->
-    <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">           	
-    	<div class="col-md-6">
-		        <div class="btn-group">
-		            <select class="selectpicker">
-		                <option>MyCareer Overview</option>
-		                <option>Super Sector</option>
-		                <option>Total Accounts</option>
-		                <option>Objectives</option>
-		                <option>Feedback</option>
-		                <optgroup label="Development Needs">
-		                        <option>Development Needs Overview</option>
-		                        <option>Development Needs Breakdown</option>
-		                </optgroup>  
-		            </select>
-		        </div>
-	        </div>
-        </div>
-        
-        <div class="hr-dashboard" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;"></div>
     
-
+    <div class="hr-dashboard" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
+    	<div id=overview-container class="hr-container">overview-container</div>
+    	<div id=super-sector-container class="hr-container" hidden>super-sector-container</div>
+    	<div id=total-accounts-container class="hr-container" hidden>total-accounts-container</div>
+    	<div id=objectives-overview-container class="hr-container" hidden>objectives-overview-container</div>
+    	<div id=feedback-container class="hr-container" hidden>feedback-container</div>
+	    <div id=development-needs-overview-container class="hr-container" hidden>development-needs-overview-container</div>
+	    <div id=development-needs-breakdown-container class="hr-container" hidden>development-need-breakdown-container</div>
+    </div>
+    
 </div><!--End of Container -->
