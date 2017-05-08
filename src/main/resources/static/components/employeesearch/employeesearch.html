@@ -20,19 +20,23 @@
     </div>
     <!--End of Page header-->
     
-    <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
-		<div class="col-md-3">
-	        <div class="btn-group">
-        		<h5 id="loading-employee-name-ids">Loading...</h5>
-	            <select id="employee-search-seletpicker" class="selectpicker" title="Please select an employee..." data-live-search="true" data-size="14" >
-	                <option value="675590"  data-subtext="675590">Ridhwan Nacef</option>
-	                <option value="678124"  data-subtext="678124">Alexandre Brard</option>
-	                <option value="676783"  data-subtext="676783">Mehmet Mehmet</option>
-	                <option value="674936"  data-subtext="674936">Finlay Harris</option>
-	            </select>
-	        </div>
-        </div>
-	</div>
+	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+	
+			<div class="col-md-12 text-center" id="loading-employee-name-ids">
+				<h5>Loading...</h5>
+			</div>
+			<div id="search-options" hidden>
+				<div class="col-md-3">
+					<h4 class="employee-name"></h4>
+				</div>
+	       		<div class="col-md-4">
+		     		<input id="searchInput" placeholder="Please select an employee..."type="text" data-provide="typeahead" class="form-control">
+	     		</div>
+	     		<div class="col-md-2">
+		     		<button type="button" class="btn btn-primary btn-block pull-right" id="submit-employee-search" >Search</button>
+	     		</div>
+     		</div>
+    </div>
 	
 	<div class="row" style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
 		<div class="col-md-12" style="padding-right: 0;">
