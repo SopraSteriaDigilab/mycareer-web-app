@@ -63,7 +63,7 @@ function initialiseSelectPicker(data){
 }
 
 function clickSearch(){
-	var str = $searchInput.val();
+	var str = $searchInput.val().trim();
 	
 	if(!isValidSearch(str)){
 		 toastr.error("The value submitted is not valid, please select from one of the drop down values or enter a valid employee ID.")
@@ -160,6 +160,6 @@ function showIfSubmitted(ratings){
 
 function isValidSearch(str){
     var pattern = /([0-9]{6})$/;
-    return pattern.test(str.trim());
+    return pattern.test(str);
 }
 
