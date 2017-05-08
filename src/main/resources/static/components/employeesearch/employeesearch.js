@@ -54,7 +54,7 @@ function initialiseSelectPicker(data){
 		items: 10,
 		source: data,
 		displayText: function(val){ 
-			return val.profile.forename + "  " + val.profile.surname + " " + val.profile.employeeID;
+			return val.profile.forename + " " + val.profile.surname + " " + val.profile.employeeID;
 		}
 	});
 	
