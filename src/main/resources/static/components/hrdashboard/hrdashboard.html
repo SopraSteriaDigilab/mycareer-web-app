@@ -24,9 +24,9 @@
           		<select id="hr-dashboard-selectpicker" class="selectpicker">
 					<option value="overview">MyCareer Overview</option>
 					<option value="sector-breakdown">Super Sector</option>
-					<option value="total-accounts">Total Accounts</option>
-					<option value="objectives-overview">Objectives Overview</option>
-					<option value="feedback">Feedback</option>
+					<option value="employee-stats">Total Accounts</option>
+					<option value="objectives-stats">Objectives Overview</option>
+					<option value="feedback-stats">Feedback</option>
              		<optgroup label="Development Needs">
 						<option value="development-needs-overview">Development Needs Overview</option>
                   		<option value="development-needs-breakdown">Development Needs Breakdown</option>
@@ -39,8 +39,8 @@
     
     <div style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
     	<h4 class="text-center" id="dashboard-loading-text">Loading... This may take a minute.</h4>
-    	<div id=overview-container class="hr-container" hidden>
-  	    	<table class='table table-striped HRtable' id='hrOverviewTable'>
+    	<div id="overview-container" class="hr-container" hidden>
+  	    	<table class="table table-striped HRtable" id="hrOverviewTable">
 		        <thead>
 		            <tr>
 		               <th>Overview of MyCareer</th>
@@ -79,8 +79,8 @@
 		        </tbody>
 		    </table>
     	</div>
-    	<div id=sector-breakdown-container class="hr-container" hidden>
-    	    <table class='table table-striped' id='sector-breakdown-table'>
+    	<div id="sector-breakdown-container" class="hr-container" hidden>
+    	    <table class="table table-striped" id="sector-breakdown-table">
 		        <thead>
 		            <tr>
 		               <th>Super Sector</th>
@@ -91,15 +91,56 @@
 		               <th>% with Development</th>
 		            </tr>
 		        </thead>
-		        <tbody id='superSectorDetails'>
-		        </tbody>
 		    </table>
     	</div>
-    	<div id=total-accounts-container class="hr-container" hidden>total-accounts-container</div>
-    	<div id=objectives-overview-container class="hr-container" hidden>objectives-overview-container</div>
-    	<div id=feedback-container class="hr-container" hidden>feedback-container</div>
-	    <div id=development-needs-overview-container class="hr-container" hidden>development-needs-overview-container</div>
-	    <div id=development-needs-breakdown-container class="hr-container" hidden>development-need-breakdown-container</div>
+    	<div id="employee-stats-container" class="hr-container" hidden>
+ 			<table class="table table-striped" id="employee-stats-table">
+ 				<thead>
+	                <tr>
+	                   <th>Employee ID</th>
+	                   <th>Employee Name</th>
+	                   <th>Company</th>
+	                   <th>Super Sector</th>
+	                   <th>Department</th>
+	                   <th>Last Logged On</th>
+	                   <th>Current Employee</th>
+	                </tr>
+            	</thead>
+ 			</table>
+		</div>
+    	<div id=objectives-stats-container class="hr-container" hidden>
+			<table class="table table-striped" id="objectives-stats-table">
+				<thead>
+					<tr>
+						<th>Employee ID</th>
+						<th>Employee Name</th>
+						<th>Total no of Objectives</th>
+						<th>Objectives Proposed</th>
+						<th>Objectives In-Progress</th>
+						<th>Objectives Complete</th>
+						<th>Company</th>
+						<th>Super Sector</th>
+						<th>Department</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+    	<div id="feedback-stats-container" class="hr-container" hidden>
+			<table class="table table-striped" id="feedback-stats-table">
+				<thead>
+					<tr>
+				    	<th>Employee ID</th>
+				        <th>Employee Name</th>
+				        <th>Total no of Feedback received</th>
+				        <th>Company</th>
+				        <th>Super Sector</th>
+				        <th>Department</th>
+				    </tr>
+				</thead>
+			</table>
+		</div>
+	    <div id="development-needs-overview-container" class="hr-container" hidden>development-needs-overview-container</div>
+	    <div id="development-needs-breakdown-container" class="hr-container" hidden>development-need-breakdown-container</div>
     </div>
     
 </div><!--End of Container -->
