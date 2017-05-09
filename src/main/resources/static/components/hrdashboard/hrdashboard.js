@@ -3,7 +3,7 @@ $(function() {
 });
 
 const OVERVIEW = "overview";
-const SUPER_SECTOR = "super-sector";
+const SECTOR_BREAKDOWN = "sector-breakdown";
 const TOTAL_ACCOUNTS = "total-accounts";
 const OBJECTIVES_OVERVIEW = "objectives-overview";
 const FEEDBACK = "feedback";
@@ -16,7 +16,7 @@ var $selectpickerContainer = $("#selectpicker-container");
 var $hrContainers = $(".hr-container");
 
 var $overviewContainer = $("#overview-container");
-var $superSectorContainer = $("#super-sector-container");
+var $superSectorContainer = $("#sector-breakdown-container");
 var $totalAccountsContainer = $("#total-accounts-container");
 var $objectivesOverviewContainer = $("#objectives-overview-container");
 var $feedbackContainer = $("#feedback-container");
@@ -30,6 +30,8 @@ var $usersWithNote = $("#users-with-note");
 var $usersWithCompetency = $("#users-with-competency");
 var $usersWithFeedbackRequest = $("#users-with-feedback-request");
 var $usersWithFeedback = $("#users-with-feedback");
+
+var sectorBreakdownLoaded = false;
 
 function init(){
 	verifyUser();
@@ -52,6 +54,21 @@ function getMyCareerStats(){
 	getMyCareerStatsAction(success, error);
 }
 
+function getSectorBreakDown(){
+	
+	
+	var success = function(data){ 
+		$superSectorContainer.show();
+		console.log(data);
+		sectorBreakdownLoaded = true;
+	}
+	
+	var error = function(error) {}}
+	
+	getSectorBreakDownAction(success, error);
+	
+}
+
 function setOverviewTable(data){
 	$accountAccessed.text(data.totalAccounts);
 	$usersWithObjective.text(data.usersWithObjectives);
@@ -68,8 +85,12 @@ function showContainer(container){
 		case OVERVIEW:
 			$overviewContainer.show();
 			break;
-		case SUPER_SECTOR:
-			$superSectorContainer.show();
+		case SECTOR_BREAKDOWN:
+			if(sectorBreakdownLoaded){
+				$superSectorContainer.show();
+			}else{
+				getSectorBreakDown();
+			}
 			break;
 		case TOTAL_ACCOUNTS:
 			$totalAccountsContainer.show();
@@ -87,4 +108,8 @@ function showContainer(container){
 			$developmentNeedsBreakdownContainer.show();
 			break;
 	}
+}
+
+function loadSection(){
+	
 }
