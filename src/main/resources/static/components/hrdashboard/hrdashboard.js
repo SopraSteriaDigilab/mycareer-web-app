@@ -31,6 +31,10 @@ var $usersWithCompetency = $("#users-with-competency");
 var $usersWithFeedbackRequest = $("#users-with-feedback-request");
 var $usersWithFeedback = $("#users-with-feedback");
 
+var $sectorBreakdownTable = $("#sector-breakdown-table");
+
+var sectorBreakDownColumnList = [ { data: "sector" }, { data: "employees" }, { data: "noWithObjs" }, { data: "noWithDevNeeds" }, { data: "percentObjs" }, { data: "percentDevNeeds" }];
+
 var sectorBreakdownLoaded = false;
 
 function init(){
@@ -45,25 +49,25 @@ function init(){
 function getMyCareerStats(){
 	var success = function(data){
 		setOverviewTable(data);
-		$loadingText.hide();
-		$selectpickerContainer.show();
-		$overviewContainer.show();
+		loaded($overviewContainer);
 	}
-	var error = function(error) {}
+	
+	var error = function(error){}
 	
 	getMyCareerStatsAction(success, error);
 }
 
 function getSectorBreakDown(){
 	
-	
-	var success = function(data){ 
-		$superSectorContainer.show();
-		console.log(data);
+	var success = function(data){
 		sectorBreakdownLoaded = true;
+		loaded($superSectorContainer);
+		loadDatatable($sectorBreakdownTable, data, sectorBreakDownColumnList);
 	}
 	
-	var error = function(error) {}}
+	var error = function(error){}
+	
+	$loadingText.show();
 	
 	getSectorBreakDownAction(success, error);
 	
@@ -80,36 +84,59 @@ function setOverviewTable(data){
 }
 
 function showContainer(container){
-	$hrContainers.hide();
+	loading();
 	switch (container){
 		case OVERVIEW:
-			$overviewContainer.show();
+			loaded($overviewContainer);
 			break;
 		case SECTOR_BREAKDOWN:
 			if(sectorBreakdownLoaded){
-				$superSectorContainer.show();
+				loaded($superSectorContainer);
 			}else{
 				getSectorBreakDown();
 			}
 			break;
 		case TOTAL_ACCOUNTS:
-			$totalAccountsContainer.show();
+			loaded($totalAccountsContainer);
 			break;
 		case OBJECTIVES_OVERVIEW:
-			$objectivesOverviewContainer.show();
+			loaded($objectivesOverviewContainer);
 			break;
 		case FEEDBACK:
-			$feedbackContainer.show();
+			loaded($feedbackContainer);
 			break;
 		case DEVELOPMENT_NEEDS_OVERVIEW:
-			$developmentNeedsOverviewContainer.show();
+			loaded($developmentNeedsOverviewContainer);
 			break;
 		case DEVELOPMENT_NEEDS_BREAKDOWN:
-			$developmentNeedsBreakdownContainer.show();
+			loaded($developmentNeedsBreakdownContainer);
 			break;
 	}
 }
 
-function loadSection(){
-	
+function loadDatatable(selectorId, dataset, columnsList){	
+	if (!($.fn.dataTable.isDataTable(selectorId))) {
+		console.log("loading datatable")
+		 $(selectorId).dataTable({
+			 dom: 'Bfrtip',
+             buttons: [{
+	             extend: 'csvHtml5',
+	             text: 'Export to Excel'
+             }],
+			 data: dataset,
+			 columns: columnsList
+		 });
+	}
+}
+
+function loading(){
+	$hrContainers.hide();
+	$selectpickerContainer.hide()
+	$loadingText.show();
+}
+
+function loaded(sectionToShow){
+	$loadingText.hide();
+	$selectpickerContainer.show();
+	sectionToShow.show();
 }

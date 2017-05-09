@@ -38,7 +38,7 @@
     </div>
     
     <div style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
-    	<h4 class="text-center" id="dashboard-loading-text">Loading...</h4>
+    	<h4 class="text-center" id="dashboard-loading-text">Loading... This may take a minute.</h4>
     	<div id=overview-container class="hr-container" hidden>
   	    	<table class='table table-striped HRtable' id='hrOverviewTable'>
 		        <thead>
@@ -79,7 +79,22 @@
 		        </tbody>
 		    </table>
     	</div>
-    	<div id=sector-breakdown-container class="hr-container" hidden>sector-breakdown-container</div>
+    	<div id=sector-breakdown-container class="hr-container" hidden>
+    	    <table class='table table-striped' id='sector-breakdown-table'>
+		        <thead>
+		            <tr>
+		               <th>Super Sector</th>
+		    	       <th>Employees</th>
+		               <th>No. with Objectives</th>
+		               <th>No. with Development</th>
+		               <th>% with Objectives</th>
+		               <th>% with Development</th>
+		            </tr>
+		        </thead>
+		        <tbody id='superSectorDetails'>
+		        </tbody>
+		    </table>
+    	</div>
     	<div id=total-accounts-container class="hr-container" hidden>total-accounts-container</div>
     	<div id=objectives-overview-container class="hr-container" hidden>objectives-overview-container</div>
     	<div id=feedback-container class="hr-container" hidden>feedback-container</div>
