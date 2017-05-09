@@ -76,6 +76,7 @@
     word-wrap: break-word;
 }
 
+/*
 table.dataTable tbody td {
   vertical-align: top;
 }
@@ -83,6 +84,7 @@ table.dataTable tbody td {
 thead th{
   white-space: nowrap;
 }
+*/
 
 .HRtable {
     table-layout:fixed;

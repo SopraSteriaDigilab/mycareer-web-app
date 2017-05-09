@@ -36,7 +36,6 @@ function init(){
 	verifyUser();
 	getEmployeeNamesAndIds();
 	
-//	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()); });
 	$submitSearchButton.on('click', function() { clickSearch(); });
 }
 
