@@ -733,9 +733,9 @@ function getProfilePicture(userName, size){
 			";
 	return imageURL;
 }
-
+	
 function openNotesBar(){
-	var screenWidth = $(document).width();
+	var screenWidth = $(window).width();
 	var sidebarWidth = $("#resizable").width();
 	$("#resizable").animate({'left':screenWidth-(sidebarWidth+3) + 'px'});
 	$("#resizable").addClass("visibleBar");
