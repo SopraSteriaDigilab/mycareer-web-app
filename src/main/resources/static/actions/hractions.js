@@ -1,10 +1,12 @@
 const HR = "/hr";
+
 const GET_CAREER = "/getCareer";
 const GET_MY_CAREER_STATS = "/getMyCareerStats";
 const GET_SECTOR_BREAKDOWN = "/getSectorBreakDown";
 const GET_EMPLOYEE_STATS = "/getEmployeeStats";
 const GET_OBJECTIVE_STATS = "/getObjectiveStats";
 const GET_FEEDBACK_STATS = "/getFeedbackStats";
+const GET_DEVELOPMENT_NEEDS_STATS = "/getDevelopmentNeedStats";
 
 /**
  *Ajax GET call get history for a user.
@@ -85,6 +87,19 @@ function getFeedbackStatsAction(successFunction, errorFunction){
         errorFunction(jqXHR.responseJSON.error);
 	});
 }
+
+function getDevelopmentNeedStatsAction(successFunction, errorFunction){
+	var url = HR + GET_DEVELOPMENT_NEEDS_STATS;
+	var request = $get(url);
+	request.done( function(data){ 
+		successFunction(data)
+	});
+	request.fail(function(jqXHR, textStatus){
+        toastr.error(jqXHR.responseJSON.error);
+        errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
 
 
 

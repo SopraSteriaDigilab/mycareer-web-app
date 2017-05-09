@@ -7,7 +7,7 @@ const SECTOR_BREAKDOWN = "sector-breakdown";
 const EMPLOYEE_STATS = "employee-stats";
 const OBJECTIVES_STATS = "objectives-stats";
 const FEEDBACK_STATS = "feedback-stats";
-const DEVELOPMENT_NEEDS_OVERVIEW = "development-needs-overview";
+const DEVELOPMENT_NEEDS_STATS = "development-needs-stats";
 const DEVELOPMENT_NEEDS_BREAKDOWN = "development-needs-breakdown";
 
 var $loadingText = $("#dashboard-loading-text");
@@ -20,7 +20,7 @@ var $sectorBreakdownContainer = $("#sector-breakdown-container");
 var $employeeStatsContainer = $("#employee-stats-container");
 var $objectivesStatsContainer = $("#objectives-stats-container");
 var $feedbackStatsContainer = $("#feedback-stats-container");
-var $developmentNeedsOverviewContainer = $("#development-needs-overview-container");
+var $developmentNeedsStatsContainer = $("#development-needs-stats-container");
 var $developmentNeedsBreakdownContainer = $("#development-needs-breakdown-container");
 
 var $accountAccessed = $("#account-accessed");
@@ -35,16 +35,19 @@ var $sectorBreakdownTable = $("#sector-breakdown-table");
 var $employeeStatsTable = $("#employee-stats-table");
 var $objectivesStatsTable = $("#objectives-stats-table");
 var $feedbackStatsTable = $("#feedback-stats-table");
+var $developmentNeedsStatsTable = $("#development-needs-table");
 
 var sectorBreakDownColumnList = [ { data: "sector" }, { data: "employees" }, { data: "noWithObjs" }, { data: "noWithDevNeeds" }, { data: "percentObjs" }, { data: "percentDevNeeds" }];
 var employeeStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "company" }, { data: "superSector" }, { data: "department" }, { data: "lastLogon" },  { data: "currentEmployee" }];
 var objectivesStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalObjectives" }, { data: "proposed" }, { data: "inProgress" }, { data: "complete" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
 var feedbackStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalFeedback" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
+var developmentNeedsStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalDevelopmentNeeds" }, { data: "proposed" }, { data: "inProgress" }, { data: "complete" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
 
 var sectorBreakdownLoaded = false;
 var employeeStatsLoaded = false;
 var objectivesStatsLoaded = false;
 var feedbackStatsLoaded = false;
+var developmentNeedsStatsLoaded = false;
 
 function init(){
 	verifyUser();
@@ -109,6 +112,18 @@ function getFeedbackStats(){
 	getFeedbackStatsAction(success, error);
 }
 
+function getDevelopmentNeedStats(){
+	var success = function(data){
+		developmentNeedsStatsLoaded = true;
+		loaded($developmentNeedsStatsContainer);
+		loadDatatable($developmentNeedsStatsTable, data, developmentNeedsStatsColumnList);
+	}
+	var error = function(error){}
+	
+	
+	getDevelopmentNeedStatsAction(success, error);
+}
+
 function setOverviewTable(data){
 	$accountAccessed.text(data.totalAccounts);
 	$usersWithObjective.text(data.usersWithObjectives);
@@ -154,8 +169,12 @@ function showContainer(container){
 				getFeedbackStats();
 			}
 			break;
-		case DEVELOPMENT_NEEDS_OVERVIEW:
-			loaded($developmentNeedsOverviewContainer);
+		case DEVELOPMENT_NEEDS_STATS:
+			if(developmentNeedsStatsLoaded){
+				loaded($developmentNeedsStatsContainer);
+			}else{
+				getDevelopmentNeedStats();
+			}
 			break;
 		case DEVELOPMENT_NEEDS_BREAKDOWN:
 			loaded($developmentNeedsBreakdownContainer);
