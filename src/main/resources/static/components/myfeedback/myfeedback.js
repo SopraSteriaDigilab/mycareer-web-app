@@ -158,7 +158,7 @@ function updateEndDate(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	if(startDate > endDate){
-		$("#feedback-end-date").val(timeStampToClassDate(startDate));
+		$("#feedback-end-date").val(moment(startDate).format('YYYY-MM-DD'));
 	}
 	$("#feedback-end-date-picker").datepicker('setStartDate', startDate);
 }
@@ -177,7 +177,7 @@ function applyDateFilter(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
-		dateRangeList.push(timeStampToClassDate(date));
+		dateRangeList.push(moment(date).format('YYYY-MM-DD'));
 	}
 	
 	$(".date-filter").each(function(index){

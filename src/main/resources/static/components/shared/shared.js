@@ -243,8 +243,8 @@ function getGeneralFeedbackList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                var classDate = timeStampToClassDate(val.timestamp);
-                var longDate = timeStampToLongDate(new Date(val.timestamp));
+                var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+                var longDate = moment(val.timestamp).format('DD MMM YYYY');
                 var name = (val.providerName) ? val.providerName : val.providerEmail;
                 addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
             });//end of for each loop
