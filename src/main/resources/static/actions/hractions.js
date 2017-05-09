@@ -7,6 +7,7 @@ const GET_EMPLOYEE_STATS = "/getEmployeeStats";
 const GET_OBJECTIVE_STATS = "/getObjectiveStats";
 const GET_FEEDBACK_STATS = "/getFeedbackStats";
 const GET_DEVELOPMENT_NEEDS_STATS = "/getDevelopmentNeedStats";
+const GET_DEVELOPMENT_NEEDS_BREAKDOWN = "/getDevelopmentNeedBreakDown";
 
 /**
  *Ajax GET call get history for a user.
@@ -100,9 +101,17 @@ function getDevelopmentNeedStatsAction(successFunction, errorFunction){
 	});
 }
 
-
-
-
+function getDevelopmentNeedBreakDownAction(successFunction, errorFunction){
+	var url = HR + GET_DEVELOPMENT_NEEDS_BREAKDOWN;
+	var request = $get(url);
+	request.done( function(data){ 
+		successFunction(data)
+	});
+	request.fail(function(jqXHR, textStatus){
+        toastr.error(jqXHR.responseJSON.error);
+        errorFunction(jqXHR.responseJSON.error);
+	});
+}
 
 
 

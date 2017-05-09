@@ -35,19 +35,22 @@ var $sectorBreakdownTable = $("#sector-breakdown-table");
 var $employeeStatsTable = $("#employee-stats-table");
 var $objectivesStatsTable = $("#objectives-stats-table");
 var $feedbackStatsTable = $("#feedback-stats-table");
-var $developmentNeedsStatsTable = $("#development-needs-table");
+var $developmentNeedsStatsTable = $("#development-needs-stats-table");
+var $developmentNeedsBreakdownTable = $("#development-needs-breakdown-table");
 
 var sectorBreakDownColumnList = [ { data: "sector" }, { data: "employees" }, { data: "noWithObjs" }, { data: "noWithDevNeeds" }, { data: "percentObjs" }, { data: "percentDevNeeds" }];
 var employeeStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "company" }, { data: "superSector" }, { data: "department" }, { data: "lastLogon" },  { data: "currentEmployee" }];
 var objectivesStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalObjectives" }, { data: "proposed" }, { data: "inProgress" }, { data: "complete" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
 var feedbackStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalFeedback" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
 var developmentNeedsStatsColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "totalDevelopmentNeeds" }, { data: "proposed" }, { data: "inProgress" }, { data: "complete" },  { data: "company" }, { data: "superSector" }, { data: "department" }];
+var developmentNeedsBreakdownColumnList = [ { data: "employeeID" }, { data: "fullName" }, { data: "title" }, { data: "category" }, { data: "company" }, { data: "superSector" }, { data: "department" } ]
 
 var sectorBreakdownLoaded = false;
 var employeeStatsLoaded = false;
 var objectivesStatsLoaded = false;
 var feedbackStatsLoaded = false;
 var developmentNeedsStatsLoaded = false;
+var developmentNeedsBreakdownLoaded = false;
 
 function init(){
 	verifyUser();
@@ -120,8 +123,18 @@ function getDevelopmentNeedStats(){
 	}
 	var error = function(error){}
 	
-	
 	getDevelopmentNeedStatsAction(success, error);
+}
+
+function getDevelopmentNeedBreakDown(){
+	var success = function(data){
+		developmentNeedsBreakdownLoaded = true;
+		loaded($developmentNeedsBreakdownContainer);
+		loadDatatable($developmentNeedsBreakdownTable, data, developmentNeedsBreakdownColumnList);
+	}
+	var error = function(error){}
+	
+	getDevelopmentNeedBreakDownAction(success, error);
 }
 
 function setOverviewTable(data){
@@ -177,7 +190,11 @@ function showContainer(container){
 			}
 			break;
 		case DEVELOPMENT_NEEDS_BREAKDOWN:
-			loaded($developmentNeedsBreakdownContainer);
+			if(developmentNeedsBreakdownLoaded){
+				loaded($developmentNeedsBreakdownContainer);
+			}else{
+				getDevelopmentNeedBreakDown();
+			}
 			break;
 	}
 }
