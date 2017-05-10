@@ -11,7 +11,8 @@ function getObjectivesData(){
 	        	 var isArchived = val.archived;
 	        	 isArchived = isArchived ? 'Yes' : 'No';
 	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
-	        	 	addObjectivesDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.proposedBy, isArchived);
+	        	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
+	        	 addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
 	         }); 
 	         openPDF("objTable");
      },
@@ -32,7 +33,8 @@ function getFeedbackData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printFeedbackHeader());
 	         $.each(data, function(key, val){
-	        	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, val.timestamp);
+	        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
+	        	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
 	         }); 
 	         openPDF("feedTable");
      },
@@ -56,7 +58,8 @@ function getDevelopmentNeedsData(){
 	        	 var isArchived = val.archived;
 	        	 isArchived = isArchived ? 'Yes' : 'No';
 	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
-	        		 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, val.createdOn, val.category, isArchived);
+	        	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
+	        	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
 	         });
 	         openPDF("devNeedsTable");
      },
@@ -77,7 +80,8 @@ function getNotesData(){
     success: function(data){
     	 	 $("#pdf-modal-body").append(printNotesHeader());
 	         $.each(data, function(key, val){
-	        	 addNotesDataToList(val.providerName, val.noteDescription, val.timestamp);
+	        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
+	        	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
 	         }); 
 	         openPDF("notesTable");
      },
@@ -194,7 +198,7 @@ function printObjectivesList(dueDate, title, description, progress, createdOn, p
                 <td>"+dueDate+"</td> \
                 <td><span style=\"font-weight: bold;\">"+title+"</span><br/>"+description+"</td> \
                 <td>"+progress+"</td> \
-                <td>"+timeStampToLongDate(createdOn)+"</td> \
+                <td>"+createdOn+"</td> \
                 <td>"+proposedBy+"</td> \
     		    <td>"+isArchived+"</td> \
             </tr> \
@@ -208,7 +212,7 @@ function printFeedbackList(providerEmail, providerName, feedbackDescription, pro
             <tr> \
                 <td><span style=\"font-weight: bold;\">"+providerName+"\n\n</span><br/>"+providerEmail+"</td> \
                 <td>"+feedbackDescription+"</td> \
-                <td>"+timeStampToLongDate(providedOn)+"</td> \
+                <td>"+providedOn+"</td> \
             </tr> \
     "
     return html;

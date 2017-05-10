@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	init();	
 });
 
 var $loadingEmployeeNameIDs = $("#loading-employee-name-ids");
@@ -11,6 +11,10 @@ var $notesTable = ("#notes-table");
 var $ratingsTable = ("#ratings-table");
 var $employeeDataContainer = $("#employee-data-container");
 var $placeholderContainter = $("#placeholder-container");
+var $searchInput = $("#searchInput");
+var $submitSearchButton = $("#submit-employee-search");
+var $searchOptions = $("#search-options");
+var $employeeNameLabel = $(".employee-name");
 
 var retrievedEmployees = [];
 
@@ -26,13 +30,13 @@ var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: fun
 var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY HH:mm')}, targets:2}];
 var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
 
-var emptyCareer = {objectives : [], developmentNeeds: [], competencies: [], notes: [], feedback:[], ratings:[]}
+var emptyCareer = {profile: { forename: "", surname: "", employeeID: ""  }, objectives : [], developmentNeeds: [], competencies: [], notes: [], feedback:[], ratings:[]};
 
 function init(){
 	verifyUser();
 	getEmployeeNamesAndIds();
 	
-	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()); });
+	$submitSearchButton.on('click', function() { clickSearch(); });
 }
 
 function getEmployeeNamesAndIds(){
@@ -44,20 +48,34 @@ function getEmployeeNamesAndIds(){
 }
 
 function initialiseSelectPicker(data){
-	$employeeSelectPicker.html(selectPickerOptionsHTML(data));
-	$loadingEmployeeNameIDs.remove();
-	$employeeSelectPicker.selectpicker({showSubtext:true});
-}
 
-function selectPickerOptionsHTML(data){
-	var HTML = "";
-	$.each(data, function(key, val){
-		HTML += "<option value='"+val.profile.employeeID+"'  data-subtext='"+val.profile.employeeID+"'>"+ val.profile.forename + " " + val.profile.surname +"</option>"
+	$searchInput.typeahead({
+		items: 10,
+		source: data,
+		displayText: function(val){ 
+			return val.profile.forename + " " + val.profile.surname + " " + val.profile.employeeID;
+		}
 	});
-	return HTML;
+	
+	$loadingEmployeeNameIDs.remove();
+	$searchOptions.show();	
 }
 
-function selectEmployee(employeeId){		
+function clickSearch(){
+	var str = $searchInput.val().trim();
+	
+	if(!isValidSearch(str)){
+		 toastr.error("The value submitted is not valid, please select from one of the drop down values or enter a valid employee ID.")
+		 return;
+	}
+	
+	var searchStr = str.substring(str.length-6, str.length)
+	
+	selectEmployee(searchStr);
+}
+
+function selectEmployee(employeeId){
+	
 	if(!employeeRetrieved(employeeId)){
 		getEmployeeCareer(employeeId);
 	}else{
@@ -101,7 +119,10 @@ function updateEmployeeView(employeeId, data){
 	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
 	getTable($notesTable, data.notes, notesColumnList, notesColumnDefs);
 	getTable($ratingsTable, showIfSubmitted(data.ratings), ratingsColumnList, ratingsColumnDefs);
+	
+	$employeeNameLabel.text(data.profile.forename + " " + data.profile.surname + " " + data.profile.employeeID );
 }
+
 
 function employeeRetrieved(employeeId){
 	if(jQuery.inArray(employeeId, Object.keys(retrievedEmployees)) == -1){
@@ -135,3 +156,9 @@ function showIfSubmitted(ratings){
 	
 	return updatedRatings;
 }
+
+function isValidSearch(str){
+    var pattern = /([0-9]{6})$/;
+    return pattern.test(str);
+}
+
