@@ -163,14 +163,20 @@ function clickSubmitObjective(){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
         showObjectiveModal(false);
 	}else{
-        var proposedTo = $("#proposed-obj-to").val().trim(); 
-         if (validEmails(proposedTo)){
-             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-             showObjectiveModal(false);
-        }else{
-          toastr.error("One or more email addresses entered are not valid");
-          showObjectiveModal(true);
-        }  
+		var distribustionList = $("#distribution-list-textbox").val().trim();
+		var isChecked = $("#distribution-list-checkbox").is(":checked");
+		if(isChecked){
+			proposeObjectiveToDistributionList(userID, distribustionList, objTitle, objText, objDate);
+		}else{
+	        var proposedTo = $("#proposed-obj-to").val().trim(); 
+	         if (validEmails(proposedTo)){
+	             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
+	             showObjectiveModal(false);
+	        }else{
+	          toastr.error("One or more email addresses entered are not valid");
+	          showObjectiveModal(true);
+	        }
+		}
     }
 }
 

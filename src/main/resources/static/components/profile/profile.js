@@ -1,29 +1,28 @@
 $(function() {
+	
 	populateProfile(getUserName(), getADfullName());
 	
 	initEmailModal();
 	
 	//Prevents the menu to collapse when the user clicks on "Print"
-	$('#printOption').click(function(event){
-	     event.stopPropagation();
-	 });
+	$('#printOption').click(function(event){ event.stopPropagation(); });
 	
 	//onClick for opening print modal
 	$('.pdf').click(function(event) {
 		var id = event.target.id;
-		if(id=== "objPDF"){			
+		if(id === "objPDF"){			
 			 getObjectivesData();
 			 $('#print-modal-title-type').text('Objectives');
 		}
-		else if(id=== "feedPDF"){
+		else if(id === "feedPDF"){
 			 getFeedbackData();
 			 $('#print-modal-title-type').text('Feedback');
 		}
-		else if(id=== "devPDF"){
+		else if(id === "devPDF"){
 			 getDevelopmentNeedsData();
 			 $('#print-modal-title-type').text('Development Needs'); 
 		}
-		else if(id=== "notesPDF"){
+		else if(id === "notesPDF"){
 			 getNotesData();
 			 $('#print-modal-title-type').text('Notes');
 		}
@@ -38,14 +37,10 @@ $(function() {
 	});
 	
 	//onClick for opening email modal
-	$('#email').click(function(event) {
-		openEmailModal();
-	});
+	$('#email').click(function(event) { openEmailModal(); });
 	
 	//onClick for closing print modal
-	$('#close-email , #close-email-x').on('click', function(e) { 
-		$('#email-modal').modal('hide');
-	});
+	$('#close-email , #close-email-x').on('click', function(e) { $('#email-modal').modal('hide'); });
 });
 
 /** Constants */

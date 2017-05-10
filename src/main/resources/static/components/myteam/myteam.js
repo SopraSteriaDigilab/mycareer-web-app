@@ -383,25 +383,25 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
             'emails': proposedTo
         },            
         success: function(response){
-            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
-            	toastr.warning(response);
-               }else if(response.indexOf("Error") !== -1){   
-                toastr.error(response);
-               }else{
-            	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
-            		addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
-            	}
-                toastr.success(response);
-               }
-           },
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-        	   var errorMessage = XMLHttpRequest.responseText.toLowerCase();
-       			if(errorMessage.indexOf("objective proposed") > -1){
-       				toastr.warning(XMLHttpRequest.responseText);
-       			}else{
-       				toastr.error(errorMessage);
-       			}
-           },
+        	if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
+        		toastr.warning(response);
+        	}else if(response.indexOf("Error") !== -1){   
+        		toastr.error(response);
+        	}else{
+        		if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
+        			addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
+        		}
+        		toastr.success(response);
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+        	if(errorMessage.indexOf("objective proposed") > -1){
+        		toastr.warning(XMLHttpRequest.responseText);
+        	}else{
+        		toastr.error(errorMessage);
+        	}
+        },
     });
 }
 
@@ -882,5 +882,58 @@ function toggleActivityFeed(){
 		$activityFeed.show();
 	}
 }
+
+//function to open Proposed objective modal
+function openProposedObjectiveModal(){
+    $("#obj-modal-type").val('propose');
+	setObjectiveModalContent('', '', '', getToday(), 0, 2);
+	showObjectiveModal(true);
+}
+
+function proposedToHTML(){
+    var HTML= " \
+        <label id='propose-to-title'>"+EMAILS+"</label> \
+		<div class='pull-right checkbox' style='margin-top:0px; margin-bottom:0px;'> \
+	  		<label class='pull-right' style='font-weight: 200;'><input id='distribution-list-checkbox' type='checkbox' onClick='toggleProposeToInput()'>Proposed to Distribution List</label> \
+		</div> \
+        <div id='proposed-obj-to-container' style='height:34px'> \
+        	<input id='proposed-obj-to' type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' maxlength='150' /> \
+        </div> \
+    	<div id='distribution-list-textbox-container' hidden> \
+    		<input id='distribution-list-textbox' type='text' class='form-control' placeholder='...' maxlength='150'/> \
+    	<div>" ;
+    return HTML;
+}
+
+function toggleProposeToInput(){
+	var isChecked = $("#distribution-list-checkbox").is(":checked");
+	if(isChecked){
+		$("#distribution-list-textbox-container").show();
+		$("#proposed-obj-to-container").hide();
+		$("#propose-to-title").text(DISTRIBUTION_LIST);
+	}else{
+		$("#distribution-list-textbox-container").hide();
+		$("#proposed-obj-to-container").show();
+		$("#propose-to-title").text(EMAILS);
+	}
+}
+
+function proposeObjectiveToDistributionList(userId, distribustionList, objectiveTitle, objectiveDescription, objectiveDate){
+	if(distribustionList.length < 1){
+		toastr.error("Please enter a distribution list")
+		return true;
+	}
+	
+	
+	
+}
+
+
+
+
+
+
+
+
 
 

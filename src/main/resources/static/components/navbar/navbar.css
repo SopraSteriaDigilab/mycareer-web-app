@@ -103,3 +103,7 @@ thead th{
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
+
+#proposed-obj-to-container .bootstrap-tagsinput{
+	height: 34px;
+}

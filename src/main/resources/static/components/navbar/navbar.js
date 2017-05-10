@@ -1,5 +1,11 @@
 $(function() {
+	initNavbar();
+});
 
+const EMAILS = "Email(s)*:";
+const DISTRIBUTION_LIST = "Distribution List*:";
+
+function initNavbar(){
 	$("sidebar").resizable();
 	loadProfile();
 	
@@ -16,7 +22,7 @@ $(function() {
 	
 	//onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
-});
+}
 
 //Function to load profile section
 function loadProfile(){
@@ -40,16 +46,4 @@ function highlight(value) {
 	})
 }
 
-//function to open Proposed objective modal
-function openProposedObjectiveModal(){
-    $("#obj-modal-type").val('propose');
-	setObjectiveModalContent('', '', '', getToday(), 0, 2);
-	showObjectiveModal(true);
-}
 
-function proposedToHTML(){
-    var HTML= " \
-        <label for='proposed-obj-to'>Email(s)*:</label> \
-            <input type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' id='proposed-obj-to' maxlength='150' />";
-    return HTML;
-}

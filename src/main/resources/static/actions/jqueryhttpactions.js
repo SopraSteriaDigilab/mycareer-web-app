@@ -5,9 +5,24 @@
  */
 function $get(path){
     return $.ajax({
-        url: 'http://'+getEnvironment()+path,
+        url: 'http://' + getEnvironment() + path,
         cache: false,
         method: 'GET',
-        xhrFields: {'withCredentials': true}
+        xhrFields: { withCredentials: true }
+    });
+}
+
+
+/**
+ *Ajax POST call
+ * 
+ * @param path path of the get request
+ */
+function $post(path, data){
+    return $.ajax({
+        url: 'http://' + getEnvironment() + path,
+        method: 'POST',
+        xhrFields: { withCredentials: true },
+        data: data
     });
 }

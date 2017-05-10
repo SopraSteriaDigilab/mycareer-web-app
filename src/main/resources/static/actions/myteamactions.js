@@ -1,3 +1,6 @@
+const MANAGER = "/manager";
+const GET_ACTIVITY_FEED = "/getActivityFeed";
+
 /**
  *Ajax GET call to get activity feed for a user.
  * 
@@ -6,17 +9,13 @@
  * @param errorFunction function if call fails
  */
 function getActivityFeedAction(userId, successFunction, errorFunction){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/manager/getActivityFeed/'+userId,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	successFunction(data);
-        },
-        error: function(jqXHR, textStatus){        	
-            toastr.error("Sorry, there was a problem getting ratings, please try again later.");
-            errorFunction(jqXHR.responseJSON.error);
-        }
-    });
+	var url = MANAGER + GET_ACTIVITY_FEED + "/" +userId;
+	var request = $get(url);
+	request.done( function(data){ 
+		successFunction(data)
+	})
+	request.fail(function(jqXHR, textStatus) {
+		toastr.error("Sorry, there was a problem getting ratings, please try again later.");
+        errorFunction(jqXHR.responseJSON.error);
+	});
 }
