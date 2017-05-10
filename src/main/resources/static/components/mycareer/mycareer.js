@@ -7,40 +7,27 @@ var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
-var emailSet = [];
 var userAddress = null;
+var emails = [];
 
-function logMeIn(){	
-	$.ajax({
-		"async": true,
-		"crossDomain": true,
-		"url": "http://"+getEnvironment()+"/logMeIn",
-		"cache": false,
-		"method": "GET",
-		xhrFields: { 'withCredentials': true },
-		success: function(data){
-			ADfullName = data.fullName;
-			ADLoginID = data.employeeID;
-			ADUsername = data.username;
-			isManager = data.isManager;
-			demoManager(data.employeeID) //REMOVE ME!!!!
-			hasHRDash = data.hasHRDash;
-			mail=data.emailAddresses.mail;
-			targetAddress=data.emailAddresses.targetAddress;
-			if (mail===targetAddress){
-				emailSet.push(mail.toString());
-			}
-			else{
-				emailSet.push(mail.toString());
-				emailSet.push(targetAddress.toString());
-			}
-			userAddress = data.emailAddresses.userAddress;
-			loadPage($("#section").text());  
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown){
-			window.location.replace("/access-issue");
-		}
-	});
+function logMeIn(){
+	var success = function(data){
+		ADfullName = data.fullName;
+		ADLoginID = data.employeeID;
+		ADUsername = data.username;
+		isManager = data.isManager;
+		demoManager(data.employeeID) //REMOVE ME!!!!
+		hasHRDash = data.hasHRDash;
+		addToEmails(data.emailAddresses.mail);
+		addToEmails(data.emailAddresses.targetAddress);
+		userAddress = data.emailAddresses.userAddress;
+		loadPage($("#section").text());  
+	}
+	var error = function(XMLHttpRequest, textStatus, errorThrown){
+		window.location.replace("/access-issue");
+	}
+	
+	logMeInAction(success, error);
 }
 
 function demoManager(employeeID){
@@ -83,6 +70,12 @@ function loadPage(section){
 		});
 }
 
+function addToEmails(email){
+	if(jQuery.inArray(email, emails) == -1){
+		emails.push(email);
+	}
+} 
+
 function getADfullName(){
 	return ADfullName;
 }
@@ -104,7 +97,7 @@ function userHasHrDash(){
 }
 
 function getEmailSet(){
-    return emailSet;
+    return emails;
 }
 
 function getUserAddress(){
