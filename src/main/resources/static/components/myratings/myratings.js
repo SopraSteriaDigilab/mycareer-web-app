@@ -27,7 +27,7 @@ var $saveButton = $("#save-self-evaluation");
 var $cancelButton = $("#cancel-self-evaluation");
 
 var wasSelfEvaluationEmpty = null
-var input = null;
+var lastSavedSelfEvaluationInput = null;
 
 
 /** Initialise MyRatings Page. */
@@ -65,11 +65,11 @@ function setMyRatings(selfEvaluation, managerEvaluation, evaluationScore, isSelf
 	
 	if ($selfEvaluationText.text()==="No self rating has been written."){
 		wasSelfEvaluationEmpty=true;
-		input="";
+		lastSavedSelfEvaluationInput="";
 	}
 	else{
 		wasSelfEvaluationEmpty=false;
-		input=$selfEvaluationText.text();
+		lastSavedSelfEvaluationInput=$selfEvaluationText.text();
 	}
 }
 
@@ -157,7 +157,7 @@ function clickClose(){
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeSelfEvaluation(false) }
-	if ((checkEmptyID("self-evaluation-input",false) && wasSelfEvaluationEmpty)||(input===$selfEvaluationInput.val())){
+	if ((checkEmptyID("self-evaluation-input",false) && wasSelfEvaluationEmpty)||(lastSavedSelfEvaluationInput===$selfEvaluationInput.val())){
 		closeSelfEvaluation(false);
 	}
 	else{
