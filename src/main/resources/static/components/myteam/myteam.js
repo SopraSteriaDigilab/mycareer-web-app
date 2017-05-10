@@ -924,6 +924,7 @@ function generateDistributionList(userId, distributionListName, objectiveTitle, 
 		return true;
 	}
 	
+	loading();
 	var data = { distributionListName: distributionListName };
 	var success = function(data){
 		var title = "Proposing to " + data.emailAddresses.length + " employees";
@@ -932,9 +933,10 @@ function generateDistributionList(userId, distributionListName, objectiveTitle, 
 		var buttonText = "Submit";
 		var buttonFunction = function(){ temp(); }
 		
+		loaded();
 		openWarningModal(title, body, buttonText, buttonFunction);
 	} 
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	generateDistributionListAction(userId, data, success, error);
 }

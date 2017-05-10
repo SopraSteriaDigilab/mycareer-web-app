@@ -3,6 +3,9 @@ $(function() {
 	adjustDataTablesMomentJs();
 });
 
+$loadingSpinner = $("#loading-spinner");
+$loadingText = $("#loading-text");
+
 var emails = [];
 var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
@@ -980,8 +983,18 @@ function emailListHTML(emails){
 	    HTML += "<h6>"+emails[i]+"</h6>";
 	}
 	HTML += "</div>";
-	return HTML;
-	
+	return HTML;	
+}
+
+function loading(loadingText){
+	if(typeof myVar != 'undefined' && loadingloadingText.length > 0)
+		$loadingText.text(loadingText);
+	$loadingSpinner.show();
+}
+
+function loaded(){
+	$loadingSpinner.hide();
+	$loadingText.text("Loading... This may take a minute.");
 }
 
 
