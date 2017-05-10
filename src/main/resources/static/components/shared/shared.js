@@ -800,7 +800,7 @@ function getEmailList(){
 
 function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";
-	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+	if(objTagIds == '' && devNeedTagIds == ''){
 		HTML = "No tags with this " + type + "."
 	}else{
 		if(objTagIds.length > 0)
