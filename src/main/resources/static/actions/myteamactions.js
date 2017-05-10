@@ -1,5 +1,6 @@
 const MANAGER = "/manager";
 const GET_ACTIVITY_FEED = "/getActivityFeed";
+const GENERATE_DISTRIBUTION_LIST = "/generateDistributionList";
 
 /**
  *Ajax GET call to get activity feed for a user.
@@ -11,7 +12,7 @@ const GET_ACTIVITY_FEED = "/getActivityFeed";
 function getActivityFeedAction(userId, successFunction, errorFunction){
 	var url = MANAGER + GET_ACTIVITY_FEED + "/" +userId;
 	var request = $get(url);
-	request.done( function(data){ 
+	request.done(function(data){ 
 		successFunction(data)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -19,3 +20,17 @@ function getActivityFeedAction(userId, successFunction, errorFunction){
         errorFunction(jqXHR.responseJSON.error);
 	});
 }
+
+function generateDistributionListAction(userId, data, successFunction, errorFunction){
+	var url = MANAGER + GENERATE_DISTRIBUTION_LIST + "/" +userId;
+	var request = $post(url, data);
+	request.done(function(data){ 
+		successFunction(data)
+	})
+	request.fail(function(jqXHR, textStatus) {
+		toastr.error(jqXHR.responseJSON.error);
+        errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
+function proposeObjectiveToDistributionListAction(){}

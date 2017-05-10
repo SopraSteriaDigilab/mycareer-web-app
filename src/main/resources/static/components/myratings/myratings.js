@@ -101,7 +101,7 @@ function editSelfEvaluation(){
 /** Open Confirmation Modal */
 function submitSelfEvaluation(){
 	var title = "Submit Evaluation";
-	var body = "<h5>Once you have submitted your self evlauation, you will no longer be able to edit this.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var body = "<h5>Once you have submitted your self evlauation, you will no longer be able to edit this.</h5><h5><b>Are you sure you want to submit?</b></h5>";
 	var buttonText = "Submit";
 	var buttonFunction = function(){ confirmSubmitEvaluation() }
 	
@@ -141,7 +141,7 @@ function closeSelfEvaluation(save){
 
 function clickClose(){
 	var title = "Cancel Evaluation";
-	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeSelfEvaluation(false) }
 	

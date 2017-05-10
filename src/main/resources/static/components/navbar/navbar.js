@@ -22,6 +22,8 @@ function initNavbar(){
 	
 	//onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
+	
+	adjustMultipleModalBackdrop();
 }
 
 //Function to load profile section
@@ -46,4 +48,16 @@ function highlight(value) {
 	})
 }
 
-
+//Sorts backdrop of multiple modals and sorts scrolling when closing multiple modals
+function adjustMultipleModalBackdrop(){
+	
+    $(document).on('show.bs.modal', '.modal', function (event) {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    }).on('hidden.bs.modal', '.modal', function () {
+        $('.modal:visible').length && $(document.body).addClass('modal-open');
+    });
+}

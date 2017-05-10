@@ -301,7 +301,7 @@ function selectedReportee(element){
 function clickReportee(id, name, emailAddress, userName, element){
 	if(editingRating){
 		var title = "Cancel Evaluation";
-		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 		var buttonText = "Continue";
 		var buttonFunction = function(){ 
 			closeManagerEvaluation(false);
@@ -801,7 +801,7 @@ function editManagerEvaluation(){
 /** Open confirmation model. */
 function submitManagerEvaluation(){
 	var title = "Submit Evaluation";
-	var body = "<h5>Once you have submitted your manager evlauation, the rating process will be complete and can no longer be edited.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var body = "<h5>Once you have submitted your manager evlauation, the rating process will be complete and can no longer be edited.</h5><h5><b>Are you sure you want to submit?</b></h5>";
 	var buttonText = "Submit";
 	var buttonFunction = function(){ confirmSubmitEvaluation() }
 	
@@ -845,7 +845,7 @@ function closeManagerEvaluation(save){
 
 function clickClose(){
 	var title = "Cancel Evaluation";
-	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeManagerEvaluation(false) }
 	
@@ -918,17 +918,33 @@ function toggleProposeToInput(){
 	}
 }
 
-function proposeObjectiveToDistributionList(userId, distribustionList, objectiveTitle, objectiveDescription, objectiveDate){
-	if(distribustionList.length < 1){
-		toastr.error("Please enter a distribution list")
+function generateDistributionList(userId, distributionListName, objectiveTitle, objectiveDescription, objectiveDate){
+	if(distributionListName.length < 1){
+		toastr.error("Please enter a distribution list name")
 		return true;
 	}
 	
+	var data = { distributionListName: distributionListName };
+	var success = function(data){
+		var title = "Proposing to " + data.emailAddresses.length + " employees";
+		var body = "<h5>You are about to propose an objective to the following "+ data.emailAddresses.length + " employees:</h5> " + 
+					emailListHTML(data.emailAddresses) + " <h5><b>Are you sure you want to submit?</b></h5>";
+		var buttonText = "Submit";
+		var buttonFunction = function(){ temp(); }
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	} 
+	var error = function(error){}
 	
-	
+	generateDistributionListAction(userId, data, success, error);
 }
 
-
+function temp(){
+	
+	
+	showObjectiveModal(false);
+	closeWarningModal();
+}
 
 
 

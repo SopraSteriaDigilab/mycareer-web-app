@@ -163,10 +163,10 @@ function clickSubmitObjective(){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
         showObjectiveModal(false);
 	}else{
-		var distribustionList = $("#distribution-list-textbox").val().trim();
+		var distributionListName = $("#distribution-list-textbox").val().trim();
 		var isChecked = $("#distribution-list-checkbox").is(":checked");
 		if(isChecked){
-			proposeObjectiveToDistributionList(userID, distribustionList, objTitle, objText, objDate);
+			generateDistributionList(userID, distributionListName, objTitle, objText, objDate);
 		}else{
 	        var proposedTo = $("#proposed-obj-to").val().trim(); 
 	         if (validEmails(proposedTo)){
@@ -974,6 +974,15 @@ function verifyUser(){
     }
 }
 
+function emailListHTML(emails){
+	var HTML = "<div class='well well-sm' style='max-height:200px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word;'>";
+	for (i = 0; i < emails.length; i++) { 
+	    HTML += "<h6>"+emails[i]+"</h6>";
+	}
+	HTML += "</div>";
+	return HTML;
+	
+}
 
 
 
