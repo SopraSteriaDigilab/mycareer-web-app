@@ -26,7 +26,7 @@ var $submitButton = $("#submit-self-evaluation");
 var $saveButton = $("#save-self-evaluation");
 var $cancelButton = $("#cancel-self-evaluation");
 
-var wasSelfEvaluationEmpty = null
+var wasSelfEvaluationEmpty = null;
 var lastSavedSelfEvaluationInput = null;
 
 
@@ -130,7 +130,7 @@ function confirmSubmitEvaluation(){
 /** Save self evaluation to the database. */
 function saveSelfEvaluation(){
 	wasSelfEvaluationEmpty=checkEmptyID("self-evaluation-input",true);
-	input=$selfEvaluationInput.val();
+	lastSavedSelfEvaluationInput=$selfEvaluationText.text();
 	addSelfEvaluationAction(getADLoginID(), $selfEvaluationInput.val(), function(response){
 		closeSelfEvaluation(true);
 	}, function(){});	
@@ -153,6 +153,7 @@ function closeSelfEvaluation(save){
 }
 
 function clickClose(){
+	lastSavedSelfEvaluationInput=$selfEvaluationText.text();
 	var title = "Cancel Evaluation";
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
