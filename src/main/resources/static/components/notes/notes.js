@@ -67,8 +67,8 @@ function getNotesList(userID){
       success: function(data){
           lastNoteID = data.length;
           $.each(data, function(key, val){
-          	var date = timeStampToDateTime(new Date(val.timestamp));
-          	var classDate = timeStampToClassDate(val.timestamp);
+          	var date = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(val.timestamp).format('YYYY-MM-DD');
           	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
           });
           if(data.length == 0)
@@ -111,7 +111,7 @@ function addNoteToList(id, providerName, body, date, classDate, objTagIds, devNe
 }
 
 //Method to return html
-function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){	
+function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){
 	var html = " \
 		  <li class='list-group-item filterable-note' id='note-"+id+"'> \
 			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
@@ -174,7 +174,7 @@ function updateNoteEndDate(){
 	var endDate = formatNoteDate($("#notes-end-date").val());
 	
 	if(startDate > endDate){
-		$("#notes-end-date").val(timeStampToClassDate(startDate));
+		$("#notes-end-date").val(moment(startDate).format('YYYY-MM-DD'));
 	}
 	$("#notes-end-date-picker").datepicker('setStartDate', startDate);
 }
@@ -189,8 +189,11 @@ function formatNoteDate(date){
 	var day = date.slice(0,2);
 	var month = date.slice(3,5);
 	var year = date.slice(6,10);
+	var a =  new Date(year + '-' + month + '-' + day);
 	return new Date(year + '-' + month + '-' + day);
 }
+
+//moment(date).format('YYYY-MM-DD')
 
 function applyNoteDateFilter(){
 	var dateRangeList = [];
@@ -198,11 +201,12 @@ function applyNoteDateFilter(){
 	var endDate = formatNoteDate($("#notes-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
-		dateRangeList.push(timeStampToClassDate(date));
+		dateRangeList.push(moment(date).format('YYYY-MM-DD'));
 	}
 	
 	$(".date-filter").each(function(index){
 		var date = $(this).val()
+		
 
 		if(jQuery.inArray(date, dateRangeList) > -1){
 			$(this).closest('li').removeClass("filteredOutByDate");
