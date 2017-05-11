@@ -26,6 +26,9 @@ var $submitButton = $("#submit-self-evaluation");
 var $saveButton = $("#save-self-evaluation");
 var $cancelButton = $("#cancel-self-evaluation");
 
+var wasSelfEvaluationEmpty = null
+var lastSavedSelfEvaluationInput = null;
+
 
 /** Initialise MyRatings Page. */
 function init(){
@@ -35,7 +38,6 @@ function init(){
 	$submitButton.click(function(){ submitSelfEvaluation(); });
 	$saveButton.click(function(){ saveSelfEvaluation(); });
 	$cancelButton.click(function(){ clickClose(); });
-	
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
@@ -60,6 +62,15 @@ function setMyRatings(selfEvaluation, managerEvaluation, evaluationScore, isSelf
 	selfEvaluationSubmitted(isSelfEvaluationSubmitted);
 	
 	$selfEvaluationFooter.show();
+	
+	if ($selfEvaluationText.text()==="No self rating has been written."){
+		wasSelfEvaluationEmpty=true;
+		lastSavedSelfEvaluationInput="";
+	}
+	else{
+		wasSelfEvaluationEmpty=false;
+		lastSavedSelfEvaluationInput=$selfEvaluationText.text();
+	}
 }
 
 /** Sets the self evaluation label */
@@ -118,6 +129,8 @@ function confirmSubmitEvaluation(){
 
 /** Save self evaluation to the database. */
 function saveSelfEvaluation(){
+	wasSelfEvaluationEmpty=checkEmptyID("self-evaluation-input",true);
+	input=$selfEvaluationInput.val();
 	addSelfEvaluationAction(getADLoginID(), $selfEvaluationInput.val(), function(response){
 		closeSelfEvaluation(true);
 	}, function(){});	
@@ -144,6 +157,10 @@ function clickClose(){
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeSelfEvaluation(false) }
-	
-	openWarningModal(title, body, buttonText, buttonFunction);
+	if ((checkEmptyID("self-evaluation-input",false) && wasSelfEvaluationEmpty)||(lastSavedSelfEvaluationInput===$selfEvaluationInput.val())){
+		closeSelfEvaluation(false);
+	}
+	else{
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
