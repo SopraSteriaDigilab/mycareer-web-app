@@ -316,7 +316,7 @@ function getDevelopmentNeedsList(userID){
 	        $.each(data, function(key, val){
                 nextDevNeedId.push(val.id);
 	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-                 var progressNumber = numberProgress(val.progress);
+                var progressNumber = numberProgress(val.progress);
                 var categoryNumber = numberCategory(val.category);
 	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
 	        });

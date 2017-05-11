@@ -65,10 +65,7 @@ function getReportees(userId, isSubReportee){
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
-        success: function(data){
-        	if(userId == 675590){data = demoManager1();}
-        	if(userId == 674936){data = demoManager2();}
-        	
+        success: function(data){        	
         	if(!isSubReportee){
         		$("#reportee-list").empty();
             	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
@@ -96,6 +93,13 @@ function getActivityFeed(){
 	getActivityFeedAction(id, success, error);
 }
 
+function getDevelopmentNeedsListNEW(userId){
+	var success = function(data){ addDevelopmentNeedsToList(data); }
+	var error = function(error){}
+	
+	getDevelopmentNeedsAction(userId, success, error);
+}
+
 function addActivityFeed(data){
 	var activityHTML = "";
 	if(data.length < 1) {
@@ -116,120 +120,6 @@ function shortenTitleActivityFeed(description){
 		title = title.substring(0, 25) + "...";
 	
 	return action + " " + title;
-}
-
-function demoManager1(){	
-	return [{
-		"employeeID": 678124,
-		"surname": "BRARD",
-		"forename": "Alexandre",
-		"username": "abrard",
-		"emailAddresses": [
-          "alexandre.brard@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Alexandre BRARD"
-	},{
-		"employeeID": 675715,
-		"surname": "MCINTYRE",
-		"forename": "Chris",
-		"username": "chmcinty",
-		"emailAddresses": [
-		  "chris.mcintyre@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Chris MCINTYRE"
-	},{
-		"employeeID": 674936,
-		"surname": "HARRIS",
-		"forename": "Finlay",
-		"username": "fharris",
-		"emailAddresses": [
-		"finlay.harris@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Finlay HARRIS"
-	},{
-		"employeeID": 604970,
-		"surname": "RAO",
-		"forename": "Hanumant",
-		"username": "harao",
-		"emailAddresses": {
-		"mail": "hanumant.rao@soprasteria.com",
-		"targetAddress": "hanumant.rao@soprasteria.com",
-		"userAddress": null,
-		"preferred": "hanumant.rao@soprasteria.com"
-		},
-		"isManager": false,
-		"hasHRDash": false,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Justice People (DPC509)",
-		"sector": "GOV2",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Hanumant RAO"
-		}];
-}
-
-
-function demoManager2(){	
-	return [{
-		"employeeID": 675590,
-		"surname": "NACEF",
-		"forename": "Ridhwan",
-		"username": "rnacef",
-		"emailAddresses": [
-		"ridhwan.nacef@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Ridhwan NACEF"
-	},{
-		"employeeID": 676783,
-		"surname": "MEHMET",
-		"forename": "Mehmet",
-		"username": "mmehmet",
-		"emailAddresses": [
-		"mehmet.mehmet@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Mehmet MEHMET"
-	}];
 }
 
 function loadingSubReporteeList(){
@@ -323,7 +213,8 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
 		getGeneralFeedbackList(id);
-		getDevelopmentNeedsList(id);
+//		getDevelopmentNeedsList(id);
+		getDevelopmentNeedsListNEW(id);
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
 		getReportees(id, true);
@@ -507,10 +398,18 @@ function addCompetenciesToList(competencies){
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
 
-//Method to add development needs to list display
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	lastDevID = id;
-	$("#reportee-dev-needs-list").append(reporteeDevelopmentNeedListHTML(id, title, description, category, expectedBy, status));
+function addDevelopmentNeedsToList(data){
+	var html = "";
+	if(data.length == 0){
+    	  html = "<h5 class='text-center'>No Development Needs.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			if(data.isArchived !== false || data.isArchived !== 'false'){
+				html += reporteeDevelopmentNeedListHTML(val.id, val.title, val.description, numberCategory(val.category), moment(val.dueDate).format("MMMM YYYY"), numberProgress(val.progress));
+			}
+		});
+	}
+	$("#reportee-dev-needs-list").html(html);
 }
 
 //Method to add feedback descriptions to list
