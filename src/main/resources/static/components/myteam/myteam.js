@@ -718,7 +718,9 @@ function closeManagerEvaluation(save){
 	}else{
 		setManagerEvaluationInput($managerEvaluationText.text())
 		var s = $evaluationScoreText.text();
-		setManagerEvaluationScore(s.substring(s.length-1,s.length));
+		var score = (s === NO_RATING) ? 0 : s.substring(s.length-1,s.length);
+			
+		setManagerEvaluationScore(score);
 	}
 	$managerEvaluationLabels.show();
 	
