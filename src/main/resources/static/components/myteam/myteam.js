@@ -102,7 +102,7 @@ function addActivityFeed(data){
 		activityHTML = "<h5 class='text-center'>No activity from your team.</h5>";
 	}else{
 		$.each(data, function(key, val){
-			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), timeStampToDateTime(val.timestamp));
+			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), moment(val.timestamp).format('DD MMM YYYY HH:mm'));
 		});
 	}
 	$activityFeed.html(activityHTML);
