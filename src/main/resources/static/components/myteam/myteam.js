@@ -40,7 +40,7 @@ var activityFeedVisible = false;
 var editingRating = false;
 
 function init(){
-	getReportees(getADLoginID(), false, "");
+	getReportees(getADLoginID(), false);
 	loadingProposedButton();
 	getEmailList();
 	initSelect();
@@ -93,7 +93,7 @@ function getActivityFeed(){
 	getActivityFeedAction(id, success, error);
 }
 
-function getDevelopmentNeedsListNEW(userId){
+function getReporteeDevelopmentNeedsList(userId){
 	var success = function(data){ addDevelopmentNeedsToList(data); }
 	var error = function(error){}
 	
@@ -213,8 +213,7 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
 		getGeneralFeedbackList(id);
-//		getDevelopmentNeedsList(id);
-		getDevelopmentNeedsListNEW(id);
+		getReporteeDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
 		getReportees(id, true);
