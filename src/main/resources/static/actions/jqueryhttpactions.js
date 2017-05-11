@@ -5,13 +5,14 @@
  */
 function $get(path){
     return $.ajax({
-        url: 'http://' + getEnvironment() + path,
+		//async: false, //needed? Test on dev/uat
+    	//crossDomain: true, //needed? Test on dev/uat
+		url: 'http://' + getEnvironment() + path,
         cache: false,
         method: 'GET',
         xhrFields: { withCredentials: true }
     });
 }
-
 
 /**
  *Ajax POST call

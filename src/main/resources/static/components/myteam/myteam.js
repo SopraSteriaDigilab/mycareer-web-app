@@ -40,7 +40,7 @@ var activityFeedVisible = false;
 var editingRating = false;
 
 function init(){
-	getReportees(getADLoginID(), false, "");
+	getReportees(getADLoginID(), false);
 	loadingProposedButton();
 	getEmailList();
 	initSelect();
@@ -91,6 +91,13 @@ function getActivityFeed(){
 	var error = function(){}
 	
 	getActivityFeedAction(id, success, error);
+}
+
+function getReporteeDevelopmentNeedsList(userId){
+	var success = function(data){ addDevelopmentNeedsToList(data); }
+	var error = function(error){}
+	
+	getDevelopmentNeedsAction(userId, success, error);
 }
 
 function addActivityFeed(data){
@@ -206,7 +213,7 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
 		getGeneralFeedbackList(id);
-		getDevelopmentNeedsList(id);
+		getReporteeDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
 		getReportees(id, true);
@@ -390,10 +397,18 @@ function addCompetenciesToList(competencies){
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
 
-//Method to add development needs to list display
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	lastDevID = id;
-	$("#reportee-dev-needs-list").append(reporteeDevelopmentNeedListHTML(id, title, description, category, expectedBy, status));
+function addDevelopmentNeedsToList(data){
+	var html = "";
+	if(data.length == 0){
+    	  html = "<h5 class='text-center'>No Development Needs.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			if(data.isArchived !== false || data.isArchived !== 'false'){
+				html += reporteeDevelopmentNeedListHTML(val.id, val.title, val.description, numberCategory(val.category), moment(val.dueDate).format("MMMM YYYY"), numberProgress(val.progress));
+			}
+		});
+	}
+	$("#reportee-dev-needs-list").html(html);
 }
 
 //Method to add feedback descriptions to list
