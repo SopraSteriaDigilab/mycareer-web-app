@@ -23,7 +23,6 @@ function logMeIn(){
 			ADLoginID = data.employeeID;
 			ADUsername = data.username;
 			isManager = data.isManager;
-			demoManager(data.employeeID) //REMOVE ME!!!!
 			hasHRDash = data.hasHRDash;
 			mail=data.emailAddresses.mail;
 			targetAddress=data.emailAddresses.targetAddress;
@@ -41,18 +40,6 @@ function logMeIn(){
 			window.location.replace("/access-issue");
 		}
 	});
-}
-
-function demoManager(employeeID){
-	if(employeeID == 675590){
-	  isManager = true;
-	}
-	if(employeeID == 674936){
-		isManager = true;
-	}
-	if(employeeID == 678124){
-		isManager = true;
-	}
 }
 
 function getEnvironment(){

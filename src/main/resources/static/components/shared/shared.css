@@ -31,7 +31,7 @@ textarea {
 }
 
 #loading-gif{
-	style: margin-left: calc(50% - 48px);
+	margin-left: calc(50% - 48px);
 }
 
 #warning-modal{

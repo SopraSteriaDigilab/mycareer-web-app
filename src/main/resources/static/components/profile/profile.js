@@ -60,8 +60,7 @@ var currentExtraEmail=getUserAddress();
 
 function populateProfile(userName, fullName){
 	$("#userProfileName").append("<h4 class='profile-centre' >" + fullName + " ");
-	$("#userProfilePicture").append(getProfilePicture(userName, 48))
-							.append("<span class='caret'></span>");
+	$("#userProfilePicture").append(getProfilePicture(userName, 48)).append("<span class='caret'></span>");
 	highlightProfileDropdown("#userProfilePicture, #userProfileName");
 }
 

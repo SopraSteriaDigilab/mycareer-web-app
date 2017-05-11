@@ -65,10 +65,7 @@ function getReportees(userId, isSubReportee){
         cache: false,
         method: 'GET',
         xhrFields: {'withCredentials': true},
-        success: function(data){
-        	if(userId == 675590){data = demoManager1();}
-        	if(userId == 674936){data = demoManager2();}
-        	
+        success: function(data){        	
         	if(!isSubReportee){
         		$("#reportee-list").empty();
             	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
@@ -116,120 +113,6 @@ function shortenTitleActivityFeed(description){
 		title = title.substring(0, 25) + "...";
 	
 	return action + " " + title;
-}
-
-function demoManager1(){	
-	return [{
-		"employeeID": 678124,
-		"surname": "BRARD",
-		"forename": "Alexandre",
-		"username": "abrard",
-		"emailAddresses": [
-          "alexandre.brard@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Alexandre BRARD"
-	},{
-		"employeeID": 675715,
-		"surname": "MCINTYRE",
-		"forename": "Chris",
-		"username": "chmcinty",
-		"emailAddresses": [
-		  "chris.mcintyre@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Chris MCINTYRE"
-	},{
-		"employeeID": 674936,
-		"surname": "HARRIS",
-		"forename": "Finlay",
-		"username": "fharris",
-		"emailAddresses": [
-		"finlay.harris@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Finlay HARRIS"
-	},{
-		"employeeID": 604970,
-		"surname": "RAO",
-		"forename": "Hanumant",
-		"username": "harao",
-		"emailAddresses": {
-		"mail": "hanumant.rao@soprasteria.com",
-		"targetAddress": "hanumant.rao@soprasteria.com",
-		"userAddress": null,
-		"preferred": "hanumant.rao@soprasteria.com"
-		},
-		"isManager": false,
-		"hasHRDash": false,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Justice People (DPC509)",
-		"sector": "GOV2",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Hanumant RAO"
-		}];
-}
-
-
-function demoManager2(){	
-	return [{
-		"employeeID": 675590,
-		"surname": "NACEF",
-		"forename": "Ridhwan",
-		"username": "rnacef",
-		"emailAddresses": [
-		"ridhwan.nacef@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Ridhwan NACEF"
-	},{
-		"employeeID": 676783,
-		"surname": "MEHMET",
-		"forename": "Mehmet",
-		"username": "mmehmet",
-		"emailAddresses": [
-		"mehmet.mehmet@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Mehmet MEHMET"
-	}];
 }
 
 function loadingSubReporteeList(){
@@ -918,7 +801,7 @@ function toggleProposeToInput(){
 	}
 }
 
-function generateDistributionList(userId, distributionListName, title, description, date){
+function generateDistributionList(userId, distributionListName, title, description, dueDate){
 	if(distributionListName.length < 1){
 		toastr.error("Please enter a distribution list name")
 		return true;
@@ -927,29 +810,29 @@ function generateDistributionList(userId, distributionListName, title, descripti
 	loading("Reading distribution list. Please wait.");
 	var data = { distributionListName: distributionListName };
 	var success = function(data){
-		var title = "Proposing to " + data.emailAddresses.length + " employees";
+		var modalTitle = "Proposing to " + data.emailAddresses.length + " employees";
 		var body = "<h5>You are about to propose an objective to the following "+ data.emailAddresses.length + " employees:</h5> " + 
 					emailListHTML(data.emailAddresses) + " <h5><b>Are you sure you want to submit?</b></h5>";
 		var buttonText = "Submit";
-		var buttonFunction = function(){ proposeObjectiveToDistributionList(userId, distributionListName, title, description, date); }
+		var buttonFunction = function(){ proposeObjectiveToDistributionList(userId, distributionListName, title, description, dueDate); }
 		
 		loaded();
-		openWarningModal(title, body, buttonText, buttonFunction);
+		openWarningModal(modalTitle, body, buttonText, buttonFunction);
 	} 
 	var error = function(error){ loaded(); }
 	
 	generateDistributionListAction(userId, data, success, error);
 }
 
-function proposeObjectiveToDistributionList(userId, distributionListName, title, description, date){
+function proposeObjectiveToDistributionList(userId, distributionListName, title, description, dueDate){
 	loading("Proposing Objectives. Please wait.");
 	
 	var data = {
 		title: title, 
 		description: description,
-		date: date,
+		dueDate: dueDate,
 		distributionListName: distributionListName
-	}
+	};
 	var success = function(response){
 		loaded();
 		toastr.success(response)
@@ -959,7 +842,7 @@ function proposeObjectiveToDistributionList(userId, distributionListName, title,
 	}
 	var error = function(error){ loaded(); }
 	
-	proposeObjectiveToDistributionList(userId, data, success, error);
+	proposeObjectiveToDistributionListAction(userId, data, success, error);
 }
 
 
