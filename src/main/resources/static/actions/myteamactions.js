@@ -1,6 +1,7 @@
 const MANAGER = "/manager";
 const GET_ACTIVITY_FEED = "/getActivityFeed";
 const GENERATE_DISTRIBUTION_LIST = "/generateDistributionList";
+const PROPOSE_OBJECTIVE_TO_DISTRIBUTION_LIST = "/proposeObjectiveToDistributionList";
 
 /**
  *Ajax GET call to get activity feed for a user.
@@ -33,4 +34,14 @@ function generateDistributionListAction(userId, data, successFunction, errorFunc
 	});
 }
 
-function proposeObjectiveToDistributionListAction(){}
+function proposeObjectiveToDistributionListAction(userId, data, successFunction, errorFunction){
+	var url = MANAGER + PROPOSE_OBJECTIVE_TO_DISTRIBUTION_LIST + "/" + userId;
+	var request = $post(url, data);
+	request.done(function(data){ 
+		successFunction(data)
+	})
+	request.fail(function(jqXHR, textStatus) {
+		toastr.error(jqXHR.responseJSON.error);
+        errorFunction(jqXHR.responseJSON.error);
+	});
+}

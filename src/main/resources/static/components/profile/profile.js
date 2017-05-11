@@ -121,9 +121,9 @@ function getEmails(){
 }
 
 /** Sets the email addresses in the HTML */
-function setEmailAddresses(sopraSteriaEmailAddresses,preferedEmailAddress){
-	
-	var sopraSteriaEmailsHTML = '<ul><li class="ui-menu-item" role="menuitem">' + sopraSteriaEmailAddresses.join('</li><li>') + '</li></ul>';
+function setEmailAddresses(sopraSteriaEmailAddresses, preferedEmailAddress){
+
+	var sopraSteriaEmailsHTML = "<h6>" + sopraSteriaEmailAddresses.join("</h6><h6>");
 	var extraEmail = (preferedEmailAddress == null || preferedEmailAddress == '') ? NO_EXTRA_EMAIL_ADDRESS : preferedEmailAddress;
 
 	$addEmailInput.val(preferedEmailAddress);

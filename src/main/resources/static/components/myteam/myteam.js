@@ -918,20 +918,20 @@ function toggleProposeToInput(){
 	}
 }
 
-function generateDistributionList(userId, distributionListName, objectiveTitle, objectiveDescription, objectiveDate){
+function generateDistributionList(userId, distributionListName, title, description, date){
 	if(distributionListName.length < 1){
 		toastr.error("Please enter a distribution list name")
 		return true;
 	}
 	
-	loading();
+	loading("Reading distribution list. Please wait.");
 	var data = { distributionListName: distributionListName };
 	var success = function(data){
 		var title = "Proposing to " + data.emailAddresses.length + " employees";
 		var body = "<h5>You are about to propose an objective to the following "+ data.emailAddresses.length + " employees:</h5> " + 
 					emailListHTML(data.emailAddresses) + " <h5><b>Are you sure you want to submit?</b></h5>";
 		var buttonText = "Submit";
-		var buttonFunction = function(){ temp(); }
+		var buttonFunction = function(){ proposeObjectiveToDistributionList(userId, distributionListName, title, description, date); }
 		
 		loaded();
 		openWarningModal(title, body, buttonText, buttonFunction);
@@ -941,11 +941,25 @@ function generateDistributionList(userId, distributionListName, objectiveTitle, 
 	generateDistributionListAction(userId, data, success, error);
 }
 
-function temp(){
+function proposeObjectiveToDistributionList(userId, distributionListName, title, description, date){
+	loading("Proposing Objectives. Please wait.");
 	
+	var data = {
+		title: title, 
+		description: description,
+		date: date,
+		distributionListName: distributionListName
+	}
+	var success = function(response){
+		loaded();
+		toastr.success(response)
+		
+		showObjectiveModal(false);
+		closeWarningModal();
+	}
+	var error = function(error){ loaded(); }
 	
-	showObjectiveModal(false);
-	closeWarningModal();
+	proposeObjectiveToDistributionList(userId, data, success, error);
 }
 
 

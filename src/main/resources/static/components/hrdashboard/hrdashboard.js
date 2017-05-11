@@ -62,11 +62,12 @@ function init(){
 }
 
 function getMyCareerStats(){
+	loading();
 	var success = function(data){
 		setOverviewTable(data);
 		loaded($overviewContainer);
 	}
-	var error = function(error){}
+	var error = function(error){  }
 	
 	getMyCareerStatsAction(success, error);
 }

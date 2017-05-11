@@ -30,6 +30,14 @@ textarea {
 	border: 1px solid #ddd;
 }
 
+#loading-gif{
+	style: margin-left: calc(50% - 48px);
+}
+
+#warning-modal{
+	z-index: 1500;
+}
+
 .wrap-text {
     white-space: pre-wrap;
 	word-wrap: break-word;

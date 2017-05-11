@@ -987,14 +987,14 @@ function emailListHTML(emails){
 }
 
 function loading(loadingText){
-	if(typeof myVar != 'undefined' && loadingloadingText.length > 0)
-		$loadingText.text(loadingText);
+	if(typeof loadingText != 'undefined' && loadingText.length > 0)
+		$loadingText.html(loadingText);
 	$loadingSpinner.show();
 }
 
 function loaded(){
 	$loadingSpinner.hide();
-	$loadingText.text("Loading... This may take a minute.");
+	$loadingText.html("Loading... This may take a minute.");
 }
 
 
