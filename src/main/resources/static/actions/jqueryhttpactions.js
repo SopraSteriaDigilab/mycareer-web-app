@@ -10,7 +10,8 @@ function $get(path, options){
 	    method: 'GET',
 	    xhrFields: { withCredentials: true }
 	}
-	var settings = Object.assign({}, basic, options)
+	var settings = $.extend({}, basic, options);
+	console.log(settings);
 	return $.ajax(settings);
 }
 

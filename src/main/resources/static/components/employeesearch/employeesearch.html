@@ -1,8 +1,8 @@
 <script>
-	loadScript("actions/employeesearchactions");
-	loadScript("actions/hractions");
 	loadStyle("components/employeesearch/employeesearch");
-	loadScript("components/employeesearch/employeesearch");
+	loadScript("actions/hractions");
+	loadScript("actions/employeesearchactions")
+	.done(loadScript("components/employeesearch/employeesearch"));
 </script>
 
 <div class="container">

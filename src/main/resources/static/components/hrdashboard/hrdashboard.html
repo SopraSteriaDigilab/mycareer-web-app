@@ -1,7 +1,7 @@
 <script>
-	loadScript("actions/hractions");
 	loadStyle("components/hrdashboard/hrdashboard");
-	loadScript("components/hrdashboard/hrdashboard");
+	loadScript("actions/hractions")
+	.done(loadScript("components/hrdashboard/hrdashboard"));
 </script>
 
 <div class="container">

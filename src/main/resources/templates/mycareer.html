@@ -52,9 +52,9 @@
    
 		<script>
 			loadStyle("components/shared/shared");
-			loadScript("actions/jqueryhttpactions");
-			loadScript("actions/mycareeractions");
-			loadScript("components/mycareer/mycareer");
+			loadScript("actions/jqueryhttpactions")
+			.done(loadScript("actions/mycareeractions"))
+			.done(loadScript("components/mycareer/mycareer"));
 			loadScript("components/shared/shared");
 		</script>
 		
