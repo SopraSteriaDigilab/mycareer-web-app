@@ -3,16 +3,17 @@
  * 
  * @param path path of the get request
  */
-function $get(path){
-    return $.ajax({
-		//async: false, //needed? Test on dev/uat
-    	//crossDomain: true, //needed? Test on dev/uat
+function $get(path, options){
+	var basic = {
 		url: 'http://' + getEnvironment() + path,
-        cache: false,
-        method: 'GET',
-        xhrFields: { withCredentials: true }
-    });
+	    cache: false,
+	    method: 'GET',
+	    xhrFields: { withCredentials: true }
+	}
+	var settings = Object.assign({}, basic, options)
+	return $.ajax(settings);
 }
+
 
 /**
  *Ajax POST call

@@ -90,7 +90,12 @@ function getActivityFeed(){
 	var success = function(data){ addActivityFeed(data); }
 	var error = function(){}
 	
-	getActivityFeedAction(id, success, error);
+	
+	if (typeof getActivityFeedAction === "function") {
+		getActivityFeedAction(id, success, error);
+	}else{
+		setTimeout(logMeIn(), 100);
+	}
 }
 
 function getReporteeDevelopmentNeedsList(userId){

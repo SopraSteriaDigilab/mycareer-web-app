@@ -69,7 +69,12 @@ function getMyCareerStats(){
 	}
 	var error = function(error){  }
 	
-	getMyCareerStatsAction(success, error);
+	if (typeof getMyCareerStatsAction === "function") {
+		getMyCareerStatsAction(success, error);
+	}else{
+		setTimeout(logMeIn(), 100);
+	}
+	
 }
 
 function getSectorBreakDown(){

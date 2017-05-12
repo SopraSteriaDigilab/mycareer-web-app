@@ -11,6 +11,7 @@ var userAddress = null;
 var emails = [];
 
 function logMeIn(){
+
 	var success = function(data){
 		ADfullName = data.fullName;
 		ADLoginID = data.employeeID;
@@ -26,7 +27,12 @@ function logMeIn(){
 		window.location.replace("/access-issue");
 	}
 	
-	logMeInAction(success, error);
+	if (typeof logMeInAction === "function") {
+		logMeInAction(success, error);
+	}else{
+		setTimeout(logMeIn(), 100);
+	}
+	
 }
 
 function getEnvironment(){

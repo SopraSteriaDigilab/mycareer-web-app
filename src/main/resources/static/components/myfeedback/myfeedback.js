@@ -431,3 +431,6 @@ function initialiseTags(){
     tags("sendingTo", emails);
 }
 
+function addProposed(){
+	//Remove me when you move getEmails to actions...
+}
