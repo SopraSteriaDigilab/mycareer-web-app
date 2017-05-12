@@ -28,10 +28,10 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
+var $activityFeed = $("#activity-feed");
+
 var wasManagerEvaluationEmpty = null;
 var lastSavedManagerEvaluationInput = null;
-
-var $activityFeed = $("#activity-feed");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -63,28 +63,22 @@ function init(){
 //Method to get the Reportee list
 function getReportees(userId, isSubReportee){
 	if(isSubReportee) loadingSubReporteeList();
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){        	
-        	if(!isSubReportee){
-        		$("#reportee-list").empty();
-            	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-            	 $.each(data, function(key, val){
-                 	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-                 });  
-        	}else{
-        		updateSelectedSubReportee(userId);
-        		addSubReporteesToList(data);
-        	}
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#reportee-list").empty();
-            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
-        }
-    });
+	
+	var success = function(data){
+    	if(!isSubReportee){
+    		$("#reportee-list").empty();
+        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+        	 $.each(data, function(key, val){
+             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+             });  
+    	}else{
+    		updateSelectedSubReportee(userId);
+    		addSubReporteesToList(data);
+    	}
+    }
+	var error = function (error){ $("#reportee-list").empty(); }
+	
+	getReporteesAction(userId, success, error);
 }
 
 function getActivityFeed(){
