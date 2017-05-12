@@ -28,6 +28,9 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
+var wasManagerEvaluationEmpty = null;
+var lastSavedManagerEvaluationInput = null;
+
 var $activityFeed = $("#activity-feed");
 
 var reporteeSectionHidden = true;
@@ -198,10 +201,19 @@ function clickReportee(id, name, emailAddress, userName, element){
 			getReporteeCareer(id, name, emailAddress, userName, element);
 		}
 		
-		openWarningModal(title, body, buttonText, buttonFunction);
+		openWarningModalIfUpdated(title, body, buttonText, buttonFunction);
 	}else{
 		getReporteeCareer(id, name, emailAddress, userName, element);
 	}	
+}
+
+function openWarningModalIfUpdated(title, body, buttonText, buttonFunction){
+	if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
+		closeManagerEvaluation(false);
+	}
+	else{
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 function getReporteeCareer(id, name, emailAddress, userName, element) {
@@ -639,6 +651,15 @@ function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore, is
 	managerEvaluationSubmitted(isManagerEvaluationSubmitted);
 	
 	$managerEvaluationFooter.show();
+	
+	if ($managerEvaluationText.text()==="No manager evaluation has been written."){ 
+		wasManagerEvaluationEmpty=true;
+		lastSavedManagerEvaluationInput="";
+	}
+	else{
+		wasManagerEvaluationEmpty=false;
+		lastSavedManagerEvaluationInput=$managerEvaluationText.text();
+	}
 }
 
 /** Sets the manager evaluation label */
@@ -716,6 +737,8 @@ function confirmSubmitEvaluation(){
 
 /** Save manager evaluation to the database. */
 function saveManagerEvaluation(){	
+	wasManagerEvaluationEmpty=checkEmptyID("manager-evaluation-input",true);
+	lastSavedManagerEvaluationInput=$managerEvaluationText.text();
 	addManagerEvaluationAction(getADLoginID(), selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
 		closeManagerEvaluation(true);
 	});
@@ -744,12 +767,12 @@ function closeManagerEvaluation(save){
 }
 
 function clickClose(){
+	lastSavedManagerEvaluationInput=$managerEvaluationText.text();
 	var title = "Cancel Evaluation";
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeManagerEvaluation(false) }
-	
-	openWarningModal(title, body, buttonText, buttonFunction);
+	openWarningModalIfUpdated(title, body, buttonText, buttonFunction);
 }
 
 function initSelect(){
