@@ -90,13 +90,6 @@ function getActivityFeed(){
 	getActivityFeedAction(id, success, error);
 }
 
-function getReporteeDevelopmentNeedsList(userId){
-	var success = function(data){ addDevelopmentNeedsToList(data); }
-	var error = function(error){}
-	
-	getDevelopmentNeedsAction(userId, success, error);
-}
-
 function getEmails(){
 	
 	var success = function(data){ 
@@ -106,6 +99,13 @@ function getEmails(){
 	var error = function(){}
 	
 	getEmailsAction(success, error);
+}
+
+function getReporteeDevelopmentNeedsList(userId){
+	var success = function(data){ addDevelopmentNeedsToList(data); }
+	var error = function(error){}
+	
+	getDevelopmentNeedsAction(userId, success, error);
 }
 
 function addActivityFeed(data){
