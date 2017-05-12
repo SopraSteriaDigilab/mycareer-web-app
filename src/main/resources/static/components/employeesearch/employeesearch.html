@@ -1,8 +1,12 @@
 <script>
 	loadStyle("components/employeesearch/employeesearch");
 	loadScript("actions/hractions");
-	loadScript("actions/employeesearchactions")
-	.done(loadScript("components/employeesearch/employeesearch"));
+	$.when(
+		loadScript("actions/employeesearchactions")	
+	).done(function(){
+		loadScript("components/employeesearch/employeesearch");
+	});
+	
 </script>
 
 <div class="container">

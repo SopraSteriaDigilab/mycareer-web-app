@@ -2,9 +2,12 @@
 	loadStyle("components/myteam/myteam");
 	loadScript("actions/ratingactions");
 	loadScript("actions/developmentneedsactions");
-	loadScript("actions/myteamactions");
-	loadScript("components/myteam/myteamtemplates");
-	loadScript("components/myteam/myteam");
+	$.when(
+		loadScript("actions/myteamactions");
+		loadScript("components/myteam/myteamtemplates");
+	).done(function(){
+		loadScript("components/myteam/myteam");	
+	});
 </script>
 
 <!--Containter for full page -->

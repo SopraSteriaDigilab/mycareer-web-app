@@ -1,7 +1,10 @@
 <script>
 	loadStyle("components/hrdashboard/hrdashboard");
-	loadScript("actions/hractions")
-	.done(loadScript("components/hrdashboard/hrdashboard"));
+	$.when(
+		loadScript("actions/hractions")	
+	).done(function(){
+		loadScript("components/hrdashboard/hrdashboard");	
+	});
 </script>
 
 <div class="container">

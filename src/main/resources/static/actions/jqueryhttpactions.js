@@ -3,16 +3,13 @@
  * 
  * @param path path of the get request
  */
-function $get(path, options){
-	var basic = {
+function $get(path){
+	return $.ajax({
 		url: 'http://' + getEnvironment() + path,
 	    cache: false,
 	    method: 'GET',
 	    xhrFields: { withCredentials: true }
-	}
-	var settings = $.extend({}, basic, options);
-	console.log(settings);
-	return $.ajax(settings);
+	});
 }
 
 
