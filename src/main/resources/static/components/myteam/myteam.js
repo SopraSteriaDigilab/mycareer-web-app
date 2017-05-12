@@ -311,19 +311,16 @@ function clickReportee(id, name, emailAddress, userName, element){
 			getReporteeCareer(id, name, emailAddress, userName, element);
 		}
 		
-		openWarningModalIfUpdated(title, body, buttonText, buttonFunction);
+		if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
+			closeManagerEvaluation(false);
+			getReporteeCareer(id, name, emailAddress, userName, element);
+		}
+		else{
+			openWarningModal(title, body, buttonText, buttonFunction);
+		}
 	}else{
 		getReporteeCareer(id, name, emailAddress, userName, element);
 	}	
-}
-
-function openWarningModalIfUpdated(title, body, buttonText, buttonFunction){
-	if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
-		closeManagerEvaluation(false);
-	}
-	else{
-		openWarningModal(title, body, buttonText, buttonFunction);
-	}
 }
 
 function getReporteeCareer(id, name, emailAddress, userName, element) {
@@ -872,7 +869,12 @@ function clickClose(){
 	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeManagerEvaluation(false) }
-	openWarningModalIfUpdated(title, body, buttonText, buttonFunction);
+	if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
+		closeManagerEvaluation(false);
+	}
+	else{
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 function initSelect(){
