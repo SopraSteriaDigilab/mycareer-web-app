@@ -664,11 +664,11 @@ function checkEmpty(inputClass, throwError){
 
 function checkEmptyID(inputID, throwError){
 	var isEmpty = false;
-		var value = $('#'+inputID).val().trim();
-		if(!value){
-			isEmpty = true;
-			return true;
-		};
+	var value = $('#'+inputID).val().trim();
+	if(!value){
+		isEmpty = true;
+		return true;
+	};
 	
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");

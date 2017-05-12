@@ -1,8 +1,7 @@
 <script>
 	loadStyle("components/hrdashboard/hrdashboard");
-	$.when(
-		loadScript("actions/hractions")	
-	).done(function(){
+	$.when(loadScript("actions/hractions"))
+	.done(function(){
 		loadScript("components/hrdashboard/hrdashboard");	
 	});
 </script>

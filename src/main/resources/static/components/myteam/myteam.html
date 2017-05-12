@@ -3,10 +3,10 @@
 	loadScript("actions/ratingactions");
 	loadScript("actions/developmentneedsactions");
 	$.when(
-		loadScript("actions/myteamactions");
-		loadScript("components/myteam/myteamtemplates");
+		loadScript("actions/myteamactions"),
+		loadScript("components/myteam/myteamtemplates")
 	).done(function(){
-		loadScript("components/myteam/myteam");	
+		loadScript("components/myteam/myteam");
 	});
 </script>
 
