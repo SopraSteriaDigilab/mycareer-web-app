@@ -67,14 +67,9 @@ function getMyCareerStats(){
 		setOverviewTable(data);
 		loaded($overviewContainer);
 	}
-	var error = function(error){  }
+	var error = function(error){ }
 	
-	if (typeof getMyCareerStatsAction === "function") {
-		getMyCareerStatsAction(success, error);
-	}else{
-		setTimeout(logMeIn(), 100);
-	}
-	
+	getMyCareerStatsAction(success, error);
 }
 
 function getSectorBreakDown(){

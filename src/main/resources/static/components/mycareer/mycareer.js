@@ -27,12 +27,7 @@ function logMeIn(){
 		window.location.replace("/access-issue");
 	}
 	
-	if (typeof logMeInAction === "function") {
-		logMeInAction(success, error);
-	}else{
-		setTimeout(logMeIn(), 100);
-	}
-	
+	logMeInAction(success, error);
 }
 
 function getEnvironment(){

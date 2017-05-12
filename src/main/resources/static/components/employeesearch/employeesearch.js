@@ -44,11 +44,7 @@ function getEmployeeNamesAndIds(){
 	var success = function(data){ initialiseSelectPicker(data); }
 	var error = function(error) {}
 	
-	if (typeof getEmployeeNamesAndIDsAction === "function") {
-		getEmployeeNamesAndIDsAction(success, error);
-	}else{
-		setTimeout(logMeIn(), 100);
-	}
+	getEmployeeNamesAndIDsAction(success, error);
 	
 }
 
