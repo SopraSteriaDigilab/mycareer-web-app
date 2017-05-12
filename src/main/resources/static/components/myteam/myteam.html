@@ -4,6 +4,7 @@
 	loadScript("actions/developmentneedsactions");
 	$.when(
 		loadScript("actions/myteamactions"),
+		loadScript("actions/emailactions"),
 		loadScript("components/myteam/myteamtemplates")
 	).done(function(){
 		loadScript("components/myteam/myteam");

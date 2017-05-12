@@ -45,7 +45,7 @@ var editingRating = false;
 function init(){
 	getReportees(getADLoginID(), false);
 	loadingProposedButton();
-	getEmailList();
+	getEmails();
 	initSelect();
 	getActivityFeed();
 	
@@ -95,6 +95,17 @@ function getReporteeDevelopmentNeedsList(userId){
 	var error = function(error){}
 	
 	getDevelopmentNeedsAction(userId, success, error);
+}
+
+function getEmails(){
+	
+	var success = function(data){ 
+		emails = data;
+		addProposed(); 
+	}
+	var error = function(){}
+	
+	getEmailsAction(success, error);
 }
 
 function addActivityFeed(data){
@@ -610,9 +621,6 @@ function addProposed(){
 	}
 }
 
-function initialiseTags() {
-	addProposed();
-}
 
 function loadingProposedButton(){
 	$("#nav-bar-buttons").html('').append("<h5 class='pull-right'> Loading... <h5>");
