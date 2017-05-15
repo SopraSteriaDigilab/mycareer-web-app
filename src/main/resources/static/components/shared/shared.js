@@ -556,6 +556,7 @@ function initDatePicker(id, today){
 		startView: "months", 
 		minViewMode: "months",
 		startDate: today,
+		endDate: today, 
 		autoclose: true,
 	});
 	
