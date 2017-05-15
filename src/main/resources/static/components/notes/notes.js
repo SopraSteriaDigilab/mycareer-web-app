@@ -18,8 +18,10 @@ $(function() {
 	$('#submit-note').click(function(){ clickSubmitNote(); });
 	
 	//Initialising the date pickers
-	initNoteDatePicker("notes-start", '');
-	initNoteDatePicker("notes-end", new Date());
+//	initNoteDatePicker("notes-start", '');
+//	initNoteDatePicker("notes-end", new Date());
+	initNoteDatePicker("notes-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
+	initNoteDatePicker("notes-end", new Date(), new Date() );
 	
 	//Keep end date updated
 	$("#notes-start-date").change(function (d){ updateNoteEndDate() });
@@ -156,13 +158,14 @@ function showSection(section){
 	});
 }
 
-function initNoteDatePicker(id, start){
+function initNoteDatePicker(id, start, end){
     $("#"+id+"-date-picker").datepicker({
 	   useCurrent: true,
        forceParse: false,
        disabled: true,
        format: "dd-mm-yyyy",
        startDate: start,
+       endDate: end,
        orientation: 'bottom',
        autoclose: true,
     });	

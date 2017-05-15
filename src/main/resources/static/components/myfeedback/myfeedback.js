@@ -5,8 +5,11 @@ $(function() {
 	getEmailList();
 	
 	//Initialising the date pickers
-	initFeedbackDatePicker("feedback-start", '');
-	initFeedbackDatePicker("feedback-end", new Date());
+//	initFeedbackDatePicker("feedback-start", '');
+//	initFeedbackDatePicker("feedback-end", new Date());
+	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
+	initFeedbackDatePicker("feedback-end", new Date(), new Date() );
+	
 	
 	//Keep end date updated
 	$("#feedback-start-date").change(function (d){ updateEndDate() });
@@ -68,7 +71,7 @@ var reviewerFilterApplied = false;
 var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 
-function initFeedbackDatePicker(id, start){
+function initFeedbackDatePicker(id, start, end ){
     
     $("#"+id+"-date-picker").datepicker({
 	   useCurrent: true,
@@ -76,6 +79,7 @@ function initFeedbackDatePicker(id, start){
        disabled: true,
        format: "dd-mm-yyyy",
        startDate: start,
+       endDate: end, 
        orientation: 'bottom',
        autoclose: true,
     });	
