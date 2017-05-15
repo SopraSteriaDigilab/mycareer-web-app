@@ -466,7 +466,7 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
 					        <div  class='bs-wizard-dot-complete'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \
@@ -563,7 +563,7 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 						        <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 	            		</div> \
-	            		<div class='col-sm-1 chev-height'> \
+	            		<div class='col-sm-1 chev-height notUnderlined'> \
 						  <a data-toggle='collapse' href='#collapse-dev-need-"+id+"' class='collapsed'></a> \
 						</div> \
 	            	</div> \
