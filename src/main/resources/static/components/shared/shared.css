@@ -72,7 +72,11 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 	text-decoration: underline;
 }
 
-.chev-height > a :hover{
+.notUnderlined :link, .notUnderlined :hover {
+	text-decoration: none;
+}
+
+#competency-list href{
 	text-decoration: none;
 }
 
