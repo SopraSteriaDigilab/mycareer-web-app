@@ -17,7 +17,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
     var html = " \
         <div class='panel panel-default competency-item'> \
             <div class='panel-heading panel-heading-sm'> \
-                <div class='panel-title'> \
+                <div class='panel-title notUnderlined'> \
                     <input type='hidden' id='starSelected"+id+"' value='"+isSelected+"'>\
                         <span class='glyphicon glyphicon-star"+ checkSelected(isSelected) +"' id='star-"+ id +"' onClick='starChanger("+id+")' style='cursor:pointer'></span> \
                         <span id='competencyTitle"+ id +"'>" + title + "</span>  \

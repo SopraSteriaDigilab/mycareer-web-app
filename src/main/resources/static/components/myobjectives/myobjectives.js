@@ -343,7 +343,7 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \

@@ -369,7 +369,7 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-dev-need-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \
