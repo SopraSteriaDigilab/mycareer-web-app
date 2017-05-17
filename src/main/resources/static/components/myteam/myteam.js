@@ -41,6 +41,7 @@ var selectedReporteeUsername = "";
 var initialReporteeList = [];
 var activityFeedVisible = false;
 var editingRating = false;
+var isEmailclicked=false;
 
 function init(){
 	getReportees(getADLoginID(), false);
@@ -58,6 +59,19 @@ function init(){
 	$cancelButton.click(function(){ clickClose(); });
 	
 	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+	
+	$('#proposedTo').on('mousedown', '.dropdown-item', function() {
+		isEmailclicked=true;
+	});
+	
+	$('#proposedTo').on('blur', 'input', function() {
+		if (!isEmailclicked) {
+			addTagOnBlur('.bootstrap-tagsinput > input');
+	    }
+		else{
+			isEmailclicked=false;
+		}
+	})
 }
 
 //Method to get the Reportee list
@@ -826,7 +840,7 @@ function proposedToHTML(){
         </div> \
     	<div id='distribution-list-textbox-container' hidden> \
     		<input id='distribution-list-textbox' type='text' class='form-control' placeholder='...' maxlength='150'/> \
-    	<div>" ;
+    	</div>" ;
     return HTML;
 }
 
