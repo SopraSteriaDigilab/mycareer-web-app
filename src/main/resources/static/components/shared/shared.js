@@ -120,7 +120,7 @@ function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
     	//Get email list and initialise tags input
-    	tags("proposed-obj-to", emails);
+        tags("proposed-obj-to", emails);
         keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
@@ -715,6 +715,11 @@ function tags(id, data){
        }
     });
 }
+
+function addTagOnBlur(inputLocation){
+	$('#proposed-obj-to').tagsinput('add', $(inputLocation).val());
+	$(inputLocation).val('');
+	}
 
 function keypress(modalID){
     //keypress to change ; character to ,
