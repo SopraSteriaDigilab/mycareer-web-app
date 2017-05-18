@@ -53,18 +53,17 @@ public class RoutingController
     {
       e.printStackTrace();
     }
-    
+
     if (!sections.contains(section)) return "reroute";
-    
-    if (section.equals("myratings")){
-      if(!isRatingPeriod()){
-        return "reroute";
-      }
+
+    if (section.equals("myratings") && !isRatingPeriod())
+    {
+      return "reroute";
     }
-    
+
     model.addAttribute("section", section);
     model.addAttribute("env", host);
-    
+
     return "mycareer";
   }
 
