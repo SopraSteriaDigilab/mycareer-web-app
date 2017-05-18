@@ -28,6 +28,8 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
+var $ratingsTab = $("#reportee-ratings-tab");
+
 var wasManagerEvaluationEmpty = null;
 var lastSavedManagerEvaluationInput = null;
 
@@ -43,6 +45,7 @@ var activityFeedVisible = false;
 var editingRating = false;
 
 function init(){
+	checkRatingPeriod();
 	getReportees(getADLoginID(), false);
 	loadingProposedButton();
 	getEmailList();
@@ -887,6 +890,14 @@ function proposeObjectiveToDistributionList(userId, distributionListName, title,
 	proposeObjectiveToDistributionListAction(userId, data, success, error);
 }
 
+
+function checkRatingPeriod(){
+	if(isRatingPeriod()){
+		$("#navTab").append("<li><a id='ratings-link' href='#reportee-ratings-tab' data-toggle='tab'> Rating </a></li>");
+	}else{
+		$ratingsTab.remove();
+	}
+}
 
 
 
