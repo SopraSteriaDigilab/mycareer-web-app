@@ -14,3 +14,7 @@ table td {
 .sorting {
   white-space: inherit;
 }
+
+#employeeSearchContainer .dropdown-menu {
+	width: 100%;
+}

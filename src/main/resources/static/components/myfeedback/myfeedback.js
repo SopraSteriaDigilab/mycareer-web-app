@@ -5,8 +5,11 @@ $(function() {
 	getEmailList();
 	
 	//Initialising the date pickers
-	initFeedbackDatePicker("feedback-start", '');
-	initFeedbackDatePicker("feedback-end", new Date());
+//	initFeedbackDatePicker("feedback-start", '');
+//	initFeedbackDatePicker("feedback-end", new Date());
+	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
+	initFeedbackDatePicker("feedback-end", new Date(), new Date() );
+	
 	
 	//Keep end date updated
 	$("#feedback-start-date").change(function (d){ updateEndDate() });
@@ -68,7 +71,7 @@ var reviewerFilterApplied = false;
 var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 
-function initFeedbackDatePicker(id, start){
+function initFeedbackDatePicker(id, start, end ){
     
     $("#"+id+"-date-picker").datepicker({
 	   useCurrent: true,
@@ -76,6 +79,7 @@ function initFeedbackDatePicker(id, start){
        disabled: true,
        format: "dd-mm-yyyy",
        startDate: start,
+       endDate: end, 
        orientation: 'bottom',
        autoclose: true,
     });	
@@ -85,8 +89,8 @@ function initFeedbackDatePicker(id, start){
 function addGeneralFeedbackToList(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
       $('#general-feedback-tab').append(feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds));
       $('#generalFeeDescription').append(feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds));
-      if(!reviewerExists(email)){
-    	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender, email));
+      if(!reviewerExists(sender)){
+    	  $('#general-reviewer-list').append(feedbackReviewersListHTML(sender));
       }
 }
 
@@ -103,7 +107,7 @@ function selectedFeedback(element){
 function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
         <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
-        	<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+        	<input type='hidden' class='reviewer-filter' value='"+sender+"'> \
         	<input type='hidden' class='date-filter' value='"+classDate+"'> \
 	  		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
 	        <div class='panel-heading' onClick='showGeneralFeedback("+id+")'> \
@@ -116,12 +120,12 @@ function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, 
 	return HTML;
 }
 
-function feedbackReviewersListHTML(reviewer, email){
+function feedbackReviewersListHTML(reviewer){
 	var HTML = " \
 		<div class='row'> \
 			<div class='col-md-12 wrap-only'> \
 				<label class='reviewer-label' style='max-width: 80%;''> \
-				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+email+"' style='right:35px'> \
+				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+reviewer+"' style='right:35px'> \
 				"+reviewer+" \
 				</label> \
 		</div>";
@@ -131,7 +135,7 @@ function feedbackReviewersListHTML(reviewer, email){
 function feedbackDescriptionListHTML(id, sender, description, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
 	<div class='panel panel-default filterable-feedback feedback-description hidden' id='feedback-"+id+"'> \
-		<input type='hidden' class='reviewer-filter' value='"+email+"'> \
+		<input type='hidden' class='reviewer-filter' value='"+sender+"'> \
 	    <input type='hidden' class='date-filter' value='"+classDate+"'> \
   		<input type='hidden' class='feedback-tag-filter feedback-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
     	<input type='hidden' id='feedback-obj-tags-"+id+"' value='"+objTagIds+"'> \
@@ -158,7 +162,7 @@ function updateEndDate(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	if(startDate > endDate){
-		$("#feedback-end-date").val(timeStampToClassDate(startDate));
+		$("#feedback-end-date").val(moment(startDate).format('YYYY-MM-DD'));
 	}
 	$("#feedback-end-date-picker").datepicker('setStartDate', startDate);
 }
@@ -177,7 +181,7 @@ function applyDateFilter(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	for(var date = startDate; date <= endDate; date = date.addDays(1)){
-		dateRangeList.push(timeStampToClassDate(date));
+		dateRangeList.push(moment(date).format('YYYY-MM-DD'));
 	}
 	
 	$(".date-filter").each(function(index){
@@ -431,3 +435,6 @@ function initialiseTags(){
     tags("sendingTo", emails);
 }
 
+function addProposed(){
+	//Remove me when you move getEmails to actions...
+}

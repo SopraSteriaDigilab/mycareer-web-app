@@ -76,6 +76,7 @@
     word-wrap: break-word;
 }
 
+/*
 table.dataTable tbody td {
   vertical-align: top;
 }
@@ -83,6 +84,7 @@ table.dataTable tbody td {
 thead th{
   white-space: nowrap;
 }
+*/
 
 .HRtable {
     table-layout:fixed;
@@ -100,4 +102,8 @@ thead th{
 .remove-padding{
 	padding-top: 0px;
 	padding-bottom: 0px;
+}
+
+#proposed-obj-to-container .bootstrap-tagsinput{
+	height: 34px;
 }

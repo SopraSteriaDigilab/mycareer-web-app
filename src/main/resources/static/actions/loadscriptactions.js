@@ -16,8 +16,7 @@ function loadScript(path){ // TODO change to 'path' variable...
 	}else{
 		script = String.format(DEV_SCRIPT_PATH, path);
 	}
-	$.getScript(script);
-	
+	return $.getScript(script);
 }
 
 function loadStyle(path){ //TODO mimic script
@@ -40,7 +39,7 @@ function getHost(){
 }
 
 
-//TODO move to a 'utils' class or something...
+//Use like this String.format(Hello {0}, "World!"). //Hello World!
 if (!String.format) {
   String.format = function(format) {
     var args = Array.prototype.slice.call(arguments, 1);

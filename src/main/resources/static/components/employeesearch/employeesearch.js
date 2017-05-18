@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	init();	
 });
 
 var $loadingEmployeeNameIDs = $("#loading-employee-name-ids");
@@ -11,6 +11,10 @@ var $notesTable = ("#notes-table");
 var $ratingsTable = ("#ratings-table");
 var $employeeDataContainer = $("#employee-data-container");
 var $placeholderContainter = $("#placeholder-container");
+var $searchInput = $("#searchInput");
+var $submitSearchButton = $("#submit-employee-search");
+var $searchOptions = $("#search-options");
+var $employeeNameLabel = $(".employee-name");
 
 var retrievedEmployees = [];
 
@@ -20,39 +24,59 @@ var developmentNeedsColumnList = [ { data: "title" }, { data: "description" }, {
 var notesColumnList = [ { data: "providerName" }, { data: "noteDescription" }, {data: "timestamp"} ];
 var ratingsColumnList = [ { data: "year" }, { data: "selfEvaluation" }, { data: "managerEvaluation" }, { data: "score" }];
 
-var objectivesColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return formatDate(data)}, targets:3}, {render: function(data, type, row){ return timeStampToLongDate(data)}, targets:4}];
-var feedbackColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
-var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return formatDate(data)}, targets:3}, {render: function(data, type, row){ return timeStampToLongDate(data)}, targets:4}];
-var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return timeStampToDateTime(data)}, targets:2}];
-var ratingsColumnDefs = [{ width: "30%", targets: [1,2] }];
+var objectivesColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return moment(data).format('MMMM YYYY')}, targets:3}, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY')}, targets:4}];
+var feedbackColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY HH:mm')}, targets:2}];
+var developmentNeedsColumnDefs = [{ width: "25%", targets: [0,1] }, {render: function(data, type, row){ return moment(data).format('MMMM YYYY')}, targets:3}, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY')}, targets:4}];
+var notesColumnDefs = [{ width: "60%", targets: 1 }, {render: function(data, type, row){ return moment(data).format('DD MMM YYYY HH:mm')}, targets:2}];
+var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
+
+var emptyCareer = {profile: { forename: "", surname: "", employeeID: ""  }, objectives : [], developmentNeeds: [], competencies: [], notes: [], feedback:[], ratings:[]};
 
 function init(){
+	verifyUser();
 	getEmployeeNamesAndIds();
 	
-	$employeeSelectPicker.on('change', function() { selectEmployee($(this).val()); });
+	$submitSearchButton.on('click', function() { clickSearch(); });
 }
 
 function getEmployeeNamesAndIds(){
-	getEmployeeNamesAdnIDsAction(function(data){
-		initialiseSelectPicker(data);
-	}, function(error){});
+	
+	var success = function(data){ initialiseSelectPicker(data); }
+	var error = function(error) {}
+	
+	getEmployeeNamesAndIDsAction(success, error);
+	
 }
 
 function initialiseSelectPicker(data){
-	$employeeSelectPicker.html(selectPickerOptionsHTML(data));
-	$loadingEmployeeNameIDs.remove();
-	$employeeSelectPicker.selectpicker({showSubtext:true});
-}
 
-function selectPickerOptionsHTML(data){
-	var HTML = "";
-	$.each(data, function(key, val){
-		HTML += "<option value='"+val.profile.employeeID+"'  data-subtext='"+val.profile.employeeID+"'>"+ val.profile.forename + " " + val.profile.surname +"</option>"
+	$searchInput.typeahead({
+		items: 10,
+		source: data,
+		displayText: function(val){ 
+			return val.profile.forename + " " + val.profile.surname + " " + val.profile.employeeID;
+		}
 	});
-	return HTML;
+	
+	$loadingEmployeeNameIDs.remove();
+	$searchOptions.show();	
 }
 
-function selectEmployee(employeeId){		
+function clickSearch(){
+	var str = $searchInput.val().trim();
+	
+	if(!isValidSearch(str)){
+		 toastr.error("The value submitted is not valid, please select from one of the drop down values or enter a valid employee ID.")
+		 return;
+	}
+	
+	var searchStr = str.substring(str.length-6, str.length)
+	
+	selectEmployee(searchStr);
+}
+
+function selectEmployee(employeeId){
+	
 	if(!employeeRetrieved(employeeId)){
 		getEmployeeCareer(employeeId);
 	}else{
@@ -61,9 +85,11 @@ function selectEmployee(employeeId){
 }
 
 function getEmployeeCareer(employeeId){
-	getEmployeeCareerAction(employeeId, function(data){
-		addEmployee(employeeId, data)
-	}, function(error){});
+	
+	var success = function(data){ addEmployee(employeeId, data); }
+	var error = function(error){ updateEmployeeView(0, emptyCareer) }
+	
+	getEmployeeCareerAction(getADLoginID(), employeeId, success, error);
 }
 
 function addEmployee(employeeId, data){
@@ -72,7 +98,7 @@ function addEmployee(employeeId, data){
 	updateEmployeeView(employeeId, data);
 }
 
-function getTable(selectorId, dataset, columnsList, columnDefs){
+function getTable(selectorId, dataset, columnsList, columnDefs){	
 	var table;
 	if ($.fn.dataTable.isDataTable(selectorId) ) {
 	    table = $(selectorId).dataTable();
@@ -93,8 +119,11 @@ function updateEmployeeView(employeeId, data){
 	getTable($feedbackTable, data.feedback, feedbackColumnList, feedbackColumnDefs);
 	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
 	getTable($notesTable, data.notes, notesColumnList, notesColumnDefs);
-	getTable($ratingsTable, data.ratings, ratingsColumnList, ratingsColumnDefs);
+	getTable($ratingsTable, showIfSubmitted(data.ratings), ratingsColumnList, ratingsColumnDefs);
+	
+	$employeeNameLabel.text(data.profile.forename + " " + data.profile.surname + " " + data.profile.employeeID );
 }
+
 
 function employeeRetrieved(employeeId){
 	if(jQuery.inArray(employeeId, Object.keys(retrievedEmployees)) == -1){
@@ -109,3 +138,28 @@ function initialSelect(){
 		$employeeDataContainer.prop("hidden", false);
 	}
 }
+
+function showIfSubmitted(ratings){
+	var updatedRatings = [];
+	
+	for(var i = 0; i < ratings.length; i++){
+		var rating = ratings[i];
+		
+		if(!rating.managerEvaluationSubmitted){
+			rating.managerEvaluation = "Not Submitted";
+			rating.score = "Not Submitted";
+		}
+		if(!rating.selfEvaluationSubmitted){
+			rating.selfEvaluation = "Not Submitted";
+		}
+		updatedRatings.push(rating);
+	}
+	
+	return updatedRatings;
+}
+
+function isValidSearch(str){
+    var pattern = /([0-9]{6})$/;
+    return pattern.test(str);
+}
+

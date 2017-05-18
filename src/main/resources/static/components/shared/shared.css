@@ -1,10 +1,41 @@
 body {
 	height: 100vh;
+	-ms-overflow-style: scrollbar;
 }
 
 textarea {
     max-width: 100%; 
     max-height: 100%;
+}
+
+#loading-spinner{
+	position: absolute;
+	top: 0;
+	left:0;
+	min-width:1170px;
+	width: 100%;
+	min-height: 628px;
+	height: 100%;
+	z-index: 1500;
+}
+
+#spinner-div{
+	width: 400px;
+	height: 200px;
+	margin-top: 200px;
+	margin-left: calc(50% - 200px);
+	padding-top: 30px;
+	background-color: #fff;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+}
+
+#loading-gif{
+	margin-left: calc(50% - 48px);
+}
+
+#warning-modal{
+	z-index: 1500;
 }
 
 .wrap-text {
@@ -39,6 +70,14 @@ form-control[disabled], .form-control[readonly], fieldset[disabled] .form-contro
 
 .progress-link :hover{
 	text-decoration: underline;
+}
+
+.notUnderlined :link, .notUnderlined :hover {
+	text-decoration: none;
+}
+
+#competency-list href{
+	text-decoration: none;
 }
 
 /*----------------------------------------------------- Objectives -----------------------------------------------------*/

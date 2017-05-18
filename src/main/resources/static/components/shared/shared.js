@@ -1,6 +1,10 @@
 $(function() {
 	adjustDatePicker();
+	adjustDataTablesMomentJs();
 });
+
+$loadingSpinner = $("#loading-spinner");
+$loadingText = $("#loading-text");
 
 var emails = [];
 var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -31,6 +35,13 @@ function adjustDatePicker(){
 	   $.fn.datepicker = old;
 	   return this;
 	};
+}
+
+function adjustDataTablesMomentJs(){
+	$.fn.dataTable.moment( 'MMM YYYY' );
+	$.fn.dataTable.moment( 'MMMM YYYY' );
+	$.fn.dataTable.moment( 'DD MMM YYYY' );	
+	$.fn.dataTable.moment( 'DD MMM YYYY HH:mm' );
 }
 
 //------------------------------------- Objectives -------------------------------------
@@ -100,6 +111,10 @@ function checkComplete(status, item){
 	return "";
 }
 
+function escapeStr(str){
+	return str.replace(/"/g, '\\&quot;').replace(/'/g, '\\&apos;');
+}
+
 //Method to set and show content of modal
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
@@ -151,14 +166,20 @@ function clickSubmitObjective(){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
         showObjectiveModal(false);
 	}else{
-        var proposedTo = $("#proposed-obj-to").val().trim(); 
-         if (validEmails(proposedTo)){
-             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-             showObjectiveModal(false);
-        }else{
-          toastr.error("One or more email addresses entered are not valid");
-          showObjectiveModal(true);
-        }  
+		var distributionListName = $("#distribution-list-textbox").val().trim();
+		var isChecked = $("#distribution-list-checkbox").is(":checked");
+		if(isChecked){
+			generateDistributionList(userID, distributionListName, objTitle, objText, objDate);
+		}else{
+	        var proposedTo = $("#proposed-obj-to").val().trim(); 
+	         if (validEmails(proposedTo)){
+	             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
+	             showObjectiveModal(false);
+	        }else{
+	          toastr.error("One or more email addresses entered are not valid");
+	          showObjectiveModal(true);
+	        }
+		}
     }
 }
 
@@ -231,8 +252,8 @@ function getGeneralFeedbackList(userID){
         xhrFields: {'withCredentials': true},
         success: function(data){
             $.each(data, function(key, val){
-                var classDate = timeStampToClassDate(val.timestamp);
-                var longDate = timeStampToLongDate(new Date(val.timestamp));
+                var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+                var longDate = moment(val.timestamp).format('DD MMM YYYY');
                 var name = (val.providerName) ? val.providerName : val.providerEmail;
                 addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
             });//end of for each loop
@@ -304,7 +325,7 @@ function getDevelopmentNeedsList(userID){
 	        $.each(data, function(key, val){
                 nextDevNeedId.push(val.id);
 	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-                 var progressNumber = numberProgress(val.progress);
+                var progressNumber = numberProgress(val.progress);
                 var categoryNumber = numberCategory(val.category);
 	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
 	        });
@@ -535,6 +556,7 @@ function initDatePicker(id, today){
 		startView: "months", 
 		minViewMode: "months",
 		startDate: today,
+		endDate: today, 
 		autoclose: true,
 	});
 	
@@ -578,7 +600,7 @@ function timeStampToDateTimeGMT(date) {
 //TimeStamp to dd mmm yyyy
 function timeStampToLongDate(date){
 	var d = new Date(date);
-	var date = d.getDate() + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
+	var date = addZero(d.getDate()) + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
 
 	return date;
 }
@@ -643,11 +665,11 @@ function checkEmpty(inputClass, throwError){
 
 function checkEmptyID(inputID, throwError){
 	var isEmpty = false;
-		var value = $('#'+inputID).val().trim();
-		if(!value){
-			isEmpty = true;
-			return true;
-		};
+	var value = $('#'+inputID).val().trim();
+	if(!value){
+		isEmpty = true;
+		return true;
+	};
 	
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");
@@ -721,9 +743,9 @@ function getProfilePicture(userName, size){
 			";
 	return imageURL;
 }
-
+	
 function openNotesBar(){
-	var screenWidth = $(document).width();
+	var screenWidth = $(window).width();
 	var sidebarWidth = $("#resizable").width();
 	$("#resizable").animate({'left':screenWidth-(sidebarWidth+3) + 'px'});
 	$("#resizable").addClass("visibleBar");
@@ -752,7 +774,7 @@ function validEmails(requestingTo){
 //validates to ensure email format
 function isValidEmailAddress(requestingTo){
     var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return pattern.test(requestingTo);
+    return pattern.test(requestingTo.trim());
 }
 
 function checkIfPastDate (date){
@@ -788,7 +810,7 @@ function getEmailList(){
 
 function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";
-	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+	if(objTagIds == '' && devNeedTagIds == ''){
 		HTML = "No tags with this " + type + "."
 	}else{
 		if(objTagIds.length > 0)
@@ -949,8 +971,32 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 	return HTML;
 }
 
+//verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
+function verifyUser(){
+    if(userHasHrDash() === "false" || userHasHrDash() == false){
+         window.location ="/myobjectives";
+    }
+}
 
+function emailListHTML(emails){
+	var HTML = "<div class='well well-sm' style='max-height:200px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word;'>";
+	for (i = 0; i < emails.length; i++) { 
+	    HTML += "<h6>"+emails[i]+"</h6>";
+	}
+	HTML += "</div>";
+	return HTML;	
+}
 
+function loading(loadingText){
+	if(typeof loadingText != 'undefined' && loadingText.length > 0)
+		$loadingText.html(loadingText);
+	$loadingSpinner.show();
+}
+
+function loaded(){
+	$loadingSpinner.hide();
+	$loadingText.html("Loading... This may take a minute.");
+}
 
 
 

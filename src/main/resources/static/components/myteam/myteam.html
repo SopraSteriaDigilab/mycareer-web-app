@@ -1,9 +1,13 @@
 <script>
-	loadScript("actions/ratingactions");
-	loadScript("actions/myteamactions");
-	loadScript("components/myteam/myteamtemplates");
 	loadStyle("components/myteam/myteam");
-	loadScript("components/myteam/myteam");
+	loadScript("actions/ratingactions");
+	loadScript("actions/developmentneedsactions");
+	$.when(
+		loadScript("actions/myteamactions"),
+		loadScript("components/myteam/myteamtemplates")
+	).done(function(){
+		loadScript("components/myteam/myteam");
+	});
 </script>
 
 <!--Containter for full page -->
@@ -28,7 +32,7 @@
 				</div>
 			</div>
 			<div class="col-md-2 vertical-centre" style="padding-right:0px;">
-					<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
+				<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 			</div>
 		</div>
 	</div><!--End of Page Header -->
@@ -103,7 +107,7 @@
 							   				<button type="button" class="btn btn-default btn-block" id="submit-manager-evaluation">Submit</button>
 								   		</div>
 								   		<div class="col-md-3 manager-evaluation-options" style="display:none">
-								   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">cancel</button>
+								   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">Cancel</button>
 							   			</div>
 							   			<div class="col-md-3 manager-evaluation-options" style="display:none">
 								   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
