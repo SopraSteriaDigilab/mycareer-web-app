@@ -116,7 +116,7 @@ function addNoteToList(id, providerName, body, date, classDate, objTagIds, devNe
 function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNeedTagIds){
 	var html = " \
 		  <li class='list-group-item filterable-note' id='note-"+id+"'> \
-			  <input type='hidden' class='date-filter' value='"+classDate+"'> \
+			  <input type='hidden' class='note-date-filter' value='"+classDate+"'> \
 			  <input type='hidden' id='note-obj-tags-"+id+"' class='notes-obj-tag' value='"+objTagIds+"'> \
 			  <input type='hidden' id='note-dev-need-tags-"+id+"' class='notes-dev-need-tag' value='"+devNeedTagIds+"'> \
 	  		  <input type='hidden' class='notes-tag-filter notes-tag-filter-"+id+"' value='"+formatTagFilterValues(objTagIds, devNeedTagIds)+"'> \
@@ -207,9 +207,8 @@ function applyNoteDateFilter(){
 		dateRangeList.push(moment(date).format('YYYY-MM-DD'));
 	}
 	
-	$(".date-filter").each(function(index){
+	$(".note-date-filter").each(function(index){
 		var date = $(this).val()
-		
 
 		if(jQuery.inArray(date, dateRangeList) > -1){
 			$(this).closest('li').removeClass("filteredOutByDate");
