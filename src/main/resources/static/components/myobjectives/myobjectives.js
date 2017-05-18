@@ -359,12 +359,10 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     \
                 <div class='panel-body'> \
                     <div class='row'> \
-                        <div class='col-md-4'> \
+                        <div class='col-md-6'> \
                             <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
-                        <div class='col-md-3'> \
-                        </div> \
-                        <div class='col-md-5 pull-right'> \
+                        <div class='col-md-6'> \
                             <h6><b>Proposed by: </b><span id='obj-proposedBy-"+id+"'>"+proposedBy+"</span></h6> \
                         </div> \
                     </div> \
@@ -398,7 +396,7 @@ function addEditObjButton(status, id){
 
 function objectivesButtonsHTML(id, isArchived, status, title){
 	var HTML = " \
-    <div class='col-md-12'> \
+    <div class='row'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div>"
