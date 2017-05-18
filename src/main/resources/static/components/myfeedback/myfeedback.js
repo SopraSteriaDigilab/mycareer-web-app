@@ -162,7 +162,7 @@ function updateEndDate(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	if(startDate > endDate){
-		$("#feedback-end-date").val(moment(startDate).format('YYYY-MM-DD'));
+		$("#feedback-end-date").val(moment(startDate).format('DD-MM-YYYY'));
 	}
 	$("#feedback-end-date-picker").datepicker('setStartDate', startDate);
 }
