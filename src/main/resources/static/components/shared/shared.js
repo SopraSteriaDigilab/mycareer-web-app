@@ -428,8 +428,8 @@ function addNoteToDB(userID, from, body, date){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             clearAllNotesFilters();
-            var dateFormatted = timeStampToDateTimeGMT(date);
-            var classDate = timeStampToClassDate(new Date());
+            var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
+            var classDate = moment(date).format('YYYY-MM-DD');
             addNoteToList(++lastNoteID, from, body, dateFormatted, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
