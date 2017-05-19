@@ -82,7 +82,6 @@ function getReportees(userId, isSubReportee){
 }
 
 function getActivityFeed(){
-	
 	var id = getADLoginID();
 	var success = function(data){ addActivityFeed(data); }
 	var error = function(){}
@@ -91,7 +90,6 @@ function getActivityFeed(){
 }
 
 function getEmails(){
-	
 	var success = function(data){ 
 		emails = data;
 		addProposed(); 
@@ -256,22 +254,11 @@ function getReporteeCompetencyList(userID){
 }
 
 ////Method to get the Notes list
-function getReporteeNotesList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getNotes/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-            	var date = timeStampToDateTime(new Date(val.timestamp));
-            	addNoteToReporteeList(val.providerName, val.noteDescription, date);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting notes, please try again later.");
-        }
-    });
+function getReporteeNotesList(userId){
+	var success = function(data){ addNotesToReporteeList(data); } //Edit this method.
+	var error = function(error){}
+	
+	getNotesAction(userId, success, error);
 }
 
 //Method to propose objective
@@ -388,9 +375,7 @@ function clickSubmitReporteeNote(){
 	var reporteeID = selectedReporteeID;
 	var from = getADfullName();
 	var note = $("#reportee-note-input").val().trim();
-	var date = timeStampToDateTime(new Date());
-	var noteType = 0;
-	var linkID = 0;
+	var date = moment(new Date()).format('DD MMM YYYY HH:mm');
 	
 	addNoteToReporteeDB(reporteeID, from, note, date);
 	showReporteeNoteModal(false);
@@ -431,6 +416,15 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 }
 
 //Method to add note to list directly
+function addNotesToReporteeList(data){
+	var HTML = "";
+	$.each(data, function(key, val){
+		var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+		HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
+	});
+	$("#reportee-notes-list").html(HTML);
+}
+
 function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }

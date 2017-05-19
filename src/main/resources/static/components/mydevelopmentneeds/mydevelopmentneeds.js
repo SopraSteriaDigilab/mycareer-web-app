@@ -1,4 +1,8 @@
 $(function() {
+	initDevelopmentNeeds();
+});
+
+function initDevelopmentNeeds(){
 	
 	//Get list of development needs
 	getDevelopmentNeedsList(getADLoginID());
@@ -34,8 +38,7 @@ $(function() {
     $('#submit-completed-status-note').click(function(){ 
     	editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); 
     });
-    
-});
+}
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
