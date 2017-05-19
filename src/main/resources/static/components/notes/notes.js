@@ -17,9 +17,6 @@ $(function() {
 	//Click listener to submit note
 	$('#submit-note').click(function(){ clickSubmitNote(); });
 	
-	//Initialising the date pickers
-//	initNoteDatePicker("notes-start", '');
-//	initNoteDatePicker("notes-end", new Date());
 	initNoteDatePicker("notes-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
 	initNoteDatePicker("notes-end", new Date(), new Date() );
 	
@@ -177,7 +174,7 @@ function updateNoteEndDate(){
 	var endDate = formatNoteDate($("#notes-end-date").val());
 	
 	if(startDate > endDate){
-		$("#notes-end-date").val(moment(startDate).format('YYYY-MM-DD'));
+		$("#notes-end-date").val(moment(startDate).format('DD-MM-YYYY'));
 	}
 	$("#notes-end-date-picker").datepicker('setStartDate', startDate);
 }

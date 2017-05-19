@@ -62,6 +62,18 @@ $(function() {
 	
 	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
 	
+	$('#send-to-validate, #request-to-validate').on('mousedown', '.dropdown-item', function() {
+		isEmailclicked=true;
+	});
+	
+	$('#send-to-validate').on('blur', 'input', function(){
+			addTag('#sendFeedbackModal .bootstrap-tagsinput > input','#sendingTo');
+	})
+	
+	$('#request-to-validate').on('blur', 'input', function() {
+			addTag('.bootstrap-tagsinput > input','#requestingTo');
+	})
+	
 });//End of Document Function
 
 
@@ -70,6 +82,7 @@ var dateFilterApplied = false;
 var reviewerFilterApplied = false;
 var feedbackTagFilterApplied = false;
 var firstFeedback = true;
+var isEmailclicked=false;
 
 function initFeedbackDatePicker(id, start, end ){
     
@@ -162,7 +175,7 @@ function updateEndDate(){
 	var endDate = formatFeedbackDate($("#feedback-end-date").val());
 	
 	if(startDate > endDate){
-		$("#feedback-end-date").val(moment(startDate).format('YYYY-MM-DD'));
+		$("#feedback-end-date").val(moment(startDate).format('DD-MM-YYYY'));
 	}
 	$("#feedback-end-date-picker").datepicker('setStartDate', startDate);
 }
@@ -433,6 +446,11 @@ function setFeedbackTagValues(id, objTags, devNeedTags){
 function initialiseTags(){
     tags("requestingTo", emails);
     tags("sendingTo", emails);
+}
+
+function addTag(inputLocation,inputDestination){
+	if (!isEmailclicked) {addTagOnBlur(inputLocation,inputDestination);}
+	else{isEmailclicked=false;}
 }
 
 function addProposed(){

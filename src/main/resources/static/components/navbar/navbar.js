@@ -31,7 +31,10 @@ function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
-	};
+	}
+    if(isRatingPeriod()){
+    	$("#nav-bar-list").append("<li class='nav-bar-item' id='myratings'><a href='myratings'> My Rating </a></li>");
+    }
     if(userHasHrDash() === "true" || userHasHrDash() == true){
         $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>"); 
     }
@@ -48,6 +51,13 @@ function highlight(value) {
 	})
 }
 
+function isRatingPeriod()
+{
+	var currentMonth = new Date().getMonth();
+	
+	return currentMonth === 9 || currentMonth === 10 || currentMonth === 11|| currentMonth === 0 || currentMonth === 1;
+}
+
 //Sorts backdrop of multiple modals and sorts scrolling when closing multiple modals
 function adjustMultipleModalBackdrop(){
 	
@@ -61,3 +71,4 @@ function adjustMultipleModalBackdrop(){
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
 }
+

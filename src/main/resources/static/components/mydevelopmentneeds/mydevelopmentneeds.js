@@ -103,7 +103,10 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
             if(devNeedStatus == 2){
             	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
-                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            	var d = new Date();
+              	var date = moment(d).format('DD MMM YYYY HH:mm');
+              	var classDate = moment(d).format('YYYY-MM-DD');
+            	addNoteToList(lastNoteID++, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
                 $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
@@ -129,7 +132,10 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             removeDevNeedFromList(devNeedID);
             //need to update note list
             var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
-            addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            var d = new Date();
+          	var date = moment(d).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(d).format('YYYY-MM-DD');
+            addNoteToList(lastNoteID++, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
             deleteTag(devNeedID, "development-need");
             toastr.success(response);
         },
@@ -417,7 +423,7 @@ function addEditDevNeedButton(status, devNeedID){
 
 function devNeedsButtonsHTML(devNeedID, isArchived, status, title){
 	var HTML = " \
-    <div class='col-md-12'> \
+    <div class='row'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
         </div>"

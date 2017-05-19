@@ -90,7 +90,10 @@ function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completed
             updateObjectiveStatusOnList(objID, objStatus);
             if(objStatus == 2){
             	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
-            	addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            	var d = new Date();
+              	var date = moment(d).format('DD MMM YYYY HH:mm');
+              	var classDate = moment(d).format('YYYY-MM-DD');
+            	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
                 $("#edit-objective-button-"+objID).remove();
             }
             toastr.success(response);
@@ -116,7 +119,10 @@ function deleteObjective(userID, objID, objTitle, deletingText){
             removeObjectiveFromList(objID);
             //need to update note list
             var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
-            addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+        	var d = new Date();
+          	var date = moment(d).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(d).format('YYYY-MM-DD');
+            addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
             deleteTag(objID, "objective");
             toastr.success(response);
         },
@@ -353,12 +359,10 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     \
                 <div class='panel-body'> \
                     <div class='row'> \
-                        <div class='col-md-4'> \
+                        <div class='col-md-6'> \
                             <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
-                        <div class='col-md-3'> \
-                        </div> \
-                        <div class='col-md-5 pull-right'> \
+                        <div class='col-md-6'> \
                             <h6><b>Proposed by: </b><span id='obj-proposedBy-"+id+"'>"+proposedBy+"</span></h6> \
                         </div> \
                     </div> \
@@ -392,7 +396,7 @@ function addEditObjButton(status, id){
 
 function objectivesButtonsHTML(id, isArchived, status, title){
 	var HTML = " \
-    <div class='col-md-12'> \
+    <div class='row'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div>"
