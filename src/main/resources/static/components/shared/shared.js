@@ -818,10 +818,12 @@ function addTags(objTagIds, devNeedTagIds, type){
 	if(objTagIds == '' && devNeedTagIds == ''){
 		HTML = "No tags with this " + type + "."
 	}else{
-		if(objTagIds.length > 0)
+		if((objTagIds != '')){
 			HTML += "Objectives: " + objTagIds + ". ";
-		if(devNeedTagIds.length > 0)
+		}
+		if((devNeedTagIds != '')){
 			HTML += "Development Needs: " + devNeedTagIds + ".";
+		}
 	}
 	return HTML;
 }
