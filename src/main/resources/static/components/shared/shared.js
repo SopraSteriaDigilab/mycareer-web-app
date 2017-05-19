@@ -716,8 +716,8 @@ function tags(id, data){
     });
 }
 
-function addTagOnBlur(inputLocation){
-	$('#proposed-obj-to').tagsinput('add', $(inputLocation).val());
+function addTagOnBlur(inputLocation,inputDestination){
+	$(inputDestination).tagsinput('add', $(inputLocation).val());
 	$(inputLocation).val('');
 	}
 

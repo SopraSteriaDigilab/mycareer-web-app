@@ -66,7 +66,7 @@ function init(){
 	
 	$('#proposedTo').on('blur', 'input', function() {
 		if (!isEmailclicked) {
-			addTagOnBlur('.bootstrap-tagsinput > input');
+			addTagOnBlur('.bootstrap-tagsinput > input','#proposed-obj-to');
 	    }
 		else{
 			isEmailclicked=false;
