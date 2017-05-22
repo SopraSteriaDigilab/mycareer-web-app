@@ -224,12 +224,26 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		showReporteeView(id, name)
 		getObjectivesList(id);
 		getReporteeCompetencyList(id);
-		getGeneralFeedbackList(id);
+		getFeedback(id);
 		getReporteeDevelopmentNeedsList(id);
 		getReporteeNotesList(id);
 		getReporteeRatings(id);
 		getReportees(id, true);
 	}
+}
+
+function getFeedback(userId){
+	var success = function(data){
+        $.each(data, function(key, val){
+            var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+            var longDate = moment(val.timestamp).format('DD MMM YYYY');
+            var name = (val.providerName) ? val.providerName : val.providerEmail;
+            addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
+        });//end of for each loop
+    }
+	var error = function(error){}
+	
+	getFeedbackAction(userId, success, error);
 }
 
 function getReporteeCompetencyList(userId){

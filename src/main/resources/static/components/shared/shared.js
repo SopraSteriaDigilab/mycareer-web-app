@@ -243,7 +243,7 @@ function checkSelected(isSelected){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Feedback -------------------------------------
-function getGeneralFeedbackList(userID){
+//function getGeneralFeedbackList(userID){
 //    //Gets the List of General Feedback from the DB 
 //    $.ajax({
 //        url: 'http://'+getEnvironment()+'/getFeedback/'+userID,
@@ -268,7 +268,7 @@ function getGeneralFeedbackList(userID){
 //        }
 //        
 //    });//End of Ajax request
-}
+//}
 
 //method to handle the close send feedback button
 function clickCloseSendFeedback(e){
