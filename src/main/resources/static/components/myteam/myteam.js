@@ -29,11 +29,16 @@ var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
 var $ratingsTab = $("#reportee-ratings-tab");
+var $activityFeed = $("#activity-feed");
+
+var $reporteeSubList = $("#reportee-sub-list");
+var $reporteeListLink = $("#reportee-list-link");
+var $acticitiyFeedLink =$("#acticitiy-feed-link");
+var $reporteeListCaret = $("#reportee-list-caret");
+var $activityFeedCaret = $("#activity-feed-caret");
 
 var wasManagerEvaluationEmpty = null;
 var lastSavedManagerEvaluationInput = null;
-
-var $activityFeed = $("#activity-feed");
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -41,9 +46,11 @@ var selectedReporteeEmail = "";
 var selectedReporteeName = "";
 var selectedReporteeUsername = "";
 var initialReporteeList = [];
-var activityFeedVisible = false;
+var isReporteeListshowing = false;
+var isActivityFeedShowing = false;
 var editingRating = false;
 var isEmailclicked=false;
+
 
 function init(){
 	checkRatingPeriod();
@@ -60,6 +67,9 @@ function init(){
 	$submitButton.click(function(){ submitManagerEvaluation(); });
 	$saveButton.click(function(){ saveManagerEvaluation(); });
 	$cancelButton.click(function(){ clickClose(); });
+	$acticitiyFeedLink.click(function(){ toggleActivityFeed() });
+	$reporteeListLink.click(function(){ toggleReporteeList() });
+	
 	
 	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
 	
@@ -167,6 +177,8 @@ function addSubReporteesToList(data) {
 		 $.each(data, function(key, val){
 	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddress);
 	      });
+	}else{
+		subList += "<h5 style='text-align: center;'>"+selectedReporteeName+" has no reportees</h5>"
 	}
 	$('#reportee-sub-list').html(subList);
 }
@@ -816,12 +828,27 @@ function addNotesHTML(){
 }
 
 function toggleActivityFeed(){
-	if(activityFeedVisible){
-		activityFeedVisible = false;
+	if(isActivityFeedShowing){
 		$activityFeed.hide();
+		$activityFeedCaret.removeClass("rotate");
+		isActivityFeedShowing = false;
 	}else{
-		activityFeedVisible = true;
 		$activityFeed.show();
+		$activityFeedCaret.addClass("rotate");
+		isActivityFeedShowing = true;
+	}
+}
+
+function toggleReporteeList(){
+	if(isReporteeListshowing){
+		$reporteeSubList.hide();
+		console.log($reporteeSubList)
+		$reporteeListCaret.removeClass("rotate");
+		isReporteeListshowing = false;
+	}else{
+		$reporteeSubList.show();
+		$reporteeListCaret.addClass("rotate");
+		isReporteeListshowing = true;
 	}
 }
 

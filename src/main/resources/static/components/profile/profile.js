@@ -6,6 +6,7 @@ $(function() {
 	
 	//Prevents the menu to collapse when the user clicks on "Print"
 	$('#printOption').click(function(event){ event.stopPropagation(); });
+	$profileContainer.click(function(){ toggleProfileCaret() });
 	
 	//onClick for opening print modal
 	$('.pdf').click(function(event) {
@@ -53,14 +54,16 @@ var $editDeleteEmailButtons = $(".edit-delete-email-buttons");
 var $saveCancelEmailButtons = $(".save-cancel-email-buttons");
 var $addEmailText = $("#add-email-text");
 var $addEmailInput = $("#add-email-input");
+var $profileContainer = $("#profile-container");
 
 var hasExtraEmailAddress = false;
 var currentOperation = null;
 var currentExtraEmail=getUserAddress();
+var dropdownToggled = false;
 
 function populateProfile(userName, fullName){
 	$("#userProfileName").append("<h4 class='profile-centre' >" + fullName + " ");
-	$("#userProfilePicture").append(getProfilePicture(userName, 48)).append("<span class='caret'></span>");
+	$("#userProfilePicture").append(getProfilePicture(userName, 48)).append("<span id='profile-caret' class='caret'></span>");
 	highlightProfileDropdown("#userProfilePicture, #userProfileName");
 }
 
@@ -70,6 +73,16 @@ function highlightProfileDropdown(elements){
         }, function(){
         $(elements).css("color", "#FFF");
     });
+}
+
+function toggleProfileCaret(){
+	if(dropdownToggled){
+		$("#profile-caret").removeClass("rotate");
+		dropdownToggled = false;
+	}else{
+		$("#profile-caret").addClass("rotate");
+		dropdownToggled = true;
+	}
 }
 
 //----------------------------------------------------------- print modal ---------------------------------------------------------

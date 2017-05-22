@@ -34,10 +34,13 @@
 	max-height: 100%;
 }
 
-#acticitiy-feed-link:hover{
+#acticitiy-feed-link:hover, #reportee-list-link:hover{
 	border-radius:4px;
 	background-color: #eee;
+	cursor: pointer;
 }
+
+
 
 #activity-feed {
 	height: calc(100vh - 249px);

@@ -5,6 +5,12 @@ $(function() {
 const EMAILS = "Email(s)*:";
 const DISTRIBUTION_LIST = "Distribution List*:";
 
+var $historiesDropdown = $("#histories-dropdown");
+var $historiesCaret = $("#histories-caret");
+
+var historiesDropdownToggled = false;
+
+
 function initNavbar(){
 	$("sidebar").resizable();
 	loadProfile();
@@ -22,6 +28,8 @@ function initNavbar(){
 	
 	//onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
+	
+	$historiesDropdown.click(function(){ toggleHistoriesCaret() });
 	
 	adjustMultipleModalBackdrop();
 }
@@ -70,5 +78,15 @@ function adjustMultipleModalBackdrop(){
     }).on('hidden.bs.modal', '.modal', function () {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
+}
+
+function toggleHistoriesCaret(){
+	if(historiesDropdownToggled){
+		$historiesCaret.removeClass("rotate");
+		historiesDropdownToggled = false;
+	}else{
+		$historiesCaret.addClass("rotate");
+		historiesDropdownToggled = true;
+	}
 }
 

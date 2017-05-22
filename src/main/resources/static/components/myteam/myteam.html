@@ -40,7 +40,10 @@
 		<div class="col-md-3" id="reportee-list-container" >
 			<div id='reportee-list'><h5>Loading Reportees...</h5></div>
 			<div id="reportee-sub-selected"></div>
-			<div id='reportee-sub-list'></div>
+			<div>
+				<h4 id="reportee-list-link" style="text-align: center;">Sub-Reportee List <span id="reportee-list-caret" class="caret"></span></h4>
+				<div id='reportee-sub-list' hidden='true'><h5 style="text-align: center;">Please select a Reportee</h5></div>
+			</div>
 		</div>
 		<div id="info-holder" class="col-md-7">
 			<div class="tab-content hidden" id="reportee-body">
@@ -135,9 +138,9 @@
 	    	</div>
 		</div>
 		<div class="col-md-2">
-			<div class="row" style="cursor:pointer;" onClick="toggleActivityFeed()">
+			<div class="row" >
 				<div class="col-md-12 text-center">
-					<h3 id="acticitiy-feed-link">Activity Feed  <span class="caret"></span> </h3>
+					<h3 style="cursor:pointer;" id="acticitiy-feed-link">Activity Feed <span id="activity-feed-caret" class="caret"></span> </h3>
 				</div>
 			</div>
 			<div id="activity-feed" class="text-right" hidden></div>
