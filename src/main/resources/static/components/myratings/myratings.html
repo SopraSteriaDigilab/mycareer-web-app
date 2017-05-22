@@ -1,9 +1,7 @@
 <!-- <script type="text/javascript" src="../actions/ratingactions.js"></script>  -->
 <script>
 	loadStyle("components/myratings/myratings");
-	$.when(
-		loadScript("actions/myratingsactions")
-	).done(function(){
+	$.when(loadScript("actions/myratingsactions")).done(function(){
 		loadScript("components/myratings/myratings");
 	});
 </script>

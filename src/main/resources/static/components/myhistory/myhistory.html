@@ -1,7 +1,8 @@
 <script>
-	loadScript("actions/myhistoryactions");
 	loadStyle("components/myhistory/myhistory");
-	loadScript("components/myhistory/myhistory");
+	$.when(loadScript("actions/myhistoryactions")).done(function(){
+		loadScript("components/myhistory/myhistory");
+	});	
 </script>
 
 <div class="container">
