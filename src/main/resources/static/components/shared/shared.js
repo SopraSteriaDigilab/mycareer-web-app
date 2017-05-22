@@ -315,28 +315,28 @@ function clickCloseRequestFeedback(e){
 //-------------------------------- Development Needs ---------------------------------
 
 //Gets the List of Development Needs from the DB
-function getDevelopmentNeedsList(userID){
-	$.ajax({
-	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
-        cache: false,
-	    method: 'GET',
-	    xhrFields: {'withCredentials': true},
-	    success: function(data){
-	        $.each(data, function(key, val){
-                nextDevNeedId.push(val.id);
-	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-                var progressNumber = numberProgress(val.progress);
-                var categoryNumber = numberCategory(val.category);
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
-	        });
-	        if(data.length == 0)
-	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
-	    },
-	    error: function(XMLHttpRequest, textStatus, errorThrown){
-	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
-	    }
-	});	
-}
+//function getDevelopmentNeedsList(userID){
+//	$.ajax({
+//	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
+//        cache: false,
+//	    method: 'GET',
+//	    xhrFields: {'withCredentials': true},
+//	    success: function(data){
+//	        $.each(data, function(key, val){
+//                nextDevNeedId.push(val.id);
+//	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+//                var progressNumber = numberProgress(val.progress);
+//                var categoryNumber = numberCategory(val.category);
+//	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
+//	        });
+//	        if(data.length == 0)
+//	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
+//	    },
+//	    error: function(XMLHttpRequest, textStatus, errorThrown){
+//	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
+//	    }
+//	});	
+//}
 
 //Method to set and show content of modal
 function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){

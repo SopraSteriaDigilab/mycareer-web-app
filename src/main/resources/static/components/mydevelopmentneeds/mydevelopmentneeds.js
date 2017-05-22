@@ -5,7 +5,7 @@ $(function() {
 function initDevelopmentNeeds(){
 	
 	//Get list of development needs
-	getDevelopmentNeedsList(getADLoginID());
+	getDevelopmentNeedsListNEW(getADLoginID());
 	
 	//Initialising the date picker
 	initDatePicker('development-need', new Date());
@@ -38,6 +38,24 @@ function initDevelopmentNeeds(){
     $('#submit-completed-status-note').click(function(){ 
     	editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); 
     });
+}
+
+function getDevelopmentNeedsListNEW(userId){
+	var  success =  function(data){
+        $.each(data, function(key, val){
+            nextDevNeedId.push(val.id);
+        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+            var progressNumber = numberProgress(val.progress);
+            var categoryNumber = numberCategory(val.category);
+        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
+        });
+        if(data.length == 0){
+        	$("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
+        }
+    }
+	var error= function(error){}
+	
+	getDevelopmentNeedsAction(userId, success, error);
 }
 
 //HTTP request for INSERTING an development need to DB

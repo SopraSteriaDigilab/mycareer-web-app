@@ -1,6 +1,10 @@
 <script>
 	loadStyle("components/mydevelopmentneeds/mydevelopmentneeds");
-	loadScript("components/mydevelopmentneeds/mydevelopmentneeds");
+	$.when(
+		loadScript("actions/developmentneedsactions"),
+	).done(function(){
+		loadScript("components/mydevelopmentneeds/mydevelopmentneeds");
+	});	
 </script>
 
 <div class="container">
