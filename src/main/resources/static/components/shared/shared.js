@@ -205,20 +205,18 @@ function checkSelected(isSelected){
 function clickCloseSendFeedback(e){
 	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
 		$('#sendFeedbackModal').modal('hide');
-	    }
-	else {
+	} else {
 		addHTMLforPopUpBox("send-feedback-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#sendFeedbackModal').modal('hide');
-              $("textarea").val("");
-              $("#sendingTo").tagsinput('removeAll');
-		    });
+		var $form = $(this).closest('form');
+		e.preventDefault();
+		$('#confirm').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).one('click', '#close-modals', function(e) {
+			$('#sendFeedbackModal').modal('hide');
+			$("textarea").val("");
+			$("#sendingTo").tagsinput('removeAll');
+		});
 	};
 }
 
