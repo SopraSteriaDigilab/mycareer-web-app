@@ -1,6 +1,12 @@
 <script>
 	loadStyle("components/notes/notes");
-	loadScript("components/notes/notes");
+	$.when(
+		loadScript("actions/tagsactions"),
+		loadScript("actions/mynotesactions")
+	).done(function(){
+		loadScript("components/notes/notes");
+	});
+
 </script>
 
 <div class="row header">

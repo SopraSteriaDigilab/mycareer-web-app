@@ -12,7 +12,7 @@ var emails = [];
 
 function logMeIn(){
 
-	var success = function(data){
+	var success = function(data) {
 		ADfullName = data.fullName;
 		ADLoginID = data.employeeID;
 		ADUsername = data.username;

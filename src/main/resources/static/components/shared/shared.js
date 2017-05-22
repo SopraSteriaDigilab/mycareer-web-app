@@ -46,31 +46,6 @@ function adjustDataTablesMomentJs(){
 
 //------------------------------------- Objectives -------------------------------------
 
-//HTTP request for RETRIEVING list of objectives from DB
-function getObjectivesList(userID){
-  $.ajax({
-      url: 'http://'+getEnvironment()+'/getObjectives/'+userID,
-      cache: false,
-      method: 'GET',
-      xhrFields: {'withCredentials': true},
-      success: function(data){
-    	  //lastObjID = data.length;
-    	  var isEmpty = true;
-          $.each(data, function(key, val){
-              nextObjId.push(val.id);
-        	  var expectedBy = formatDate(val.dueDate);
-              var progressNumber = numberProgress(val.progress);
-        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-          });
-          if(data.length == 0)
-        	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
-      }
-  });	
-}
-
 //Function that finds the largest ID for objectives and finds the next one
 function nextObjectiveID(){
 	if(nextObjId.length <1){
@@ -213,24 +188,6 @@ function clickCloseObjective(e){
 
 //------------------------------------- Competencies -----------------------------------
 
-//Gets the list of Competencies from the DB
-function getCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,competenciesDescriptions[val.id],val.selected);  
-            });
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
-}
-
 //Method to change star icon to selected or not
 function checkSelected(isSelected){
     if(isSelected){
@@ -243,51 +200,23 @@ function checkSelected(isSelected){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Feedback -------------------------------------
-function getGeneralFeedbackList(userID){
-    //Gets the List of General Feedback from the DB 
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getFeedback/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-                var classDate = moment(val.timestamp).format('YYYY-MM-DD');
-                var longDate = moment(val.timestamp).format('DD MMM YYYY');
-                var name = (val.providerName) ? val.providerName : val.providerEmail;
-                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
-            });//end of for each loop
-            if(data.length == 0) {
-	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
-	        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-	        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
-        }
-        
-    });//End of Ajax request
-}
 
 //method to handle the close send feedback button
 function clickCloseSendFeedback(e){
 	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
 		$('#sendFeedbackModal').modal('hide');
-	    }
-	else {
+	} else {
 		addHTMLforPopUpBox("send-feedback-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#sendFeedbackModal').modal('hide');
-              $("textarea").val("");
-              $("#sendingTo").tagsinput('removeAll');
-		    });
+		var $form = $(this).closest('form');
+		e.preventDefault();
+		$('#confirm').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).one('click', '#close-modals', function(e) {
+			$('#sendFeedbackModal').modal('hide');
+			$("textarea").val("");
+			$("#sendingTo").tagsinput('removeAll');
+		});
 	};
 }
 
@@ -313,30 +242,6 @@ function clickCloseRequestFeedback(e){
 }
 
 //-------------------------------- Development Needs ---------------------------------
-
-//Gets the List of Development Needs from the DB
-function getDevelopmentNeedsList(userID){
-	$.ajax({
-	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
-        cache: false,
-	    method: 'GET',
-	    xhrFields: {'withCredentials': true},
-	    success: function(data){
-	        $.each(data, function(key, val){
-                nextDevNeedId.push(val.id);
-	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-                var progressNumber = numberProgress(val.progress);
-                var categoryNumber = numberCategory(val.category);
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
-	        });
-	        if(data.length == 0)
-	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
-	    },
-	    error: function(XMLHttpRequest, textStatus, errorThrown){
-	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
-	    }
-	});	
-}
 
 //Method to set and show content of modal
 function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
@@ -442,34 +347,6 @@ function addNoteToDB(userID, from, body, date){
 //------------------------------------------------------------------------------------
 
 //--------------------------------------- Tags --------------------------------------
-
-
-//Method to make ajax call to get tags from database
-function getTags(userID){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/getTags/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var optionsHTML = "<option value='0'>No Filter</option>";
-        	$.each(data, function(key, val){
-        		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
-            	$.each(val, function(id, title){
-            		addToTagsLists(key, id, title);
-            		optionsHTML += addToOptionsList(key, id, title);
-                });
-            	optionsHTML += "</optgroup>";
-            	
-            });
-        	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting tags, please try again later.");
-        }
-    });	
-}
 
 function addToTagsLists(key, id, title){
 	if(key === "objectivesTags"){
@@ -792,25 +669,6 @@ function checkIfPastDate (date){
 		return true;
 	}
 	return false;
-}
-
-//function to get all emails of all employees so can be used to auto fill email addresses
-function getEmailList(){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	emails = data;
-			initialiseTags();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	addProposed();
-            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-        }
-    });	
 }
 
 function addTags(objTagIds, devNeedTagIds, type){

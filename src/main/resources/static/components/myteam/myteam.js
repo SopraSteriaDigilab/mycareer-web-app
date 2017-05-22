@@ -56,7 +56,7 @@ function init(){
 	checkRatingPeriod();
 	getReportees(getADLoginID(), false);
 	loadingProposedButton();
-	getEmailList();
+	getEmails();
 	initSelect();
 	getActivityFeed();
 	
@@ -90,32 +90,25 @@ function init(){
 //Method to get the Reportee list
 function getReportees(userId, isSubReportee){
 	if(isSubReportee) loadingSubReporteeList();
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){        	
-        	if(!isSubReportee){
-        		$("#reportee-list").empty();
-            	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-            	 $.each(data, function(key, val){
-                 	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-                 });  
-        	}else{
-        		updateSelectedSubReportee(userId);
-        		addSubReporteesToList(data);
-        	}
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#reportee-list").empty();
-            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
-        }
-    });
+	
+	var success = function(data){
+    	if(!isSubReportee){
+    		$("#reportee-list").empty();
+        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+        	 $.each(data, function(key, val){
+             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+             });  
+    	}else{
+    		updateSelectedSubReportee(userId);
+    		addSubReporteesToList(data);
+    	}
+    }
+	var error = function (error){ $("#reportee-list").empty(); }
+	
+	getReporteesAction(userId, success, error);
 }
 
 function getActivityFeed(){
-	
 	var id = getADLoginID();
 	var success = function(data){ addActivityFeed(data); }
 	var error = function(){}
@@ -123,7 +116,17 @@ function getActivityFeed(){
 	getActivityFeedAction(id, success, error);
 }
 
-function getReporteeDevelopmentNeedsList(userId){
+function getEmails(){
+	var success = function(data){ 
+		emails = data;
+		addProposed(); 
+	}
+	var error = function(){}
+	
+	getEmailsAction(success, error);
+}
+
+function getDevelopmentNeeds(userId){
 	var success = function(data){ addDevelopmentNeedsToList(data); }
 	var error = function(error){}
 	
@@ -248,54 +251,67 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		selectedReportee(element);
 		clearReporteeLists();
 		showReporteeView(id, name)
-		getObjectivesList(id);
-		getReporteeCompetencyList(id);
-		getGeneralFeedbackList(id);
-		getReporteeDevelopmentNeedsList(id);
-		getReporteeNotesList(id);
-		getReporteeRatings(id);
+		getObjectives(id);
+		getCompetencies(id);
+		getFeedback(id);
+		getDevelopmentNeeds(id);
+		getNotes(id);
+		getRatings(id);
 		getReportees(id, true);
 	}
 }
 
-function getReporteeCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var competencyList = [];
-            $.each(data, function(key, val){
-                 if(val.isSelected){
-                	 competencyList.push(val.title);
-                 }
-            });
-            addCompetenciesToList(competencyList);
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
+function getObjectives(userId){
+	var success = function(data){
+  	  var isEmpty = true;
+  	  $.each(data, function(key, val){
+  		  nextObjId.push(val.id);
+  		  var expectedBy = formatDate(val.dueDate);
+  		  var progressNumber = numberProgress(val.progress);
+  		  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+  	  });
+	}
+	var error = function(error){}
+	
+	getObjectivesActions(userId, success, error);
+}
+
+function getFeedback(userId){
+	var success = function(data){
+		$.each(data, function(key, val){
+			var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+			var longDate = moment(val.timestamp).format('DD MMM YYYY');
+			var name = (val.providerName) ? val.providerName : val.providerEmail;
+			addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
+		});
+	}
+	var error = function(error){}
+	
+	getFeedbackAction(userId, success, error);
+}
+
+function getCompetencies(userId){
+	
+	var success = function(data){
+    	var competencyList = [];
+        $.each(data, function(key, val){
+             if(val.selected){
+            	 competencyList.push(val.title);
+             }
+        });
+        addCompetenciesToList(competencyList);
+    }
+	var error = function(error){}
+	
+	getCompetenciesAction(userId, success, error);
 }
 
 ////Method to get the Notes list
-function getReporteeNotesList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getNotes/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-            	var date = timeStampToDateTime(new Date(val.timestamp));
-            	addNoteToReporteeList(val.providerName, val.noteDescription, date);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting notes, please try again later.");
-        }
-    });
+function getNotes(userId){
+	var success = function(data){ addNotesToReporteeList(data); }
+	var error = function(error){}
+	
+	getNotesAction(userId, success, error);
 }
 
 //Method to propose objective
@@ -412,9 +428,7 @@ function clickSubmitReporteeNote(){
 	var reporteeID = selectedReporteeID;
 	var from = getADfullName();
 	var note = $("#reportee-note-input").val().trim();
-	var date = timeStampToDateTime(new Date());
-	var noteType = 0;
-	var linkID = 0;
+	var date = moment(new Date()).format('DD MMM YYYY HH:mm');
 	
 	addNoteToReporteeDB(reporteeID, from, note, date);
 	showReporteeNoteModal(false);
@@ -455,6 +469,15 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 }
 
 //Method to add note to list directly
+function addNotesToReporteeList(data){
+	var HTML = "";
+	$.each(data, function(key, val){
+		var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+		HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
+	});
+	$("#reportee-notes-list").html(HTML);
+}
+
 function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }
@@ -645,16 +668,13 @@ function addProposed(){
 	}
 }
 
-function initialiseTags() {
-	addProposed();
-}
 
 function loadingProposedButton(){
 	$("#nav-bar-buttons").html('').append("<h5 class='pull-right'> Loading... <h5>");
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
-function getReporteeRatings(userId){
+function getRatings(userId){
 	getCurrentRatingAction(userId, function(data){ 
 		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
 	});

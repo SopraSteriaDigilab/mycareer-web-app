@@ -1,8 +1,8 @@
 $(function() {
 	
 	//Get list of general feedback
-    getGeneralFeedbackList(getADLoginID());
-	getEmailList();
+	getFeedback(getADLoginID());
+	getEmails();
 	
 	//Initialising the date pickers
 //	initFeedbackDatePicker("feedback-start", '');
@@ -84,8 +84,36 @@ var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 var isEmailclicked=false;
 
-function initFeedbackDatePicker(id, start, end ){
-    
+function getFeedback(userId){
+	var success = function(data){
+        $.each(data, function(key, val){
+            var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+            var longDate = moment(val.timestamp).format('DD MMM YYYY');
+            var name = (val.providerName) ? val.providerName : val.providerEmail;
+            addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
+        });//end of for each loop
+        if(data.length == 0) {
+        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
+        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+        }
+    }
+	var error = function(error){}
+	
+	getFeedbackAction(userId, success, error);
+}
+
+function getEmails(){
+	var success = function(data){ 
+		emails = data;
+		initialiseTags();
+	}
+	var error = function(){}
+	
+	getEmailsAction(success, error);
+}
+
+function initFeedbackDatePicker(id, start, end){    
     $("#"+id+"-date-picker").datepicker({
 	   useCurrent: true,
        forceParse: false,

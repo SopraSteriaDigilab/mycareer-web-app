@@ -1,15 +1,23 @@
 const MANAGER = "/manager";
+const GET_REPORTEES = "/getReportees";
 const GET_ACTIVITY_FEED = "/getActivityFeed";
 const GENERATE_DISTRIBUTION_LIST = "/generateDistributionList";
 const PROPOSE_OBJECTIVE_TO_DISTRIBUTION_LIST = "/proposeObjectiveToDistributionList";
 
-/**
- *Ajax GET call to get activity feed for a user.
- * 
- * @param userId the id of the user
- * @param successFuntion function if call succeeds
- * @param errorFunction function if call fails
- */
+
+function getReporteesAction(userId, successFunction, errorFunction){
+	var url = MANAGER + GET_REPORTEES + "/" +userId;
+	var request = $get(url);
+	request.done(function(data){ 
+		successFunction(data)
+	})
+	request.fail(function(jqXHR, textStatus) {
+		toastr.error("Sorry, there was a problem getting reportees, please try again later.");
+        errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
+
 function getActivityFeedAction(userId, successFunction, errorFunction){
 	var url = MANAGER + GET_ACTIVITY_FEED + "/" +userId;
 	var request = $get(url);

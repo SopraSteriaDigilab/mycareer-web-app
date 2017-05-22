@@ -89,9 +89,11 @@ function toggleProfileCaret(){
 
 //Function to set up and open print modal
 function openPrintModal(){
-	$('#print-modal').modal(
-			{backdrop: 'static', keyboard: false, show: true}
-	);
+	$('#print-modal').modal({
+		backdrop: 'static',
+		keyboard: false,
+		show: true
+	});
 }
 
 //Function to set up and open print modal

@@ -22,6 +22,7 @@ var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
 
 function init() {
     getMyCareer();
+    updateNavbarButtons();
 }
 
 function getMyCareer(){
@@ -63,6 +64,9 @@ function showIfSubmitted(ratings){
 		}
 		updatedRatings.push(rating);
 	}
-	
 	return updatedRatings;
+}
+
+function updateNavbarButtons(){
+	$("#nav-bar-buttons").html("<div class='pull-right'><h5 style='color: #777; margin-top: 18px;'>Showing Full History</h5></div>");
 }
