@@ -842,6 +842,12 @@ function verifyUser(){
     }
 }
 
+function verifyIfManager(){
+    if(isManager === "false" || isManager === false){
+        window.location ="/myobjectives";
+   }
+}
+
 function emailListHTML(emails){
 	var HTML = "<div class='well well-sm' style='max-height:200px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word;'>";
 	for (i = 0; i < emails.length; i++) { 

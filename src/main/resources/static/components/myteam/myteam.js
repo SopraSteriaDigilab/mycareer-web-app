@@ -53,6 +53,7 @@ var isEmailclicked=false;
 
 
 function init(){
+	verifyIfManager();
 	checkRatingPeriod();
 	getReportees(getADLoginID(), false);
 	loadingProposedButton();
