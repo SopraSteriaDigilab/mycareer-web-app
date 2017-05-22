@@ -423,7 +423,6 @@ function updateDevelopmentNeedsTagsList(){
 
 //Initialising the date picker
 function initDatePicker(id, today){
-	
 	$("#"+id+"-date-picker").datepicker({
 		useCurrent: true,
 		forceParse: false,
@@ -433,7 +432,7 @@ function initDatePicker(id, today){
 		startView: "months", 
 		minViewMode: "months",
 		startDate: today,
-		endDate: today, 
+//		endDate: today, 
 		autoclose: true,
 	});
 	
