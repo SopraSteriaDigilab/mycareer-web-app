@@ -10,7 +10,7 @@ const FEEDBACK_STATS = "feedback-stats";
 const DEVELOPMENT_NEEDS_STATS = "development-needs-stats";
 const DEVELOPMENT_NEEDS_BREAKDOWN = "development-needs-breakdown";
 
-var $loadingText = $("#dashboard-loading-text");
+//var $loadingText = $("#dashboard-loading-text");
 var $selectpicker = $("#hr-dashboard-selectpicker");
 var $selectpickerContainer = $("#selectpicker-container");
 var $hrContainers = $(".hr-container");
@@ -62,10 +62,10 @@ function init(){
 }
 
 function getMyCareerStats(){
-	loading();
+	loadingHR();
 	var success = function(data){
 		setOverviewTable(data);
-		loaded($overviewContainer);
+		loadedHR($overviewContainer);
 	}
 	var error = function(error){ }
 	
@@ -75,7 +75,7 @@ function getMyCareerStats(){
 function getSectorBreakDown(){
 	var success = function(data){
 		sectorBreakdownLoaded = true;
-		loaded($sectorBreakdownContainer);
+		loadedHR($sectorBreakdownContainer);
 		loadDatatable($sectorBreakdownTable, data, sectorBreakDownColumnList);
 	}
 	var error = function(error){}
@@ -86,7 +86,7 @@ function getSectorBreakDown(){
 function getEmployeeStats(){
 	var success = function(data){
 		employeeStatsLoaded = true;
-		loaded($employeeStatsContainer);
+		loadedHR($employeeStatsContainer);
 		loadDatatable($employeeStatsTable, data, employeeStatsColumnList);
 	}
 	var error = function(error){}
@@ -97,7 +97,7 @@ function getEmployeeStats(){
 function getObjectiveStats(){
 	var success = function(data){
 		objectivesStatsLoaded = true;
-		loaded($objectivesStatsContainer);
+		loadedHR($objectivesStatsContainer);
 		loadDatatable($objectivesStatsTable, data, objectivesStatsColumnList);
 	}
 	var error = function(error){}
@@ -108,7 +108,7 @@ function getObjectiveStats(){
 function getFeedbackStats(){
 	var success = function(data){
 		feedbackStatsLoaded = true;
-		loaded($feedbackStatsContainer);
+		loadedHR($feedbackStatsContainer);
 		loadDatatable($feedbackStatsTable, data, feedbackStatsColumnList);
 	}
 	var error = function(error){}
@@ -119,7 +119,7 @@ function getFeedbackStats(){
 function getDevelopmentNeedStats(){
 	var success = function(data){
 		developmentNeedsStatsLoaded = true;
-		loaded($developmentNeedsStatsContainer);
+		loadedHR($developmentNeedsStatsContainer);
 		loadDatatable($developmentNeedsStatsTable, data, developmentNeedsStatsColumnList);
 	}
 	var error = function(error){}
@@ -130,7 +130,7 @@ function getDevelopmentNeedStats(){
 function getDevelopmentNeedBreakDown(){
 	var success = function(data){
 		developmentNeedsBreakdownLoaded = true;
-		loaded($developmentNeedsBreakdownContainer);
+		loadedHR($developmentNeedsBreakdownContainer);
 		loadDatatable($developmentNeedsBreakdownTable, data, developmentNeedsBreakdownColumnList);
 	}
 	var error = function(error){}
@@ -149,28 +149,28 @@ function setOverviewTable(data){
 }
 
 function showContainer(container){
-	loading();
+	loadingHR();
 	switch (container){
 		case OVERVIEW:
-			loaded($overviewContainer);
+			loadedHR($overviewContainer);
 			break;
 		case SECTOR_BREAKDOWN:
 			if(sectorBreakdownLoaded){
-				loaded($sectorBreakdownContainer);
+				loadedHR($sectorBreakdownContainer);
 			}else{
 				getSectorBreakDown();
 			}
 			break;
 		case EMPLOYEE_STATS:
 			if(employeeStatsLoaded){
-				loaded($employeeStatsContainer);
+				loadedHR($employeeStatsContainer);
 			}else{
 				getEmployeeStats();
 			}
 			break;
 		case OBJECTIVES_STATS:
 			if(objectivesStatsLoaded){
-				loaded($objectivesStatsContainer);
+				loadedHR($objectivesStatsContainer);
 			}else{
 				getObjectiveStats();
 			}
@@ -178,21 +178,21 @@ function showContainer(container){
 			break;
 		case FEEDBACK_STATS:
 			if(feedbackStatsLoaded){
-				loaded($feedbackStatsContainer);
+				loadedHR($feedbackStatsContainer);
 			}else{
 				getFeedbackStats();
 			}
 			break;
 		case DEVELOPMENT_NEEDS_STATS:
 			if(developmentNeedsStatsLoaded){
-				loaded($developmentNeedsStatsContainer);
+				loadedHR($developmentNeedsStatsContainer);
 			}else{
 				getDevelopmentNeedStats();
 			}
 			break;
 		case DEVELOPMENT_NEEDS_BREAKDOWN:
 			if(developmentNeedsBreakdownLoaded){
-				loaded($developmentNeedsBreakdownContainer);
+				loadedHR($developmentNeedsBreakdownContainer);
 			}else{
 				getDevelopmentNeedBreakDown();
 			}
@@ -214,14 +214,15 @@ function loadDatatable(selectorId, dataset, columnsList){
 	}
 }
 
-function loading(){
+function loadingHR(){
 	$hrContainers.hide();
 	$selectpickerContainer.hide()
-	$loadingText.show();
+	loading();
+//	$loadingText.show();
 }
 
-function loaded(sectionToShow){
-	$loadingText.hide();
+function loadedHR(sectionToShow){
+	loaded();
 	$selectpickerContainer.show();
 	sectionToShow.show();
 }
