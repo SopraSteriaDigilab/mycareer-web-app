@@ -46,31 +46,6 @@ function adjustDataTablesMomentJs(){
 
 //------------------------------------- Objectives -------------------------------------
 
-//HTTP request for RETRIEVING list of objectives from DB
-//function getObjectivesList(userID){
-//  $.ajax({
-//      url: 'http://'+getEnvironment()+'/getObjectives/'+userID,
-//      cache: false,
-//      method: 'GET',
-//      xhrFields: {'withCredentials': true},
-//      success: function(data){
-//    	  //lastObjID = data.length;
-//    	  var isEmpty = true;
-//          $.each(data, function(key, val){
-//              nextObjId.push(val.id);
-//        	  var expectedBy = formatDate(val.dueDate);
-//              var progressNumber = numberProgress(val.progress);
-//        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-//          });
-//          if(data.length == 0)
-//        	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
-//      },
-//      error: function(XMLHttpRequest, textStatus, errorThrown){
-//          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
-//      }
-//  });	
-//}
-
 //Function that finds the largest ID for objectives and finds the next one
 function nextObjectiveID(){
 	if(nextObjId.length <1){
@@ -212,24 +187,6 @@ function clickCloseObjective(e){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Competencies -----------------------------------
-
-//Gets the list of Competencies from the DB
-function getCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,competenciesDescriptions[val.id],val.selected);  
-            });
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
-}
 
 //Method to change star icon to selected or not
 function checkSelected(isSelected){

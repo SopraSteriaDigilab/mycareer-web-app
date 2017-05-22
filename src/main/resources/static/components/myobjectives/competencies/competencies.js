@@ -1,15 +1,27 @@
 $(function() {
     //Get competencies
-    getCompetencyList(getADLoginID());
+	getCompetencies(getADLoginID());
 	
 	//Link to competency framework
     $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
 
 });
 
+function getCompetencies(userId){
+	
+	var success = function(data){ addCompetenciesToList(data) }
+	var error = function(error){}
+	
+	getCompetenciesAction(userId, success, error);
+}
+
 //Method to add competencies to list display
-function addCompetencyToList(id,title,compentencyDescription,isSelected){
-    $("#competency-list").append(competenciesListHTML(id,title,compentencyDescription,isSelected));
+function addCompetenciesToList(data){
+	var competenciesHTML = "";
+	 $.each(data, function(key, val){
+		 competenciesHTML += competenciesListHTML(val.id,val.title,competenciesDescriptions[val.id],val.selected);  
+     });
+    $("#competency-list").html(competenciesHTML);
 }
 
 //Method to return competency html
@@ -29,7 +41,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
                     <h5>"+compentencyDescription+"</h5> \
                 </div> \
             </div> \
-        </div><!--End of panel --> \
+        </div> \
     "
     return html;
 }
@@ -56,7 +68,7 @@ function updateCompetencyStatus(userID, id, title, status){
             toastr.success("'" + title + "' competency has been updated");
         
             var className = $('#star-'+id).attr('class');
-                if (className.indexOf("empty")>=0){
+            if (className.indexOf("empty")>=0){
                 $('#star-'+id).removeClass("glyphicon-star-empty");
                 $('#star-'+id).addClass("glyphicon-star");
                 $('#starSelected'+id).val("true");

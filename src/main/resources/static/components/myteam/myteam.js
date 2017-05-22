@@ -99,7 +99,7 @@ function getEmails(){
 	getEmailsAction(success, error);
 }
 
-function getReporteeDevelopmentNeedsList(userId){
+function getDevelopmentNeeds(userId){
 	var success = function(data){ addDevelopmentNeedsToList(data); }
 	var error = function(error){}
 	
@@ -225,9 +225,9 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		getObjectives(id);
 		getCompetencies(id);
 		getFeedback(id);
-		getReporteeDevelopmentNeedsList(id);
-		getReporteeNotesList(id);
-		getReporteeRatings(id);
+		getDevelopmentNeeds(id);
+		getNotes(id);
+		getRatings(id);
 		getReportees(id, true);
 	}
 }
@@ -278,8 +278,8 @@ function getCompetencies(userId){
 }
 
 ////Method to get the Notes list
-function getReporteeNotesList(userId){
-	var success = function(data){ addNotesToReporteeList(data); } //Edit this method.
+function getNotes(userId){
+	var success = function(data){ addNotesToReporteeList(data); }
 	var error = function(error){}
 	
 	getNotesAction(userId, success, error);
@@ -645,7 +645,7 @@ function loadingProposedButton(){
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
-function getReporteeRatings(userId){
+function getRatings(userId){
 	getCurrentRatingAction(userId, function(data){ 
 		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
 	});
