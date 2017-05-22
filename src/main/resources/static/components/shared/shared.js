@@ -350,34 +350,6 @@ function addNoteToDB(userID, from, body, date){
 
 //--------------------------------------- Tags --------------------------------------
 
-
-//Method to make ajax call to get tags from database
-function getTags(userID){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/getTags/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var optionsHTML = "<option value='0'>No Filter</option>";
-        	$.each(data, function(key, val){
-        		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
-            	$.each(val, function(id, title){
-            		addToTagsLists(key, id, title);
-            		optionsHTML += addToOptionsList(key, id, title);
-                });
-            	optionsHTML += "</optgroup>";
-            	
-            });
-        	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting tags, please try again later.");
-        }
-    });	
-}
-
 function addToTagsLists(key, id, title){
 	if(key === "objectivesTags"){
 		$("#objectives-tags-checkboxes").append(tagsCheckboxItemHTML(id, title, "objective"));
@@ -694,25 +666,6 @@ function checkIfPastDate (date){
 	}
 	return false;
 }
-
-//function to get all emails of all employees so can be used to auto fill email addresses
-//function getEmailList(){
-//	$.ajax({
-//    	"async": true,
-//        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
-//        cache: false,
-//        method: 'GET',
-//        xhrFields: {'withCredentials': true},
-//        success: function(data){
-//        	emails = data;
-//			initialiseTags();
-//        },
-//        error: function(XMLHttpRequest, textStatus, errorThrown){
-//        	addProposed();
-//            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-//        }
-//    });	
-//}
 
 function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";

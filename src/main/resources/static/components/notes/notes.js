@@ -5,7 +5,7 @@ $(function() {
 	getTags(getADLoginID());
 	
 	//Get general-notes and link ids
-	getNotesList(getADLoginID());
+	getNotes(getADLoginID());
 	
 	$("#notes-open").click(function(e) { openNotesBar() });
 	 
@@ -50,6 +50,42 @@ var competencyList = ["Accountability", "Business Awareness", "Effective Communi
 var noteDateFilterApplied = false;
 var notesTagFilterApplied = false;
 
+
+function getNotes(userId){
+	var success = function(data){
+        lastNoteID = data.length;
+        $.each(data, function(key, val){
+        	var date = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+        	var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+        	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
+        });
+        if(data.length == 0)
+      	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
+	}
+	var error = function(error){}
+	
+	getNotesAction(userId, success, error);
+}
+
+function getTags(userId){
+	var success = function(data){
+    	var optionsHTML = "<option value='0'>No Filter</option>";
+    	$.each(data, function(key, val){
+    		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
+        	$.each(val, function(id, title){
+        		addToTagsLists(key, id, title);
+        		optionsHTML += addToOptionsList(key, id, title);
+            });
+        	optionsHTML += "</optgroup>";
+        	
+        });
+    	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
+    }
+	var error = function(error){}
+	
+	getTagsAction(userId, success, error);
+}
+
 function initResizable(){
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
@@ -57,29 +93,6 @@ function initResizable(){
 	});
 }
 
-//Method to get the Notes list
-function getNotesList(userID){
-  $.ajax({
-      url: 'http://'+getEnvironment()+'/getNotes/'+userID,
-      cache: false,
-      method: 'GET',
-      xhrFields: {'withCredentials': true},
-      success: function(data){
-          lastNoteID = data.length;
-          $.each(data, function(key, val){
-          	var date = moment(val.timestamp).format('DD MMM YYYY HH:mm');
-          	var classDate = moment(val.timestamp).format('YYYY-MM-DD');
-          	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
-          });
-          if(data.length == 0)
-        	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
-      	
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-          toastr.error("Sorry, there was a problem getting notes, please try again later.");
-      }
-  });
-}
 
 function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
     $.ajax({
