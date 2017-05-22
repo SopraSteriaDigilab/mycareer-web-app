@@ -232,25 +232,20 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 	}
 }
 
-function getReporteeCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var competencyList = [];
-            $.each(data, function(key, val){
-                 if(val.isSelected){
-                	 competencyList.push(val.title);
-                 }
-            });
-            addCompetenciesToList(competencyList);
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
+function getReporteeCompetencyList(userId){
+	
+	var success = function(data){
+    	var competencyList = [];
+        $.each(data, function(key, val){
+             if(val.selected){
+            	 competencyList.push(val.title);
+             }
+        });
+        addCompetenciesToList(competencyList);
+    }
+	var error = function(error){}
+	
+	getCompetenciesAction(userId, success, error);
 }
 
 ////Method to get the Notes list
