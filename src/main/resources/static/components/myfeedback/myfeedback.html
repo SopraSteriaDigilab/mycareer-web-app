@@ -1,6 +1,7 @@
 <script>
 	loadStyle("components/myfeedback/myfeedback");
 	$.when(
+		loadScript("actions/emailactions"),
 		loadScript("actions/myfeedbackactions"),
 	).done(function(){
 		loadScript("components/myfeedback/myfeedback");

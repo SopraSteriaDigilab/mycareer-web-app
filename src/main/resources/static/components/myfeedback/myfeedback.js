@@ -2,7 +2,7 @@ $(function() {
 	
 	//Get list of general feedback
 	getFeedback(getADLoginID());
-	getEmailList();
+	getEmails();
 	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", '');
@@ -85,6 +85,16 @@ function getFeedback(userId){
 	var error = function(error){}
 	
 	getFeedbackAction(userId, success, error);
+}
+
+function getEmails(){
+	var success = function(data){ 
+		emails = data;
+		initialiseTags();
+	}
+	var error = function(){}
+	
+	getEmailsAction(success, error);
 }
 
 function initFeedbackDatePicker(id, start){

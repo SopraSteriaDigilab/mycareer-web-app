@@ -200,32 +200,6 @@ function checkSelected(isSelected){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Feedback -------------------------------------
-//function getGeneralFeedbackList(userID){
-//    //Gets the List of General Feedback from the DB 
-//    $.ajax({
-//        url: 'http://'+getEnvironment()+'/getFeedback/'+userID,
-//        cache: false,
-//        method: 'GET',
-//        xhrFields: {'withCredentials': true},
-//        success: function(data){
-//            $.each(data, function(key, val){
-//                var classDate = moment(val.timestamp).format('YYYY-MM-DD');
-//                var longDate = moment(val.timestamp).format('DD MMM YYYY');
-//                var name = (val.providerName) ? val.providerName : val.providerEmail;
-//                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
-//            });//end of for each loop
-//            if(data.length == 0) {
-//	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
-//	        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-//	        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-//            }
-//        },
-//        error: function(XMLHttpRequest, textStatus, errorThrown){
-//            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
-//        }
-//        
-//    });//End of Ajax request
-//}
 
 //method to handle the close send feedback button
 function clickCloseSendFeedback(e){
@@ -270,30 +244,6 @@ function clickCloseRequestFeedback(e){
 }
 
 //-------------------------------- Development Needs ---------------------------------
-
-//Gets the List of Development Needs from the DB
-//function getDevelopmentNeedsList(userID){
-//	$.ajax({
-//	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
-//        cache: false,
-//	    method: 'GET',
-//	    xhrFields: {'withCredentials': true},
-//	    success: function(data){
-//	        $.each(data, function(key, val){
-//                nextDevNeedId.push(val.id);
-//	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-//                var progressNumber = numberProgress(val.progress);
-//                var categoryNumber = numberCategory(val.category);
-//	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
-//	        });
-//	        if(data.length == 0)
-//	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
-//	    },
-//	    error: function(XMLHttpRequest, textStatus, errorThrown){
-//	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
-//	    }
-//	});	
-//}
 
 //Method to set and show content of modal
 function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
@@ -746,23 +696,23 @@ function checkIfPastDate (date){
 }
 
 //function to get all emails of all employees so can be used to auto fill email addresses
-function getEmailList(){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	emails = data;
-			initialiseTags();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	addProposed();
-            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-        }
-    });	
-}
+//function getEmailList(){
+//	$.ajax({
+//    	"async": true,
+//        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
+//        cache: false,
+//        method: 'GET',
+//        xhrFields: {'withCredentials': true},
+//        success: function(data){
+//        	emails = data;
+//			initialiseTags();
+//        },
+//        error: function(XMLHttpRequest, textStatus, errorThrown){
+//        	addProposed();
+//            toastr.error("Sorry, there was a problem getting emails, please try again later.");
+//        }
+//    });	
+//}
 
 function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";
