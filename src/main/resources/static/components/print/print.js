@@ -1,95 +1,95 @@
 //Function to get Objectives data of the user
 function getObjectivesData(){
-	$.ajax({
-	url: 'http://'+getEnvironment()+'/getObjectives/'+ getADLoginID(),
-    cache: false,
-    method: 'GET',
-    xhrFields: {'withCredentials': true},
-    success: function(data){
-    	 	 $("#pdf-modal-body").append(printObjectivesHeader());
-	         $.each(data, function(key, val){
-	        	 var isArchived = val.archived;
-	        	 isArchived = isArchived ? 'Yes' : 'No';
-	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
-	        	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
-	        	 addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
-	         }); 
-	         openPDF("objTable");
-     },
-     error: function(XMLHttpRequest, textStatus, errorThrown){
-         console.log('error', errorThrown);
-         toastr.error("Sorry, there was a problem getting Objectives data, please try again later.")
-     }
-	})
+	var userId = getADLoginID();
+	var success = function(data){
+		$("#pdf-modal-body").append(printObjectivesHeader());
+		$.each(data, function(key, val){
+			var isArchived = val.archived;
+			isArchived = isArchived ? 'Yes' : 'No';
+			var dueDate = moment(val.dueDate).format('MMM YYYY');
+			var createdOn = moment(val.createdOn).format('DD MMM YYYY');
+			addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
+		}); 
+		openPDF("objTable");
+	}
+	var error = function(error){}
+	
+	if (typeof getObjectivesActions === "function") {
+		getObjectivesActions(userId, success, error);
+	}else{
+		$.when(loadScript("actions/myobjectivesactions")).done(function(){
+			getObjectivesActions(userId, success, error);
+		});
+	}
 }
 
 //Function to get Feedback data of the user
 function getFeedbackData(){
-	$.ajax({
-    url: 'http://'+getEnvironment()+'/getFeedback/'+ getADLoginID(),
-    cache: false,
-    method: 'GET',
-    xhrFields: {'withCredentials': true},
-    success: function(data){
-    	 	 $("#pdf-modal-body").append(printFeedbackHeader());
-	         $.each(data, function(key, val){
-	        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
-	        	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
-	         }); 
-	         openPDF("feedTable");
-     },
-     error: function(XMLHttpRequest, textStatus, errorThrown){
-         console.log('error', errorThrown);
-         toastr.error("Sorry, there was a problem getting Feedback data, please try again later.")
-     }
-	})
+	var userId = getADLoginID();
+	var success = function(data){
+	 	 $("#pdf-modal-body").append(printFeedbackHeader());
+         $.each(data, function(key, val){
+        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
+        	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
+         }); 
+         openPDF("feedTable");
+	}
+	var error = function(error){}
+	
+	if (typeof getFeedbackAction === "function") {
+		getFeedbackAction(userId, success, error);
+	}else{
+		$.when(loadScript("actions/myfeedbackactions")).done(function(){
+			getFeedbackAction(userId, success, error);
+		});
+	}
 }
 
 //Function to get Development Needs data of the user
 function getDevelopmentNeedsData(){
-	$.ajax({
-	url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+ getADLoginID(),
-    cache: false,
-    method: 'GET',
-    xhrFields: {'withCredentials': true},
-    success: function(data){
-    	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
-	         $.each(data, function(key, val){
-	        	 var isArchived = val.archived;
-	        	 isArchived = isArchived ? 'Yes' : 'No';
-	        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
-	        	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
-	        	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
-	         });
-	         openPDF("devNeedsTable");
-     },
-     error: function(XMLHttpRequest, textStatus, errorThrown){
-         console.log('error', errorThrown);
-         toastr.error("Sorry, there was a problem getting Development Needs data, please try again later.")
-     }
-	})
+	var userId = getADLoginID();
+	var success = function(data){
+	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
+         $.each(data, function(key, val){
+        	 var isArchived = val.archived;
+        	 isArchived = isArchived ? 'Yes' : 'No';
+        	 var dueDate = moment(val.dueDate).format('MMM YYYY');
+        	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
+        	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
+         });
+         openPDF("devNeedsTable");
+	}
+	var error = function(error){}
+	
+	if (typeof getDevelopmentNeedsAction === "function") {
+		getDevelopmentNeedsAction(userId, success, error);
+	}else{
+		$.when(loadScript("actions/mydevelopmentneedsactions")).done(function(){
+			getDevelopmentNeedsAction(userId, success, error);
+		});
+	}
 }
 
 //Function to get Notes data of the user
 function getNotesData(){
-	$.ajax({
-	url: 'http://'+getEnvironment()+'/getNotes/'+ getADLoginID(),
-    cache: false,
-    method: 'GET',
-    xhrFields: {'withCredentials': true},
-    success: function(data){
-    	 	 $("#pdf-modal-body").append(printNotesHeader());
-	         $.each(data, function(key, val){
-	        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
-	        	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
-	         }); 
-	         openPDF("notesTable");
-     },
-     error: function(XMLHttpRequest, textStatus, errorThrown){
-         console.log('error', errorThrown);
-         toastr.error("Sorry, there was a problem getting Notes data, please try again later.")
-     }
-	})
+	var userId = getADLoginID();
+	var success = function(data){
+	 	 $("#pdf-modal-body").append(printNotesHeader());
+         $.each(data, function(key, val){
+        	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
+        	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
+         }); 
+         openPDF("notesTable");
+	}
+	var error = function(error){}
+	
+	if (typeof getNotesAction === "function") {
+		getNotesAction(userId, success, error);
+	}else{
+		$.when(loadScript("actions/mynotesactions")).done(function(){
+			getNotesAction(userId, success, error);
+		});
+	}
 }
 
 //function to add objectives data to a list and append it on the HTML
