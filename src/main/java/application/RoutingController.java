@@ -75,7 +75,7 @@ public class RoutingController
 
   private static boolean isRatingPeriod()
   {
-    Month currentMonth = YearMonth.now().getMonth();
+    Month currentMonth = YearMonth.now().plusMonths(5).getMonth();
 
     return currentMonth.equals(OCTOBER) || currentMonth.equals(NOVEMBER) || currentMonth.equals(DECEMBER)
         || currentMonth.equals(JANUARY) || currentMonth.equals(FEBRUARY);
