@@ -365,17 +365,22 @@ function reviewerExists(reviewer){
 }
 
 function openRequestFeedbackModal(){
+	$("textarea").val("");
+	$("#requestingTo").tagsinput('removeAll');
     $('#requestFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 function openSendFeedbackModal(){
+    $("textarea").val("");
+    $("#sendingTo").tagsinput('removeAll');
 	$('#submit-send-feedback').prop("disabled", true);
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
 //Email details sent through BE to request feedback.
 function submitFeedbackRequest(){
-	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+//	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+	loading("Processing Feedback Request. Please wait.");
 	$.ajax({
         url: "http://"+getEnvironment()+"/generateFeedbackRequest/"+getADLoginID(),
         method: "POST",
@@ -385,24 +390,24 @@ function submitFeedbackRequest(){
             'notes': $('#requestingText').val(),
         },
         success: function(response){
-        	$("#nav-bar-buttons").empty();
+        	loaded();
+//        	$("#nav-bar-buttons").empty();
             toastr.success(response);
+            $('#requestFeedbackModal').modal('hide');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#nav-bar-buttons").empty();
+        	loaded();
+//        	$("#nav-bar-buttons").empty();
             toastr.error(XMLHttpRequest.responseText);
         },
 	});
-    $('#request-feedback').click(function() {
-        $("textarea").val("");
-        $("#requestingTo").tagsinput('removeAll');
-    });
-    $('#requestFeedbackModal').modal('hide');
+
 }
 
 //Email details sent to BE to send feedback
 function submitSendFeedback(){
-    $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+//    $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
+	loading("Processing Feedback. Please wait.");
     $.ajax({
         url: "http://"+getEnvironment()+"/addFeedback/"+getADLoginID(),
         method: "POST",
@@ -412,24 +417,23 @@ function submitSendFeedback(){
             'feedback': $('#sendingText').val(),
         },
         success: function(response){
-        	$("#nav-bar-buttons").empty();
+//        	$("#nav-bar-buttons").empty();
+        	loaded();
             toastr.success(response);
+            $('#sendFeedbackModal').modal('hide');
+
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#nav-bar-buttons").empty();
+        error: function(XMLHttpRequest, textStatus){
+//        	$("#nav-bar-buttons").empty();
+        	loaded();
         	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
         	if(errorMessage.indexOf("feedback added") > -1){
         		toastr.warning(XMLHttpRequest.responseText);
         	}else{
-        		toastr.error(errorMessage);
+        		toastr.error(XMLHttpRequest.responseJSON.error);
         	}
         },
     });
-        $('#send-feedback').click(function() {
-            $("textarea").val("");
-            $("#sendingTo").tagsinput('removeAll');
-        });
-        $('#sendFeedbackModal').modal('hide');
 }
 
 function openAddTagModalFeedback(id){
