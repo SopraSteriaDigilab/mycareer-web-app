@@ -167,21 +167,19 @@ function showProposedObjTab(){
 //Method to handle the close objective button
 function clickCloseObjective(e){
 	var type = $("#obj-modal-type").val();
-	if ((type=== "edit") || (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false))){
+	if ((type === "edit") || (checkEmptyID("objective-title", false) && checkEmptyID("objective-text", false))){
 		$('#objective-modal').modal('hide');
-	    }
-	else {
-		 addHTMLforPopUpBox("objective-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#objective-modal').modal('hide');
-		    });
-	};
+	}else{
+		var title = "Close 'Objective' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+			$('#objective-modal').modal('hide');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //------------------------------------------------------------------------------------
@@ -205,40 +203,38 @@ function checkSelected(isSelected){
 function clickCloseSendFeedback(e){
 	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
 		$('#sendFeedbackModal').modal('hide');
-	} else {
-		addHTMLforPopUpBox("send-feedback-modal");
-		var $form = $(this).closest('form');
-		e.preventDefault();
-		$('#confirm').modal({
-			backdrop: 'static',
-			keyboard: false
-		}).one('click', '#close-modals', function(e) {
+	}else{
+		var title = "Close 'Send Feedback' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
 			$('#sendFeedbackModal').modal('hide');
 			$("textarea").val("");
 			$("#sendingTo").tagsinput('removeAll');
-		});
-	};
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //method to handle the close send feedback button
 function clickCloseRequestFeedback(e){
 	if (checkEmptyID("requestingTo",false) && checkEmptyID("requestingText",false)){
 		$('#requestFeedbackModal').modal('hide');
-	    }
-	else {
-		addHTMLforPopUpBox("request-feedback-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#requestFeedbackModal').modal('hide');
-              $("textarea").val("");
-              $("#requestingTo").tagsinput('removeAll');
-		    });
-	};
+	}else {
+		var title = "Close 'Request Feedback' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+	    	$('#requestFeedbackModal').modal('hide');
+	    	$("textarea").val("");
+	    	$("#requestingTo").tagsinput('removeAll');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //-------------------------------- Development Needs ---------------------------------
@@ -279,19 +275,17 @@ function clickCloseDevNeed(e){
 	var type = $("#dev-need-modal-type").val();
 	if ((type === "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
 		$('#development-need-modal').modal('hide');
-	    }
-	else {
-		addHTMLforPopUpBox("development-need-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#development-need-modal').modal('hide');
-		    });
-	};
+	}else {
+		var title = "Close 'Development Need' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+			$('#development-need-modal').modal('hide');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 function showProposedDevelopmentTab(){
@@ -551,25 +545,7 @@ function checkEmptyID(inputID, throwError){
 		toastr.error("Please fill in all mandatory fields.");
 
 	return isEmpty;
-} 
-
-function addHTMLforPopUpBox(parentModalID){
-	$("#pop-up-"+parentModalID).append(""
-			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
-			+			"<div class=\"modal-dialog modal-sm\">"
-			+				"<!-- Modal content-->"
-		    +				"<div class=\"modal-content\">"
-		    +					"<div class=\"modal-body\">"
-		    +						"Your changes are unsaved. Are you sure you want to close this window?"
-		  	+					"</div>"
-		  	+				"<div class=\"modal-footer\">"
-		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn btn-primary\" id=\"close-modals\" onClick=\"$(\"#"+parentModalID+"\").modal(\"hide\");\">Close this window</button>"
-		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn\">Cancel</button>"
-		  	+				"</div>"
-		  	+			"</div>"
-			+		"</div>"
-			+	"</div>");
-} 
+}
 
 function enableSubmit(type){
     if (type === 1){
@@ -827,7 +803,7 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 				</div> \
 				<div class='modal-body'>"+body+"</div> \
 			    <div class='modal-footer'> \
-					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Close</button> \
+					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Cancel</button> \
 					<button type='button' class='btn btn-default pull-right' id='warning-modal-action'>"+buttonText+"</button> \
 				</div> \
 			</div> \

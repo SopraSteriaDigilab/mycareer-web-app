@@ -374,63 +374,38 @@ function openSendFeedbackModal(){
     $('#sendFeedbackModal').modal({backdrop: 'static', keyboard: false, show: true});
 }
 
-//Email details sent through BE to request feedback.
 function submitFeedbackRequest(){
-//	$("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
 	loading("Processing Feedback Request. Please wait.");
-	$.ajax({
-        url: "http://"+getEnvironment()+"/generateFeedbackRequest/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'emailsTo': $('#requestingTo').val(),
-            'notes': $('#requestingText').val(),
-        },
-        success: function(response){
-        	loaded();
-//        	$("#nav-bar-buttons").empty();
-            toastr.success(response);
-            $('#requestFeedbackModal').modal('hide');
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	loaded();
-//        	$("#nav-bar-buttons").empty();
-            toastr.error(XMLHttpRequest.responseText);
-        },
-	});
+	var userId = getADLoginID();
+	var emails = $('#requestingTo').val();
+	var notes =  $('#requestingText').val();
+	
+	var success = function(response){
+    	loaded();
+        toastr.success(response);
+        $('#requestFeedbackModal').modal('hide');
+    }
+	var error = function(error){ loaded(); }
+	
+	generateFeedbackRequestAction(userId, emails, notes, success, error);
 
 }
 
-//Email details sent to BE to send feedback
-function submitSendFeedback(){
-//    $("#nav-bar-buttons").append("<h5 class='pull-right'> Loading... <h5>");
-	loading("Processing Feedback. Please wait.");
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addFeedback/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'emails': $('#sendingTo').val(),
-            'feedback': $('#sendingText').val(),
-        },
-        success: function(response){
-//        	$("#nav-bar-buttons").empty();
-        	loaded();
-            toastr.success(response);
-            $('#sendFeedbackModal').modal('hide');
 
-        },
-        error: function(XMLHttpRequest, textStatus){
-//        	$("#nav-bar-buttons").empty();
-        	loaded();
-        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
-        	if(errorMessage.indexOf("feedback added") > -1){
-        		toastr.warning(XMLHttpRequest.responseText);
-        	}else{
-        		toastr.error(XMLHttpRequest.responseJSON.error);
-        	}
-        },
-    });
+function submitSendFeedback(){
+	loading("Processing Feedback. Please wait.");
+	var userId = getADLoginID();
+	var emails = $('#sendingTo').val();
+	var feedback = $('#sendingText').val();
+	
+	var success = function(response){
+    	loaded();
+        toastr.success(response);
+        $('#sendFeedbackModal').modal('hide');
+    }
+	var error = function(error){ loaded(); }
+	
+	addFeedbackAction(userId, emails, feedback, success, error);
 }
 
 function openAddTagModalFeedback(id){
@@ -442,28 +417,20 @@ function openAddTagModalFeedback(id){
 }
 
 function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateFeedbackTags/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'feedbackId': id,
-            'objectiveIds': objectiveTagIds.toString(),
-            'developmentNeedIds': developmentNeedTagIds.toString()
-        },
-        success: function(response){
-            toastr.success(response);
-            $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "feedback"));
-            setFeedbackTagValues(id, objectiveTagIds, developmentNeedTagIds);
-            
-            $('#add-tag-modal').modal('hide');
-            clearTagsCheckboxes();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#nav-bar-buttons").empty();
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	var userId = getADLoginID();
+	var feedbackId = id;
+	var objectiveIds = objectiveTagIds.toString();
+	var developmentNeedIds = developmentNeedTagIds.toString();
+	
+	var success = function(success){
+        $("#feedback-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "feedback"));
+        setFeedbackTagValues(id, objectiveTagIds, developmentNeedTagIds);
+        $('#add-tag-modal').modal('hide');
+        clearTagsCheckboxes();
+    }
+	var error = function(error){}
+	
+	updateFeedbackTagsAction(userId, feedbackId, objectiveIds, developmentNeedIds, success, error);
 }
 
 function setFeedbackTagValues(id, objTags, devNeedTags){
@@ -482,6 +449,3 @@ function addTag(inputLocation,inputDestination){
 	else{isEmailclicked=false;}
 }
 
-//function addProposed(){
-//	//Remove me when you move getEmails to actions...
-//}
