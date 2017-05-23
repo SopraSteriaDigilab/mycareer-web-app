@@ -135,10 +135,10 @@ function clickSubmitObjective(){
 	if(checkIfPastDate(objDate) || (checkEmpty("objective-modal-validate", true))){ return false; }
 	
 	if(type === 'add'){
-		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
+		addObjectiveToDB(userID, objTitle, objText, objDate);
         showObjectiveModal(false);
 	}else if (type === 'edit'){
-		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
         showObjectiveModal(false);
 	}else{
 		var distributionListName = $("#distribution-list-textbox").val().trim();
