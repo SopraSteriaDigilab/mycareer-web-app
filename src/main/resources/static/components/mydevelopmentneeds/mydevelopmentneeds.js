@@ -127,7 +127,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
             	var d = new Date();
               	var date = moment(d).format('DD MMM YYYY HH:mm');
               	var classDate = moment(d).format('YYYY-MM-DD');
-            	addNoteToList(lastNoteID++, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+            	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
                 $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
@@ -156,7 +156,7 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             var d = new Date();
           	var date = moment(d).format('DD MMM YYYY HH:mm');
           	var classDate = moment(d).format('YYYY-MM-DD');
-            addNoteToList(lastNoteID++, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+            addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
             deleteTag(devNeedID, "development-need");
             toastr.success(response);
         },
