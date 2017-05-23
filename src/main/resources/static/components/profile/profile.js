@@ -195,7 +195,12 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
-	deleteExtraEmailAction(function(){deleteExtraEmailSuccess()});
+	var userId = getADLoginID();
+	var emailAddress = "";
+	var success = function(response){ deleteExtraEmailSuccess() }
+	var error = function(error){}
+	
+	saveExtraEmailAction(userId, emailAddress, success, error);
 }
 
 function deleteExtraEmailSuccess(){
@@ -227,7 +232,7 @@ function closeExtraEmail(){
 /** Save extra email address to the database. */
 function saveExtraEmail(){
 	
-	var extraEmailInput=$addEmailInput.val();
+	var extraEmailInput=$addEmailInput.val().trim();
 	var extraEmailText=$addEmailText.text();
 	
 	if (isExtraEmailUpdated(extraEmailInput)){
@@ -245,10 +250,9 @@ function saveExtraEmail(){
 			}
 			else {
 				currentExtraEmail=extraEmailInput;
-				saveExtraEmailAction(extraEmailInput, function(extraEmailInput){
+				saveExtraEmailAction(getADLoginID(), extraEmailInput, function(response){
 					saveExtraEmailSuccess(extraEmailInput)
-					}
-				);
+					}, function(){});
 			}
 		}
 	}
