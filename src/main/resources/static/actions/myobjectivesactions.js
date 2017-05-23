@@ -25,7 +25,7 @@ function addObjectiveAction(userId, title, description, dueDate, successFunction
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success("Objective inserted");
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {

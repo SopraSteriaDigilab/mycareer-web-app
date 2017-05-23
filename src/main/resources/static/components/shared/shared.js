@@ -23,8 +23,8 @@ var competenciesDescriptions = [
 	"Takes account of a wide range of long-term changes and trends in technology, the market-place and in the business and plans ahead accordingly. Has a clear view of where they want to get to in the medium and longer term. Understands competition. Anticipates consequences and trends.",
 	"Shows flexibility and the desire to acquire new knowledge and ideas. Accepts and supports the need for change and looks for new ways of solving problems. Demonstrates the ability to lead and foster change within the organisation. Can act differently depending upon the situation and can handle uncertainty. Is committed to continuous improvement. Comes up with practical steps to implement own or others ideas.",
 	"Works cooperatively with colleagues and considers their needs and the impact of decisions on them. Seeks to build relationships across the organisation and to work for the overall good of the business. Able to find common ground and gain trust. Encourages collaboration."];
-var nextDevNeedId = [];
-var nextObjId = [];
+//var nextDevNeedId = [];
+//var nextObjId = [];
 var objectiveTagIds = [];
 var developmentNeedTagIds = [];
 var lastNoteID = 0;
@@ -47,19 +47,19 @@ function adjustDataTablesMomentJs(){
 //------------------------------------- Objectives -------------------------------------
 
 //Function that finds the largest ID for objectives and finds the next one
-function nextObjectiveID(){
-	if(nextObjId.length <1){
-		nextObjId.push(1);
-		return 1;
-	}
-	
-    //numerical sort
-    nextObjId.sort(function(a,b){ return a - b;});
-    //finds the last id in the list
-    var lastId = nextObjId[nextObjId.length - 1];
-    nextObjId.push(++lastId);
-    return lastId;
-}
+//function nextObjectiveID(){
+//	if(nextObjId.length <1){
+//		nextObjId.push(1);
+//		return 1;
+//	}
+//	
+//    //numerical sort
+//    nextObjId.sort(function(a,b){ return a - b;});
+//    //finds the last id in the list
+//    var lastId = nextObjId[nextObjId.length - 1];
+//    nextObjId.push(++lastId);
+//    return lastId;
+//}
 
 function numberProgress(progress){
     switch(progress){
@@ -295,18 +295,18 @@ function showProposedDevelopmentTab(){
 }
 
 //Function that finds the largest ID for objectives and finds the next one
-function nextDevelopmentNeedID(){
-	if(nextDevNeedId.length <1){
-		nextDevNeedId.push(1);
-		return 1;
-	}
-    //numerical sort
-    nextDevNeedId.sort(function(a,b){ return a - b;});
-    //finds the last id in the list
-    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
-    nextDevNeedId.push(++lastId);
-    return lastId;
-}
+//function nextDevelopmentNeedID(){
+//	if(nextDevNeedId.length <1){
+//		nextDevNeedId.push(1);
+//		return 1;
+//	}
+//    //numerical sort
+//    nextDevNeedId.sort(function(a,b){ return a - b;});
+//    //finds the last id in the list
+//    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
+//    nextDevNeedId.push(++lastId);
+//    return lastId;
+//}
 
 //------------------------------------------------------------------------------------
 

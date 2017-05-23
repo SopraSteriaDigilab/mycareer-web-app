@@ -44,7 +44,7 @@ function getDevelopmentNeedsListNEW(userId){
 	var  success =  function(data){
 		loaded();
         $.each(data, function(key, val){
-            nextDevNeedId.push(val.id);
+//            nextDevNeedId.push(val.id);
         	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
             var progressNumber = numberProgress(val.progress);
             var categoryNumber = numberCategory(val.category);
@@ -72,13 +72,13 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
             'dueDate': devNeedDate
         },
         success: function(response){
-            if(nextDevNeedId.length == 0)
+        	var Id = response;
+            if(Id === 1)
         		$("#all-dev-need").removeClass("text-center").empty(); 
-            var Id = nextDevelopmentNeedID();
             addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
 		    addTag(Id, devNeedTitle, "dev");
-            toastr.success(response);
+            toastr.success("Development Need inserted");
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             toastr.error(XMLHttpRequest.responseText);
@@ -333,11 +333,11 @@ function openDeleteDevNeedModal(id, title){
 }
 
 function removeDevNeedFromList(devNeedID){
-    nextDevNeedId.sort(function(a,b){ return a - b;});
-    var findId = nextDevNeedId.indexOf(parseInt(devNeedID));
-    if(findId > -1){
-        nextDevNeedId.splice(findId, 1);
-    }
+//    nextDevNeedId.sort(function(a,b){ return a - b;});
+//    var findId = nextDevNeedId.indexOf(parseInt(devNeedID));
+//    if(findId > -1){
+//        nextDevNeedId.splice(findId, 1);
+//    }
     $("#development-need-item-"+devNeedID).fadeOut(400, function() {
         $(this).remove();
     });
@@ -345,20 +345,20 @@ function removeDevNeedFromList(devNeedID){
     $('#deleteModal').modal('hide');
 }
 
-function getTimeStamp(id){
-	$.ajax({
-    url: 'http://'+getEnvironment()+'/getdevelopmentNeeds/'+id,
-    cache: false,
-    method: 'GET',
-    xhrFields: {'withCredentials': true},
-    success: function(data){
-    	createdOn = timeStampToLongDate(data[0].timeStamp);
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown){
-        console.log('error', errorThrown);
-        toastr.error("Sorry, there was a problem getting timeStamp data, please try again later.")
-     }
- })};
+//function getTimeStamp(id){
+//	$.ajax({
+//    url: 'http://'+getEnvironment()+'/getdevelopmentNeeds/'+id,
+//    cache: false,
+//    method: 'GET',
+//    xhrFields: {'withCredentials': true},
+//    success: function(data){
+//    	createdOn = timeStampToLongDate(data[0].timeStamp);
+//    },
+//    error: function(XMLHttpRequest, textStatus, errorThrown){
+//        console.log('error', errorThrown);
+//        toastr.error("Sorry, there was a problem getting timeStamp data, please try again later.")
+//     }
+// })};
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, createdOn){
