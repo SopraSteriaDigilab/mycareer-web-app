@@ -1,4 +1,3 @@
-const DATA = "/data";
 const GET_EMAILS = "/getAllEmailAddresses";
 
 /**

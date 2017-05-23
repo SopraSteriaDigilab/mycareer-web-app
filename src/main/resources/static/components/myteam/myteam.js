@@ -161,7 +161,7 @@ function shortenTitleActivityFeed(description){
 }
 
 function loadingSubReporteeList(){
-	$('#reportee-sub-selected').html("<h5>Loading...</h5>");
+	$('#reportee-sub-selected').html("<h5 class='text-center'>Loading...</h5>");
 	$('#reportee-sub-list').empty();
 }
 

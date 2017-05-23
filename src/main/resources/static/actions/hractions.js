@@ -1,5 +1,3 @@
-const HR = "/hr";
-
 const GET_CAREER = "/getCareer";
 const GET_MY_CAREER_STATS = "/getMyCareerStats";
 const GET_SECTOR_BREAKDOWN = "/getSectorBreakDown";

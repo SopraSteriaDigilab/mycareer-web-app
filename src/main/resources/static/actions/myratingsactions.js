@@ -1,3 +1,9 @@
+const GET_CURRENT_RATING = "/getCurrentRating";
+const ADD_MANAGER_EVALUATION = "/addManagerEvaluation";
+const ADD_SELF_EVALUATION = "/addSelfEvaluation";
+const SUBMIT_SELF_EVALUATION = "/submitSelfEvaluation";
+const SUBMIT_MANAGER_EVALUATION = "/submitManagerEvaluation";
+
 /**
  * Ajax GET call to get current ratings for a user.
  * 
@@ -6,19 +12,15 @@
  * @param errorFunction function if call fails
  */
 function getCurrentRatingAction(userId, successFunction, errorFunction){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCurrentRating/'+userId,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	successFunction(data);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){        	
-            toastr.error("Sorry, there was a problem getting ratings, please try again later.");
-            errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
-        }
-    });
+	var url = GET_CURRENT_RATING + "/" + userId;
+	var request = $get(url);
+	request.done( function(data){ 
+		successFunction(data)
+	})
+	request.fail(function(jqXHR, textStatus) {
+        toastr.error("Sorry, there was a problem getting ratings, please try again later.");
+        errorFunction(jqXHR.responseJSON.error);
+	});
 }
 
 /**
@@ -32,24 +34,21 @@ function getCurrentRatingAction(userId, successFunction, errorFunction){
  * @param errorFunction function if call fails
  */
 function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score, successFunction, errorFunction){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/manager/addManagerEvaluation/"+userId,
-        method: 'POST',
-        xhrFields: {'withCredentials': true},
-        data: {
-            'reporteeId': reporteeId,
-            'managerEvaluation': managerEvaluation,
-            'score': score
-        },            
-        success: function(response){
-        	toastr.success(response);
-        	successFunction(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
-        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
-        },
-    });
+	var url = MANAGER + ADD_MANAGER_EVALUATION + "/" + userId;
+	var data = {
+	    reporteeId: reporteeId,
+	    managerEvaluation: managerEvaluation,
+	    score: score
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
 }
 
 /**
@@ -57,64 +56,51 @@ function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score
  * 
  * @param userId the id of the user
  * @param reporteeId the id of the reportee
- * @param managerEvaluation evaluation for the reportee
- * @param score the score for the reportee
+ * @param selfEvaluation evaluation for the reportee
  * @param successFuntion function if call succeeds
  * @param errorFunction function if call fails
  */
 function addSelfEvaluationAction(userId, selfEvaluation, successFunction, errorFunction){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addSelfEvaluation/"+userId,
-        method: 'POST',
-        xhrFields: {'withCredentials': true},
-        data: {
-            'selfEvaluation': selfEvaluation,
-        },            
-        success: function(response){
-        	toastr.success(response);
-        	successFunction(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
-        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
-        },
-    });
+	var url = ADD_SELF_EVALUATION + "/" + userId;
+	var data = { selfEvaluation: selfEvaluation }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
 }
 
 function submitSelfEvaluationAction(userId, successFunction, errorFunction){
-    $.ajax({
-    	url: "http://"+getEnvironment()+"/submitSelfEvaluation/"+userId,
-        method: 'POST',
-        xhrFields: {'withCredentials': true},         
-        success: function(response){
-        	toastr.success(response);
-        	successFunction(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
-        	errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
-        },
-    });
+	var url = SUBMIT_SELF_EVALUATION + "/" + userId;
+	var data = { }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
 }
 
 
 function submitManagerEvaluationAction(userId, reporteeId, successFunction, errorFunction){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/manager/submitManagerEvaluation/"+userId,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-        	"reporteeId": reporteeId
-        },
-        success: function(response){
-        	toastr.success(response);
-        	successFunction(response);
-       },
-       error: function(XMLHttpRequest, textStatus, errorThrown){
-           toastr.error(JSON.parse(XMLHttpRequest.responseText).error);
-           errorFunction(JSON.parse(XMLHttpRequest.responseText).error);
-       },
-    });
+	var url = MANAGER + SUBMIT_MANAGER_EVALUATION + "/" + userId;
+	var data = { reporteeId: reporteeId }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
 }
 
 

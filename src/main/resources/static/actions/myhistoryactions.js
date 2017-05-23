@@ -1,5 +1,4 @@
-const HR = "/history";
-const GETMYCAREER = "/getMyCareer/";
+const GETMYCAREER = "/getMyCareer";
 
 /**
  *Ajax GET call get history for a user.
@@ -9,7 +8,7 @@ const GETMYCAREER = "/getMyCareer/";
  * @param errorFunction function if call fails
  */
 function getEmployeeCareerAction(userId, successFunction, errorFunction){
-	var url = HR + GETMYCAREER + userId;
+	var url = HISTORY + GETMYCAREER + "/" + userId;
 	var request = $get(url);
 	request.done( function(data){ 
 		successFunction(data)

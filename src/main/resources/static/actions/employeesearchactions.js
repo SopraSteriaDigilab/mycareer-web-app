@@ -1,4 +1,3 @@
-const DATA = "/data";
 const GET_ALL_NAMES_AND_IDS = "/getAllNamesAndIds";
 
 /**

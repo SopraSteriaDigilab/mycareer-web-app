@@ -1,3 +1,7 @@
+const MANAGER = "/manager";
+const DATA = "/data";
+const HR = "/hr";
+const HISTORY = "/history";
 /**
  *Ajax GET call
  * 

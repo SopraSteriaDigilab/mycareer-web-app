@@ -1,4 +1,3 @@
-const MANAGER = "/manager";
 const GET_REPORTEES = "/getReportees";
 const GET_ACTIVITY_FEED = "/getActivityFeed";
 const GENERATE_DISTRIBUTION_LIST = "/generateDistributionList";
