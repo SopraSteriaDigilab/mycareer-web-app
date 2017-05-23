@@ -28,17 +28,18 @@ $(function() {
 
 function getObjectives(userId){
 	var success = function(data){
-  	  var isEmpty = true;
-  	  $.each(data, function(key, val){
-  		  nextObjId.push(val.id);
-  		  var expectedBy = formatDate(val.dueDate);
-  		  var progressNumber = numberProgress(val.progress);
-  		  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-  	  });
-  	  if(data.length == 0)
-  		  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
+		loaded();
+		var isEmpty = true;
+		$.each(data, function(key, val){
+			nextObjId.push(val.id);
+			var expectedBy = formatDate(val.dueDate);
+			var progressNumber = numberProgress(val.progress);
+			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+		});
+		if(data.length == 0)
+			$("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); } 
 	
 	getObjectivesActions(userId, success, error);
 }

@@ -5,11 +5,8 @@ $(function() {
 	getEmails();
 	
 	//Initialising the date pickers
-//	initFeedbackDatePicker("feedback-start", '');
-//	initFeedbackDatePicker("feedback-end", new Date());
 	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
 	initFeedbackDatePicker("feedback-end", new Date(), new Date() );
-	
 	
 	//Keep end date updated
 	$("#feedback-start-date").change(function (d){ updateEndDate() });
@@ -86,19 +83,19 @@ var isEmailclicked=false;
 
 function getFeedback(userId){
 	var success = function(data){
+		loaded();
         $.each(data, function(key, val){
             var classDate = moment(val.timestamp).format('YYYY-MM-DD');
             var longDate = moment(val.timestamp).format('DD MMM YYYY');
             var name = (val.providerName) ? val.providerName : val.providerEmail;
             addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
-        });//end of for each loop
-        if(data.length == 0) {
+        });
+        if(data.length === 0) {
         	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
-        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
+        	$("#general-reviewer-list, #general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
         }
     }
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getFeedbackAction(userId, success, error);
 }
@@ -485,6 +482,6 @@ function addTag(inputLocation,inputDestination){
 	else{isEmailclicked=false;}
 }
 
-function addProposed(){
-	//Remove me when you move getEmails to actions...
-}
+//function addProposed(){
+//	//Remove me when you move getEmails to actions...
+//}

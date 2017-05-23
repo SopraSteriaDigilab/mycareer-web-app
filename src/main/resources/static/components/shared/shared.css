@@ -7,7 +7,7 @@ textarea {
     max-width: 100%; 
     max-height: 100%;
 }
-
+/*
 #loading-spinner{
 	position: absolute;
 	top: 0;
@@ -32,7 +32,7 @@ textarea {
 
 #loading-gif{
 	margin-left: calc(50% - 48px);
-}
+}*/
 
 #warning-modal{
 	z-index: 1500;

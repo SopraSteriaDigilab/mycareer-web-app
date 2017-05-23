@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	initMyTeam();
 });//End of Document Function
 
 /** Constants */
@@ -52,7 +52,7 @@ var editingRating = false;
 var isEmailclicked=false;
 
 
-function init(){
+function initMyTeam(){
 	verifyIfManager();
 	checkRatingPeriod();
 	getReportees(getADLoginID(), false);
@@ -94,6 +94,7 @@ function getReportees(userId, isSubReportee){
 	
 	var success = function(data){
     	if(!isSubReportee){
+    		loaded();
     		$("#reportee-list").empty();
         	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
         	 $.each(data, function(key, val){
@@ -104,7 +105,10 @@ function getReportees(userId, isSubReportee){
     		addSubReporteesToList(data);
     	}
     }
-	var error = function (error){ $("#reportee-list").empty(); }
+	var error = function (error){ 
+		loaded();
+		$("#reportee-list").empty();
+	}
 	
 	getReporteesAction(userId, success, error);
 }

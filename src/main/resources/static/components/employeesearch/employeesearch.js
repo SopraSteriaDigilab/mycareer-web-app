@@ -1,5 +1,5 @@
 $(function() {
-	init();	
+	initEmployeeSearch();	
 });
 
 var $loadingEmployeeNameIDs = $("#loading-employee-name-ids");
@@ -32,7 +32,7 @@ var ratingsColumnDefs = [{ width: "30%", targets: [1,2] } ];
 
 var emptyCareer = {profile: { forename: "", surname: "", employeeID: ""  }, objectives : [], developmentNeeds: [], competencies: [], notes: [], feedback:[], ratings:[]};
 
-function init(){
+function initEmployeeSearch(){
 	verifyUser();
 	getEmployeeNamesAndIds();
 	
@@ -41,8 +41,11 @@ function init(){
 
 function getEmployeeNamesAndIds(){
 	
-	var success = function(data){ initialiseSelectPicker(data); }
-	var error = function(error) {}
+	var success = function(data){ 
+		initialiseSelectPicker(data);
+		loaded();
+	}
+	var error = function(error) { loaded(); }
 	
 	getEmployeeNamesAndIDsAction(success, error);
 	

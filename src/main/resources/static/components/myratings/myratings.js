@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	initMyRating();
 });
 
 /** Constants */
@@ -31,7 +31,7 @@ var lastSavedSelfEvaluationInput = null;
 
 
 /** Initialise MyRatings Page. */
-function init(){
+function initMyRating(){
 	getCurrentRating();
 	
 	$editButton.click(function(){ editSelfEvaluation(); });
@@ -42,9 +42,13 @@ function init(){
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
 function getCurrentRating(){
-	getCurrentRatingAction(getADLoginID(), function(data){ 
+	var success = function(data){
+		loaded();
 		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
-	}, function(){});
+	}
+	var error = function(){ loaded(); }
+	
+	getCurrentRatingAction(getADLoginID(), success, error);
 }
 
 /** Sets the three evaluations in the HTML */
@@ -121,19 +125,26 @@ function submitSelfEvaluation(){
 
 /** Update rating on database to submit self evaluation */
 function confirmSubmitEvaluation(){
-	submitSelfEvaluationAction(getADLoginID(), function(){
+	var id = getADLoginID();
+	var success = function(){
 		selfEvaluationSubmitted(true);
 		closeWarningModal();
-	}, function(){});
+	}
+	var error = function(error){}
+	
+	submitSelfEvaluationAction(id, success, error);
 }
 
 /** Save self evaluation to the database. */
 function saveSelfEvaluation(){
 	wasSelfEvaluationEmpty=checkEmptyID("self-evaluation-input",true);
 	lastSavedSelfEvaluationInput=$selfEvaluationText.text();
-	addSelfEvaluationAction(getADLoginID(), $selfEvaluationInput.val(), function(response){
-		closeSelfEvaluation(true);
-	}, function(){});	
+	var id = getADLoginID();
+	var data = $selfEvaluationInput.val();
+	var success = function(response){ closeSelfEvaluation(true); }
+	var error = function(error){}
+	
+	addSelfEvaluationAction(id, data, success, error);	
 }
 
 /**
@@ -142,7 +153,7 @@ function saveSelfEvaluation(){
  */
 function closeSelfEvaluation(save){
 	$selfEvaluationOptions.hide();
-	if(save) {
+	if(save){
 		setSelfEvaluationLabel($selfEvaluationInput.val());
 	}else{
 		setSelfEvaluationInput($selfEvaluationText.text())

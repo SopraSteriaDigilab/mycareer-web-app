@@ -42,6 +42,7 @@ function initDevelopmentNeeds(){
 
 function getDevelopmentNeedsListNEW(userId){
 	var  success =  function(data){
+		loaded();
         $.each(data, function(key, val){
             nextDevNeedId.push(val.id);
         	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
@@ -53,7 +54,7 @@ function getDevelopmentNeedsListNEW(userId){
         	$("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
         }
     }
-	var error= function(error){}
+	var error= function(error){ loaded(); }
 	
 	getDevelopmentNeedsAction(userId, success, error);
 }

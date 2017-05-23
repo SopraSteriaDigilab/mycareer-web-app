@@ -27,8 +27,11 @@ function init() {
 
 function getMyCareer(){
 	var employeeId = getADLoginID();
-	var success = function(data){ getTables(data); }
-	var error = function(error){}
+	var success = function(data){ 
+		getTables(data);
+		loaded();
+	}
+	var error = function(error){ loaded(); }
 	
 	getEmployeeCareerAction(employeeId, success, error);
 }

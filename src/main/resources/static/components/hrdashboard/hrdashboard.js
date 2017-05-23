@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	initHRDashboard();
 });
 
 const OVERVIEW = "overview";
@@ -52,7 +52,7 @@ var feedbackStatsLoaded = false;
 var developmentNeedsStatsLoaded = false;
 var developmentNeedsBreakdownLoaded = false;
 
-function init(){
+function initHRDashboard(){
 	verifyUser();
     $selectpicker.selectpicker();
     
@@ -67,7 +67,7 @@ function getMyCareerStats(){
 		setOverviewTable(data);
 		loadedHR($overviewContainer);
 	}
-	var error = function(error){ }
+	var error = function(error){ loaded(); }
 	
 	getMyCareerStatsAction(success, error);
 }
@@ -78,7 +78,7 @@ function getSectorBreakDown(){
 		loadedHR($sectorBreakdownContainer);
 		loadDatatable($sectorBreakdownTable, data, sectorBreakDownColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getSectorBreakDownAction(success, error);
 }
@@ -89,7 +89,7 @@ function getEmployeeStats(){
 		loadedHR($employeeStatsContainer);
 		loadDatatable($employeeStatsTable, data, employeeStatsColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getEmployeeStatsAction(success, error);
 }
@@ -100,7 +100,7 @@ function getObjectiveStats(){
 		loadedHR($objectivesStatsContainer);
 		loadDatatable($objectivesStatsTable, data, objectivesStatsColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getObjectiveStatsAction(success, error);
 }
@@ -111,7 +111,7 @@ function getFeedbackStats(){
 		loadedHR($feedbackStatsContainer);
 		loadDatatable($feedbackStatsTable, data, feedbackStatsColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getFeedbackStatsAction(success, error);
 }
@@ -122,7 +122,7 @@ function getDevelopmentNeedStats(){
 		loadedHR($developmentNeedsStatsContainer);
 		loadDatatable($developmentNeedsStatsTable, data, developmentNeedsStatsColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getDevelopmentNeedStatsAction(success, error);
 }
@@ -133,7 +133,7 @@ function getDevelopmentNeedBreakDown(){
 		loadedHR($developmentNeedsBreakdownContainer);
 		loadDatatable($developmentNeedsBreakdownTable, data, developmentNeedsBreakdownColumnList);
 	}
-	var error = function(error){}
+	var error = function(error){ loaded(); }
 	
 	getDevelopmentNeedBreakDownAction(success, error);
 }
@@ -216,13 +216,13 @@ function loadDatatable(selectorId, dataset, columnsList){
 
 function loadingHR(){
 	$hrContainers.hide();
-	$selectpickerContainer.hide()
+//	$selectpickerContainer.hide()
 	loading();
 //	$loadingText.show();
 }
 
 function loadedHR(sectionToShow){
 	loaded();
-	$selectpickerContainer.show();
+//	$selectpickerContainer.show();
 	sectionToShow.show();
 }
