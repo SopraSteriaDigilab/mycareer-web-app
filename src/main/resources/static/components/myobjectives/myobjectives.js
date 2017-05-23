@@ -1,6 +1,6 @@
 $(function() {
 	// Get list of objectives
-	getObjectivesList(getADLoginID());
+	getObjectives(getADLoginID());
 	
 	// Load competencies section
 	$( "#competencies" ).load( "../components/myobjectives/competencies/competencies.html" );
@@ -26,104 +26,83 @@ $(function() {
     });
 });
 
+function getObjectives(userId){
+	var success = function(data){
+		loaded();
+		var isEmpty = true;
+		$.each(data, function(key, val){
+			nextObjId.push(val.id);
+			var expectedBy = formatDate(val.dueDate);
+			var progressNumber = numberProgress(val.progress);
+			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+		});
+		if(data.length == 0)
+			$("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
+	}
+	var error = function(error){ loaded(); } 
+	
+	getObjectivesActions(userId, success, error);
+}
+
 //HTTP request for INSERTING an objective to DB
-function addObjectiveToDB(userID, objTitle, objText, objDate, proposedBy) {
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'title': objTitle,
-            'description': objText,
-            'dueDate': objDate,
-        },
-        success: function(response){
-            if(nextObjId.length == 0)
-        		$("#all-obj").removeClass("text-center").empty();
-            var Id = nextObjectiveID();
-            addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
-		    showProposedObjTab();
-		    addTag(Id, objTitle, "obj");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
+function addObjectiveToDB(userId, objTitle, objText, objDate) {
+	var success = function(response){
+        if(nextObjId.length == 0)
+    		$("#all-obj").removeClass("text-center").empty();
+        var Id = nextObjectiveID();
+        addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
+	    showProposedObjTab();
+	    addTag(Id, objTitle, "obj");
+    }
+	var error = function(error){}
+	
+	addObjectiveAction(userId, objTitle, objText, objDate, success, error)
+}
+
+//HTTP request for UPDATING an objective in DB
+function editObjectiveOnDB(userId, objID, objTitle, objText, objDate, objStatus){
+	var success = function(response){
+        editObjectiveOnList(userId, objID, objTitle, objText, objDate, objStatus);
+        editTag(objID, objTitle, "obj");
+    }
+	var error = function(error){}
+	
+	editObjectiveAction(userId, objID, objTitle, objText, objDate, success, error);
+}
+
+//HTTP request for UPDATING an objective in DB
+function editObjectiveProgressOnDB(userId, objID, objStatus, objTitle, comment){
+	var success = function (response){
+        updateObjectiveStatusOnList(objID, objStatus);
+        if(objStatus == 2){
+        	var text = (comment === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ comment+"'.";
+        	var d = new Date();
+          	var date = moment(d).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(d).format('YYYY-MM-DD');
+        	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+            $("#edit-objective-button-"+objID).remove();
         }
-    });
-}
+    }
+	var error = function(error){}
+	
+	updateObjectiveProgressAction(userId, objID, objStatus, comment, success, error)
 
-//HTTP request for UPDATING an objective in DB
-function editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, proposedBy){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/editObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'title': objTitle,
-            'description': objText,
-            'dueDate': objDate,
-        },
-        success: function(response){
-            editObjectiveOnList(userID, objID, objTitle, objText, objDate,objStatus);
-            editTag(objID, objTitle, "obj");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
-}
-
-//HTTP request for UPDATING an objective in DB
-function editObjectiveProgressOnDB(userID, objID, objStatus, objTitle, completedText){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateObjectiveProgress/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'progress': objStatus,
-            'comment': completedText,
-        },
-        success: function(response){
-            updateObjectiveStatusOnList(objID, objStatus);
-            if(objStatus == 2){
-            	var text = (completedText === "") ? getADfullName() + " has completed Objective '"+ objTitle +"'." : getADfullName() + " has completed Objective '"+ objTitle +"'. "+" A comment was added: '"+ completedText+"'.";
-            	addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
-                $("#edit-objective-button-"+objID).remove();
-            }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
 }
     
     //function request for DELETING a development need in DB
-function deleteObjective(userID, objID, objTitle, deletingText){
-        $.ajax({
-        url: "http://"+getEnvironment()+"/deleteObjective/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-            'comment': deletingText,
-        },
-        success: function(response){
-            //need to update objective list to remove
-            removeObjectiveFromList(objID);
-            //need to update note list
-            var text = (deletingText === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ deletingText+"'.";
-            addNoteToList(++lastNoteID, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
-            deleteTag(objID, "objective");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+function deleteObjective(userId, objID, objTitle, comment){
+	var success = function(response){
+        removeObjectiveFromList(objID);
+        var text = (comment === "") ? getADfullName() + " has deleted Objective '"+ objTitle +"'." : getADfullName() + " has deleted Objective '"+ objTitle +"'. "+" A comment was added: '"+ comment+"'.";
+    	var d = new Date();
+      	var date = moment(d).format('DD MMM YYYY HH:mm');
+      	var classDate = moment(d).format('YYYY-MM-DD');
+        addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+        deleteTag(objID, "objective");
+    }
+	var error = function(error){}
+	
+	deleteObjectiveAction(userId, objID, comment, success, error);
 }
 
 //Function to set up and open ADD objective modal
@@ -220,7 +199,7 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
 	    $("#modal-confirmation").empty().append('Objective');
 	    $("#modal-alert").empty().append('an Objective');
 	    $("#completedTitle").empty().append(title);
-	    openCompleteObjectiveModal(objID, title);
+	    openCompleteObjectiveModal();
     }else{
         var userID = getADLoginID();
         var completedText = "";
@@ -228,7 +207,7 @@ function updateObjectiveStatusOnDB(objID, objStatus, title){
     }
 }
 
-function openCompleteObjectiveModal(id, title){
+function openCompleteObjectiveModal(){
     $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
     $("textarea").val("");
 }
@@ -336,14 +315,14 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+",  2, \""+title+"\")'> \
+					     <div class='col-xs-4 bs-wizard-step  "+ checkComplete(status, 2) +"' id='complete-obj-dot-"+id+"' onClick='updateObjectiveStatusOnDB("+id+",  2, \&quot;"+escapeStr(title)+"\&quot;)'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \
@@ -353,12 +332,10 @@ function objectiveListHTML(id, title, description, timeToCompleteBy, status, isA
     \
                 <div class='panel-body'> \
                     <div class='row'> \
-                        <div class='col-md-4'> \
+                        <div class='col-md-6'> \
                             <h6><b>Created on: </b><span id='obj-createdOn-"+id+"'>"+timeStampToLongDate(createdOn)+"</span></h6> \
                         </div> \
-                        <div class='col-md-3'> \
-                        </div> \
-                        <div class='col-md-5 pull-right'> \
+                        <div class='col-md-6'> \
                             <h6><b>Proposed by: </b><span id='obj-proposedBy-"+id+"'>"+proposedBy+"</span></h6> \
                         </div> \
                     </div> \
@@ -392,7 +369,7 @@ function addEditObjButton(status, id){
 
 function objectivesButtonsHTML(id, isArchived, status, title){
 	var HTML = " \
-    <div class='col-md-12'> \
+    <div class='row'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", true)' id='archive-obj'>Archive</button> \
         </div>"
@@ -406,7 +383,7 @@ function objectivesButtonsHTML(id, isArchived, status, title){
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveObjective("+id+", false)' id='archive-obj'>Restore</button> \
 		        </div> \
 	            <div class=' col-sm-6'> \
-	                <button type='button' class='btn btn-block btn-default' onClick='clickDeleteObjective("+id+", \""+title+"\")' id='delete-obj'>Delete</button> \
+	                <button type='button' class='btn btn-block btn-default' onClick='clickDeleteObjective("+id+",\&quot;"+escapeStr(title)+"\&quot;)' id='delete-obj'>Delete</button> \
 	            </div> \
 		    </div> \
 		";
@@ -414,3 +391,4 @@ function objectivesButtonsHTML(id, isArchived, status, title){
 		}
 	return(HTML);
 }
+

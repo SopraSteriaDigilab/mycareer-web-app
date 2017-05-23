@@ -1,6 +1,8 @@
 <script>
 	loadStyle("components/myobjectives/myobjectives");
-	loadScript("components/myobjectives/myobjectives");
+	$.when(loadScript("actions/myobjectivesactions")).done(function(){
+		loadScript("components/myobjectives/myobjectives");
+	});
 </script>
 
 <div class="container">

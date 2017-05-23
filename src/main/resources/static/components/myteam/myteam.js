@@ -1,5 +1,5 @@
 $(function() {
-	init();
+	initMyTeam();
 });//End of Document Function
 
 /** Constants */
@@ -28,7 +28,17 @@ var $submitButton = $("#submit-manager-evaluation");
 var $saveButton = $("#save-manager-evaluation");
 var $cancelButton = $("#cancel-manager-evaluation");
 
+var $ratingsTab = $("#reportee-ratings-tab");
 var $activityFeed = $("#activity-feed");
+
+var $reporteeSubList = $("#reportee-sub-list");
+var $reporteeListLink = $("#reportee-list-link");
+var $acticitiyFeedLink =$("#acticitiy-feed-link");
+var $reporteeListCaret = $("#reportee-list-caret");
+var $activityFeedCaret = $("#activity-feed-caret");
+
+var wasManagerEvaluationEmpty = null;
+var lastSavedManagerEvaluationInput = null;
 
 var reporteeSectionHidden = true;
 var selectedReporteeID = 0;
@@ -36,13 +46,18 @@ var selectedReporteeEmail = "";
 var selectedReporteeName = "";
 var selectedReporteeUsername = "";
 var initialReporteeList = [];
-var activityFeedVisible = false;
+var isReporteeListshowing = false;
+var isActivityFeedShowing = false;
 var editingRating = false;
+var isEmailclicked=false;
 
-function init(){
-	getReportees(getADLoginID(), false, "");
+
+function initMyTeam(){
+	verifyIfManager();
+	checkRatingPeriod();
+	getReportees(getADLoginID(), false);
 	loadingProposedButton();
-	getEmailList();
+	getEmails();
 	initSelect();
 	getActivityFeed();
 	
@@ -53,47 +68,74 @@ function init(){
 	$submitButton.click(function(){ submitManagerEvaluation(); });
 	$saveButton.click(function(){ saveManagerEvaluation(); });
 	$cancelButton.click(function(){ clickClose(); });
+	$acticitiyFeedLink.click(function(){ toggleActivityFeed() });
+	$reporteeListLink.click(function(){ toggleReporteeList() });
+	
 	
 	$('.reportee-note-validate').on('input', function() { validateForm('reportee-note-validate', 'submit-reportee-note'); });
+	
+	$('#proposedTo').on('mousedown', '.dropdown-item', function() {
+		isEmailclicked=true;
+	});
+	
+	$('#proposedTo').on('blur', 'input', function() {
+		if (!isEmailclicked) {
+			addTagOnBlur('.bootstrap-tagsinput > input','#proposed-obj-to');
+	    }
+		else{
+			isEmailclicked=false;
+		}
+	})
 }
 
 //Method to get the Reportee list
 function getReportees(userId, isSubReportee){
 	if(isSubReportee) loadingSubReporteeList();
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/manager/getReportees/'+userId,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	if(userId == 675590){data = demoManager1();}
-        	if(userId == 674936){data = demoManager2();}
-        	
-        	if(!isSubReportee){
-        		$("#reportee-list").empty();
-            	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-            	 $.each(data, function(key, val){
-                 	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
-                 });  
-        	}else{
-        		updateSelectedSubReportee(userId);
-        		addSubReporteesToList(data);
-        	}
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#reportee-list").empty();
-            toastr.error("Sorry, there was a problem getting reportees, please try again later.");
-        }
-    });
+	
+	var success = function(data){
+    	if(!isSubReportee){
+    		loaded();
+    		$("#reportee-list").empty();
+        	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
+        	 $.each(data, function(key, val){
+             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+             });  
+    	}else{
+    		updateSelectedSubReportee(userId);
+    		addSubReporteesToList(data);
+    	}
+    }
+	var error = function (error){ 
+		loaded();
+		$("#reportee-list").empty();
+	}
+	
+	getReporteesAction(userId, success, error);
 }
 
 function getActivityFeed(){
-	
 	var id = getADLoginID();
 	var success = function(data){ addActivityFeed(data); }
 	var error = function(){}
 	
 	getActivityFeedAction(id, success, error);
+}
+
+function getEmails(){
+	var success = function(data){ 
+		emails = data;
+		addProposed(); 
+	}
+	var error = function(){}
+	
+	getEmailsAction(success, error);
+}
+
+function getDevelopmentNeeds(userId){
+	var success = function(data){ addDevelopmentNeedsToList(data); }
+	var error = function(error){}
+	
+	getDevelopmentNeedsAction(userId, success, error);
 }
 
 function addActivityFeed(data){
@@ -102,7 +144,7 @@ function addActivityFeed(data){
 		activityHTML = "<h5 class='text-center'>No activity from your team.</h5>";
 	}else{
 		$.each(data, function(key, val){
-			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), timeStampToDateTime(val.timestamp));
+			activityHTML += activityFeedItem(shortenTitleActivityFeed(val.description), moment(val.timestamp).format('DD MMM YYYY HH:mm'));
 		});
 	}
 	$activityFeed.html(activityHTML);
@@ -118,122 +160,8 @@ function shortenTitleActivityFeed(description){
 	return action + " " + title;
 }
 
-function demoManager1(){	
-	return [{
-		"employeeID": 678124,
-		"surname": "BRARD",
-		"forename": "Alexandre",
-		"username": "abrard",
-		"emailAddresses": [
-          "alexandre.brard@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Alexandre BRARD"
-	},{
-		"employeeID": 675715,
-		"surname": "MCINTYRE",
-		"forename": "Chris",
-		"username": "chmcinty",
-		"emailAddresses": [
-		  "chris.mcintyre@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Chris MCINTYRE"
-	},{
-		"employeeID": 674936,
-		"surname": "HARRIS",
-		"forename": "Finlay",
-		"username": "fharris",
-		"emailAddresses": [
-		"finlay.harris@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Finlay HARRIS"
-	},{
-		"employeeID": 604970,
-		"surname": "RAO",
-		"forename": "Hanumant",
-		"username": "harao",
-		"emailAddresses": {
-		"mail": "hanumant.rao@soprasteria.com",
-		"targetAddress": "hanumant.rao@soprasteria.com",
-		"userAddress": null,
-		"preferred": "hanumant.rao@soprasteria.com"
-		},
-		"isManager": false,
-		"hasHRDash": false,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Justice People (DPC509)",
-		"sector": "GOV2",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Hanumant RAO"
-		}];
-}
-
-
-function demoManager2(){	
-	return [{
-		"employeeID": 675590,
-		"surname": "NACEF",
-		"forename": "Ridhwan",
-		"username": "rnacef",
-		"emailAddresses": [
-		"ridhwan.nacef@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Ridhwan NACEF"
-	},{
-		"employeeID": 676783,
-		"surname": "MEHMET",
-		"forename": "Mehmet",
-		"username": "mmehmet",
-		"emailAddresses": [
-		"mehmet.mehmet@soprasteria.com"
-		],
-		"isManager": false,
-		"hasHRDash": true,
-		"company": "Sopra Steria Limited",
-		"steriaDepartment": "Scotland People (DPC181)",
-		"sector": "GOV5",
-		"superSector": "SS Government (GOV)",
-		"reporteeCNs": [],
-		"accountExpires": null,
-		"fullName": "Mehmet MEHMET"
-	}];
-}
-
 function loadingSubReporteeList(){
-	$('#reportee-sub-selected').html("<h5>Loading...</h5>");
+	$('#reportee-sub-selected').html("<h5 class='text-center'>Loading...</h5>");
 	$('#reportee-sub-list').empty();
 }
 
@@ -257,6 +185,8 @@ function addSubReporteesToList(data) {
 		 $.each(data, function(key, val){
 	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddress);
 	      });
+	}else{
+		subList += "<h5 style='text-align: center;'>"+selectedReporteeName+" has no reportees</h5>"
 	}
 	$('#reportee-sub-list').html(subList);
 }
@@ -301,14 +231,20 @@ function selectedReportee(element){
 function clickReportee(id, name, emailAddress, userName, element){
 	if(editingRating){
 		var title = "Cancel Evaluation";
-		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+		var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 		var buttonText = "Continue";
 		var buttonFunction = function(){ 
 			closeManagerEvaluation(false);
 			getReporteeCareer(id, name, emailAddress, userName, element);
 		}
 		
-		openWarningModal(title, body, buttonText, buttonFunction);
+		if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
+			closeManagerEvaluation(false);
+			getReporteeCareer(id, name, emailAddress, userName, element);
+		}
+		else{
+			openWarningModal(title, body, buttonText, buttonFunction);
+		}
 	}else{
 		getReporteeCareer(id, name, emailAddress, userName, element);
 	}	
@@ -320,54 +256,67 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		selectedReportee(element);
 		clearReporteeLists();
 		showReporteeView(id, name)
-		getObjectivesList(id);
-		getReporteeCompetencyList(id);
-		getGeneralFeedbackList(id);
-		getDevelopmentNeedsList(id);
-		getReporteeNotesList(id);
-		getReporteeRatings(id);
+		getObjectives(id);
+		getCompetencies(id);
+		getFeedback(id);
+		getDevelopmentNeeds(id);
+		getNotes(id);
+		getRatings(id);
 		getReportees(id, true);
 	}
 }
 
-function getReporteeCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var competencyList = [];
-            $.each(data, function(key, val){
-                 if(val.isSelected){
-                	 competencyList.push(val.title);
-                 }
-            });
-            addCompetenciesToList(competencyList);
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
+function getObjectives(userId){
+	var success = function(data){
+  	  var isEmpty = true;
+  	  $.each(data, function(key, val){
+  		  nextObjId.push(val.id);
+  		  var expectedBy = formatDate(val.dueDate);
+  		  var progressNumber = numberProgress(val.progress);
+  		  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+  	  });
+	}
+	var error = function(error){}
+	
+	getObjectivesActions(userId, success, error);
+}
+
+function getFeedback(userId){
+	var success = function(data){
+		$.each(data, function(key, val){
+			var classDate = moment(val.timestamp).format('YYYY-MM-DD');
+			var longDate = moment(val.timestamp).format('DD MMM YYYY');
+			var name = (val.providerName) ? val.providerName : val.providerEmail;
+			addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
+		});
+	}
+	var error = function(error){}
+	
+	getFeedbackAction(userId, success, error);
+}
+
+function getCompetencies(userId){
+	
+	var success = function(data){
+    	var competencyList = [];
+        $.each(data, function(key, val){
+             if(val.selected){
+            	 competencyList.push(val.title);
+             }
+        });
+        addCompetenciesToList(competencyList);
+    }
+	var error = function(error){}
+	
+	getCompetenciesAction(userId, success, error);
 }
 
 ////Method to get the Notes list
-function getReporteeNotesList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getNotes/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-            	var date = timeStampToDateTime(new Date(val.timestamp));
-            	addNoteToReporteeList(val.providerName, val.noteDescription, date);
-            });
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting notes, please try again later.");
-        }
-    });
+function getNotes(userId){
+	var success = function(data){ addNotesToReporteeList(data); }
+	var error = function(error){}
+	
+	getNotesAction(userId, success, error);
 }
 
 //Method to propose objective
@@ -383,25 +332,25 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
             'emails': proposedTo
         },            
         success: function(response){
-            if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
-            	toastr.warning(response);
-               }else if(response.indexOf("Error") !== -1){   
-                toastr.error(response);
-               }else{
-            	if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
-            		addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
-            	}
-                toastr.success(response);
-               }
-           },
-           error: function(XMLHttpRequest, textStatus, errorThrown){
-        	   var errorMessage = XMLHttpRequest.responseText.toLowerCase();
-       			if(errorMessage.indexOf("objective proposed") > -1){
-       				toastr.warning(XMLHttpRequest.responseText);
-       			}else{
-       				toastr.error(errorMessage);
-       			}
-           },
+        	if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
+        		toastr.warning(response);
+        	}else if(response.indexOf("Error") !== -1){   
+        		toastr.error(response);
+        	}else{
+        		if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
+        			addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
+        		}
+        		toastr.success(response);
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
+        	if(errorMessage.indexOf("objective proposed") > -1){
+        		toastr.warning(XMLHttpRequest.responseText);
+        	}else{
+        		toastr.error(errorMessage);
+        	}
+        },
     });
 }
 
@@ -484,9 +433,7 @@ function clickSubmitReporteeNote(){
 	var reporteeID = selectedReporteeID;
 	var from = getADfullName();
 	var note = $("#reportee-note-input").val().trim();
-	var date = timeStampToDateTime(new Date());
-	var noteType = 0;
-	var linkID = 0;
+	var date = moment(new Date()).format('DD MMM YYYY HH:mm');
 	
 	addNoteToReporteeDB(reporteeID, from, note, date);
 	showReporteeNoteModal(false);
@@ -507,10 +454,18 @@ function addCompetenciesToList(competencies){
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
 }
 
-//Method to add development needs to list display
-function addDevelopmentNeedToList(id, title, description, category, expectedBy, status){
-	lastDevID = id;
-	$("#reportee-dev-needs-list").append(reporteeDevelopmentNeedListHTML(id, title, description, category, expectedBy, status));
+function addDevelopmentNeedsToList(data){
+	var html = "";
+	if(data.length == 0){
+    	  html = "<h5 class='text-center'>No Development Needs.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			if(data.isArchived !== false || data.isArchived !== 'false'){
+				html += reporteeDevelopmentNeedListHTML(val.id, val.title, val.description, numberCategory(val.category), moment(val.dueDate).format("MMMM YYYY"), numberProgress(val.progress));
+			}
+		});
+	}
+	$("#reportee-dev-needs-list").html(html);
 }
 
 //Method to add feedback descriptions to list
@@ -519,6 +474,15 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 }
 
 //Method to add note to list directly
+function addNotesToReporteeList(data){
+	var HTML = "";
+	$.each(data, function(key, val){
+		var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+		HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
+	});
+	$("#reportee-notes-list").html(HTML);
+}
+
 function addNoteToReporteeList(fromWho, body, date){
 	$("#reportee-notes-list").prepend(reporteeNotesListHTML(fromWho, body, date));
 }
@@ -559,7 +523,7 @@ function reporteeObjectiveListHTML(id, title, description, timeToCompleteBy, sta
 					        <div  class='bs-wizard-dot-complete'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-obj-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \
@@ -656,7 +620,7 @@ function reporteeDevelopmentNeedListHTML(id, title, description, category, timeT
 						        <div  class='bs-wizard-dot-complete'></div> \
 						     </div> \
 	            		</div> \
-	            		<div class='col-sm-1 chev-height'> \
+	            		<div class='col-sm-1 chev-height notUnderlined'> \
 						  <a data-toggle='collapse' href='#collapse-dev-need-"+id+"' class='collapsed'></a> \
 						</div> \
 	            	</div> \
@@ -709,16 +673,13 @@ function addProposed(){
 	}
 }
 
-function initialiseTags() {
-	addProposed();
-}
 
 function loadingProposedButton(){
 	$("#nav-bar-buttons").html('').append("<h5 class='pull-right'> Loading... <h5>");
 }
 
 /** Retrieve MyRatings details from database and update relevant DOM Elements. */
-function getReporteeRatings(userId){
+function getRatings(userId){
 	getCurrentRatingAction(userId, function(data){ 
 		setMyRatings(data.selfEvaluation, data.managerEvaluation, data.score, data.selfEvaluationSubmitted, data.managerEvaluationSubmitted);
 	});
@@ -741,6 +702,15 @@ function setMyRatings(reporteeEvaluation, managerEvaluation, evaluationScore, is
 	managerEvaluationSubmitted(isManagerEvaluationSubmitted);
 	
 	$managerEvaluationFooter.show();
+	
+	if ($managerEvaluationText.text()==="No manager evaluation has been written."){ 
+		wasManagerEvaluationEmpty=true;
+		lastSavedManagerEvaluationInput="";
+	}
+	else{
+		wasManagerEvaluationEmpty=false;
+		lastSavedManagerEvaluationInput=$managerEvaluationText.text();
+	}
 }
 
 /** Sets the manager evaluation label */
@@ -801,7 +771,7 @@ function editManagerEvaluation(){
 /** Open confirmation model. */
 function submitManagerEvaluation(){
 	var title = "Submit Evaluation";
-	var body = "<h5>Once you have submitted your manager evlauation, you will no longer be able to edit this.<br><br><b>Are you sure you want to submit?</b></h5>";
+	var body = "<h5>Once you have submitted your manager evlauation, the rating process will be complete and can no longer be edited.</h5><h5><b>Are you sure you want to submit?</b></h5>";
 	var buttonText = "Submit";
 	var buttonFunction = function(){ confirmSubmitEvaluation() }
 	
@@ -818,6 +788,8 @@ function confirmSubmitEvaluation(){
 
 /** Save manager evaluation to the database. */
 function saveManagerEvaluation(){	
+	wasManagerEvaluationEmpty=checkEmptyID("manager-evaluation-input",true);
+	lastSavedManagerEvaluationInput=$managerEvaluationText.text();
 	addManagerEvaluationAction(getADLoginID(), selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
 		closeManagerEvaluation(true);
 	});
@@ -835,7 +807,9 @@ function closeManagerEvaluation(save){
 	}else{
 		setManagerEvaluationInput($managerEvaluationText.text())
 		var s = $evaluationScoreText.text();
-		setManagerEvaluationScore(s.substring(s.length-1,s.length));
+		var score = (s === NO_RATING) ? 0 : s.substring(s.length-1,s.length);
+			
+		setManagerEvaluationScore(score);
 	}
 	$managerEvaluationLabels.show();
 	
@@ -844,12 +818,17 @@ function closeManagerEvaluation(save){
 }
 
 function clickClose(){
+	lastSavedManagerEvaluationInput=$managerEvaluationText.text();
 	var title = "Cancel Evaluation";
-	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.<br><br><b>Are you sure you want to continue?</b></h5>";
+	var body = "<h5>You have unsaved changes. If you continue, these changes maybe lost.</h5><h5><b>Are you sure you want to continue?</b></h5>";
 	var buttonText = "Continue";
 	var buttonFunction = function(){ closeManagerEvaluation(false) }
-	
-	openWarningModal(title, body, buttonText, buttonFunction);
+	if ((checkEmptyID("manager-evaluation-input",false) && wasManagerEvaluationEmpty)||(lastSavedManagerEvaluationInput===$managerEvaluationInput.val())){
+		closeManagerEvaluation(false);
+	}
+	else{
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 function initSelect(){
@@ -874,13 +853,121 @@ function addNotesHTML(){
 }
 
 function toggleActivityFeed(){
-	if(activityFeedVisible){
-		activityFeedVisible = false;
+	if(isActivityFeedShowing){
 		$activityFeed.hide();
+		$activityFeedCaret.removeClass("rotate");
+		isActivityFeedShowing = false;
 	}else{
-		activityFeedVisible = true;
 		$activityFeed.show();
+		$activityFeedCaret.addClass("rotate");
+		isActivityFeedShowing = true;
 	}
 }
+
+function toggleReporteeList(){
+	if(isReporteeListshowing){
+		$reporteeSubList.hide();
+		console.log($reporteeSubList)
+		$reporteeListCaret.removeClass("rotate");
+		isReporteeListshowing = false;
+	}else{
+		$reporteeSubList.show();
+		$reporteeListCaret.addClass("rotate");
+		isReporteeListshowing = true;
+	}
+}
+
+//function to open Proposed objective modal
+function openProposedObjectiveModal(){
+    $("#obj-modal-type").val('propose');
+	setObjectiveModalContent('', '', '', getToday(), 0, 2);
+	showObjectiveModal(true);
+}
+
+function proposedToHTML(){
+    var HTML= " \
+        <label id='propose-to-title'>"+EMAILS+"</label> \
+		<div class='pull-right checkbox' style='margin-top:0px; margin-bottom:0px;'> \
+	  		<label class='pull-right' style='font-weight: 200;'><input id='distribution-list-checkbox' type='checkbox' onClick='toggleProposeToInput()'>Proposed to Distribution List</label> \
+		</div> \
+        <div id='proposed-obj-to-container' style='height:34px'> \
+        	<input id='proposed-obj-to' type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' maxlength='150' /> \
+        </div> \
+    	<div id='distribution-list-textbox-container' hidden> \
+    		<input id='distribution-list-textbox' type='text' class='form-control' placeholder='...' maxlength='150'/> \
+    	</div>" ;
+    return HTML;
+}
+
+function toggleProposeToInput(){
+	var isChecked = $("#distribution-list-checkbox").is(":checked");
+	if(isChecked){
+		$("#distribution-list-textbox-container").show();
+		$("#proposed-obj-to-container").hide();
+		$("#propose-to-title").text(DISTRIBUTION_LIST);
+	}else{
+		$("#distribution-list-textbox-container").hide();
+		$("#proposed-obj-to-container").show();
+		$("#propose-to-title").text(EMAILS);
+	}
+}
+
+function generateDistributionList(userId, distributionListName, title, description, dueDate){
+	if(distributionListName.length < 1){
+		toastr.error("Please enter a distribution list name")
+		return true;
+	}
+	
+	loading("Reading distribution list. Please wait.");
+	var data = { distributionListName: distributionListName };
+	var success = function(data){
+		var modalTitle = "Proposing to " + data.emailAddresses.length + " employees";
+		var body = "<h5>You are about to propose an objective to the following "+ data.emailAddresses.length + " employees:</h5> " + 
+					emailListHTML(data.emailAddresses) + " <h5><b>Are you sure you want to submit?</b></h5>";
+		var buttonText = "Submit";
+		var buttonFunction = function(){ proposeObjectiveToDistributionList(userId, distributionListName, title, description, dueDate); }
+		
+		loaded();
+		openWarningModal(modalTitle, body, buttonText, buttonFunction);
+	} 
+	var error = function(error){ loaded(); }
+	
+	generateDistributionListAction(userId, data, success, error);
+}
+
+function proposeObjectiveToDistributionList(userId, distributionListName, title, description, dueDate){
+	loading("Proposing Objectives. Please wait.");
+	
+	var data = {
+		title: title, 
+		description: description,
+		dueDate: dueDate,
+		distributionListName: distributionListName
+	};
+	var success = function(response){
+		loaded();
+		toastr.success(response)
+		
+		showObjectiveModal(false);
+		closeWarningModal();
+	}
+	var error = function(error){ loaded(); }
+	
+	proposeObjectiveToDistributionListAction(userId, data, success, error);
+}
+
+
+function checkRatingPeriod(){
+	if(isRatingPeriod()){
+		$("#navTab").append("<li><a id='ratings-link' href='#reportee-ratings-tab' data-toggle='tab'> Rating </a></li>");
+	}else{
+		$ratingsTab.remove();
+	}
+}
+
+
+
+
+
 
 

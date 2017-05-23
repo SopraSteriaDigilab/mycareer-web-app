@@ -1,10 +1,13 @@
 <script>
 	loadStyle("components/myobjectives/competencies/competencies");
-	loadScript("components/myobjectives/competencies/competencies");
+	$.when(
+		loadScript("actions/competenciesactions")
+	).done(function(){
+		loadScript("components/myobjectives/competencies/competencies");
+	});
 </script>
   
-	<!-- Competencies Section  -->
-    <div id="competencies-tab" class="tab-pane fade in active">
-        <div id="competency-list"></div>
-          <button type="button" class="btn btn-link pull-right" id="view-competency" style="padding-top: 4px;">View Competency Framework</button>    
-    </div><!--End of competencies-->
+<div id="competencies-tab" class="tab-pane fade in active">
+	<div id="competency-list"></div>
+	<button type="button" class="btn btn-link pull-right" id="view-competency" style="padding-top: 4px;">View Competency Framework</button>    
+</div>

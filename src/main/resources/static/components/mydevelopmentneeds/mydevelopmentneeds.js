@@ -1,7 +1,11 @@
 $(function() {
+	initDevelopmentNeeds();
+});
+
+function initDevelopmentNeeds(){
 	
 	//Get list of development needs
-	getDevelopmentNeedsList(getADLoginID());
+	getDevelopmentNeedsListNEW(getADLoginID());
 	
 	//Initialising the date picker
 	initDatePicker('development-need', new Date());
@@ -34,8 +38,26 @@ $(function() {
     $('#submit-completed-status-note').click(function(){ 
     	editDevelopmentNeedProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val()); 
     });
-    
-});
+}
+
+function getDevelopmentNeedsListNEW(userId){
+	var  success =  function(data){
+		loaded();
+        $.each(data, function(key, val){
+            nextDevNeedId.push(val.id);
+        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+            var progressNumber = numberProgress(val.progress);
+            var categoryNumber = numberCategory(val.category);
+        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
+        });
+        if(data.length == 0){
+        	$("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
+        }
+    }
+	var error= function(error){ loaded(); }
+	
+	getDevelopmentNeedsAction(userId, success, error);
+}
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
@@ -103,7 +125,10 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
         	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
             if(devNeedStatus == 2){
             	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
-                addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            	var d = new Date();
+              	var date = moment(d).format('DD MMM YYYY HH:mm');
+              	var classDate = moment(d).format('YYYY-MM-DD');
+            	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
                 $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
@@ -129,7 +154,10 @@ function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
             removeDevNeedFromList(devNeedID);
             //need to update note list
             var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
-            addNoteToList(lastNoteID++, "Auto Generated", text, timeStampToDateTimeGMT(new Date()), timeStampToClassDate(new Date()), emptyArray, emptyArray);
+            var d = new Date();
+          	var date = moment(d).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(d).format('YYYY-MM-DD');
+            addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
             deleteTag(devNeedID, "development-need");
             toastr.success(response);
         },
@@ -233,7 +261,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
     $("#modal-confirmation").empty().append('Development Need');
     $("#modal-alert").empty().append('Development Need');;
     $("#completedTitle").empty().append(title);
-    openCompleteDevelopmentNeedModal(devNeedID, title);
+    openCompleteDevelopmentNeedModal();
     }else{
         var userID = getADLoginID();
         var completedText = "";
@@ -241,7 +269,7 @@ function updateDevelopmentNeedStatusOnDB(devNeedID, devNeedStatus, title){
     }
 }
 
-function openCompleteDevelopmentNeedModal(id, title){
+function openCompleteDevelopmentNeedModal(){
     $('#completed-status-modal').modal({backdrop: 'static', keyboard: false, show: true});
     $("textarea").val("");
 }
@@ -362,14 +390,14 @@ function developmentNeedListHTML(id, title, description, category, timeToComplet
 					       <div  class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					       <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
-					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \""+title+"\")'> \
+					     <div class='col-xs-4 bs-wizard-step "+ checkComplete(status, 2) +"' id='complete-dev-need-dot-"+id+"' onClick='updateDevelopmentNeedStatusOnDB("+id+", 2, \&quot;"+escapeStr(title)+"\&quot;)'> \
 					       <div class='text-center progress-link' style='cursor:pointer'><h6>Complete</h6></div> \
 					       	 <div class='progress'><div class='progress-bar'></div></div> \
 					        <div class='bs-wizard-dot-start' style='cursor:pointer'></div> \
 					        <div  class='bs-wizard-dot-complete' style='cursor:pointer'></div> \
 					     </div> \
             		</div> \
-            		<div class='col-sm-1 chev-height'> \
+            		<div class='col-sm-1 chev-height notUnderlined'> \
 					  <a data-toggle='collapse' href='#collapse-dev-need-"+id+"' class='collapsed'></a> \
 					</div> \
             	</div> \
@@ -417,7 +445,7 @@ function addEditDevNeedButton(status, devNeedID){
 
 function devNeedsButtonsHTML(devNeedID, isArchived, status, title){
 	var HTML = " \
-    <div class='col-md-12'> \
+    <div class='row'> \
 		<div class='col-sm-6'> \
         	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", true)' id='archive-dev-need'>Archive</button> \
         </div>"
@@ -431,7 +459,7 @@ function devNeedsButtonsHTML(devNeedID, isArchived, status, title){
 		        	<button type='button' class='btn btn-block btn-default pull-left'  onClick='clickArchiveDevNeed("+devNeedID+", false)' id='archive-dev-need'>Restore</button> \
 		        </div> \
                 <div class=' col-sm-6'> \
-                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \""+title+"\")' id='delete-obj'>Delete</button> \
+                    <button type='button' class='btn btn-block btn-default' onClick='clickDeleteDevNeed("+devNeedID+", \&quot;"+escapeStr(title)+"\&quot;)' id='delete-obj'>Delete</button> \
                 </div> \
 		    </div> \
 		";

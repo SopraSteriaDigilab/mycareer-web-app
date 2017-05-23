@@ -1,5 +1,17 @@
 $(function() {
+	initNavbar();
+});
 
+const EMAILS = "Email(s)*:";
+const DISTRIBUTION_LIST = "Distribution List*:";
+
+var $historiesDropdown = $("#histories-dropdown");
+var $historiesCaret = $("#histories-caret");
+
+var historiesDropdownToggled = false;
+
+
+function initNavbar(){
 	$("sidebar").resizable();
 	loadProfile();
 	
@@ -16,17 +28,21 @@ $(function() {
 	
 	//onClick for Close modal
 	$('#close-obj, #close-obj-cross').on('click', function(e) { clickCloseObjective(e); });
-
-
 	
-});
+	$historiesDropdown.click(function(){ toggleHistoriesCaret() });
+	
+	adjustMultipleModalBackdrop();
+}
 
 //Function to load profile section
 function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
 	if(isUserManager() === "true" || isUserManager() == true){
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
-	};
+	}
+    if(isRatingPeriod()){
+    	$("#nav-bar-list").append("<li class='nav-bar-item' id='myratings'><a href='myratings'> My Rating </a></li>");
+    }
     if(userHasHrDash() === "true" || userHasHrDash() == true){
         $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>"); 
     }
@@ -43,16 +59,38 @@ function highlight(value) {
 	})
 }
 
-//function to open Proposed objective modal
-function openProposedObjectiveModal(){
-    $("#obj-modal-type").val('propose');
-	setObjectiveModalContent('', '', '', getToday(), 0, 2);
-	showObjectiveModal(true);
+function isRatingPeriod()
+{
+	var tempDate = new Date(); //remove me
+	tempDate.setMonth(new Date().getMonth() + 5); //remove me
+	var currentMonth = tempDate.getMonth(); //remove me
+
+//	var currentMonth = new Date().getMonth();
+	
+	return currentMonth === 9 || currentMonth === 10 || currentMonth === 11|| currentMonth === 0 || currentMonth === 1;
 }
 
-function proposedToHTML(){
-    var HTML= " \
-        <label for='proposed-obj-to'>Email(s)*:</label> \
-            <input type='text' class='form-control' data-role='tagsinput' autocomplete='off' placeholder='...' id='proposed-obj-to' maxlength='150' />";
-    return HTML;
+//Sorts backdrop of multiple modals and sorts scrolling when closing multiple modals
+function adjustMultipleModalBackdrop(){
+	
+    $(document).on('show.bs.modal', '.modal', function (event) {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    }).on('hidden.bs.modal', '.modal', function () {
+        $('.modal:visible').length && $(document.body).addClass('modal-open');
+    });
 }
+
+function toggleHistoriesCaret(){
+	if(historiesDropdownToggled){
+		$historiesCaret.removeClass("rotate");
+		historiesDropdownToggled = false;
+	}else{
+		$historiesCaret.addClass("rotate");
+		historiesDropdownToggled = true;
+	}
+}
+

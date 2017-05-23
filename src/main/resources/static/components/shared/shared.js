@@ -1,6 +1,10 @@
 $(function() {
 	adjustDatePicker();
+	adjustDataTablesMomentJs();
 });
+
+$loadingSpinner = $("#loading-spinner");
+$loadingText = $("#loading-text");
 
 var emails = [];
 var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -33,32 +37,14 @@ function adjustDatePicker(){
 	};
 }
 
-//------------------------------------- Objectives -------------------------------------
-
-//HTTP request for RETRIEVING list of objectives from DB
-function getObjectivesList(userID){
-  $.ajax({
-      url: 'http://'+getEnvironment()+'/getObjectives/'+userID,
-      cache: false,
-      method: 'GET',
-      xhrFields: {'withCredentials': true},
-      success: function(data){
-    	  //lastObjID = data.length;
-    	  var isEmpty = true;
-          $.each(data, function(key, val){
-              nextObjId.push(val.id);
-        	  var expectedBy = formatDate(val.dueDate);
-              var progressNumber = numberProgress(val.progress);
-        	  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-          });
-          if(data.length == 0)
-        	  $("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-          toastr.error("Sorry, there was a problem getting objectives, please try again later.");
-      }
-  });	
+function adjustDataTablesMomentJs(){
+	$.fn.dataTable.moment( 'MMM YYYY' );
+	$.fn.dataTable.moment( 'MMMM YYYY' );
+	$.fn.dataTable.moment( 'DD MMM YYYY' );	
+	$.fn.dataTable.moment( 'DD MMM YYYY HH:mm' );
 }
+
+//------------------------------------- Objectives -------------------------------------
 
 //Function that finds the largest ID for objectives and finds the next one
 function nextObjectiveID(){
@@ -100,12 +86,16 @@ function checkComplete(status, item){
 	return "";
 }
 
+function escapeStr(str){
+	return str.replace(/"/g, '\\&quot;').replace(/'/g, '\\&apos;');
+}
+
 //Method to set and show content of modal
 function setObjectiveModalContent(id, title, text, date, status, type){
     if (type == 2){
         $('#proposedTo').html(proposedToHTML());
     	//Get email list and initialise tags input
-    	tags("proposed-obj-to", emails);
+        tags("proposed-obj-to", emails);
         keypress('objective-modal');
     }else{
         $('#proposedTo').html("");
@@ -145,20 +135,26 @@ function clickSubmitObjective(){
 	if(checkIfPastDate(objDate) || (checkEmpty("objective-modal-validate", true))){ return false; }
 	
 	if(type === 'add'){
-		addObjectiveToDB(userID, objTitle, objText, objDate, getADfullName());
+		addObjectiveToDB(userID, objTitle, objText, objDate);
         showObjectiveModal(false);
 	}else if (type === 'edit'){
-		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus, getADfullName());
+		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
         showObjectiveModal(false);
 	}else{
-        var proposedTo = $("#proposed-obj-to").val().trim(); 
-         if (validEmails(proposedTo)){
-             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-             showObjectiveModal(false);
-        }else{
-          toastr.error("One or more email addresses entered are not valid");
-          showObjectiveModal(true);
-        }  
+		var distributionListName = $("#distribution-list-textbox").val().trim();
+		var isChecked = $("#distribution-list-checkbox").is(":checked");
+		if(isChecked){
+			generateDistributionList(userID, distributionListName, objTitle, objText, objDate);
+		}else{
+	        var proposedTo = $("#proposed-obj-to").val().trim(); 
+	         if (validEmails(proposedTo)){
+	             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
+	             showObjectiveModal(false);
+	        }else{
+	          toastr.error("One or more email addresses entered are not valid");
+	          showObjectiveModal(true);
+	        }
+		}
     }
 }
 
@@ -192,24 +188,6 @@ function clickCloseObjective(e){
 
 //------------------------------------- Competencies -----------------------------------
 
-//Gets the list of Competencies from the DB
-function getCompetencyList(userID){
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getCompetencies/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-                addCompetencyToList(val.id,val.title,competenciesDescriptions[val.id],val.selected);  
-            });
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting competencies, please try again later.");
-        }
-    });
-}
-
 //Method to change star icon to selected or not
 function checkSelected(isSelected){
     if(isSelected){
@@ -222,51 +200,23 @@ function checkSelected(isSelected){
 //------------------------------------------------------------------------------------
 
 //------------------------------------- Feedback -------------------------------------
-function getGeneralFeedbackList(userID){
-    //Gets the List of General Feedback from the DB 
-    $.ajax({
-        url: 'http://'+getEnvironment()+'/getFeedback/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-            $.each(data, function(key, val){
-                var classDate = timeStampToClassDate(val.timestamp);
-                var longDate = timeStampToLongDate(new Date(val.timestamp));
-                var name = (val.providerName) ? val.providerName : val.providerEmail;
-                addGeneralFeedbackToList(val.id, name, val.feedbackDescription, longDate, classDate, val.providerEmail, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);   
-            });//end of for each loop
-            if(data.length == 0) {
-	        	$("#generalFeeDescription").addClass("text-center").append("<h5>You have no Feedback </h5>");
-	        	$("#general-reviewer-list").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-	        	$("#general-feedback-tab").addClass("text-center").append("<h5>You have no Reviewers </h5>");
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting feedback, please try again later.");
-        }
-        
-    });//End of Ajax request
-}
 
 //method to handle the close send feedback button
 function clickCloseSendFeedback(e){
 	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
 		$('#sendFeedbackModal').modal('hide');
-	    }
-	else {
+	} else {
 		addHTMLforPopUpBox("send-feedback-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#sendFeedbackModal').modal('hide');
-              $("textarea").val("");
-              $("#sendingTo").tagsinput('removeAll');
-		    });
+		var $form = $(this).closest('form');
+		e.preventDefault();
+		$('#confirm').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).one('click', '#close-modals', function(e) {
+			$('#sendFeedbackModal').modal('hide');
+			$("textarea").val("");
+			$("#sendingTo").tagsinput('removeAll');
+		});
 	};
 }
 
@@ -292,30 +242,6 @@ function clickCloseRequestFeedback(e){
 }
 
 //-------------------------------- Development Needs ---------------------------------
-
-//Gets the List of Development Needs from the DB
-function getDevelopmentNeedsList(userID){
-	$.ajax({
-	    url: 'http://'+getEnvironment()+'/getDevelopmentNeeds/'+userID,
-        cache: false,
-	    method: 'GET',
-	    xhrFields: {'withCredentials': true},
-	    success: function(data){
-	        $.each(data, function(key, val){
-                nextDevNeedId.push(val.id);
-	        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
-                 var progressNumber = numberProgress(val.progress);
-                var categoryNumber = numberCategory(val.category);
-	        	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
-	        });
-	        if(data.length == 0)
-	        	  $("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
-	    },
-	    error: function(XMLHttpRequest, textStatus, errorThrown){
-	        toastr.error("Sorry, there was a problem getting development needs, please try again later.");
-	    }
-	});	
-}
 
 //Method to set and show content of modal
 function setDevelopmentNeedModalContent(id, title, text, radioValue, date, type, status){
@@ -407,8 +333,8 @@ function addNoteToDB(userID, from, body, date){
             if(lastNoteID == 0)
         		$("#general-notes-list").removeClass("text-center").empty();
             clearAllNotesFilters();
-            var dateFormatted = timeStampToDateTimeGMT(date);
-            var classDate = timeStampToClassDate(new Date());
+            var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
+            var classDate = moment(date).format('YYYY-MM-DD');
             addNoteToList(++lastNoteID, from, body, dateFormatted, classDate, emptyArray, emptyArray);
             toastr.success(response);
         },
@@ -421,34 +347,6 @@ function addNoteToDB(userID, from, body, date){
 //------------------------------------------------------------------------------------
 
 //--------------------------------------- Tags --------------------------------------
-
-
-//Method to make ajax call to get tags from database
-function getTags(userID){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/getTags/'+userID,
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	var optionsHTML = "<option value='0'>No Filter</option>";
-        	$.each(data, function(key, val){
-        		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
-            	$.each(val, function(id, title){
-            		addToTagsLists(key, id, title);
-            		optionsHTML += addToOptionsList(key, id, title);
-                });
-            	optionsHTML += "</optgroup>";
-            	
-            });
-        	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error("Sorry, there was a problem getting tags, please try again later.");
-        }
-    });	
-}
 
 function addToTagsLists(key, id, title){
 	if(key === "objectivesTags"){
@@ -525,7 +423,6 @@ function updateDevelopmentNeedsTagsList(){
 
 //Initialising the date picker
 function initDatePicker(id, today){
-	
 	$("#"+id+"-date-picker").datepicker({
 		useCurrent: true,
 		forceParse: false,
@@ -535,6 +432,7 @@ function initDatePicker(id, today){
 		startView: "months", 
 		minViewMode: "months",
 		startDate: today,
+//		endDate: today, 
 		autoclose: true,
 	});
 	
@@ -578,7 +476,7 @@ function timeStampToDateTimeGMT(date) {
 //TimeStamp to dd mmm yyyy
 function timeStampToLongDate(date){
 	var d = new Date(date);
-	var date = d.getDate() + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
+	var date = addZero(d.getDate()) + ' ' + shortMonths[(d.getMonth())] + ' ' + d.getFullYear();
 
 	return date;
 }
@@ -643,11 +541,11 @@ function checkEmpty(inputClass, throwError){
 
 function checkEmptyID(inputID, throwError){
 	var isEmpty = false;
-		var value = $('#'+inputID).val().trim();
-		if(!value){
-			isEmpty = true;
-			return true;
-		};
+	var value = $('#'+inputID).val().trim();
+	if(!value){
+		isEmpty = true;
+		return true;
+	};
 	
 	if(isEmpty && throwError)
 		toastr.error("Please fill in all mandatory fields.");
@@ -695,6 +593,11 @@ function tags(id, data){
     });
 }
 
+function addTagOnBlur(inputLocation,inputDestination){
+	$(inputDestination).tagsinput('add', $(inputLocation).val());
+	$(inputLocation).val('');
+	}
+
 function keypress(modalID){
     //keypress to change ; character to ,
    $('#'+modalID).keypress(function(evt){ 
@@ -721,9 +624,9 @@ function getProfilePicture(userName, size){
 			";
 	return imageURL;
 }
-
+	
 function openNotesBar(){
-	var screenWidth = $(document).width();
+	var screenWidth = $(window).width();
 	var sidebarWidth = $("#resizable").width();
 	$("#resizable").animate({'left':screenWidth-(sidebarWidth+3) + 'px'});
 	$("#resizable").addClass("visibleBar");
@@ -752,7 +655,7 @@ function validEmails(requestingTo){
 //validates to ensure email format
 function isValidEmailAddress(requestingTo){
     var pattern = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return pattern.test(requestingTo);
+    return pattern.test(requestingTo.trim());
 }
 
 function checkIfPastDate (date){
@@ -767,34 +670,17 @@ function checkIfPastDate (date){
 	return false;
 }
 
-//function to get all emails of all employees so can be used to auto fill email addresses
-function getEmailList(){
-	$.ajax({
-    	"async": true,
-        url: 'http://'+getEnvironment()+'/data/getAllEmailAddresses',
-        cache: false,
-        method: 'GET',
-        xhrFields: {'withCredentials': true},
-        success: function(data){
-        	emails = data;
-			initialiseTags();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	addProposed();
-            toastr.error("Sorry, there was a problem getting emails, please try again later.");
-        }
-    });	
-}
-
 function addTags(objTagIds, devNeedTagIds, type){
 	HTML = "";
-	if(objTagIds.length < 1 && devNeedTagIds.length < 1){
+	if(objTagIds == '' && devNeedTagIds == ''){
 		HTML = "No tags with this " + type + "."
 	}else{
-		if(objTagIds.length > 0)
+		if((objTagIds != '')){
 			HTML += "Objectives: " + objTagIds + ". ";
-		if(devNeedTagIds.length > 0)
+		}
+		if((devNeedTagIds != '')){
 			HTML += "Development Needs: " + devNeedTagIds + ".";
+		}
 	}
 	return HTML;
 }
@@ -949,8 +835,37 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 	return HTML;
 }
 
+//verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
+function verifyUser(){
+    if(userHasHrDash() === "false" || userHasHrDash() == false){
+         window.location ="/myobjectives";
+    }
+}
 
+function verifyIfManager(){
+    if(isManager === "false" || isManager === false){
+        window.location ="/myobjectives";
+   }
+}
 
+function emailListHTML(emails){
+	var HTML = "<div class='well well-sm' style='max-height:200px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word;'>";
+	for (i = 0; i < emails.length; i++) { 
+	    HTML += "<h6>"+emails[i]+"</h6>";
+	}
+	HTML += "</div>";
+	return HTML;	
+}
 
+function loading(loadingText){
+	if(typeof loadingText != 'undefined' && loadingText.length > 0)
+		$loadingText.html(loadingText);
+	$loadingSpinner.show();
+}
+
+function loaded(){
+	$loadingSpinner.hide();
+	$loadingText.html("Loading... This may take a minute.");
+}
 
 
