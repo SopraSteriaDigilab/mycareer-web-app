@@ -66,11 +66,13 @@ function initialiseSelectPicker(data){
 }
 
 function clickSearch(){
+	loading("Retrieving employee data. Please wait.");
 	var str = $searchInput.val().trim();
 	
 	if(!isValidSearch(str)){
-		 toastr.error("The value submitted is not valid, please select from one of the drop down values or enter a valid employee ID.")
-		 return;
+		loaded();
+		toastr.error("The value submitted is not valid, please select from one of the drop down values or enter a valid employee ID.")
+		return;
 	}
 	
 	var searchStr = str.substring(str.length-6, str.length)
@@ -118,6 +120,8 @@ function getTable(selectorId, dataset, columnsList, columnDefs){
 }
 
 function updateEmployeeView(employeeId, data){
+	loaded();
+	
 	getTable($objectivesTable, data.objectives, objectivesColumnList, objectivesColumnDefs);
 	getTable($feedbackTable, data.feedback, feedbackColumnList, feedbackColumnDefs);
 	getTable($developmentNeedsTable, data.developmentNeeds, developmentNeedsColumnList, developmentNeedsColumnDefs);
