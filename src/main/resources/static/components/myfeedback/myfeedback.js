@@ -73,6 +73,8 @@ $(function() {
 	
 });//End of Document Function
 
+var $loadingButtonsText = $("#feedback-tag-loading")
+var $feedbackTagButtons = $(".feedback-tag-buttons");
 
 //var emailList = [];
 var dateFilterApplied = false;
@@ -104,6 +106,8 @@ function getEmails(){
 	var success = function(data){ 
 		emails = data;
 		initialiseTags();
+		$loadingButtonsText.hide();
+		$feedbackTagButtons.show();
 	}
 	var error = function(){}
 	

@@ -554,8 +554,7 @@ function enableSubmit(type){
     return true;
 }
 
-function tags(id, data){ 
-    //sets email addresses to use bootstrap tag input
+function tags(id, data){
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
