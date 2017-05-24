@@ -27,7 +27,7 @@ function addObjectiveAction(userId, title, description, dueDate, successFunction
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success("Objective inserted");
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -64,7 +64,7 @@ function updateObjectiveProgressAction(userId, objectiveId, progress, comment, s
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -81,7 +81,7 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -116,16 +116,16 @@ function proposeObjectiveAction(userId, title, description, dueDate, emails, suc
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		var successMessage = response.success.toLowerCase();
+    	if(successMessage.indexOf("not found") > -1){
+    		toastr.warning(response.success);
+    	}else{
+    		toastr.success(response.success);
+    	}
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
-		var errorMessage = jqXHR.responseJSON.error.toLowerCase();
-    	if(errorMessage.indexOf("objective proposed") > -1){
-    		toastr.warning(jqXHR.responseJSON.error);
-    	}else{
-    		toastr.error(jqXHR.responseJSON.error);
-    	}
+    	toastr.error(jqXHR.responseJSON.error);
     	errorFunction(jqXHR.responseJSON.error);
 	});
 }

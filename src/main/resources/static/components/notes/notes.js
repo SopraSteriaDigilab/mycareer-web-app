@@ -88,6 +88,7 @@ function getTags(userId){
 
 function addNote(userId, providerName, noteDescription, date){
 	var success = function(response){
+		var id = response.noteID;
         if(noNotes){
         	noNotes = false;
         	$("#no-notes-text").remove();
@@ -95,7 +96,7 @@ function addNote(userId, providerName, noteDescription, date){
         clearAllNotesFilters();
         var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
         var classDate = moment(date).format('YYYY-MM-DD');
-        addNoteToList(response, providerName, noteDescription, dateFormatted, classDate, emptyArray, emptyArray);
+        addNoteToList(id, providerName, noteDescription, dateFormatted, classDate, emptyArray, emptyArray);
     }
 	var error = function(error){}
 	

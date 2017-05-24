@@ -23,7 +23,7 @@ function addNoteAction(userId, providerName, noteDescription, successFunction, e
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success("Note inserted");
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -41,7 +41,7 @@ function addNoteToReporteeAction(userId, reporteeEmployeeID, providerName, noteD
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success("Note inserted");
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {

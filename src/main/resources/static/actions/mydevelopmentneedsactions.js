@@ -1,9 +1,9 @@
 const GET_DEVELOPMENT_NEEDS = "/getDevelopmentNeeds";
 const ADD_DEVELOPMENT_NEED = "/addDevelopmentNeed";
 const EDIT_DEVELOPMENT_NEED = "/editDevelopmentNeed";
-const EDIT_DEVELOPMENT_NEED_PROGRESS = "/updateDevelopmentNeedProgress";
+const UPDATE_DEVELOPMENT_NEED_PROGRESS = "/updateDevelopmentNeedProgress";
 const DELETE_DEVELOPMENT_NEED = "/deleteDevelopmentNeed";
-const EDIT_DEVELOPMENT_NEED_ARCHIVE = "/toggleDevelopmentNeedArchive";
+const TOGGLE_DEVELOPMENT_NEED_ARCHIVE = "/toggleDevelopmentNeedArchive";
 
 function getDevelopmentNeedsAction(userId, successFunction, errorFunction){
 	var url = GET_DEVELOPMENT_NEEDS + "/" + userId;
@@ -27,7 +27,8 @@ function addDevelopmentNeedAction(userId, title, description, category, dueDate,
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success("Development Need inserted");
+		console.log(response)
+		toastr.success(response.success);
 		successFunction(response);
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -56,8 +57,8 @@ function editDevelopmentNeedAction(userId, developmentNeedId, title, description
 	});
 }
 
-function editDevelopmentNeedProgressAction(userId, developmentNeedId, progress, comment, successFunction, errorFunction){
-	var url = EDIT_DEVELOPMENT_NEED_PROGRESS + "/" + userId;
+function updateDevelopmentNeedProgressAction(userId, developmentNeedId, progress, comment, successFunction, errorFunction){
+	var url = UPDATE_DEVELOPMENT_NEED_PROGRESS + "/" + userId;
 	var data =  {
         developmentNeedId: developmentNeedId,
         progress: progress,
@@ -65,7 +66,7 @@ function editDevelopmentNeedProgressAction(userId, developmentNeedId, progress, 
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success(response.success);
 		successFunction(response);
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -82,7 +83,7 @@ function deleteDevelopmentNeedAction(userId, developmentNeedId, comment, success
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success(response.success);
 		successFunction(response);
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -91,8 +92,8 @@ function deleteDevelopmentNeedAction(userId, developmentNeedId, comment, success
 	});
 }
 
-function editDevNeedArchiveAction(userId, developmentNeedId, successFunction, errorFunction){
-	var url = EDIT_DEVELOPMENT_NEED_ARCHIVE + "/" + userId;
+function toggleDevNeedArchiveAction(userId, developmentNeedId, successFunction, errorFunction){
+	var url = TOGGLE_DEVELOPMENT_NEED_ARCHIVE + "/" + userId;
 	var data =  {
 		developmentNeedId: developmentNeedId
     }

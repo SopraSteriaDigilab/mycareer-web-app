@@ -319,6 +319,7 @@ function getNotes(userId){
 
 function proposeObjective(userId, title, description, dueDate, emails){
 	var success = function(response){
+		showObjectiveModal(false);
 		if(emails.indexOf(selectedReporteeEmail.trim()) !== -1) {
 			addObjectiveToList("temp", title, description, dueDate, 0, false);
 		}
@@ -909,7 +910,6 @@ function proposeObjectiveToDistributionList(userId, distributionListName, title,
 	};
 	var success = function(response){
 		loaded();
-		toastr.success(response)
 		
 		showObjectiveModal(false);
 		closeWarningModal();
