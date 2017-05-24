@@ -136,10 +136,8 @@ function clickSubmitObjective(){
 	
 	if(type === 'add'){
 		addObjectiveToDB(userID, objTitle, objText, objDate);
-        showObjectiveModal(false);
 	}else if (type === 'edit'){
 		editObjectiveOnDB(userID, objID, objTitle, objText, objDate, objStatus);
-        showObjectiveModal(false);
 	}else{
 		var distributionListName = $("#distribution-list-textbox").val().trim();
 		var isChecked = $("#distribution-list-checkbox").is(":checked");
@@ -149,10 +147,8 @@ function clickSubmitObjective(){
 	        var proposedTo = $("#proposed-obj-to").val().trim(); 
 	         if (validEmails(proposedTo)){
 	             proposeObjective(userID, objTitle, objText, objDate, proposedTo);
-	             showObjectiveModal(false);
 	        }else{
 	          toastr.error("One or more email addresses entered are not valid");
-	          showObjectiveModal(true);
 	        }
 		}
     }
@@ -307,36 +303,6 @@ function showProposedDevelopmentTab(){
 //    nextDevNeedId.push(++lastId);
 //    return lastId;
 //}
-
-//------------------------------------------------------------------------------------
-
-//--------------------------------------- Notes --------------------------------------
-//
-
-//Method to make ajax call to add note to database
-function addNoteToDB(userID, from, body, date){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addNote/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data:{
-            'providerName': from,
-            'noteDescription': body,
-        },
-        success: function(response){
-            if(lastNoteID == 0)
-        		$("#general-notes-list").removeClass("text-center").empty();
-            clearAllNotesFilters();
-            var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
-            var classDate = moment(date).format('YYYY-MM-DD');
-            addNoteToList(++lastNoteID, from, body, dateFormatted, classDate, emptyArray, emptyArray);
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
-}
 
 //------------------------------------------------------------------------------------
 

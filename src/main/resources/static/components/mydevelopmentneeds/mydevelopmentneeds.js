@@ -40,131 +40,91 @@ function initDevelopmentNeeds(){
     });
 }
 
+var noDevelopmentNeeds = false;
+
 function getDevelopmentNeedsListNEW(userId){
 	var  success =  function(data){
 		loaded();
         $.each(data, function(key, val){
-//            nextDevNeedId.push(val.id);
-        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+        	var expectedBy = moment(val.dueDate).format('MMM YYYY');
             var progressNumber = numberProgress(val.progress);
             var categoryNumber = numberCategory(val.category);
         	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
         });
-        if(data.length == 0){
-        	$("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
+        if(data.length === 0){
+        	noDevelopmentNeeds = true;
+        	$("#all-dev-need").append("<h5 id='no-development-need-text' class='text-center'>You have no Development Needs</h5>");	
         }
     }
-	var error= function(error){ loaded(); }
+	var error = function(error){ loaded(); }
 	
 	getDevelopmentNeedsAction(userId, success, error);
 }
 
 //HTTP request for INSERTING an development need to DB
 function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addDevelopmentNeed/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'title': devNeedTitle,
-            'description': devNeedText,
-            'category': devNeedCategory,
-            'dueDate': devNeedDate
-        },
-        success: function(response){
-        	var Id = response;
-            if(Id === 1)
-        		$("#all-dev-need").removeClass("text-center").empty(); 
-            addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
-		    showProposedDevelopmentTab();
-		    addTag(Id, devNeedTitle, "dev");
-            toastr.success("Development Need inserted");
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        } 
-    });
+	var success = function(response){
+		showDevelopmentNeedModal(false);
+		var Id = response.developmentNeedID;
+        if(noDevelopmentNeeds){
+    		$("#no-development-need-text").remove();
+        }
+        addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
+    	showProposedDevelopmentTab();
+    	addTag(Id, devNeedTitle, "dev");
+    };
+    var error = function(error){ }
+	
+	addDevelopmentNeedAction(userID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, success, error);
 }
 
 //HTTP request for INSERTING an development need to DB
 function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/editDevelopmentNeed/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'developmentNeedId': devNeedID,
-            'title': devNeedTitle,
-            'description': devNeedText,
-            'category': devNeedCategory,
-            'dueDate': devNeedDate,
-        },
-        success: function(response){
-            editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-            editTag(devNeedID, devNeedTitle, "dev");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
+	var success = function(response){
+		showDevelopmentNeedModal(false);
+		editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
+        editTag("temp", devNeedTitle, "dev");
+    }
+	var error = function(error){ }
+	
+	editDevelopmentNeedAction(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, success, error);
 }
 
 //HTTP request for UPDATING a development need in DB
 function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title, completedText){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateDevelopmentNeedProgress/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'developmentNeedId': devNeedID,
-            'progress': devNeedStatus,
-            'comment': completedText,
-        },
-        success: function(response){
-        	updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
-            if(devNeedStatus == 2){
-            	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
-            	var d = new Date();
-              	var date = moment(d).format('DD MMM YYYY HH:mm');
-              	var classDate = moment(d).format('YYYY-MM-DD');
-            	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
-                $("#edit-dev-need-button-"+devNeedID).remove();
-            }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	var  success =  function(response){
+		updateDevelopmentNeedStatusOnList(devNeedID, devNeedStatus);
+        if(devNeedStatus == 2){
+        	var id = response.autoGeneratedNoteID;
+        	var text = (completedText === "") ? getADfullName()+ " has completed Development Need '"+ title +"'." : getADfullName()+ " has completed Development Need '"+ title +"'. "+" A comment was added: '"+ completedText+"'";
+        	var d = new Date();
+          	var date = moment(d).format('DD MMM YYYY HH:mm');
+          	var classDate = moment(d).format('YYYY-MM-DD');
+        	addNoteToList(id, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+            $("#edit-dev-need-button-"+devNeedID).remove();
+        }
+    };
+    
+	var error = function(error){ }
+	
+	updateDevelopmentNeedProgressAction(userID, devNeedID, devNeedStatus, completedText, success, error);
 }
 
 //function request for DELETING a development need in DB
 function deleteDevelopmentNeed(userID, devNeedID, devNeedTitle, deletingText){
-        $.ajax({
-        url: "http://"+getEnvironment()+"/deleteDevelopmentNeed/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'developmentNeedId': devNeedID,
-            'comment': deletingText,
-        },
-        success: function(response){
-            //need to update dev need list to remove
-            removeDevNeedFromList(devNeedID);
-            //need to update note list
-            var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
-            var d = new Date();
-          	var date = moment(d).format('DD MMM YYYY HH:mm');
-          	var classDate = moment(d).format('YYYY-MM-DD');
-            addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
-            deleteTag(devNeedID, "development-need");
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	var  success =  function(response){
+		var id = response.autoGeneratedNoteID;
+        removeDevNeedFromList(devNeedID);
+        var text = (deletingText ==="") ? getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'." : getADfullName()+ " has deleted Development Need '"+ devNeedTitle +"'. "+" A comment was added: '"+ deletingText+"'";
+        var d = new Date();
+      	var date = moment(d).format('DD MMM YYYY HH:mm');
+      	var classDate = moment(d).format('YYYY-MM-DD');
+        addNoteToList(id, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+        deleteTag(devNeedID, "development-need");
+    };
+    var error = function(error){ }
+	
+	deleteDevelopmentNeedAction(userID, devNeedID, deletingText, success, error);
 }
 
 //Function to set up and open ADD development-need modal
@@ -214,24 +174,16 @@ function clickArchiveDevNeed(devNeedID, archive){
 }
 
 function editDevNeedArchiveOnDB(devNeedID, archive){
-    $.ajax({
-        url:"http://"+getEnvironment()+"/toggleDevelopmentNeedArchive/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials':true},
-        data: {
-            'developmentNeedId': devNeedID,
-        },
-        success: function(response){
-            updateDevelopmentNeedsList(devNeedID);
-            if(!archive){
-                updateArchiveTabDevNeeds();
-            }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);   
+	var userId = getADLoginID();
+	var  success =  function(response){
+		updateDevelopmentNeedsList(devNeedID);
+        if(!archive){
+            updateArchiveTabDevNeeds();
         }
-    });
+    };
+    var error = function(error){ }
+	
+    toggleDevNeedArchiveAction(userId, devNeedID, success, error);
 }
 
 function updateDevelopmentNeedsList(devNeedID){
@@ -344,21 +296,6 @@ function removeDevNeedFromList(devNeedID){
     $("textarea").val("");
     $('#deleteModal').modal('hide');
 }
-
-//function getTimeStamp(id){
-//	$.ajax({
-//    url: 'http://'+getEnvironment()+'/getdevelopmentNeeds/'+id,
-//    cache: false,
-//    method: 'GET',
-//    xhrFields: {'withCredentials': true},
-//    success: function(data){
-//    	createdOn = timeStampToLongDate(data[0].timeStamp);
-//    },
-//    error: function(XMLHttpRequest, textStatus, errorThrown){
-//        console.log('error', errorThrown);
-//        toastr.error("Sorry, there was a problem getting timeStamp data, please try again later.")
-//     }
-// })};
 
 //Function that returns dev needs list in html format with the parameters given
 function developmentNeedListHTML(id, title, description, category, timeToCompleteBy, status, isArchived, createdOn){
@@ -486,5 +423,5 @@ function clickSubmitDevelopmentNeed(){
 	}else{
 		editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
 	}
-	showDevelopmentNeedModal(false);
+//	showDevelopmentNeedModal(false);
 }

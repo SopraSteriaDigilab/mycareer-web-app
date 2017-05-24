@@ -48,18 +48,19 @@ var noteTypeList = ["general", "objectives", "competencies", "feedback", "develo
 var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
 var noteDateFilterApplied = false;
 var notesTagFilterApplied = false;
-
+var noNotes = false;
 
 function getNotes(userId){
 	var success = function(data){
-        lastNoteID = data.length;
         $.each(data, function(key, val){
         	var date = moment(val.timestamp).format('DD MMM YYYY HH:mm');
         	var classDate = moment(val.timestamp).format('YYYY-MM-DD');
         	addNoteToList(val.id, val.providerName, val.noteDescription, date, classDate, val.taggedObjectiveIds, val.taggedDevelopmentNeedIds);
         });
-        if(data.length == 0)
-      	  $("#general-notes-list").addClass("text-center").append("<h5>You have no Notes</h5>");
+        if(data.length === 0){
+        	noNotes = true;
+      	  	$("#general-notes-list").append("<h5 id='no-notes-text' class='text-center'>You have no Notes</h5>");	
+        }
 	}
 	var error = function(error){}
 	
@@ -85,6 +86,23 @@ function getTags(userId){
 	getTagsAction(userId, success, error);
 }
 
+function addNote(userId, providerName, noteDescription, date){
+	var success = function(response){
+		var id = response.noteID;
+        if(noNotes){
+        	noNotes = false;
+        	$("#no-notes-text").remove();
+        }
+        clearAllNotesFilters();
+        var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
+        var classDate = moment(date).format('YYYY-MM-DD');
+        addNoteToList(id, providerName, noteDescription, dateFormatted, classDate, emptyArray, emptyArray);
+    }
+	var error = function(error){}
+	
+	addNoteAction(userId, providerName, noteDescription, success, error);
+}
+
 function initResizable(){
 	$( "#resizable" ).resizable({
 		 minWidth: 300,
@@ -94,27 +112,20 @@ function initResizable(){
 
 
 function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateNotesTags/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'noteId': id,
-            'objectiveIds': objectiveTagIds.toString(),
-            'developmentNeedIds': developmentNeedTagIds.toString()
-        },
-        success: function(response){
-            toastr.success(response);
-            $("#note-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "note"));
-            setNoteTagValues(id, objectiveTagIds, developmentNeedTagIds);
-            $('#add-tag-modal').modal('hide');
-            clearTagsCheckboxes();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#nav-bar-buttons").empty();
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	var userId = getADLoginID();
+	var noteId = id;
+	var objectiveIds = objectiveTagIds.toString();
+	var developmentNeedIds = developmentNeedTagIds.toString();
+	
+	var success = function(response){
+        $("#note-tag-text-"+noteId).text(addTags(objectiveTagIds, developmentNeedTagIds, "note"));
+        setNoteTagValues(noteId, objectiveTagIds, developmentNeedTagIds);
+        $('#add-tag-modal').modal('hide');
+        clearTagsCheckboxes();
+    }
+	var error = function(error){}
+	
+	updateNotesTagsAction(userId, noteId, objectiveIds, developmentNeedIds, success, error)
 }
                                                                                                                                                                                                                                                                                                                                                                                                   
 //Method to add note to list directly
@@ -153,7 +164,7 @@ function clickSubmitNote(){
 	var from = getADfullName();
 	var date = new Date();
 	
-	addNoteToDB(userID, from, note, date);
+	addNote(userID, from, note, date);
     
 	$('#note-text').val('');
 	$('#submit-note').prop("disabled", true);

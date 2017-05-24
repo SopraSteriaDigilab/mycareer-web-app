@@ -48,38 +48,27 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
 
 //send request to backend to update star to be selected or de-selected
 function starChanger(id){
-    var status = ($('#starSelected'+id).val() === "true") ? false : true;
+	var userId = getADLoginID();
     var title = $('#competencyTitle'+id).text();
-    var userID = getADLoginID();
     
-    updateCompetencyStatus(userID,id,title,status);
+    toggleCompetency(userId, id, title);
 }
 
-//Method to make Ajax call and return clicked competencies to DB
-function updateCompetencyStatus(userID, id, title, status){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/toggleCompetency/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'competencyTitle': title,
-        },
-        success: function(response){
-            toastr.success("'" + title + "' competency has been updated");
+
+function toggleCompetency(userId, id, title){
+	var success = function(response){
+        toastr.success("'" + title + "' " + response);
         
-            var className = $('#star-'+id).attr('class');
-            if (className.indexOf("empty")>=0){
-                $('#star-'+id).removeClass("glyphicon-star-empty");
-                $('#star-'+id).addClass("glyphicon-star");
-                $('#starSelected'+id).val("true");
-            }else{
-                $('#star-'+id).removeClass("glyphicon-star");
-                $('#star-'+id).addClass("glyphicon-star-empty");
-                $('#starSelected'+id).val("false");
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
+        var className = $('#star-'+id).attr('class');
+        if (className.indexOf("empty") >= 0){
+            $('#star-'+id).removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+            $('#starSelected'+id).val("true");
+        }else{
+            $('#star-'+id).removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+            $('#starSelected'+id).val("false");
         }
-    });
+    }
+	var error = function(error){}
+	
+	toggleCompetencyAction(userId, title, success, error);
 }

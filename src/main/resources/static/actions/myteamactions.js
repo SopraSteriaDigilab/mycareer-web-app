@@ -44,8 +44,10 @@ function generateDistributionListAction(userId, data, successFunction, errorFunc
 function proposeObjectiveToDistributionListAction(userId, data, successFunction, errorFunction){
 	var url = MANAGER + PROPOSE_OBJECTIVE_TO_DISTRIBUTION_LIST + "/" + userId;
 	var request = $post(url, data);
-	request.done(function(data){ 
-		successFunction(data)
+	request.done(function(response){ 
+		console.log(response)
+		toastr.success(response.success)
+		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
 		toastr.error(jqXHR.responseJSON.error);

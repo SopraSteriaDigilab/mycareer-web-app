@@ -3,6 +3,8 @@ const ADD_OBJECTIVE = "/addObjective";
 const EDIT_OBJECTIVE = "/editObjective";
 const UPDATE_OBJECTIVE_PROGRESS = "/updateObjectiveProgress";
 const DELETE_OBJECTIVE = "/deleteObjective";
+const TOGGLE_OBJECTIVE_ARCHIVE = "/toggleObjectiveArchive";
+const PROPOSE_OBJECTIVE = "/proposeObjective";
 
 function getObjectivesActions(userId, successFunction, errorFunction){
 	var url = GET_OBJECTIVES + "/" + userId;
@@ -21,11 +23,11 @@ function addObjectiveAction(userId, title, description, dueDate, successFunction
 	var data = {
         title: title,
         description: description,
-        dueDate: dueDate,
+        dueDate: dueDate
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success("Objective inserted");
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -40,7 +42,7 @@ function editObjectiveAction(userId, objectiveId, title, description, dueDate, s
         objectiveId: objectiveId,
         title: title,
         description: description,
-        dueDate: dueDate,
+        dueDate: dueDate
     }
 	var request = $post(url, data);
 	request.done(function(response){
@@ -58,11 +60,11 @@ function updateObjectiveProgressAction(userId, objectiveId, progress, comment, s
 	var data = {
         objectiveId: objectiveId,
         progress: progress,
-        comment: comment,
+        comment: comment
     }
 	var request = $post(url, data);
 	request.done(function(response){
-		toastr.success(response);
+		toastr.success(response.success);
 		successFunction(response)
 	})
 	request.fail(function(jqXHR, textStatus) {
@@ -75,7 +77,23 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 	var url = DELETE_OBJECTIVE + "/" + userId;
 	var data = {
         objectiveId: objectiveId,
-        comment: comment,
+        comment: comment
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response.success);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
+function toggleObjectiveArchiveAction(userId, objectiveId, successFunction, errorFunction){
+	var url = TOGGLE_OBJECTIVE_ARCHIVE + "/" + userId;
+	var data = {
+		objectiveId: objectiveId,
     }
 	var request = $post(url, data);
 	request.done(function(response){
@@ -88,4 +106,27 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 	});
 }
 
+function proposeObjectiveAction(userId, title, description, dueDate, emails, successFunction, errorFunction){
+	var url = MANAGER + PROPOSE_OBJECTIVE + "/" + userId;
+	var data = {
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        emails: emails
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		var successMessage = response.success.toLowerCase();
+    	if(successMessage.indexOf("not found") > -1){
+    		toastr.warning(response.success);
+    	}else{
+    		toastr.success(response.success);
+    	}
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
 
