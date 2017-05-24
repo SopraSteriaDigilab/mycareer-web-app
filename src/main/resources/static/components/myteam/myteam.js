@@ -354,28 +354,17 @@ function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
     });
 }
 
-//Method to make ajax call to add note to database
-function addNoteToReporteeDB(reporteeID, from, body, date){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/manager/addNoteToReportee/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data:{
-            'reporteeEmployeeID': reporteeID,
-            'providerName': from,
-            'noteDescription': body,
-        },
-        success: function(response){
-            if(lastNoteID == 0)
-        		$("#general-notes-list").removeClass("text-center").empty();
-            lastNoteID++;
-        	addNoteToReporteeList(from, body, date);
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
+
+function addNoteToReportee(reporteeId, providerName, noteDescription, date){
+	var userId = getADLoginID();
+	var success = function(response){
+        if(lastNoteID == 0)
+    		$("#general-notes-list").empty();
+    	addNoteToReporteeList(providerName, noteDescription, date);
+    }
+	var error = function(error){}
+	
+	addNoteAction(userId, reporteeId, providerName, noteDescription, success, error);
 }
 
 function clearReporteeLists(){
@@ -435,7 +424,7 @@ function clickSubmitReporteeNote(){
 	var note = $("#reportee-note-input").val().trim();
 	var date = moment(new Date()).format('DD MMM YYYY HH:mm');
 	
-	addNoteToReporteeDB(reporteeID, from, note, date);
+	addNoteToReportee(reporteeID, from, note, date);
 	showReporteeNoteModal(false);
 }
 

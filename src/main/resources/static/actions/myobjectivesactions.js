@@ -21,7 +21,7 @@ function addObjectiveAction(userId, title, description, dueDate, successFunction
 	var data = {
         title: title,
         description: description,
-        dueDate: dueDate,
+        dueDate: dueDate
     }
 	var request = $post(url, data);
 	request.done(function(response){
@@ -40,7 +40,7 @@ function editObjectiveAction(userId, objectiveId, title, description, dueDate, s
         objectiveId: objectiveId,
         title: title,
         description: description,
-        dueDate: dueDate,
+        dueDate: dueDate
     }
 	var request = $post(url, data);
 	request.done(function(response){
@@ -58,7 +58,7 @@ function updateObjectiveProgressAction(userId, objectiveId, progress, comment, s
 	var data = {
         objectiveId: objectiveId,
         progress: progress,
-        comment: comment,
+        comment: comment
     }
 	var request = $post(url, data);
 	request.done(function(response){
@@ -75,7 +75,7 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 	var url = DELETE_OBJECTIVE + "/" + userId;
 	var data = {
         objectiveId: objectiveId,
-        comment: comment,
+        comment: comment
     }
 	var request = $post(url, data);
 	request.done(function(response){

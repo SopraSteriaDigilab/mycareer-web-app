@@ -1,4 +1,6 @@
 const GET_NOTES = "/getNotes";
+const ADD_NOTE = "/addNote";
+const ADD_NOTE_TO_REPORTEE = "/addNoteToReportee";
 
 function getNotesAction(userId, successFunction, errorFunction){
 	var url = GET_NOTES + "/" + userId;
@@ -12,3 +14,37 @@ function getNotesAction(userId, successFunction, errorFunction){
 	});
 }
 
+function addNoteAction(userId, providerName, noteDescription, successFunction, errorFunction){
+	var url = ADD_NOTE + "/" + userId;
+	var data = {
+        providerName: providerName,
+        noteDescription: noteDescription
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success("Note inserted");
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
+function addNoteAction(userId, reporteeEmployeeID, providerName, noteDescription, successFunction, errorFunction){
+	var url = MANAGER + ADD_NOTE_TO_REPORTEE + "/" + userId;
+	var data = {
+        reporteeEmployeeID: reporteeEmployeeID,
+        providerName: providerName,
+        noteDescription: noteDescription
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success("Note inserted");
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
