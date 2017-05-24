@@ -310,36 +310,6 @@ function showProposedDevelopmentTab(){
 
 //------------------------------------------------------------------------------------
 
-//--------------------------------------- Notes --------------------------------------
-//
-
-//Method to make ajax call to add note to database
-function addNoteToDB(userID, from, body, date){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/addNote/"+userID,
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data:{
-            'providerName': from,
-            'noteDescription': body,
-        },
-        success: function(response){
-            if(lastNoteID == 0)
-        		$("#general-notes-list").removeClass("text-center").empty();
-            clearAllNotesFilters();
-            var dateFormatted = moment(date).format('DD MMM YYYY HH:mm'); 
-            var classDate = moment(date).format('YYYY-MM-DD');
-            addNoteToList(++lastNoteID, from, body, dateFormatted, classDate, emptyArray, emptyArray);
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
-        }
-    });
-}
-
-//------------------------------------------------------------------------------------
-
 //--------------------------------------- Tags --------------------------------------
 
 function addToTagsLists(key, id, title){

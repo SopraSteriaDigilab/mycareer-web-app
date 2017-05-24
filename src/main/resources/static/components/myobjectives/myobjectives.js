@@ -149,28 +149,20 @@ function editObjectiveOnList(userID, objID, title, text, date, status){
 //Method to handle the archive objective button
 function clickArchiveObjective(objID, archive){
 	$('#obj-is-archived-'+objID).val(archive);
-	editObjectiveArchiveOnDB(objID, archive);
+	toggleObjectiveArchive(objID, archive);
 }
 
-function editObjectiveArchiveOnDB(objID, archive){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/toggleObjectiveArchive/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'objectiveId': objID,
-        },
-        success: function(response){
-            updateObjectiveList(objID);
-            if(!archive){
-		          updateArchiveTab();
-	        }
-            toastr.success(response);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            toastr.error(XMLHttpRequest.responseText);
+function toggleObjectiveArchive(objectiveId, archive){
+	var userId = getADLoginID();
+	var success = function(response){
+        updateObjectiveList(objectiveId);
+        if(!archive){
+	          updateArchiveTab();
         }
-    });
+    }
+	var error = function(error){}
+	
+	toggleObjectiveArchiveAction(userId, objectiveId, success, error);
 }
 
 function updateObjectiveList(objID){

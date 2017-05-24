@@ -3,6 +3,7 @@ const ADD_OBJECTIVE = "/addObjective";
 const EDIT_OBJECTIVE = "/editObjective";
 const UPDATE_OBJECTIVE_PROGRESS = "/updateObjectiveProgress";
 const DELETE_OBJECTIVE = "/deleteObjective";
+const TOGGLE_OBJECTIVE_ARCHIVE = "/toggleObjectiveArchive";
 const PROPOSE_OBJECTIVE = "/proposeObjective";
 
 function getObjectivesActions(userId, successFunction, errorFunction){
@@ -77,6 +78,22 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 	var data = {
         objectiveId: objectiveId,
         comment: comment
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+    	toastr.error(jqXHR.responseJSON.error);
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
+
+function toggleObjectiveArchiveAction(userId, objectiveId, successFunction, errorFunction){
+	var url = TOGGLE_OBJECTIVE_ARCHIVE + "/" + userId;
+	var data = {
+		objectiveId: objectiveId,
     }
 	var request = $post(url, data);
 	request.done(function(response){
