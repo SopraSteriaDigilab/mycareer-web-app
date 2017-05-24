@@ -16,7 +16,8 @@ function $get(path){
 /**
  *Ajax POST call
  * 
- * @param path path of the get request
+ * @param path path of the set request
+ * @param data data of the set request
  */
 function $post(path, data){
     return $.ajax({
