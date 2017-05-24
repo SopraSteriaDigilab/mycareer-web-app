@@ -31,7 +31,7 @@ function getObjectives(userId){
 		loaded();
 		var isEmpty = true;
 		$.each(data, function(key, val){
-			nextObjId.push(val.id);
+//			nextObjId.push(val.id);
 			var expectedBy = formatDate(val.dueDate);
 			var progressNumber = numberProgress(val.progress);
 			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
@@ -47,9 +47,9 @@ function getObjectives(userId){
 //HTTP request for INSERTING an objective to DB
 function addObjectiveToDB(userId, objTitle, objText, objDate) {
 	var success = function(response){
-        if(nextObjId.length == 0)
+		var Id = response;
+        if(Id === 1)
     		$("#all-obj").removeClass("text-center").empty();
-        var Id = nextObjectiveID();
         addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 	    showProposedObjTab();
 	    addTag(Id, objTitle, "obj");
@@ -271,19 +271,17 @@ function openDeleteObjectiveModal(id, title){
     $("textarea").val("");
 }
 
-//method to remove objective from list and close delete Modal 
 function removeObjectiveFromList(objID){
-    nextObjId.sort(function(a,b){ return a - b;});
-    var findId = nextObjId.indexOf(parseInt(objID));
-    if(findId > -1){
-        nextObjId.splice(findId, 1);
-    }
+//    nextObjId.sort(function(a,b){ return a - b;});
+//    var findId = nextObjId.indexOf(parseInt(objID));
+//    if(findId > -1){
+//        nextObjId.splice(findId, 1);
+//    }
     $("#objective-item-"+objID).fadeOut(400, function() {
         $(this).remove();
     });
-    
     $("textarea").val("");
-     $('#deleteModal').modal('hide');
+    $('#deleteModal').modal('hide');
 }
 
 //Function that returns objective list in html format with the parameters given

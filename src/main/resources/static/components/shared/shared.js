@@ -23,8 +23,8 @@ var competenciesDescriptions = [
 	"Takes account of a wide range of long-term changes and trends in technology, the market-place and in the business and plans ahead accordingly. Has a clear view of where they want to get to in the medium and longer term. Understands competition. Anticipates consequences and trends.",
 	"Shows flexibility and the desire to acquire new knowledge and ideas. Accepts and supports the need for change and looks for new ways of solving problems. Demonstrates the ability to lead and foster change within the organisation. Can act differently depending upon the situation and can handle uncertainty. Is committed to continuous improvement. Comes up with practical steps to implement own or others ideas.",
 	"Works cooperatively with colleagues and considers their needs and the impact of decisions on them. Seeks to build relationships across the organisation and to work for the overall good of the business. Able to find common ground and gain trust. Encourages collaboration."];
-var nextDevNeedId = [];
-var nextObjId = [];
+//var nextDevNeedId = [];
+//var nextObjId = [];
 var objectiveTagIds = [];
 var developmentNeedTagIds = [];
 var lastNoteID = 0;
@@ -47,19 +47,19 @@ function adjustDataTablesMomentJs(){
 //------------------------------------- Objectives -------------------------------------
 
 //Function that finds the largest ID for objectives and finds the next one
-function nextObjectiveID(){
-	if(nextObjId.length <1){
-		nextObjId.push(1);
-		return 1;
-	}
-	
-    //numerical sort
-    nextObjId.sort(function(a,b){ return a - b;});
-    //finds the last id in the list
-    var lastId = nextObjId[nextObjId.length - 1];
-    nextObjId.push(++lastId);
-    return lastId;
-}
+//function nextObjectiveID(){
+//	if(nextObjId.length <1){
+//		nextObjId.push(1);
+//		return 1;
+//	}
+//	
+//    //numerical sort
+//    nextObjId.sort(function(a,b){ return a - b;});
+//    //finds the last id in the list
+//    var lastId = nextObjId[nextObjId.length - 1];
+//    nextObjId.push(++lastId);
+//    return lastId;
+//}
 
 function numberProgress(progress){
     switch(progress){
@@ -167,21 +167,19 @@ function showProposedObjTab(){
 //Method to handle the close objective button
 function clickCloseObjective(e){
 	var type = $("#obj-modal-type").val();
-	if ((type=== "edit") || (checkEmptyID("objective-title",false) && checkEmptyID("objective-text",false))){
+	if ((type === "edit") || (checkEmptyID("objective-title", false) && checkEmptyID("objective-text", false))){
 		$('#objective-modal').modal('hide');
-	    }
-	else {
-		 addHTMLforPopUpBox("objective-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#objective-modal').modal('hide');
-		    });
-	};
+	}else{
+		var title = "Close 'Objective' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+			$('#objective-modal').modal('hide');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //------------------------------------------------------------------------------------
@@ -205,40 +203,38 @@ function checkSelected(isSelected){
 function clickCloseSendFeedback(e){
 	if (checkEmptyID("sendingTo",false) && checkEmptyID("sendingText",false)){
 		$('#sendFeedbackModal').modal('hide');
-	} else {
-		addHTMLforPopUpBox("send-feedback-modal");
-		var $form = $(this).closest('form');
-		e.preventDefault();
-		$('#confirm').modal({
-			backdrop: 'static',
-			keyboard: false
-		}).one('click', '#close-modals', function(e) {
+	}else{
+		var title = "Close 'Send Feedback' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
 			$('#sendFeedbackModal').modal('hide');
 			$("textarea").val("");
 			$("#sendingTo").tagsinput('removeAll');
-		});
-	};
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //method to handle the close send feedback button
 function clickCloseRequestFeedback(e){
 	if (checkEmptyID("requestingTo",false) && checkEmptyID("requestingText",false)){
 		$('#requestFeedbackModal').modal('hide');
-	    }
-	else {
-		addHTMLforPopUpBox("request-feedback-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#requestFeedbackModal').modal('hide');
-              $("textarea").val("");
-              $("#requestingTo").tagsinput('removeAll');
-		    });
-	};
+	}else {
+		var title = "Close 'Request Feedback' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+	    	$('#requestFeedbackModal').modal('hide');
+	    	$("textarea").val("");
+	    	$("#requestingTo").tagsinput('removeAll');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 //-------------------------------- Development Needs ---------------------------------
@@ -279,19 +275,17 @@ function clickCloseDevNeed(e){
 	var type = $("#dev-need-modal-type").val();
 	if ((type === "edit") || (checkEmptyID("development-need-title",false) && checkEmptyID("development-need-text",false))){
 		$('#development-need-modal').modal('hide');
-	    }
-	else {
-		addHTMLforPopUpBox("development-need-modal");
-		 var $form = $(this).closest('form');
-		  e.preventDefault();
-		  $('#confirm').modal({
-		      backdrop: 'static',
-		      keyboard: false
-		    })
-		    .one('click', '#close-modals', function(e) {
-		    	$('#development-need-modal').modal('hide');
-		    });
-	};
+	}else {
+		var title = "Close 'Development Need' Window";
+		var body = "<h5>Your changes are unsaved.</h5><h5><b>Are you sure you want to close this window?</b></h5>";
+		var buttonText = "Close window";
+		var buttonFunction = function(){
+			closeWarningModal();
+			$('#development-need-modal').modal('hide');
+		}
+		
+		openWarningModal(title, body, buttonText, buttonFunction);
+	}
 }
 
 function showProposedDevelopmentTab(){
@@ -301,18 +295,18 @@ function showProposedDevelopmentTab(){
 }
 
 //Function that finds the largest ID for objectives and finds the next one
-function nextDevelopmentNeedID(){
-	if(nextDevNeedId.length <1){
-		nextDevNeedId.push(1);
-		return 1;
-	}
-    //numerical sort
-    nextDevNeedId.sort(function(a,b){ return a - b;});
-    //finds the last id in the list
-    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
-    nextDevNeedId.push(++lastId);
-    return lastId;
-}
+//function nextDevelopmentNeedID(){
+//	if(nextDevNeedId.length <1){
+//		nextDevNeedId.push(1);
+//		return 1;
+//	}
+//    //numerical sort
+//    nextDevNeedId.sort(function(a,b){ return a - b;});
+//    //finds the last id in the list
+//    var lastId = nextDevNeedId[nextDevNeedId.length - 1];
+//    nextDevNeedId.push(++lastId);
+//    return lastId;
+//}
 
 //------------------------------------------------------------------------------------
 
@@ -551,25 +545,7 @@ function checkEmptyID(inputID, throwError){
 		toastr.error("Please fill in all mandatory fields.");
 
 	return isEmpty;
-} 
-
-function addHTMLforPopUpBox(parentModalID){
-	$("#pop-up-"+parentModalID).append(""
-			+			"<div id=\"confirm\" class=\"modal fade\" role=\"dialog\" style=\"z-index: 1600;\">"
-			+			"<div class=\"modal-dialog modal-sm\">"
-			+				"<!-- Modal content-->"
-		    +				"<div class=\"modal-content\">"
-		    +					"<div class=\"modal-body\">"
-		    +						"Your changes are unsaved. Are you sure you want to close this window?"
-		  	+					"</div>"
-		  	+				"<div class=\"modal-footer\">"
-		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn btn-primary\" id=\"close-modals\" onClick=\"$(\"#"+parentModalID+"\").modal(\"hide\");\">Close this window</button>"
-		    +					"<button type=\"button\" data-dismiss=\"modal\" class=\"btn\">Cancel</button>"
-		  	+				"</div>"
-		  	+			"</div>"
-			+		"</div>"
-			+	"</div>");
-} 
+}
 
 function enableSubmit(type){
     if (type === 1){
@@ -578,8 +554,7 @@ function enableSubmit(type){
     return true;
 }
 
-function tags(id, data){ 
-    //sets email addresses to use bootstrap tag input
+function tags(id, data){
     $('#'+id).tagsinput({
        maxTags: 20,
        confirmKeys: [9,32,44,59],
@@ -827,7 +802,7 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 				</div> \
 				<div class='modal-body'>"+body+"</div> \
 			    <div class='modal-footer'> \
-					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Close</button> \
+					<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Cancel</button> \
 					<button type='button' class='btn btn-default pull-right' id='warning-modal-action'>"+buttonText+"</button> \
 				</div> \
 			</div> \
