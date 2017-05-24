@@ -3,6 +3,7 @@ const ADD_OBJECTIVE = "/addObjective";
 const EDIT_OBJECTIVE = "/editObjective";
 const UPDATE_OBJECTIVE_PROGRESS = "/updateObjectiveProgress";
 const DELETE_OBJECTIVE = "/deleteObjective";
+const PROPOSE_OBJECTIVE = "/proposeObjective";
 
 function getObjectivesActions(userId, successFunction, errorFunction){
 	var url = GET_OBJECTIVES + "/" + userId;
@@ -88,4 +89,27 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 	});
 }
 
+function proposeObjectiveAction(userId, title, description, dueDate, emails, successFunction, errorFunction){
+	var url = MANAGER + PROPOSE_OBJECTIVE + "/" + userId;
+	var data = {
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        emails: emails
+    }
+	var request = $post(url, data);
+	request.done(function(response){
+		toastr.success(response);
+		successFunction(response)
+	})
+	request.fail(function(jqXHR, textStatus) {
+		var errorMessage = jqXHR.responseJSON.error.toLowerCase();
+    	if(errorMessage.indexOf("objective proposed") > -1){
+    		toastr.warning(jqXHR.responseJSON.error);
+    	}else{
+    		toastr.error(jqXHR.responseJSON.error);
+    	}
+    	errorFunction(jqXHR.responseJSON.error);
+	});
+}
 

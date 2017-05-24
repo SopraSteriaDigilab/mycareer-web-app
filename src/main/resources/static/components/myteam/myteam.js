@@ -98,7 +98,8 @@ function getReportees(userId, isSubReportee){
     		$("#reportee-list").empty();
         	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
         	 $.each(data, function(key, val){
-             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddress);
+        		 console.log(val.emailAddresses.preferred)
+             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddresses.preferred);
              });  
     	}else{
     		updateSelectedSubReportee(userId);
@@ -183,7 +184,7 @@ function addSubReporteesToList(data) {
 	if(data.length > 0) {
 		subList = "<h5><b> "+selectedReporteeName+" - Team </b></h5>";
 		 $.each(data, function(key, val){
-	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddress);
+	      	subList += reporteeListItemHTML(val.employeeID, val.fullName, val.username, val.emailAddresses.preferred);
 	      });
 	}else{
 		subList += "<h5 style='text-align: center;'>"+selectedReporteeName+" has no reportees</h5>"
@@ -204,7 +205,7 @@ function updateSelectedSubReportee(userId){
 
 function reporteeListItemHTML(employeeID, fullName, userName, emailAddress){
 	var HTML = " \
-		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='clickReportee("+employeeID+",\""+removeApostrophe(fullName)+"\", \""+emailAddress+"\",  \""+userName+"\", this)' > \
+		<div id='panel-"+employeeID+"' class='panel panel-default reportee-panel' style='cursor:pointer' onClick='clickReportee("+employeeID+", \""+removeApostrophe(fullName)+"\", \""+emailAddress+"\", \""+userName+"\", this)' > \
 		    <div class='panel-heading'> \
 		        <div class='row'> \
 		           <div class='col-md-2'> \
@@ -268,13 +269,11 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 
 function getObjectives(userId){
 	var success = function(data){
-  	  var isEmpty = true;
-  	  $.each(data, function(key, val){
-  		  nextObjId.push(val.id);
-  		  var expectedBy = formatDate(val.dueDate);
-  		  var progressNumber = numberProgress(val.progress);
-  		  addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-  	  });
+			$.each(data, function(key, val){
+				var expectedBy = moment(val.dueDate).format('MMM YYYY');
+				var progressNumber = numberProgress(val.progress);
+				addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+			});
 	}
 	var error = function(error){}
 	
@@ -319,39 +318,15 @@ function getNotes(userId){
 	getNotesAction(userId, success, error);
 }
 
-//Method to propose objective
-function proposeObjective(userID, objTitle, objText, objDate, proposedTo){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/manager/proposeObjective/"+userID,
-        method: 'POST',
-        xhrFields: {'withCredentials': true},
-        data: {
-            'title': objTitle,
-            'description': objText,
-            'dueDate': objDate,
-            'emails': proposedTo
-        },            
-        success: function(response){
-        	if(response.indexOf("Objective Proposed for") !== -1 && response.indexOf("Error") !== -1){
-        		toastr.warning(response);
-        	}else if(response.indexOf("Error") !== -1){   
-        		toastr.error(response);
-        	}else{
-        		if(proposedTo.indexOf(selectedReporteeEmail.trim()) !== -1) {
-        			addObjectiveToList(nextObjectiveID(), objTitle, objText, objDate, 0, false);
-        		}
-        		toastr.success(response);
-        	}
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	var errorMessage = XMLHttpRequest.responseText.toLowerCase();
-        	if(errorMessage.indexOf("objective proposed") > -1){
-        		toastr.warning(XMLHttpRequest.responseText);
-        	}else{
-        		toastr.error(errorMessage);
-        	}
-        },
-    });
+function proposeObjective(userId, title, description, dueDate, emails){
+	var success = function(response){
+		if(emails.indexOf(selectedReporteeEmail.trim()) !== -1) {
+			addObjectiveToList("temp", title, description, dueDate, 0, false);
+		}
+    }
+	var error = function(error){}
+	
+	proposeObjectiveAction(userId, title, description, dueDate, emails, success, error)
 }
 
 
@@ -437,7 +412,7 @@ function addObjectiveToList(id, title, description, expectedBy, status, isArchiv
 
 //Method to add competencies to list display
 function addCompetenciesToList(competencies){
-	if(competencies.length == 0) {
+	if(competencies.length === 0) {
 		$("#reportee-comp-list").append("No Competencies have been selected.");
 	}
 	$("#reportee-comp-list").append(reporteeCompetenciesListHTML(competencies));
@@ -445,7 +420,7 @@ function addCompetenciesToList(competencies){
 
 function addDevelopmentNeedsToList(data){
 	var html = "";
-	if(data.length == 0){
+	if(data.length === 0){
     	  html = "<h5 class='text-center'>No Development Needs.</h5>";
 	}else{
 		$.each(data, function(key, val){
