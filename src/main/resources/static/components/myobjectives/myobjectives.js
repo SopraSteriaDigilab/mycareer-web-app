@@ -83,7 +83,7 @@ function editObjectiveProgressOnDB(userId, objID, objStatus, objTitle, comment){
         	var d = new Date();
           	var date = moment(d).format('DD MMM YYYY HH:mm');
           	var classDate = moment(d).format('YYYY-MM-DD');
-        	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+        	addNoteToList("temp", "Auto Generated", text, date, classDate, emptyArray, emptyArray);
             $("#edit-objective-button-"+objID).remove();
         }
     }
@@ -101,7 +101,7 @@ function deleteObjective(userId, objID, objTitle, comment){
     	var d = new Date();
       	var date = moment(d).format('DD MMM YYYY HH:mm');
       	var classDate = moment(d).format('YYYY-MM-DD');
-        addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+        addNoteToList("temp", "Auto Generated", text, date, classDate, emptyArray, emptyArray);
         deleteTag(objID, "objective");
     }
 	var error = function(error){}

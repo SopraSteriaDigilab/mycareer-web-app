@@ -103,7 +103,7 @@ function editDevelopmentNeedOnDB(userID, devNeedID, devNeedTitle, devNeedText, d
         },
         success: function(response){
             editDevelopmentNeedOnList(devNeedID, devNeedTitle, devNeedText, devNeedCategory, devNeedDate, devNeedStatus);
-            editTag(devNeedID, devNeedTitle, "dev");
+            editTag("temp", devNeedTitle, "dev");
             toastr.success(response);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -130,7 +130,7 @@ function editDevelopmentNeedProgressOnDB(userID, devNeedID, devNeedStatus, title
             	var d = new Date();
               	var date = moment(d).format('DD MMM YYYY HH:mm');
               	var classDate = moment(d).format('YYYY-MM-DD');
-            	addNoteToList(++lastNoteID, "Auto Generated", text, date, classDate, emptyArray, emptyArray);
+            	addNoteToList("temp", "Auto Generated", text, date, classDate, emptyArray, emptyArray);
                 $("#edit-dev-need-button-"+devNeedID).remove();
             }
             toastr.success(response);
