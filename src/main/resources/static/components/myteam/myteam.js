@@ -98,7 +98,6 @@ function getReportees(userId, isSubReportee){
     		$("#reportee-list").empty();
         	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
         	 $.each(data, function(key, val){
-        		 console.log(val.emailAddresses.preferred)
              	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddresses.preferred);
              });  
     	}else{
@@ -339,7 +338,7 @@ function addNoteToReportee(reporteeId, providerName, noteDescription, date){
     }
 	var error = function(error){}
 	
-	addNoteAction(userId, reporteeId, providerName, noteDescription, success, error);
+	addNoteToReporteeAction(userId, reporteeId, providerName, noteDescription, success, error);
 }
 
 function clearReporteeLists(){

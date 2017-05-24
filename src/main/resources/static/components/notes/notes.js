@@ -111,27 +111,20 @@ function initResizable(){
 
 
 function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
-    $.ajax({
-        url: "http://"+getEnvironment()+"/updateNotesTags/"+getADLoginID(),
-        method: "POST",
-        xhrFields: {'withCredentials': true},
-        data: {
-            'noteId': id,
-            'objectiveIds': objectiveTagIds.toString(),
-            'developmentNeedIds': developmentNeedTagIds.toString()
-        },
-        success: function(response){
-            toastr.success(response);
-            $("#note-tag-text-"+id).text(addTags(objectiveTagIds, developmentNeedTagIds, "note"));
-            setNoteTagValues(id, objectiveTagIds, developmentNeedTagIds);
-            $('#add-tag-modal').modal('hide');
-            clearTagsCheckboxes();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        	$("#nav-bar-buttons").empty();
-            toastr.error(XMLHttpRequest.responseText);
-        },
-    });
+	var userId = getADLoginID();
+	var noteId = id;
+	var objectiveIds = objectiveTagIds.toString();
+	var developmentNeedIds = developmentNeedTagIds.toString();
+	
+	var success = function(response){
+        $("#note-tag-text-"+noteId).text(addTags(objectiveTagIds, developmentNeedTagIds, "note"));
+        setNoteTagValues(noteId, objectiveTagIds, developmentNeedTagIds);
+        $('#add-tag-modal').modal('hide');
+        clearTagsCheckboxes();
+    }
+	var error = function(error){}
+	
+	updateNotesTagsAction(userId, noteId, objectiveIds, developmentNeedIds, success, error)
 }
                                                                                                                                                                                                                                                                                                                                                                                                   
 //Method to add note to list directly
