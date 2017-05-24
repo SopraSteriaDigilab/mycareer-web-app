@@ -68,7 +68,6 @@ function updateFeedbackTagsAction(userId, feedbackId, objectiveIds, developmentN
 	})
 	request.fail(function(jqXHR, textStatus) {
     	var errorMessage = jqXHR.responseJSON.error.toLowerCase();
-    	console.log(errorMessage)
     	if(errorMessage.indexOf("feedback added") > -1){
     		toastr.warning(errorMessage);
     	}else{
