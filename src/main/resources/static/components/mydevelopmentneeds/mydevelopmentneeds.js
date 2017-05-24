@@ -40,21 +40,23 @@ function initDevelopmentNeeds(){
     });
 }
 
+var noDevelopmentNeeds = false;
+
 function getDevelopmentNeedsListNEW(userId){
 	var  success =  function(data){
 		loaded();
         $.each(data, function(key, val){
-//            nextDevNeedId.push(val.id);
-        	var expectedBy = (isOngoing(val.dueDate) ? val.dueDate : formatDate(val.dueDate) );
+        	var expectedBy = moment(val.dueDate).format('MMM YYYY');
             var progressNumber = numberProgress(val.progress);
             var categoryNumber = numberCategory(val.category);
         	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);
         });
-        if(data.length == 0){
-        	$("#all-dev-need").addClass("text-center").append("<h5>You have no Development Needs</h5>");
+        if(data.length === 0){
+        	noDevelopmentNeeds = true;
+        	$("#all-dev-need").append("<h5 id='no-development-need-text' class='text-center'>You have no Development Needs</h5>");	
         }
     }
-	var error= function(error){ loaded(); }
+	var error = function(error){ loaded(); }
 	
 	getDevelopmentNeedsAction(userId, success, error);
 }
@@ -73,8 +75,8 @@ function addDevelopmentNeedToDB(userID, devNeedTitle, devNeedText, devNeedCatego
         },
         success: function(response){
         	var Id = response;
-            if(Id === 1)
-        		$("#all-dev-need").removeClass("text-center").empty(); 
+            if(noDevelopmentNeeds)
+        		$("#no-development-need-text").remove(); 
             addDevelopmentNeedToList(Id, devNeedTitle, devNeedText, devNeedCategory, formatDate(devNeedDate), 0, false, timeStampToLongDate(new Date()));
 		    showProposedDevelopmentTab();
 		    addTag(Id, devNeedTitle, "dev");

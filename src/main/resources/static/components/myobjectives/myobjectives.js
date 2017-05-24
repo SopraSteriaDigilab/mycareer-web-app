@@ -26,18 +26,20 @@ $(function() {
     });
 });
 
+var noObjectives = false;
+
 function getObjectives(userId){
 	var success = function(data){
 		loaded();
-		var isEmpty = true;
 		$.each(data, function(key, val){
-//			nextObjId.push(val.id);
-			var expectedBy = formatDate(val.dueDate);
+			var expectedBy = moment(val.dueDate).format('MMM YYYY');
 			var progressNumber = numberProgress(val.progress);
 			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
 		});
-		if(data.length == 0)
-			$("#all-obj").addClass("text-center").append("<h5>You have no Objectives</h5>");
+		if(data.length === 0){
+			noObjectives = true;
+			$("#all-obj").append("<h5 id='no-objective-text' class='text-center'>You have no Objectives</h5>");	
+		}
 	}
 	var error = function(error){ loaded(); } 
 	
@@ -48,8 +50,10 @@ function getObjectives(userId){
 function addObjectiveToDB(userId, objTitle, objText, objDate) {
 	var success = function(response){
 		var Id = response;
-        if(Id === 1)
-    		$("#all-obj").removeClass("text-center").empty();
+        if(noObjectives){
+        	noObjectives = false;
+    		$("#no-objective-text").remove();
+        }
         addObjectiveToList(Id, objTitle, objText, formatDate(objDate), 0, false, getADfullName(), timeStampToLongDate(new Date()));
 	    showProposedObjTab();
 	    addTag(Id, objTitle, "obj");
