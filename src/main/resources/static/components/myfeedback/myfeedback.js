@@ -64,11 +64,11 @@ $(function() {
 	});
 	
 	$('#send-to-validate').on('blur', 'input', function(){
-			addTag('#sendFeedbackModal .bootstrap-tagsinput > input','#sendingTo');
+		addTag('#sendFeedbackModal .bootstrap-tagsinput > input','#sendingTo');
 	})
 	
 	$('#request-to-validate').on('blur', 'input', function() {
-			addTag('.bootstrap-tagsinput > input','#requestingTo');
+		addTag('.bootstrap-tagsinput > input','#requestingTo');
 	})
 	
 });//End of Document Function
@@ -386,7 +386,6 @@ function submitFeedbackRequest(){
 	
 	var success = function(response){
     	loaded();
-        toastr.success(response);
         $('#requestFeedbackModal').modal('hide');
     }
 	var error = function(error){ loaded(); }

@@ -71,13 +71,12 @@ function getTags(userId){
 	var success = function(data){
     	var optionsHTML = "<option value='0'>No Filter</option>";
     	$.each(data, function(key, val){
-    		optionsHTML += "<optgroup label='"+key+"' id='"+key+"-group'>";
+    		optionsHTML += "<optgroup label='"+formatTagTitle(key)+"' id='"+key+"-group'>";
         	$.each(val, function(id, title){
         		addToTagsLists(key, id, title);
         		optionsHTML += addToOptionsList(key, id, title);
             });
         	optionsHTML += "</optgroup>";
-        	
         });
     	$(".tag-filter-dropdown").html(optionsHTML).selectpicker('refresh');
     }
@@ -85,6 +84,8 @@ function getTags(userId){
 	
 	getTagsAction(userId, success, error);
 }
+
+
 
 function addNote(userId, providerName, noteDescription, date){
 	var success = function(response){

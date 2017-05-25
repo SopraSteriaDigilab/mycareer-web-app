@@ -32,7 +32,6 @@ function getObjectives(userId){
 	var success = function(data){
 		loaded();
 		$.each(data, function(key, val){
-			console.log(val.dueDate)
 			var expectedBy = moment(val.dueDate).format('MMMM YYYY');
 			var progressNumber = numberProgress(val.progress);
 			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
@@ -130,10 +129,8 @@ function openEditObjectiveModal(id){
 	var objText = $('#obj-text-'+id).text().trim();
 	var objDate = $('#obj-date-'+id).text().trim();
 	var objStatus = $('#obj-status-'+id).val();
-	console.log(objDate)
 	objDate = reverseDateFormat(objDate);
 	
-	console.log(objDate)
 	
 	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, 1);
 	showObjectiveModal(true);

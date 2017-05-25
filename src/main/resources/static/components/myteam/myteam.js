@@ -97,9 +97,10 @@ function getReportees(userId, isSubReportee){
     		loaded();
     		$("#reportee-list").empty();
         	$("#info-holder").append("<span id='info-message' class='text-center'><h5>Please select a reportee </h5></span>");
-        	 $.each(data, function(key, val){
-             	addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddresses.preferred);
-             });  
+        	$("#team-members-list").show();
+        	$.each(data, function(key, val){
+        		addReporteeToList(val.employeeID, val.fullName, val.username, val.emailAddresses.preferred);
+        	});  
     	}else{
     		updateSelectedSubReportee(userId);
     		addSubReporteesToList(data);
@@ -161,8 +162,7 @@ function shortenTitleActivityFeed(description){
 }
 
 function loadingSubReporteeList(){
-	$('#reportee-sub-selected').html("<h5 class='text-center'>Loading...</h5>");
-	$('#reportee-sub-list').empty();
+	$('#reportee-sub-list').html("<h5 class='text-center'>Loading...</h5>");
 }
 
 //method to remove apostrophe from names so can be clicked on in my team
@@ -268,11 +268,14 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 
 function getObjectives(userId){
 	var success = function(data){
-			$.each(data, function(key, val){
-				var expectedBy = moment(val.dueDate).format('MMM YYYY');
-				var progressNumber = numberProgress(val.progress);
-				addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
-			});
+		if(data.length === 0){
+			$("#reportee-obj-list").html("<h5 class='text-center'>No Objectives.</h5>");
+		}
+		$.each(data, function(key, val){
+			var expectedBy = moment(val.dueDate).format('MMM YYYY');
+			var progressNumber = numberProgress(val.progress);
+			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
+		});
 	}
 	var error = function(error){}
 	
@@ -281,6 +284,9 @@ function getObjectives(userId){
 
 function getFeedback(userId){
 	var success = function(data){
+		if(data.length === 0){
+			$('#reportee-feed-list').html("<h5 class='text-center'>No Feedback.</h5>");
+		}
 		$.each(data, function(key, val){
 			var classDate = moment(val.timestamp).format('YYYY-MM-DD');
 			var longDate = moment(val.timestamp).format('DD MMM YYYY');
@@ -440,10 +446,14 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 //Method to add note to list directly
 function addNotesToReporteeList(data){
 	var HTML = "";
-	$.each(data, function(key, val){
-		var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
-		HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
-	});
+	if(data.length === 0){
+  	  html = "<h5 class='text-center'>No Development Needs.</h5>";
+	}else{
+		$.each(data, function(key, val){
+			var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
+			HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
+		});
+	}
 	$("#reportee-notes-list").html(HTML);
 }
 
@@ -831,7 +841,6 @@ function toggleActivityFeed(){
 function toggleReporteeList(){
 	if(isReporteeListshowing){
 		$reporteeSubList.hide();
-		console.log($reporteeSubList)
 		$reporteeListCaret.removeClass("rotate");
 		isReporteeListshowing = false;
 	}else{
@@ -922,7 +931,7 @@ function proposeObjectiveToDistributionList(userId, distributionListName, title,
 
 function checkRatingPeriod(){
 	if(isRatingPeriod()){
-		$("#navTab").append("<li><a id='ratings-link' href='#reportee-ratings-tab' data-toggle='tab'> Rating </a></li>");
+		$("#navTab").append("<li style='width: 2%;'><a id='ratings-link' href='#reportee-ratings-tab' data-toggle='tab'> Summary Review </a></li>");
 	}else{
 		$ratingsTab.remove();
 	}
