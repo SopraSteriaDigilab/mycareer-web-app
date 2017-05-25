@@ -260,7 +260,7 @@ function getReporteeCareer(id, name, emailAddress, userName, element) {
 		getCompetencies(id);
 		getFeedback(id);
 		getDevelopmentNeeds(id);
-		getNotes(id);
+		getNotesForReportee(id);
 		getRatings(id);
 		getReportees(id, true);
 	}
@@ -316,7 +316,7 @@ function getCompetencies(userId){
 }
 
 ////Method to get the Notes list
-function getNotes(userId){
+function getNotesForReportee(userId){
 	var success = function(data){ addNotesToReporteeList(data); }
 	var error = function(error){}
 	
@@ -445,16 +445,16 @@ function addGeneralFeedbackToList(id, sender, description, date, classDate){
 
 //Method to add note to list directly
 function addNotesToReporteeList(data){
-	var HTML = "";
+	var html = "";
 	if(data.length === 0){
-  	  html = "<h5 class='text-center'>No Development Needs.</h5>";
+		html = "<h5 class='text-center'>No Notes.</h5>";
 	}else{
 		$.each(data, function(key, val){
 			var timestamp = moment(val.timestamp).format('DD MMM YYYY HH:mm');
-			HTML = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + HTML;
+			html = reporteeNotesListHTML(val.providerName, val.noteDescription, timestamp) + html;
 		});
 	}
-	$("#reportee-notes-list").html(HTML);
+	$("#reportee-notes-list").html(html);
 }
 
 function addNoteToReporteeList(fromWho, body, date){
