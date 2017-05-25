@@ -32,7 +32,7 @@ function getObjectives(userId){
 	var success = function(data){
 		loaded();
 		$.each(data, function(key, val){
-			var expectedBy = moment(val.dueDate).format('MMM YYYY');
+			var expectedBy = moment(val.dueDate).format('MMMM YYYY');
 			var progressNumber = numberProgress(val.progress);
 			addObjectiveToList(val.id, val.title, val.description, expectedBy, progressNumber, val.archived, val.proposedBy, val.createdOn);
 		});
@@ -122,6 +122,7 @@ function openAddObjectiveModal(){
 
 //Function to set up and open EDIT objective modal
 function openEditObjectiveModal(id){
+	
 	$("#obj-modal-type").val('edit');
 	var objID = id;
 	var objTitle = $('#obj-title-'+id).text().trim();
@@ -129,6 +130,8 @@ function openEditObjectiveModal(id){
 	var objDate = $('#obj-date-'+id).text().trim();
 	var objStatus = $('#obj-status-'+id).val();
 	objDate = reverseDateFormat(objDate);
+	
+	
 	setObjectiveModalContent(objID, objTitle, objText, objDate, objStatus, 1);
 	showObjectiveModal(true);
 }

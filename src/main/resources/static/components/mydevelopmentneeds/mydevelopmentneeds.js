@@ -46,7 +46,7 @@ function getDevelopmentNeedsListNEW(userId){
 	var  success =  function(data){
 		loaded();
         $.each(data, function(key, val){
-        	var expectedBy = moment(val.dueDate).format('MMM YYYY');
+        	var expectedBy = moment(val.dueDate).format('MMMM YYYY');
             var progressNumber = numberProgress(val.progress);
             var categoryNumber = numberCategory(val.category);
         	addDevelopmentNeedToList(val.id, val.title, val.description, categoryNumber, expectedBy, progressNumber, val.archived, val.createdOn);

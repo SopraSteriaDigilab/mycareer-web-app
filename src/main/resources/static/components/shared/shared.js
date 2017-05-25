@@ -46,20 +46,6 @@ function adjustDataTablesMomentJs(){
 
 //------------------------------------- Objectives -------------------------------------
 
-//Function that finds the largest ID for objectives and finds the next one
-//function nextObjectiveID(){
-//	if(nextObjId.length <1){
-//		nextObjId.push(1);
-//		return 1;
-//	}
-//	
-//    //numerical sort
-//    nextObjId.sort(function(a,b){ return a - b;});
-//    //finds the last id in the list
-//    var lastId = nextObjId[nextObjId.length - 1];
-//    nextObjId.push(++lastId);
-//    return lastId;
-//}
 
 function numberProgress(progress){
     switch(progress){
@@ -451,6 +437,8 @@ function timeStampToClassDate(date){
 
 //Opposite of formatDate(). formatting from 'MMM YYYY' format to 'YYYY-MM' (e.g. 'December 2016' to '2016-12')
 function reverseDateFormat(date){
+	console.log(date)
+	console.log(moment(date).format('YYYY-MM'))
 	var year = date.slice(-4, date.length);
 	var monthIndex = (fullMonths.indexOf(date.slice(0, -5))) +1;
 	return year+'-'+ addZero(monthIndex);
@@ -809,4 +797,11 @@ function loaded(){
 	$loadingText.html("Loading... This may take a minute.");
 }
 
-
+function formatTagTitle(title){
+	if(title.indexOf("development") > -1){
+		return "Development Needs"
+	}else{
+		return "Objectives";
+	}
+	
+}
