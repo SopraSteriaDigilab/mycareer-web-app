@@ -1,89 +1,56 @@
 $(function() {
-	
-	//Get list of general feedback
-	getFeedback(getADLoginID());
-	getEmails();
-	
-	//Initialising the date pickers
-	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
-	initFeedbackDatePicker("feedback-end", new Date(), new Date() );
-	
-	//Keep end date updated
-	$("#feedback-start-date").change(function (d){ updateEndDate() });
-	
-	$("#submit-date-filter").click(function (){ applyDateFilter() })
+	initMyFeedback();
+});
 
-	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
-    
-    //feedback request modal key preses
-	keypress('requestFeedbackModal');
-    keypress('sendFeedbackModal');
-    
-    //modal validation
-    $('.send-feedback-validate').on('input', function(){ validateForm('send-feedback-validate', 'submit-send-feedback'); });
-	 
-    //click to open up feedback request modal
-    $('#request-feedback').click(function(){ openRequestFeedbackModal() });
-    
-    //click to open up feedback sent modal
-    $('#send-feedback').click(function(){ openSendFeedbackModal() });
-    
-    //click to submit feedback request
-    $('#submit-request-feedback').click(function(){ 
-       if (validEmails($('#requestingTo').val())){
-            submitFeedbackRequest();
-        }else{
-            toastr.error("One or more email addresses entered are not valid");
-        }
-     });
-    
-    //click to submit send feedback
-    $('#submit-send-feedback').click(function(){ 
-       if (validEmails($('#sendingTo').val())){
-            submitSendFeedback();
-        }else{
-            toastr.error("One or more email addresses entered are not valid");
-        }    
-     });
-    
-    //click to open a modal that shows the feedback email template
-    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
-    //click to open a modal that shows the feedback suggestion template
-    $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
-    
-    //onClick for Close send feedback modal
-	$('#cancelSendModal, #close-feedback-send-modal').on('click', function(e) { clickCloseSendFeedback(e); });
-    
-    //onClick for Close request feedback modal
-	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
-	
-	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
-	
-	$('#send-to-validate, #request-to-validate').on('mousedown', '.dropdown-item', function() {
-		isEmailclicked=true;
-	});
-	
-	$('#send-to-validate').on('blur', 'input', function(){
-		addTag('#sendFeedbackModal .bootstrap-tagsinput > input','#sendingTo');
-	})
-	
-	$('#request-to-validate').on('blur', 'input', function() {
-		addTag('.bootstrap-tagsinput > input','#requestingTo');
-	})
-	
-});//End of Document Function
-
+var $pendingRequestButton = $("#pending-request-button");
 var $loadingButtonsText = $("#feedback-tag-loading")
 var $feedbackTagButtons = $(".feedback-tag-buttons");
+var $pendingRequestsModal = $("#pending-requests-modal");
+var $pendingRequeststbody = $("#pending-requests-tbody");
 
-//var emailList = [];
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
 var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 var isEmailclicked=false;
 
-function getFeedback(userId){
+function initMyFeedback(){
+	//Get list of general feedback
+	getFeedback();
+	getFeedbackRequests();
+	getEmails();
+	
+	//Initialising the date pickers
+	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
+	initFeedbackDatePicker("feedback-end", new Date(), new Date() );
+	
+    //feedback request modal key preses
+	keypress('requestFeedbackModal');
+    keypress('sendFeedbackModal');
+    
+    // Event listeners
+    $('.send-feedback-validate').on('input', function(){ validateForm('send-feedback-validate', 'submit-send-feedback'); });
+	$("#feedback-start-date").change(function (d){ updateEndDate() });
+	$("#submit-date-filter").click(function (){ applyDateFilter() })
+	$("#general-reviewer-list").change(function(){ applyReviewerFilter(); });
+    $('#request-feedback').click(function(){ openRequestFeedbackModal() });
+    $('#send-feedback').click(function(){ openSendFeedbackModal() });
+    $('#submit-request-feedback').click(function(){ clickSubmitRequestFeedback(); });
+    $('#submit-send-feedback').click(function(){ clickSubmitSendFeedback(); });
+    $("#view-feedback-template").click(function(){ $('#emailTemplateModal').modal('show') });
+    $("#view-feedback-suggestion-template").click(function(){ $('#feedbackTemplateModal').modal('show') });
+	$('#cancelSendModal, #close-feedback-send-modal').on('click', function(e) { clickCloseSendFeedback(e); });
+	$('#cancelRequestModal, #close-feedback-request-modal').on('click', function(e) { clickCloseRequestFeedback(e); });
+	$("#feedback-tag-dropdown").on('change', function(){ applyFeedbackTagFilter($(this).val()); });
+	$('#send-to-validate, #request-to-validate').on('mousedown', '.dropdown-item', function() { isEmailclicked=true; });
+	$('#send-to-validate').on('blur', 'input', function(){ addTag('#sendFeedbackModal .bootstrap-tagsinput > input','#sendingTo'); })
+	$('#request-to-validate').on('blur', 'input', function() { addTag('.bootstrap-tagsinput > input','#requestingTo'); })
+	$pendingRequestButton.click(function(){ clickPendingRequestButton(); });
+}
+
+
+function getFeedback(){
+	var userId = getADLoginID();
 	var success = function(data){
 		loaded();
         $.each(data, function(key, val){
@@ -100,6 +67,14 @@ function getFeedback(userId){
 	var error = function(error){ loaded(); }
 	
 	getFeedbackAction(userId, success, error);
+}
+
+function getFeedbackRequests(){
+	var userId = getADLoginID();
+	var success = function(data){ addFeedbackRequestsToList(data); }
+	var error = function(error){ }
+	
+	getFeedbackRequestsAction(userId, success, error);
 }
 
 function getEmails(){
@@ -146,6 +121,22 @@ function selectedFeedback(element){
 	});     
 }
 
+function clickSubmitRequestFeedback(){
+	 if (validEmails($('#requestingTo').val())){
+         submitFeedbackRequest();
+     }else{
+         toastr.error("One or more email addresses entered are not valid");
+     }
+}
+
+function clickSubmitSendFeedback(){
+    if (validEmails($('#sendingTo').val())){
+        submitSendFeedback();
+    }else{
+        toastr.error("One or more email addresses entered are not valid");
+    }  
+}
+
 function feedbackSendersListHTML(id, sender, date, classDate, email, objTagIds, devNeedTagIds){
 	var HTML = " \
         <div class='panel panel-default sender-panel filterable-feedback' id='view-fee-"+id+"' style='cursor:pointer' onClick='selectedFeedback(this)'> \
@@ -167,7 +158,7 @@ function feedbackReviewersListHTML(reviewer){
 		<div class='row'> \
 			<div class='col-md-12 wrap-only'> \
 				<label class='reviewer-label' style='max-width: 80%;''> \
-				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+reviewer+"' style='right:35px'> \
+				<input class='reviewer-checkbox pull-right' type='checkbox' value='"+reviewer+"' style='right:35px; top: -2px;'> \
 				"+reviewer+" \
 				</label> \
 		</div>";
@@ -394,7 +385,6 @@ function submitFeedbackRequest(){
 
 }
 
-
 function submitSendFeedback(){
 	loading("Processing Feedback. Please wait.");
 	var userId = getADLoginID();
@@ -455,4 +445,56 @@ function addTag(inputLocation,inputDestination){
 	if (!isEmailclicked) {addTagOnBlur(inputLocation,inputDestination);}
 	else{isEmailclicked=false;}
 }
+
+function addFeedbackRequestsToList(data){
+	$pendingRequeststbody.html(feedbackRequestListHTML(data));
+}
+
+function clickPendingRequestButton(){
+	$pendingRequestsModal.modal('show');
+}
+
+function clickDismissFeedbackRequest(id, email){
+		var modalTitle = "Dismiss Request";
+		var body = "<h5>Dismissing request from: <b>"+ email +"</b></h5><h5>Once you dismiss a request, it cannot be recovered.</h5><h5><b>Are you sure you want to dismiss this request?</b></h5>";
+		var buttonText = "Dismiss";
+		var buttonFunction = function(){ dismissFeedbackRequest(id); }
+		
+		openWarningModal(modalTitle, body, buttonText, buttonFunction);
+}
+
+function dismissFeedbackRequest(feedbackRequestId){
+	var userId = getADLoginID();
+	var success = function(response){
+		$("#fbr-item-"+feedbackRequestId).remove();
+		closeWarningModal();
+	}
+	var error = function(error){}
+	
+	dismissFeedbackRequestAction(userId, feedbackRequestId, success, error);
+}
+
+function feedbackRequestListHTML(data){
+	var HTML = "";
+	$.each(data, function(key, val){
+		HTML += " \
+			<tr id='fbr-item-"+val.id+"'> \
+				<td>"+val.recipient+"</td> \
+		        <td>"+moment(val.timestamp).format('DD MMM YYYY')+"</td> \
+		        <td style='text-align: center;'> \
+		        	<button type='button' class='close' style='float: none;' onClick='clickDismissFeedbackRequest(\""+val.id+"\", \""+val.recipient+"\")'>&times;</button> \
+		        </td> \
+	        </tr>";
+	});
+	
+	return HTML;
+	
+}
+
+
+
+
+
+
+
 

@@ -777,10 +777,10 @@ function verifyIfManager(){
    }
 }
 
-function emailListHTML(emails){
+function emailListHTML(emailList){
 	var HTML = "<div class='well well-sm' style='max-height:200px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word;'>";
-	for (i = 0; i < emails.length; i++) { 
-	    HTML += "<h6>"+emails[i]+"</h6>";
+	for (i = 0; i < emailList.length; i++) { 
+	    HTML += "<h6>"+emailList[i]+"</h6>";
 	}
 	HTML += "</div>";
 	return HTML;	

@@ -358,4 +358,37 @@
 	</div>
 </div>
 
+
+<!-- Add Email address Modal -->
+<div id="pending-requests-modal" class="modal fade" role="dialog" style="z-index: 1400;">
+	<div class="modal-dialog modal-md">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Pending Feedback Requests</h4>
+			</div>
+			<div class="modal-body" style='max-height: 300px; overflow-x: hidden;overflow-y: auto;'>
+				<table class='table table-condensed table-hover'>
+				    <thead>
+				      <tr>
+				        <th>Email</th>
+				        <th>Date Requested</th>
+				        <th style='text-align: center;'>Dismiss</th>
+				      </tr>
+				    </thead>
+				    <tbody id="pending-requests-tbody">
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Done</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <div id="pop-up-objective-modal"></div>

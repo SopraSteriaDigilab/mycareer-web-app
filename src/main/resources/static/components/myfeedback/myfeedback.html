@@ -13,22 +13,27 @@
 
 	<!--Page Header -->
 	<div class="row">
-           <div class="col-md-6">
-		     <div class="col-md-5">
-             	<h2>My Feedback</h2>
-             </div>
-             <div id="feedback-tag-loading" class="col-md-7 vertical-centre">
+		<div class="col-md-3">
+			<div class="col-md-12">
+       			<h2>My Feedback</h2>
+    		</div>
+        </div>
+		<div class="col-md-6 vertical-centre">
+             <div id="feedback-tag-loading" class="col-md-12">
              	<h5 class="text-center">Loading Options...</h5>
              </div>
-             <div class="col-md-4 vertical-centre feedback-tag-buttons" hidden="true">
-             	<button type="button" class="btn btn-default" id="send-feedback">Send Feedback</button>
+             <div class="col-md-4 feedback-tag-buttons" style="margin-left: -10px" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="send-feedback">Send Feedback</button>
              </div>
-             <div class="col-md-3 vertical-centre feedback-tag-buttons" hidden="true">
-             	<button type="button" class="btn btn-default pull-right" id="request-feedback">Request Feedback</button>
+             <div class="col-md-4 feedback-tag-buttons" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="request-feedback">Request Feedback</button>
              </div>
-           </div>
+             <div class="col-md-4 feedback-tag-buttons" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="pending-request-button">Pending Request</button>
+             </div>
 
-		<div class="col-md-6 vertical-centre">
+        </div>
+		<div class="col-md-3 vertical-centre">
 			<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 		</div>
 	</div>
@@ -121,7 +126,7 @@
 							</div>
 							<div class="row" id="resizable-reviewers">
 								<div id=reviewers>
-									<div class="checkbox" id="general-reviewer-list"></div>
+									<div class="checkbox" id="general-reviewer-list" style="font-size:12px"></div>
 								</div>
 							</div>
 						</div>

@@ -1,4 +1,10 @@
 $(function() {
+	initMyObjectives();
+});
+
+var noObjectives = false;
+
+function initMyObjectives(){
 	// Get list of objectives
 	getObjectives(getADLoginID());
 	
@@ -24,9 +30,7 @@ $(function() {
     $('#submit-completed-status-note').click(function(){ 
     	editObjectiveProgressOnDB(getADLoginID(), $("#complete-id").text(), $("#complete-status").text(), $("#completedTitle").text(), $('#completedText').val());
     });
-});
-
-var noObjectives = false;
+}
 
 function getObjectives(userId){
 	var success = function(data){

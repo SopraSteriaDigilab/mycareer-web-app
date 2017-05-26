@@ -1,5 +1,25 @@
 $(function() {
-	
+	initMyProfile();
+});
+
+/** Constants */
+const NO_EXTRA_EMAIL_ADDRESS = "No extra email address has been written.";
+
+/** DOM element references */
+var $sopraSteriaEmails = $(".sopra-steria-emails");
+var $addEmailButton = $(".add-email-button");
+var $editDeleteEmailButtons = $(".edit-delete-email-buttons");
+var $saveCancelEmailButtons = $(".save-cancel-email-buttons");
+var $addEmailText = $("#add-email-text");
+var $addEmailInput = $("#add-email-input");
+var $profileContainer = $("#profile-container");
+
+var hasExtraEmailAddress = false;
+var currentOperation = null;
+var currentExtraEmail=getUserAddress();
+var dropdownToggled = false;
+
+function initMyProfile(){
 	populateProfile(getUserName(), getADfullName());
 	
 	initEmailModal();
@@ -42,24 +62,7 @@ $(function() {
 	
 	//onClick for closing print modal
 	$('#close-email , #close-email-x').on('click', function(e) { $('#email-modal').modal('hide'); });
-});
-
-/** Constants */
-const NO_EXTRA_EMAIL_ADDRESS = "No extra email address has been written.";
-
-/** DOM element references */
-var $sopraSteriaEmails = $(".sopra-steria-emails");
-var $addEmailButton = $(".add-email-button");
-var $editDeleteEmailButtons = $(".edit-delete-email-buttons");
-var $saveCancelEmailButtons = $(".save-cancel-email-buttons");
-var $addEmailText = $("#add-email-text");
-var $addEmailInput = $("#add-email-input");
-var $profileContainer = $("#profile-container");
-
-var hasExtraEmailAddress = false;
-var currentOperation = null;
-var currentExtraEmail=getUserAddress();
-var dropdownToggled = false;
+}
 
 function populateProfile(userName, fullName){
 	$("#userProfileName").append("<h4 class='profile-centre' >" + fullName + " ");

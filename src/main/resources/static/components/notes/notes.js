@@ -1,4 +1,14 @@
 $(function() {
+	initMyNotes();
+});
+
+var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
+var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
+var noteDateFilterApplied = false;
+var notesTagFilterApplied = false;
+var noNotes = false;
+
+function initMyNotes(){
 	//initialise jquery ui resizable component
 	initResizable();
 	
@@ -42,13 +52,7 @@ $(function() {
 		screenWidth = $(window).width();
 		repositionNotesBar(sidebarWidth,screenWidth);
 	});
-});
-
-var noteTypeList = ["general", "objectives", "competencies", "feedback", "development-needs", "team"];
-var competencyList = ["Accountability", "Business Awareness", "Effective Communication", "Future Orientation", "Innovation and Change", "Leadership", "Service Excellence", "Teamwork"];
-var noteDateFilterApplied = false;
-var notesTagFilterApplied = false;
-var noNotes = false;
+}
 
 function getNotes(userId){
 	var success = function(data){
