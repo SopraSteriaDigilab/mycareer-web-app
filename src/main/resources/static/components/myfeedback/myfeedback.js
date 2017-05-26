@@ -7,17 +7,20 @@ var $loadingButtonsText = $("#feedback-tag-loading")
 var $feedbackTagButtons = $(".feedback-tag-buttons");
 var $pendingRequestsModal = $("#pending-requests-modal");
 var $pendingRequeststbody = $("#pending-requests-tbody");
+var $noPendingRequests = $("#no-pending-requests");
+var $pendingRequestsTable = $("#pending-requests-table");
 
 var dateFilterApplied = false;
 var reviewerFilterApplied = false;
 var feedbackTagFilterApplied = false;
 var firstFeedback = true;
 var isEmailclicked=false;
+var fbrLoaded = false;
+var fbrChanged = false;
 
 function initMyFeedback(){
 	//Get list of general feedback
 	getFeedback();
-	getFeedbackRequests();
 	getEmails();
 	
 	//Initialising the date pickers
@@ -70,8 +73,14 @@ function getFeedback(){
 }
 
 function getFeedbackRequests(){
+	loading("Retrieving Feedback requests. Please wait")
 	var userId = getADLoginID();
-	var success = function(data){ addFeedbackRequestsToList(data); }
+	var success = function(data){
+		fbrLoaded = true;
+		loaded();
+		addFeedbackRequestsToList(data);
+		$pendingRequestsModal.modal('show');
+	}
 	var error = function(error){ }
 	
 	getFeedbackRequestsAction(userId, success, error);
@@ -376,6 +385,7 @@ function submitFeedbackRequest(){
 	var notes =  $('#requestingText').val();
 	
 	var success = function(response){
+		fbrChanged = true;
     	loaded();
         $('#requestFeedbackModal').modal('hide');
     }
@@ -451,7 +461,12 @@ function addFeedbackRequestsToList(data){
 }
 
 function clickPendingRequestButton(){
-	$pendingRequestsModal.modal('show');
+	if(!fbrLoaded || fbrChanged){
+		getFeedbackRequests();
+		fbrChanged = false;
+	}else{
+		$pendingRequestsModal.modal('show');
+	}
 }
 
 function clickDismissFeedbackRequest(id, email){
@@ -467,6 +482,10 @@ function dismissFeedbackRequest(feedbackRequestId){
 	var userId = getADLoginID();
 	var success = function(response){
 		$("#fbr-item-"+feedbackRequestId).remove();
+		if($pendingRequeststbody.children().length < 1){
+			$pendingRequestsTable.hide();
+			$noPendingRequests.html("<h5>No Pending Feedback Requests</h5>");
+		}
 		closeWarningModal();
 	}
 	var error = function(error){}
@@ -475,20 +494,30 @@ function dismissFeedbackRequest(feedbackRequestId){
 }
 
 function feedbackRequestListHTML(data){
-	var HTML = "";
+	var html = "";
+	if(data.length === 0){
+		$pendingRequestsTable.hide();
+		$noPendingRequests.html("<h5>No Pending Feedback Requests</h5>");
+		return;
+	}
+	$pendingRequestsTable.show();
 	$.each(data, function(key, val){
-		HTML += " \
-			<tr id='fbr-item-"+val.id+"'> \
-				<td>"+val.recipient+"</td> \
-		        <td>"+moment(val.timestamp).format('DD MMM YYYY')+"</td> \
-		        <td style='text-align: center;'> \
-		        	<button type='button' class='close' style='float: none;' onClick='clickDismissFeedbackRequest(\""+val.id+"\", \""+val.recipient+"\")'>&times;</button> \
-		        </td> \
-	        </tr>";
+		html += feedbackRequestItemHTML(val.id, val.recipient, val.timestamp);
 	});
 	
-	return HTML;
-	
+	return html;
+}
+
+function feedbackRequestItemHTML(id, email, date){
+	var html = " \
+		<tr id='fbr-item-"+id+"'> \
+			<td>"+email+"</td> \
+	        <td>"+moment(date).format('DD MMM YYYY')+"</td> \
+	        <td style='text-align: center;'> \
+	        	<button type='button' class='close' style='float: none;' onClick='clickDismissFeedbackRequest(\""+id+"\", \""+email+"\")'>&times;</button> \
+	        </td> \
+        </tr>";
+	return html;
 }
 
 
