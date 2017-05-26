@@ -1,11 +1,12 @@
 $(function() {
-    //Get competencies
+	initCompetecies();
+});
+
+function initCompetecies(){
 	getCompetencies(getADLoginID());
 	
-	//Link to competency framework
     $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
-
-});
+}
 
 function getCompetencies(userId){
 	
