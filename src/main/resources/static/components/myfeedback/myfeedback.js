@@ -500,6 +500,7 @@ function feedbackRequestListHTML(data){
 		$noPendingRequests.html("<h5>No Pending Feedback Requests</h5>");
 		return;
 	}
+	$noPendingRequests.empty();
 	$pendingRequestsTable.show();
 	$.each(data, function(key, val){
 		html += feedbackRequestItemHTML(val.id, val.recipient, val.timestamp);
