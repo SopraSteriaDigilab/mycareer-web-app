@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoutingController
 {
 
-  private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "myratings",
+  private List<String> sections = Arrays.asList("myobjectives", "myfeedback", "mydevelopmentneeds", "mysummaryreview",
       "myteam", "hrdashboard", "myhistory", "employeesearch");
   private String host;
 
@@ -56,7 +56,7 @@ public class RoutingController
 
     if (!sections.contains(section)) return "reroute";
 
-    if (section.equals("myratings") && !isRatingPeriod())
+    if (section.equals("mysummaryreview") && !isRatingPeriod())
     {
       return "reroute";
     }
