@@ -62,7 +62,9 @@ function addManagerEvaluationAction(userId, reporteeId, managerEvaluation, score
  */
 function addSelfEvaluationAction(userId, selfEvaluation, successFunction, errorFunction){
 	var url = ADD_SELF_EVALUATION + "/" + userId;
-	var data = { selfEvaluation: selfEvaluation }
+	var data = { 
+		selfEvaluation: selfEvaluation
+	}
 	var request = $post(url, data);
 	request.done(function(response){
 		toastr.success(response);
@@ -91,7 +93,9 @@ function submitSelfEvaluationAction(userId, successFunction, errorFunction){
 
 function submitManagerEvaluationAction(userId, reporteeId, successFunction, errorFunction){
 	var url = MANAGER + SUBMIT_MANAGER_EVALUATION + "/" + userId;
-	var data = { reporteeId: reporteeId }
+	var data = { 
+		reporteeId: reporteeId
+	}
 	var request = $post(url, data);
 	request.done(function(response){
 		toastr.success(response);

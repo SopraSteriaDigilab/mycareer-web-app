@@ -45,7 +45,6 @@ function proposeObjectiveToDistributionListAction(userId, data, successFunction,
 	var url = MANAGER + PROPOSE_OBJECTIVE_TO_DISTRIBUTION_LIST + "/" + userId;
 	var request = $post(url, data);
 	request.done(function(response){ 
-		console.log(response)
 		toastr.success(response.success)
 		successFunction(response)
 	})

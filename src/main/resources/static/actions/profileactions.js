@@ -10,7 +10,7 @@ const EDIT_USER_EMAIL_ADDRESS = "/editUserEmailAddress";
 function saveExtraEmailAction(userId, emailAddress, successFunction, errorFunction){
 	var url = EDIT_USER_EMAIL_ADDRESS + "/" + userId;
 	var data = {
-        emailAddress: emailAddress,
+        emailAddress: emailAddress
     }
 	var request = $post(url, data);
 	request.done(function(response){
