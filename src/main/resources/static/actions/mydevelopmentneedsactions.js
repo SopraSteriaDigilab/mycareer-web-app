@@ -79,7 +79,7 @@ function deleteDevelopmentNeedAction(userId, developmentNeedId, comment, success
 	var url = DELETE_DEVELOPMENT_NEED + "/" + userId;
 	var data =  {
         developmentNeedId: developmentNeedId,
-        comment: comment,
+        comment: comment
     }
 	var request = $post(url, data);
 	request.done(function(response){

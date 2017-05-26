@@ -93,7 +93,7 @@ function deleteObjectiveAction(userId, objectiveId, comment, successFunction, er
 function toggleObjectiveArchiveAction(userId, objectiveId, successFunction, errorFunction){
 	var url = TOGGLE_OBJECTIVE_ARCHIVE + "/" + userId;
 	var data = {
-		objectiveId: objectiveId,
+		objectiveId: objectiveId
     }
 	var request = $post(url, data);
 	request.done(function(response){

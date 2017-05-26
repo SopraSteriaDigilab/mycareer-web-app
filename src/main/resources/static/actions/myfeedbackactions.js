@@ -94,7 +94,7 @@ function getFeedbackRequestsAction(userId, successFunction, errorFunction){
 function dismissFeedbackRequestAction(userId, feedbackRequestId, successFunction, errorFunction){
 	var url = DISMISS_FEEDBACK_REQUEST + "/" + userId;
 	var data = {
-		feedbackRequestID: feedbackRequestId,
+		feedbackRequestID: feedbackRequestId
     }
 	var request = $post(url, data);
 	request.done(function(response){
