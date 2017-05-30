@@ -23,8 +23,8 @@ function logMeIn(){
 		userAddress = data.emailAddresses.userAddress;
 		loadPage($("#section").text());  
 	}
-	var error = function(XMLHttpRequest, textStatus, errorThrown){
-		window.location.replace("/access-issue");
+	var error = function(error){
+		window.location.replace("/error-page?code=1002");
 	}
 	
 	logMeInAction(success, error);
