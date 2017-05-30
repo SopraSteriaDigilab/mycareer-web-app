@@ -8,11 +8,14 @@ const NO_EXTRA_EMAIL_ADDRESS = "No extra email address has been written.";
 /** DOM element references */
 var $sopraSteriaEmails = $(".sopra-steria-emails");
 var $addEmailButton = $(".add-email-button");
-var $editDeleteEmailButtons = $(".edit-delete-email-buttons");
-var $saveCancelEmailButtons = $(".save-cancel-email-buttons");
 var $addEmailText = $("#add-email-text");
 var $addEmailInput = $("#add-email-input");
 var $profileContainer = $("#profile-container");
+
+var $emailBtn = $(".email-btn");
+var $emailBtn0 = $(".email-btn-0");
+var $emailBtn1 = $(".email-btn-1");
+var $emailBtn2 = $(".email-btn-2");
 
 var hasExtraEmailAddress = false;
 var currentOperation = null;
@@ -113,14 +116,10 @@ function openEmailModal(){
 function initEmailModal(){
 	getEmails();
 	if (hasExtraEmailAddress===false){
-		$addEmailButton.show();
-		$editDeleteEmailButtons.hide();
-		$saveCancelEmailButtons.hide();
+		toggleBtn($emailBtn0);
 	}
 	else{
-		$addEmailButton.hide();
-		$editDeleteEmailButtons.show();
-		$saveCancelEmailButtons.hide();
+		toggleBtn($emailBtn2);
 	}
 	$("#edit-email-button").click(function(){ editExtraEmail(); });
 	$("#delete-email-button").click(function(){ deleteExtraEmail(); });
@@ -160,33 +159,10 @@ function setExtraEmailLabel(extraEmail){
 	
 }
 
-function addToSaveCancel(){
-	$addEmailText.hide();
-	$addEmailButton.hide();
-	$saveCancelEmailButtons.show();
-	$addEmailInput.show();
-}
-
-function editDeleteToSaveCancel(){
-	$editDeleteEmailButtons.hide();
-	$addEmailText.hide();
-	$saveCancelEmailButtons.show();
-	$addEmailInput.show();
-}
-
-function saveCancelToEditDelete(){
-	$saveCancelEmailButtons.hide();
-	$addEmailInput.hide();
-	$addEmailText.show();
-	$editDeleteEmailButtons.show();	
-}
-
-function saveCancelToAdd(){
-	$saveCancelEmailButtons.hide();
-	$addEmailInput.hide();
-	$addEmailText.show();
-	$addEmailButton.show();	
-}
+function toggleBtn(newState){
+	$emailBtn.hide();
+	newState.show();
+};
 
 /** Make extra email address editable. */
 function editExtraEmail(){
@@ -194,7 +170,7 @@ function editExtraEmail(){
 	if ($addEmailText.text() !== NO_EXTRA_EMAIL_ADDRESS){
 		$addEmailInput.val($addEmailText.text());
 	}
-	editDeleteToSaveCancel()
+	toggleBtn($emailBtn1);
 }
 
 function deleteExtraEmail(){
@@ -209,8 +185,7 @@ function deleteExtraEmail(){
 function deleteExtraEmailSuccess(){
 	currentExtraEmail="";
 	$addEmailInput.val('');
-	$editDeleteEmailButtons.hide();
-	$addEmailButton.show();
+	toggleBtn($emailBtn0);
 	$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
 }
 
@@ -219,16 +194,16 @@ function deleteExtraEmailError(){
 
 function addExtraEmail(){
 	currentOperation="add";
-	addToSaveCancel();
+	toggleBtn($emailBtn1);
 }
 
 function closeExtraEmail(){
 	$addEmailInput.val('');
 	if (currentOperation==="edit"){
-		saveCancelToEditDelete()
+		toggleBtn($emailBtn2);
 	}
 	if (currentOperation==="add"){
-		saveCancelToAdd();
+		toggleBtn($emailBtn0);
 	}
 }
 
@@ -243,7 +218,7 @@ function saveExtraEmail(){
 			currentExtraEmail=extraEmailInput;
 			deleteExtraEmail();
 			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
-			saveCancelToAdd();
+			toggleBtn($emailBtn0);
 		}	
 		else{
 			var validEmail=isValidEmailAddress(extraEmailInput);	
@@ -262,10 +237,10 @@ function saveExtraEmail(){
 	else {
 		if (extraEmailInput===""){
 			$addEmailText.text(NO_EXTRA_EMAIL_ADDRESS);
-			saveCancelToAdd();
+			toggleBtn($emailBtn0);
 		}	
 		else {
-			saveCancelToEditDelete();			
+			toggleBtn($emailBtn2);		
 		}
 	}
 }
@@ -281,7 +256,7 @@ function isExtraEmailUpdated(extraEmailInput){
 
 function saveExtraEmailSuccess(extraEmailInput){
 	setExtraEmailLabel(extraEmailInput);
-	saveCancelToEditDelete();
+	toggleBtn($emailBtn2);
 }
 
 function saveExtraEmailError(){
