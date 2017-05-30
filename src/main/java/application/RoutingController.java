@@ -67,10 +67,10 @@ public class RoutingController
     return "mycareer";
   }
 
-  @RequestMapping("/access-issue")
+  @RequestMapping("/error-page")
   public String myapp()
   {
-    return "access-issue";
+    return "error";
   }
 
   private static boolean isRatingPeriod()
