@@ -472,7 +472,7 @@ function clickPendingRequestButton(){
 
 function clickDismissFeedbackRequest(id, email){
 		var modalTitle = "Dismiss Request";
-		var body = "<h5>Dismissing request from: <b>"+ email +"</b></h5><h5>Once you dismiss a request, it cannot be recovered.</h5><h5><b>Are you sure you want to dismiss this request?</b></h5>";
+		var body = "<h5 style='word-break: break-word;'>Dismissing request from: <b>"+ email +"</b></h5><h5>Once you dismiss a request, it cannot be recovered.</h5><h5><b>Are you sure you want to dismiss this request?</b></h5>";
 		var buttonText = "Dismiss";
 		var buttonFunction = function(){ dismissFeedbackRequest(id); }
 		
@@ -513,9 +513,9 @@ function feedbackRequestListHTML(data){
 function feedbackRequestItemHTML(id, email, date){
 	var html = " \
 		<tr id='fbr-item-"+id+"'> \
-			<td>"+email+"</td> \
-	        <td>"+moment(date).format('DD MMM YYYY')+"</td> \
-	        <td style='text-align: center;'> \
+			<td style='width: 60%; word-break: break-word;'>"+email+"</td> \
+	        <td style='width: 20%;'>"+moment(date).format('DD MMM YYYY')+"</td> \
+	        <td style='text-align: center; width: 20%;'> \
 	        	<button type='button' class='close' style='float: none;' onClick='clickDismissFeedbackRequest(\""+id+"\", \""+email+"\")'>&times;</button> \
 	        </td> \
         </tr>";
