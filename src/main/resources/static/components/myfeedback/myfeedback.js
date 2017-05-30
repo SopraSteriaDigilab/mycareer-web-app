@@ -22,6 +22,7 @@ function initMyFeedback(){
 	//Get list of general feedback
 	getFeedback();
 	getEmails();
+	getFeedbackRequests();
 	
 	//Initialising the date pickers
 	initFeedbackDatePicker("feedback-start", new Date(new Date().setFullYear(new Date().getFullYear() - 1)), new Date() );
@@ -72,16 +73,15 @@ function getFeedback(){
 	getFeedbackAction(userId, success, error);
 }
 
-function getFeedbackRequests(){
-	loading("Retrieving Feedback requests. Please wait")
+function getFeedbackRequests(modalAction){
 	var userId = getADLoginID();
 	var success = function(data){
-		fbrLoaded = true;
 		loaded();
 		addFeedbackRequestsToList(data);
-		$pendingRequestsModal.modal('show');
+		if(modalAction !== undefined)
+			$pendingRequestsModal.modal(modalAction);
 	}
-	var error = function(error){ }
+	var error = function(error){ loaded(); }
 	
 	getFeedbackRequestsAction(userId, success, error);
 }
@@ -461,8 +461,9 @@ function addFeedbackRequestsToList(data){
 }
 
 function clickPendingRequestButton(){
-	if(!fbrLoaded || fbrChanged){
-		getFeedbackRequests();
+	if(fbrChanged){
+		loading("Retrieving Feedback requests. Please wait");
+		getFeedbackRequests('show');
 		fbrChanged = false;
 	}else{
 		$pendingRequestsModal.modal('show');
