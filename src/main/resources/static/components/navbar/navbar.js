@@ -61,11 +61,7 @@ function highlight(value) {
 
 function isRatingPeriod()
 {
-	var tempDate = new Date(); //remove me
-	tempDate.setMonth(new Date().getMonth() + 5); //remove me
-	var currentMonth = tempDate.getMonth(); //remove me
-
-//	var currentMonth = new Date().getMonth();
+	var currentMonth = new Date().getMonth();
 	
 	return currentMonth === 9 || currentMonth === 10 || currentMonth === 11|| currentMonth === 0 || currentMonth === 1;
 }
