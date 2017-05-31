@@ -55,7 +55,7 @@ var isEmailclicked=false;
 function initMyTeam(){
 	verifyIfManager();
 	checkRatingPeriod();
-	getReportees(getADLoginID(), false);
+	getReportees(ADLoginID, false);
 	loadingProposedButton();
 	getEmails();
 	initSelect();
@@ -115,7 +115,7 @@ function getReportees(userId, isSubReportee){
 }
 
 function getActivityFeed(){
-	var id = getADLoginID();
+	var id = ADLoginID;
 	var success = function(data){ addActivityFeed(data); }
 	var error = function(){}
 	
@@ -337,7 +337,7 @@ function proposeObjective(userId, title, description, dueDate, emails){
 
 
 function addNoteToReportee(reporteeId, providerName, noteDescription, date){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(response){
         if(lastNoteID == 0)
     		$("#general-notes-list").empty();
@@ -401,7 +401,7 @@ function showReporteeNoteModal(show){
 
 function clickSubmitReporteeNote(){
 	var reporteeID = selectedReporteeID;
-	var from = getADfullName();
+	var from = ADfullName;
 	var note = $("#reportee-note-input").val().trim();
 	var date = moment(new Date()).format('DD MMM YYYY HH:mm');
 	
@@ -642,7 +642,7 @@ function reporteeNotesListHTML(fromWho, body, date){
 
 function addProposed(){
 	$("#nav-bar-buttons").empty();
-	if(isUserManager() === "true" || isUserManager() == true){
+	if(isManager === "true" || isManager == true){
 		$("#nav-bar-buttons").prepend("<button type='button' class='btn btn-default navbar-btn pull-right' id='proposed-objective' onClick='openProposedObjectiveModal()'>Propose Objective</button>")
 	}
 }
@@ -754,7 +754,7 @@ function submitManagerEvaluation(){
 
 /** Update rating on database to submit self evaluation */
 function confirmSubmitEvaluation(){
-	submitManagerEvaluationAction(getADLoginID(), selectedReporteeID, function(){
+	submitManagerEvaluationAction(ADLoginID, selectedReporteeID, function(){
 		managerEvaluationSubmitted(true);
 		closeWarningModal();
 	}, function(){});
@@ -764,7 +764,7 @@ function confirmSubmitEvaluation(){
 function saveManagerEvaluation(){	
 	wasManagerEvaluationEmpty=checkEmptyID("manager-evaluation-input",true);
 	lastSavedManagerEvaluationInput=$managerEvaluationText.text();
-	addManagerEvaluationAction(getADLoginID(), selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
+	addManagerEvaluationAction(ADLoginID, selectedReporteeID, $managerEvaluationInput.val(), $evaluationScoreInput.val(), function(response){
 		closeManagerEvaluation(true);
 	});
 }

@@ -62,32 +62,4 @@ function addToEmails(email){
 	if(jQuery.inArray(email, emails) == -1){
 		emails.push(email);
 	}
-} 
-
-function getADfullName(){
-	return ADfullName;
-}
-
-function getADLoginID(){
-	return ADLoginID;
-}
-
-function getUserName(){
-	return ADUsername;
-}
-
-function isUserManager(){
-	return isManager;
-}
-
-function userHasHrDash(){
-    return hasHRDash;
-}
-
-function getEmailSet(){
-    return emails;
-}
-
-function getUserAddress(){
-    return userAddress;
 }

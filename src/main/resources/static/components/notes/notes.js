@@ -12,10 +12,10 @@ function initMyNotes(){
 	//initialise jquery ui resizable component
 	initResizable();
 	
-	getTags(getADLoginID());
+	getTags(ADLoginID);
 	
 	//Get general-notes and link ids
-	getNotes(getADLoginID());
+	getNotes(ADLoginID);
 	
 	$("#notes-open").click(function(e) { openNotesBar() });
 	 
@@ -117,7 +117,7 @@ function initResizable(){
 
 
 function updateNoteTags(id, objectiveTagIds, developmentNeedTagIds){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var noteId = id;
 	var objectiveIds = objectiveTagIds.toString();
 	var developmentNeedIds = developmentNeedTagIds.toString();
@@ -164,9 +164,9 @@ function notesListHTML(id, providerName, body, date, classDate, objTagIds, devNe
 
 //Method to get data and submit data
 function clickSubmitNote(){
-	var userID = getADLoginID();
+	var userID = ADLoginID;
 	var note = $('#note-text').val().trim();
-	var from = getADfullName();
+	var from = ADfullName;
 	var date = new Date();
 	
 	addNote(userID, from, note, date);

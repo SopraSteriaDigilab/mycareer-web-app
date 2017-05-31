@@ -16,11 +16,11 @@ var $profileContainer = $("#profile-container");
 
 var hasExtraEmailAddress = false;
 var currentOperation = null;
-var currentExtraEmail=getUserAddress();
+var currentExtraEmail=userAddress;
 var dropdownToggled = false;
 
 function initMyProfile(){
-	populateProfile(getUserName(), getADfullName());
+	populateProfile(ADUsername, ADfullName);
 	
 	initEmailModal();
 	
@@ -131,10 +131,8 @@ function initEmailModal(){
 
 /** Retrieve email details from database and update relevant DOM Elements. */
 function getEmails(){	
-	var emailSet=getEmailSet();
-	var userAddress=getUserAddress();
 	if (!(userAddress === null || userAddress === '')){hasExtraEmailAddress = true};
-	setEmailAddresses(emailSet,userAddress); //In success function
+	setEmailAddresses(emails,userAddress); //In success function
 }
 
 /** Sets the email addresses in the HTML */
@@ -198,7 +196,7 @@ function editExtraEmail(){
 }
 
 function deleteExtraEmail(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var emailAddress = "";
 	var success = function(response){ deleteExtraEmailSuccess() }
 	var error = function(error){}
@@ -253,7 +251,7 @@ function saveExtraEmail(){
 			}
 			else {
 				currentExtraEmail=extraEmailInput;
-				saveExtraEmailAction(getADLoginID(), extraEmailInput, function(response){
+				saveExtraEmailAction(ADLoginID, extraEmailInput, function(response){
 					saveExtraEmailSuccess(extraEmailInput)
 					}, function(){});
 			}

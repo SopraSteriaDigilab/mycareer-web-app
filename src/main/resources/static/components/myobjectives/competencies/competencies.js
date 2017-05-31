@@ -3,7 +3,7 @@ $(function() {
 });
 
 function initCompetecies(){
-	getCompetencies(getADLoginID());
+	getCompetencies(ADLoginID);
 	
     $("#view-competency").click(function(){ window.open('http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Competency-Framework.aspx', '_blank'); });
 }
@@ -49,7 +49,7 @@ function competenciesListHTML(id,title,compentencyDescription,isSelected){
 
 //send request to backend to update star to be selected or de-selected
 function starChanger(id){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
     var title = $('#competencyTitle'+id).text();
     
     toggleCompetency(userId, id, title);

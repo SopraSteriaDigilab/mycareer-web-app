@@ -110,7 +110,7 @@ function showObjectiveModal(show){
 function clickSubmitObjective(){
 	var type = $("#obj-modal-type").val();
     
-	var userID = getADLoginID();
+	var userID = ADLoginID;
 	var objID = $("#objective-id").val();
 	var objTitle = $("#objective-title").val().trim();
 	var objText = $("#objective-text").val().trim();
@@ -766,7 +766,7 @@ function warningModalHTML(title, body, buttonText, buttonFunction){
 
 //verifies if user doesnt have access to HR dashboard it redirects them back to myobjectives
 function verifyUser(){
-    if(userHasHrDash() === "false" || userHasHrDash() == false){
+    if(hasHRDash === "false" || hasHRDash == false){
          window.location ="/myobjectives";
     }
 }
