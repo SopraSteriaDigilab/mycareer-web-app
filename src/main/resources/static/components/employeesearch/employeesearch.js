@@ -94,7 +94,7 @@ function getEmployeeCareer(employeeId){
 	var success = function(data){ addEmployee(employeeId, data); }
 	var error = function(error){ updateEmployeeView(0, emptyCareer) }
 	
-	getEmployeeCareerAction(getADLoginID(), employeeId, success, error);
+	getEmployeeCareerAction(ADLoginID, employeeId, success, error);
 }
 
 function addEmployee(employeeId, data){

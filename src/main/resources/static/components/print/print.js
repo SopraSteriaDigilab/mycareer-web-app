@@ -1,8 +1,9 @@
 //Function to get Objectives data of the user
 function getObjectivesData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
-		$("#pdf-modal-body").append(printObjectivesHeader());
+		loaded();
+		$("#print-modal-body").append(printObjectivesHeader());
 		$.each(data, function(key, val){
 			var isArchived = val.archived;
 			isArchived = isArchived ? 'Yes' : 'No';
@@ -10,7 +11,8 @@ function getObjectivesData(){
 			var createdOn = moment(val.createdOn).format('DD MMM YYYY');
 			addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
 		}); 
-		openPDF("objTable");
+		openPrintedDocument("objTable");
+		openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -25,14 +27,16 @@ function getObjectivesData(){
 
 //Function to get Feedback data of the user
 function getFeedbackData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printFeedbackHeader());
+		loaded();
+	 	 $("#print-modal-body").append(printFeedbackHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
          }); 
-         openPDF("feedTable");
+         openPrintedDocument("feedTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -47,9 +51,10 @@ function getFeedbackData(){
 
 //Function to get Development Needs data of the user
 function getDevelopmentNeedsData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
+		loaded();
+	 	 $("#print-modal-body").append(printDevelopmentNeedsHeader());
          $.each(data, function(key, val){
         	 var isArchived = val.archived;
         	 isArchived = isArchived ? 'Yes' : 'No';
@@ -57,7 +62,8 @@ function getDevelopmentNeedsData(){
         	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
         	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
          });
-         openPDF("devNeedsTable");
+         openPrintedDocument("devNeedsTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -72,14 +78,16 @@ function getDevelopmentNeedsData(){
 
 //Function to get Notes data of the user
 function getNotesData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printNotesHeader());
+		loaded();
+	 	 $("#print-modal-body").append(printNotesHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
          }); 
-         openPDF("notesTable");
+         openPrintedDocument("notesTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -246,7 +254,7 @@ function printNotesList(providerName, noteDescription, timestamp){
 }
 
 //Function that creates the table and opens the printable page in a new window
-function openPDF(id){	
+function openPrintedDocument(id){	
 	$('#'+id).DataTable({
 		dom: 'Brftip',
 		buttons: [{

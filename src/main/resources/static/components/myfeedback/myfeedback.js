@@ -54,7 +54,7 @@ function initMyFeedback(){
 
 
 function getFeedback(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 		loaded();
         $.each(data, function(key, val){
@@ -74,7 +74,7 @@ function getFeedback(){
 }
 
 function getFeedbackRequests(modalAction){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 		loaded();
 		addFeedbackRequestsToList(data);
@@ -380,7 +380,7 @@ function openSendFeedbackModal(){
 
 function submitFeedbackRequest(){
 	loading("Processing Feedback Request. Please wait.");
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var emails = $('#requestingTo').val();
 	var notes =  $('#requestingText').val();
 	
@@ -397,7 +397,7 @@ function submitFeedbackRequest(){
 
 function submitSendFeedback(){
 	loading("Processing Feedback. Please wait.");
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var emails = $('#sendingTo').val();
 	var feedback = $('#sendingText').val();
 	
@@ -424,7 +424,7 @@ function openAddTagModalFeedback(id){
 }
 
 function updateFeedbackTags(id, objectiveTagIds, developmentNeedTagIds){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var feedbackId = id;
 	var objectiveIds = objectiveTagIds.toString();
 	var developmentNeedIds = developmentNeedTagIds.toString();
@@ -480,7 +480,7 @@ function clickDismissFeedbackRequest(id, email){
 }
 
 function dismissFeedbackRequest(feedbackRequestId){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(response){
 		$("#fbr-item-"+feedbackRequestId).remove();
 		if($pendingRequeststbody.children().length < 1){

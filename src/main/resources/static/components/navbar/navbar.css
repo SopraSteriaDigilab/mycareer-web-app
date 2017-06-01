@@ -66,11 +66,11 @@
 	padding-right: 10px;
 }
 
-#pdf-modal-dialog{
+#print-modal-dialog{
 	width : 800px;
 }
 
-#pdf-modal-body{
+#print-modal-body{
 	max-height : 500px;
     overflow: auto ;
     word-wrap: break-word;

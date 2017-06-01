@@ -26,7 +26,7 @@ function init() {
 }
 
 function getMyCareer(){
-	var employeeId = getADLoginID();
+	var employeeId = ADLoginID;
 	var success = function(data){ 
 		getTables(data);
 		loaded();
