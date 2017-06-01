@@ -2,7 +2,7 @@
 function getObjectivesData(){
 	var userId = ADLoginID;
 	var success = function(data){
-		$("#pdf-modal-body").append(printObjectivesHeader());
+		$("#print-modal-body").append(printObjectivesHeader());
 		$.each(data, function(key, val){
 			var isArchived = val.archived;
 			isArchived = isArchived ? 'Yes' : 'No';
@@ -10,7 +10,7 @@ function getObjectivesData(){
 			var createdOn = moment(val.createdOn).format('DD MMM YYYY');
 			addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
 		}); 
-		openPDF("objTable");
+		openPrintedDocument("objTable");
 	}
 	var error = function(error){}
 	
@@ -27,12 +27,12 @@ function getObjectivesData(){
 function getFeedbackData(){
 	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printFeedbackHeader());
+	 	 $("#print-modal-body").append(printFeedbackHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
          }); 
-         openPDF("feedTable");
+         openPrintedDocument("feedTable");
 	}
 	var error = function(error){}
 	
@@ -49,7 +49,7 @@ function getFeedbackData(){
 function getDevelopmentNeedsData(){
 	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
+	 	 $("#print-modal-body").append(printDevelopmentNeedsHeader());
          $.each(data, function(key, val){
         	 var isArchived = val.archived;
         	 isArchived = isArchived ? 'Yes' : 'No';
@@ -57,7 +57,7 @@ function getDevelopmentNeedsData(){
         	 var createdOn = moment(val.createdOn).format('DD MMM YYYY');
         	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
          });
-         openPDF("devNeedsTable");
+         openPrintedDocument("devNeedsTable");
 	}
 	var error = function(error){}
 	
@@ -74,12 +74,12 @@ function getDevelopmentNeedsData(){
 function getNotesData(){
 	var userId = ADLoginID;
 	var success = function(data){
-	 	 $("#pdf-modal-body").append(printNotesHeader());
+	 	 $("#print-modal-body").append(printNotesHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
          }); 
-         openPDF("notesTable");
+         openPrintedDocument("notesTable");
 	}
 	var error = function(error){}
 	
@@ -246,7 +246,7 @@ function printNotesList(providerName, noteDescription, timestamp){
 }
 
 //Function that creates the table and opens the printable page in a new window
-function openPDF(id){	
+function openPrintedDocument(id){	
 	$('#'+id).DataTable({
 		dom: 'Brftip',
 		buttons: [{
