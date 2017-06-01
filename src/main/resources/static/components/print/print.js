@@ -2,6 +2,7 @@
 function getObjectivesData(){
 	var userId = ADLoginID;
 	var success = function(data){
+		loaded();
 		$("#print-modal-body").append(printObjectivesHeader());
 		$.each(data, function(key, val){
 			var isArchived = val.archived;
@@ -11,6 +12,7 @@ function getObjectivesData(){
 			addObjectivesDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.proposedBy, isArchived);
 		}); 
 		openPrintedDocument("objTable");
+		openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -27,12 +29,14 @@ function getObjectivesData(){
 function getFeedbackData(){
 	var userId = ADLoginID;
 	var success = function(data){
+		loaded();
 	 	 $("#print-modal-body").append(printFeedbackHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addFeedbackDataToList(val.providerEmail, val.providerName, val.feedbackDescription, timestamp);
          }); 
          openPrintedDocument("feedTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -49,6 +53,7 @@ function getFeedbackData(){
 function getDevelopmentNeedsData(){
 	var userId = ADLoginID;
 	var success = function(data){
+		loaded();
 	 	 $("#print-modal-body").append(printDevelopmentNeedsHeader());
          $.each(data, function(key, val){
         	 var isArchived = val.archived;
@@ -58,6 +63,7 @@ function getDevelopmentNeedsData(){
         	 addDevelopmentNeedsDataToList(dueDate, val.title, val.description, val.progress, createdOn, val.category, isArchived);
          });
          openPrintedDocument("devNeedsTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	
@@ -74,12 +80,14 @@ function getDevelopmentNeedsData(){
 function getNotesData(){
 	var userId = ADLoginID;
 	var success = function(data){
+		loaded();
 	 	 $("#print-modal-body").append(printNotesHeader());
          $.each(data, function(key, val){
         	 var timestamp = moment(val.timestamp).format("DD MMM YYYY HH:mm");
         	 addNotesDataToList(val.providerName, val.noteDescription, timestamp);
          }); 
          openPrintedDocument("notesTable");
+         openPrintModal();
 	}
 	var error = function(error){}
 	

@@ -30,6 +30,7 @@ function initMyProfile(){
 	
 	//onClick for opening print modal
 	$('.print').click(function(event) {
+		loading("Loading print view. Please wait.");
 		var id = event.target.id;
 		if(id === "objPrintedDocument"){			
 			 getObjectivesData();
@@ -48,7 +49,6 @@ function initMyProfile(){
 			 $('#print-modal-title-type').text('Notes');
 		}
 		$("#print-modal-body").append("<div class=\"" + id + "\"></div>");
-		openPrintModal();
 	});
 	
 	//onClick for closing print modal
