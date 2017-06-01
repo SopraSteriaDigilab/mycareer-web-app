@@ -48,7 +48,7 @@ function getCurrentRating(){
 	}
 	var error = function(){ loaded(); }
 	
-	getCurrentRatingAction(getADLoginID(), success, error);
+	getCurrentRatingAction(ADLoginID, success, error);
 }
 
 /** Sets the three evaluations in the HTML */
@@ -125,7 +125,7 @@ function submitSelfEvaluation(){
 
 /** Update rating on database to submit self evaluation */
 function confirmSubmitEvaluation(){
-	var id = getADLoginID();
+	var id = ADLoginID;
 	var success = function(){
 		selfEvaluationSubmitted(true);
 		closeWarningModal();
@@ -139,7 +139,7 @@ function confirmSubmitEvaluation(){
 function saveSelfEvaluation(){
 	wasSelfEvaluationEmpty=checkEmptyID("self-evaluation-input",true);
 	lastSavedSelfEvaluationInput=$selfEvaluationText.text();
-	var id = getADLoginID();
+	var id = ADLoginID;
 	var data = $selfEvaluationInput.val();
 	var success = function(response){ closeSelfEvaluation(true); }
 	var error = function(error){}

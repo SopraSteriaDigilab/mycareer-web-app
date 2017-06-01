@@ -1,6 +1,6 @@
 //Function to get Objectives data of the user
 function getObjectivesData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 		$("#pdf-modal-body").append(printObjectivesHeader());
 		$.each(data, function(key, val){
@@ -25,7 +25,7 @@ function getObjectivesData(){
 
 //Function to get Feedback data of the user
 function getFeedbackData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 	 	 $("#pdf-modal-body").append(printFeedbackHeader());
          $.each(data, function(key, val){
@@ -47,7 +47,7 @@ function getFeedbackData(){
 
 //Function to get Development Needs data of the user
 function getDevelopmentNeedsData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 	 	 $("#pdf-modal-body").append(printDevelopmentNeedsHeader());
          $.each(data, function(key, val){
@@ -72,7 +72,7 @@ function getDevelopmentNeedsData(){
 
 //Function to get Notes data of the user
 function getNotesData(){
-	var userId = getADLoginID();
+	var userId = ADLoginID;
 	var success = function(data){
 	 	 $("#pdf-modal-body").append(printNotesHeader());
          $.each(data, function(key, val){

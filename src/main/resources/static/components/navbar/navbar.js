@@ -37,16 +37,16 @@ function initNavbar(){
 //Function to load profile section
 function loadProfile(){
 	$("#profile").load("../components/profile/profile.html");
-	if(isUserManager() === "true" || isUserManager() == true){
+	if(isManager === "true" || isManager == true){
 		$("#nav-bar-list").append("<li class='nav-bar-item' id='myteam'><a href='myteam'> My Team </a></li>");
 	}
     if(isRatingPeriod()){
     	$("#nav-bar-list").append("<li class='nav-bar-item' id='mysummaryreview'><a href='mysummaryreview'> My Summary Review </a></li>");
     }
-    if(userHasHrDash() === "true" || userHasHrDash() == true){
+    if(hasHRDash === "true" || hasHRDash == true){
         $("#nav-bar-list").append("<li class='nav-bar-item' id='hrdashboard'><a href='hrdashboard'> HR Dashboard </a></li>"); 
     }
-	$(".full-name").html(getADfullName);
+	$(".full-name").html(ADfullName);
 }
 
 function highlight(value) {
