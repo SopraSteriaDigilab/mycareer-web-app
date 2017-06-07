@@ -75,9 +75,9 @@ public class RoutingController
 
   private static boolean isRatingPeriod()
   {
-    Month currentMonth = YearMonth.now().getMonth();
-
-    return currentMonth.equals(OCTOBER) || currentMonth.equals(NOVEMBER) || currentMonth.equals(DECEMBER)
-        || currentMonth.equals(JANUARY) || currentMonth.equals(FEBRUARY);
+    //Month currentMonth = YearMonth.now().getMonth();
+    return true;
+    //return currentMonth.equals(OCTOBER) || currentMonth.equals(NOVEMBER) || currentMonth.equals(DECEMBER)
+    //    || currentMonth.equals(JANUARY) || currentMonth.equals(FEBRUARY);
   }
 }
