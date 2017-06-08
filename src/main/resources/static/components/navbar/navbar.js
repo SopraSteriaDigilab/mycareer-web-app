@@ -61,6 +61,10 @@ function highlight(value) {
 
 function isRatingPeriod()
 {
+	if(ADLoginID == 630882 || ADLoginID == 604970) {
+		return true;
+	}
+	
 	var currentMonth = new Date().getMonth();
 	
 	return currentMonth === 9 || currentMonth === 10 || currentMonth === 11|| currentMonth === 0 || currentMonth === 1;
