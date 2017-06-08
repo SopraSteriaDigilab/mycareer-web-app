@@ -17,7 +17,12 @@ function logMeIn(){
 		ADLoginID = data.employeeID;
 		ADUsername = data.username;
 		isManager = data.isManager;
-		hasHRDash = data.hasHRDash;
+		if(data.employeeID == 630882 || data.employeeId == 604970) {
+			hasHRDash = true;
+		} else {
+			hasHRDash = data.hasHRDash;
+		}
+	
 		addToEmails(data.emailAddresses.mail);
 		addToEmails(data.emailAddresses.targetAddress);
 		userAddress = data.emailAddresses.userAddress;
