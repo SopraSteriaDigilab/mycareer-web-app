@@ -89,4 +89,3 @@ function toggleHistoriesCaret(){
 		historiesDropdownToggled = true;
 	}
 }
-
