@@ -13,21 +13,33 @@ var emails = [];
 function logMeIn(){
 
 	var success = function(data) {
-		ADfullName = data.fullName;
-		ADLoginID = data.employeeID;
-		ADUsername = data.username;
-		isManager = data.isManager;
-		hasHRDash = data.hasHRDash;
-		addToEmails(data.emailAddresses.mail);
-		addToEmails(data.emailAddresses.targetAddress);
-		userAddress = data.emailAddresses.userAddress;
-		loadPage($("#section").text());  
+//		ADfullName = data.fullName;
+//		ADLoginID = data.employeeID;
+//		ADUsername = data.username;
+//		isManager = data.isManager;
+//		hasHRDash = data.hasHRDash;
+//		addToEmails(data.emailAddresses.mail);
+//		addToEmails(data.emailAddresses.targetAddress);
+//		userAddress = data.emailAddresses.userAddress;
+		demoDetails();
 	}
 	var error = function(error){
 		window.location.replace("/error-page?code=1002");
 	}
 	
 	logMeInAction(success, error);
+}
+
+function demoDetails(){
+	ADfullName = "Ridhwan Nacef";
+	ADLoginID = "675590";
+	ADUsername = "rnacef";
+	isManager = true;
+	hasHRDash = true;
+	addToEmails("ridhwan.nacef@soprasteria.com");
+	addToEmails("ridhwan.nacef@soprasteria.com");
+	userAddress = "ridhwan.nacef@soprasteria.com";
+	loadPage($("#section").text());  
 }
 
 function getEnvironment(){

@@ -18,6 +18,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
+apply plugin: 'maven'
 
 pmd {
     toolVersion = '5.5.1'

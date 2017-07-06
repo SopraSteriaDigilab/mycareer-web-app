@@ -6,3 +6,4 @@
 /src/main/resources/static/dist
 .classpath
 .project
+/target/
