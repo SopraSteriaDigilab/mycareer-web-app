@@ -1,60 +1,155 @@
-<link rel="stylesheet" href="../components/myteam/myteam.min.css"/>
-<script type="text/javascript" src="../components/myteam/myteam.min.js"></script>
+<script>
+	loadStyle("components/myteam/myteam");
+	loadScript("actions/mysummaryreviewactions");
+	loadScript("actions/myobjectivesactions");
+	loadScript("actions/mydevelopmentneedsactions");
+	loadScript("actions/competenciesactions");
+	loadScript("actions/myfeedbackactions");
+	$.when(
+		loadScript("actions/myteamactions"),
+		loadScript("actions/emailactions"),
+		loadScript("components/myteam/myteamtemplates")
+	).done(function(){
+		loadScript("components/myteam/myteam");
+	});
+</script>
 
 <!--Containter for full page -->
 <div class="container">
 
-<!--Page Header -->
-<div class="row">
-	<div class="col-md-12" >
-		<div class="col-md-3">
-			<h2 >My Team</h2>
-		</div>
-		<div class="col-md-7">
-			<div class="" id="reportee-header">
-				<br/>
-				<ul class="nav nav-tabs nav-justified" id="navTab">
-					<li class="active"><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
-					<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
-					<li><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
-					<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
-				</ul>
+	<!--Page Header -->
+	<div class="row">
+		<div class="col-md-12" >
+			<div class="col-md-3">
+				<h2 >My Team</h2>
 			</div>
-		</div>
-		<div class="col-md-2 vertical-centre ">
+			<div class="col-md-7" style="padding-right: 0;">
+				<div id="reportee-header">
+					<br/>
+					<ul class="nav nav-tabs nav-justified" id="navTab">
+						<li class="active "><a id="obj-link" href="#reportee-obj-tab" data-toggle="tab"> Objectives </a></li>
+						<li><a id="feed-link" href="#reportee-feed-list" data-toggle="tab"> Feedback </a></li>
+						<li style="width: 2%;"><a id="dev-link" href="#reportee-dev-needs-list" data-toggle="tab"> Development Needs </a></li>
+						<li><a id="notes-link" href="#reportee-notes-tab" data-toggle="tab"> Notes </a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-2 vertical-centre" style="padding-right:0px;">
 				<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
+			</div>
 		</div>
-	</div>
-</div>
+	</div><!--End of Page Header -->
 
-<!--End of Page Header -->
-
-<br/>
-
-	<div class="col-md-3" id='reportee-list'></div>
-	
-	<div id="info-holder" class="col-md-7">
-		<div class="tab-content hidden" id="reportee-body">
-			<div id="reportee-obj-tab" class="tab-pane fade in active">
-				<div class="row">
-					<div class="col-md-12">
-						<h5><b>Competency Focus: </b><span id="reportee-comp-list"></span></h5>
-					</div>
-				</div>
-				<div id="reportee-obj-list"></div>
+	<div class="row" style="margin-top: 10px; padding-left: 15px;">
+		<div class="col-md-3" id="reportee-list-container" >
+			<div id='reportee-list'></div>
+			<div id="reportee-sub-selected"></div>
+			<div id="team-members-list" hidden="true">
+				<h4 id="reportee-list-link" style="text-align: center;">Team Members <span id="reportee-list-caret" class="caret"></span></h4>
+				<!-- <div id="team-members-loading"></div>  -->
+				<div id='reportee-sub-list' hidden='true'><h5 style="text-align: center;">Please select a Reportee</h5></div>
 			</div>
-			<!--<div id="reportee-comp-list" class="tab-pane fade in "></div> -->
-			<div id="reportee-feed-list" class="tab-pane fade in "></div>
-			<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
-			<div id="reportee-notes-tab" class="tab-pane fade in ">
-				<div class="row">
-					<div class="col-md-12">
-						<button type="button" class="btn btn-link pull-right" id="add-reportee-note"><u>Add Note for <span class="reportee-name"></span></u></button>
+		</div>
+		<div id="info-holder" class="col-md-7">
+			<div class="tab-content hidden" id="reportee-body">
+				<div id="reportee-obj-tab" class="tab-pane fade in active">
+					<div class="row">
+						<div class="col-md-12">
+							<h5><b>Competency Focus: </b><span id="reportee-comp-list"></span></h5>
+						</div>
 					</div>
+					<div id="reportee-obj-list"></div>
 				</div>
-				<div id="reportee-notes-list"></div>
+				<!--<div id="reportee-comp-list" class="tab-pane fade in "></div> -->
+				<div id="reportee-feed-list" class="tab-pane fade in "></div>
+				<div id="reportee-dev-needs-list" class="tab-pane fade in "></div>
+				<div id="reportee-notes-tab" class="tab-pane fade in ">
+					<div id="reportee-notes-add-button"></div>
+					<div id="reportee-notes-list"></div>
+				</div>
+				<div id="reportee-ratings-tab" class="tab-pane fade in ">
+					<div class="row"  >
+						<div class="col-md-12">
+							<div class="panel panel-default">
+							  <div class="panel-heading">
+							  	<div class="row">
+							  		<div class="col-md-9">
+							   			<h3 class="panel-title"><b><span class="reportee-name"></span> - Self Evaluation</b></h3>
+							   		</div>
+							   		<div class="col-md-3 text-right" id="reportee-evaluation-submitted" hidden>
+							   			<h3 class="panel-title"><b>Submitted</b></h3>
+							   		</div>
+						   		</div>
+							  </div>
+							  <div class="panel-body rating-panel-body" >
+							  	<div id="reportee-evaluation-text" class="wrap-text evaluation-body" ></div>
+							  </div>
+							</div>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="panel panel-default" style="margin-bottom:0px">
+							  <div class="panel-heading">
+							  	<div class="row">
+								    <div class="col-md-9">
+						   				<h3 class="panel-title"><b>Manager Evaluation</b></h3>
+							   		</div>
+								    <div class="col-md-3 text-right" id="manager-evaluation-submitted" hidden>
+						   				<h3 class="panel-title"><b>Submitted</b></h3>
+						   			</div>
+							  	</div>
+							  </div>
+							  <div class="panel-body rating-panel-body" id="manager-panel-body">
+								  <div id="manager-evaluation-text" class="manager-evaluation-labels wrap-text evaluation-body"></div>
+								  <textarea id="manager-evaluation-input" placeholder="Manager Evaluation" type="text" class="form-control manager-evaluation-options" style="display: none; height:100%" maxlength="10000"></textarea>
+							  </div>
+							  <div class="panel-footer rating-panel-footer text-right" style="font-size:20px; height: 55px">
+								  <div class="row" id="manager-evaluation-footer" hidden>
+								  	<div id="manager-options">
+								  		<div class="col-md-3 manager-evaluation-labels">
+							   				<button type="button" class="btn btn-default btn-block" id="edit-manager-evaluation">Edit</button>
+								   		</div>
+								   		<div class="col-md-3 manager-evaluation-labels">
+							   				<button type="button" class="btn btn-default btn-block" id="submit-manager-evaluation">Submit</button>
+								   		</div>
+								   		<div class="col-md-3 manager-evaluation-options" style="display:none">
+								   			<button type="button" class="btn btn-default btn-block pull-right" id="cancel-manager-evaluation"  style="margin-top:0px">Cancel</button>
+							   			</div>
+							   			<div class="col-md-3 manager-evaluation-options" style="display:none">
+								   			<button type="button" class="btn btn-default btn-block pull-right" id="save-manager-evaluation"  style="margin-top:0px">Save</button>
+								   		</div>
+							   			<div class="col-md-6 pull right manager-evaluation-options" style="display:none">
+								   			<select id="evaluation-score-input" class="selectpicker">
+								   				<option class="text-center" value="0">No Rating</option>
+											  	<option class="text-center" value="1">1</option>
+											  	<option class="text-center" value="2">2</option>
+											  	<option class="text-center" value="3">3</option>
+											  	<option class="text-center" value="4">4</option>
+											  	<option class="text-center" value="5">5</option>
+											</select>
+							   			</div>
+						   			</div>
+						   			<div class="col-md-6 pull-right manager-evaluation-labels">
+							   			<span id="evaluation-score-text"></span>
+						   			</div>
+							   	</div>
+							  </div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+	    	</div>
+		</div>
+		<div class="col-md-2">
+			<div class="row" >
+				<div class="col-md-12 text-center">
+					<h4 style="cursor:pointer;" id="acticitiy-feed-link">Activity Feed <span id="activity-feed-caret" class="caret"></span> </h4>
+				</div>
 			</div>
-    	</div>
+			<div id="activity-feed" class="text-right" hidden></div>
+		</div>
 	</div>
 
 </div><!--end of container -->
@@ -82,4 +177,3 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-

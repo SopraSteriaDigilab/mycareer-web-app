@@ -1,7 +1,13 @@
-<link rel="stylesheet" href="../components/notes/notes.min.css"/>
-<script type="text/javascript" src="../components/notes/notes.min.js"></script>
+<script>
+	loadStyle("components/notes/notes");
+	$.when(
+		loadScript("actions/tagsactions"),
+		loadScript("actions/mynotesactions")
+	).done(function(){
+		loadScript("components/notes/notes");
+	});
 
-
+</script>
 
 <div class="row header">
   <br><br><br><br><br>
@@ -15,18 +21,6 @@
 			</div>
 	</div>
 	
-	<!--<div class="row">
-		<div class="col-md-12 text-center">
-			<select class="selectpicker select-note-type" id="note-type-picker">
-			  <option class="text-center" >General</option>
-			  <option class="text-center" >Objectives</option>
-			  <option class="text-center" >Competencies</option>
-			  <option class="text-center" >Feedback</option>
-			  <option class="text-center" >Development-Needs</option>
-			</select>
-		</div>
-	</div>-->
-	
 	<div class="row">
 		<div class="form-group col-md-12" >
 			<label for="general-note-input">Add note*<span class="max-characters"> (max 1000 characters) </span>:</label>
@@ -35,30 +29,21 @@
 	</div>
 	
 	<div class="row">
-	<!-- <div class="form-group col-md-12" >
-			<label for="general-note-input">Link to:</label>
-			<div class="row">	
-				<div class="form-group col-md-10">		
-					<div class="notes-div Objectives" style="display: none;">
-						<select class="selectpicker select-note-link" id="objectives-links"></select>
-					</div>
-					<div class="notes-div Feedback" style="display: none;">
-							<select class="selectpicker select-note-link" id="feedback-links"></select>
-					</div>
-					<div class="notes-div Development-Needs" style="display: none;">
-							<select class="selectpicker select-note-link" id="development-needs-links"></select>
-					</div>
-					<div class="notes-div Competencies" style="display: none;">
-						<select class="selectpicker select-note-link" id="competencies-links"></select>
-					</div>					
-				</div>
-				<div class="form-group col-md-2">
-					<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
-				</div>
+		<div class="form-group col-md-12" >
+			<div class="col-md-3" style="padding-left:0px">
+				<button type="button" class="btn btn-default btn-block" id="filter-note">Filter</button>
 			</div>
-		</div> -->
-		<div class="form-group col-md-offset-10 col-md-2">
-			<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+			<div class="col-md-3">
+				<h6 class="pull-left btn-link" style="cursor:pointer;" onClick="clearAllNotesFilters()">Show All</h6>
+			</div>
+			<div class="col-md-6">
+				<button type="button" class="btn btn-default pull-right" id="submit-note" disabled>Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" >
+			<h6><b>Filtered By: </b><span class="notes-filter-text">No Filters Applied</span></h6>
 		</div>
 	</div>
 </div>
@@ -66,10 +51,6 @@
 	<div class="row">
 		<div class="form-group col-md-12 scrollable-menu">
 			<ul class="list-group notes-div General" id="general-notes-list"></ul>
-			<!--  <ul class="list-group notes-div Objectives" style="display:none" id="objective-notes-list"></ul>
-			<ul class="list-group notes-div Competencies" style="display:none" id="competency-notes-list"></ul>
-			<ul class="list-group notes-div Feedback" style="display:none" id="feedback-notes-list"></ul>
-			<ul class="list-group notes-div Development-Needs" style="display:none" id="development-needs-notes-list"></ul>-->
 		</div>
 	</div>
 </div>

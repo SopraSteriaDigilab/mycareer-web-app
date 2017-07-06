@@ -1,22 +1,15 @@
-<link rel="stylesheet" href="../components/navbar/navbar.min.css"/>
-<script type="text/javascript" src="../components/navbar/navbar.min.js"></script>
+<script>
+	loadStyle("components/navbar/navbar");
+	loadScript("components/navbar/navbar");
+</script>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-
 	<div id="primary" class="container-fluid">
 		<div class="container">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-				aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
 			<ul class="nav nav-tabs nav-height">
 				<li role="presentation" class="active "><a class="nav-height" href="#">MyCareer</a></li>
 				<li role="presentation" class="inactive "><a class="nav-height" href="http://people.uk.corp.sopra/Skills" target="_blank">MySkills</a></li>
-				
-					<div id="profile" class="dropdown"></div>
+				<div id="profile" class="dropdown"></div>
 			</ul>
 		</div>
 	</div>
@@ -27,20 +20,29 @@
 				<li class="nav-bar-item" id="myobjectives"><a href="myobjectives"> My Objectives </a></li>
 				<li class="nav-bar-item" id="myfeedback"><a href="myfeedback"> My Feedback </a></li>
 				<li class="nav-bar-item" id="mydevelopmentneeds"><a href="mydevelopmentneeds"> My Development Needs </a></li>
+
 			</ul>
-			<div id="nav-bar-buttons"></div>
+			<div id="nav-bar-buttons">
+				<div class="pull-right">
+			  		<div class="dropdown" id="histories-dropdown">
+				  		<h5 style="color: #777; margin-top: 18px; cursor:pointer;" class="dropdown-toggle" data-toggle="dropdown">Showing Last 12 Months <span id="histories-caret" class="caret"></span></h5>
+				 		<ul class="dropdown-menu pull-right" style="margin-top:8px">
+				          <li><a href="myhistory">MyCareer History</a></li>
+				       	</ul>
+				 	  </div>
+				</div>
+			</div>
 		</div>
-		<!-- /.navbar-collapse --> 
 	</div>
 </nav>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <!-- Add Objective Modal -->
-<div id=objective-modal class="modal fade" role="dialog" style="z-index: 1400;">
+<div id=objective-modal class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -93,4 +95,300 @@
 		</div>
 	</div>
 </div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal fade" role="dialog"> 
+    <div class="modal-dialog"> 
+        <div class="modal-content"> 
+            <div class="modal-header"> 
+                <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                <h4 class="modal-title">Delete <span id="modal-title-type"></span></h4>
+            </div> 
+            <div class="modal-body">
+                <input type="hidden" id="delete-id">
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Once <span id="modal-warning"></span> has been deleted, it cannot be recovered
+                </div>
+                <form>
+                    <div class="form-group">
+						<label for="confirmationDelete">Are you sure you want to delete <span id="modal-type"></span>: </label>
+						<p class="form-control-static" id="deleteTitle"></p>
+					</div>
+					<div class="form-group" id="text-validate">
+						<label for="deleting-text" class="control-label">Optional Note: </label>
+						<textarea class="form-control" id="deletingText" placeholder="..." maxlength="10000" rows="5" spellcheck="true"></textarea>
+					</div>
+                </form>
+            </div> 
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> 
+                <button type="button" class="btn btn-default" id="delete">Delete</button> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+
+<!-- Add Print Modal -->
+<div id="print-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog" id="print-modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="close-print-cross">&times;</button>
+				<h4 class="modal-title">Print <small><span class="glyphicon glyphicon-chevron-right"></span></small> My <span id="print-modal-title-type"></span></h4>
+			</div>
+			<div class="modal-body" id="print-modal-body"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>			
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- Completed Status Modal -->
+<div id="completed-status-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Completed Status</h4>
+			</div>
+			<div class="modal-body">
+                <input type="hidden" id="complete-id">
+                <input type="hidden" id="complete-status">
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Once <span id="modal-alert"></span> has been completed, it cannot be edited
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="confirmationDelete">Are you sure you want to complete <span id="modal-confirmation"></span>: </label>
+                        <p class="form-control-static" id="completedTitle"></p>
+                    </div>
+                    <div class="form-group" id="text-validate">
+                        <label for="completed-status-text" class="control-label">Optional Note: </label>
+                        <textarea class="form-control" id="completedText" placeholder="..." maxlength="200" rows="5" spellcheck="true"></textarea>
+                    </div>
+                </form>
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close" >Close</button>
+                <button type="button" class="btn btn-default" id="submit-completed-status-note">Complete</button>
+            </div>
+		</div>
+	</div>
+</div>
+          
+<!-- Add Filter Modal -->
+<div id="filter-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-sm" id="filter-modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="close-filter-cross">&times;</button>
+				<h4 class="modal-title">Filter Notes<span id="filter-modal-title-type"></span></h4>
+			</div>
+			<div class="modal-body" id="filter-modal-body">
+				<div class="panel-body remove-padding" >
+					<div id="collapse-filter" class="panel-collapse collapse in">
+						<div class="row">
+							<div class="col-md-12" >
+								<h6><b>Filtered By: </b><span class="notes-filter-text">No Filters Applied</span></h6>
+							</div>
+						</div>
+						<div class="row ">
+							<div class="col-md-6">
+								<h5><b>Date:</b></h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearNotesDateFilter()">Clear Filter</h6>
+							</div>
+						</div>
+						<div class="row">
+							<div class='col-md-3'>
+								<h6><b>From:</b></h6>
+							</div>
+							<div class="col-md-9">
+								<div class='input-group date' id='notes-start-date-picker'>
+									<input type='text' class="form-control" id='notes-start-date' readonly="readonly" />
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class='col-md-3'>
+								<h6><b>To:</b></h6>
+							</div>
+							<div class='col-md-9'>
+								<div class='input-group date' id='notes-end-date-picker'>
+									<input type='text' class="form-control" id='notes-end-date' readonly="readonly" />
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-12">
+								<button type="button" class="btn btn-default pull-right" id="submit-note-date-filter">Apply Date Filter</button>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-6">
+								<h5><b>Tags:</b></h5>
+							</div>
+							<div class="col-md-6">
+								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearNotesTagFilter()">Clear Filter</h6>
+							</div>
+						</div>
+						<div class="row" id="notes-tags-dropdown" style="margin-top: 10px;">
+							<div class="col-md-12">
+								<select class="selectpicker tag-filter-dropdown" id="notes-tag-dropdown" data-width="100%"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="close">Close</button>			
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Add Tag Modal -->
+<div id="add-tag-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" data-toggle="modal" id="close-tag-button-x">&times;</button>
+				<h4 class="modal-title">Add Tags</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="tag-type" value="feedback">
+            	<input type="hidden" id="tag-id" value="0">
+				<div class="row">
+					<div col="col-md-12">
+						<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
+					    	<li class="active"><a data-toggle="tab" href="#objective-tags-section" style="color: #337ab7;">Objectives</a></li>
+					    	<li><a data-toggle="tab" href="#development-need-tags-section" style="color: #337ab7;">Development Needs</a></li>
+					  	</ul>
+					</div>
+				</div> 
+				<div class="tab-content">
+				    <div id="objective-tags-section" class="tab-pane fade in active">
+						<div class="row" id="objectives-tags-checkboxes"></div>
+				    </div>
+				    <div id="development-need-tags-section" class="tab-pane fade">
+						<div class="row" id="development-needs-tags-checkboxes"></div>
+				    </div>
+			  	</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default pull-left" data-toggle="modal" id="close-tag-button">Close</button>
+				<button type="button" class="btn btn-default" id="submit-add-tags">Update Tags</button>
+			</div>
+		</div><!-- End of Modal content-->
+	</div>
+</div>
+
+<!-- Add Email address Modal -->
+<div id="email-modal" class="modal fade" role="dialog" style="z-index: 1400;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-toggle="modal" id="close-email-x">&times;</button>
+				<h4 class="modal-title">Add email address</h4>
+			</div>
+			<div class="modal-body" id="email-modal-body">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12" >
+							<label for="sopra-steria-emails">Sopra Steria emails :</label>
+						</div>
+						<div class="col-md-12" >
+							<span class="sopra-steria-emails">abc@soprasteria.com</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12">
+							<label for="extra-email">Extra email :</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8">
+							<div id="add-email-text" class="email-btn email-btn-0 email-btn-2"></div>
+							<input id="add-email-input" placeholder="Email address" class="form-control email-btn email-btn-1"></input>
+						</div>
+						
+						<div class="col-md-4 add-email-button email-btn email-btn-0">
+							<button type="button" class="btn btn-default btn-block pull-right" id="add-email-button">Add email</button>
+						</div>
+						
+						<div class="email-btn email-btn-2">
+							<div class="col-md-2" >
+								<button type="button" class="btn btn-default btn-block pull-right" id="edit-email-button" >Edit</button>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-default btn-block pull-right" id="delete-email-button">Delete</button>
+							</div>
+						</div>
+						
+						<div class="email-btn email-btn-1">
+							<div class="col-md-2">
+								<button type="button" class="btn btn-default btn-block pull-right" id="save-email-button">Save</button>
+							</div>
+							<div class="col-md-2" >
+								<button type="button" class="btn btn-default btn-block pull-right" id="cancel-email-button">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-toggle="modal" id="close-email" >Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Add Email address Modal -->
+<div id="pending-requests-modal" class="modal fade" role="dialog" style="z-index: 1400;">
+	<div class="modal-dialog modal-md">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Pending Feedback Requests</h4>
+			</div>
+			<div class="modal-body" style='max-height: 300px; overflow-x: hidden;overflow-y: auto;'>
+				<div id="no-pending-requests"></div>
+				<table id="pending-requests-table" class='table table-condensed table-hover'>
+				    <thead>
+				      <tr>
+				        <th>Email</th>
+				        <th>Date Requested</th>
+				        <th style='text-align: center;'>Dismiss</th>
+				      </tr>
+				    </thead>
+				    <tbody id="pending-requests-tbody">
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Done</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <div id="pop-up-objective-modal"></div>

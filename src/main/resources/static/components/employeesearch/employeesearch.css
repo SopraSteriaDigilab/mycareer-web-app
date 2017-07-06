@@ -1,0 +1,20 @@
+#obj-link, #feed-link, #dev-link, #notes-link, #ratings-link {
+    color: #337ab7;
+}
+
+table {
+  table-layout:fixed;
+}
+
+table td {
+  word-wrap: break-word;
+  white-space: inherit;
+}
+
+.sorting {
+  white-space: inherit;
+}
+
+#employeeSearchContainer .dropdown-menu {
+	width: 100%;
+}

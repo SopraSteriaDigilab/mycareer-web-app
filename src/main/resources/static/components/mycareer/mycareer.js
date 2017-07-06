@@ -7,39 +7,42 @@ var ADLoginID = null;
 var isManager = null;
 var ADUsername = null;
 var hasHRDash = null;
+var userAddress = null;
+var emails = [];
 
-function logMeIn(){	
-		 $.ajax({
-		  "async": true,
-		  "crossDomain": true,
-		  "url": "http://"+getEnvironment()+":8080/logMeIn",
-		  "method": "GET",
-		   xhrFields: { 'withCredentials': true },
-	      success: function(data){
-	    	  ADfullName = data.fullName;
-	    	  ADLoginID = data.employeeID;
-	    	  ADUsername = data.username;
-	    	  isManager = Boolean(data.isManager); 
-              hasHRDash = Boolean(data.hasHRDash);
-	    	  loadPage($("#section").text());  
-	      },
-	      error: function(XMLHttpRequest, textStatus, errorThrown){
-	    	  window.location.replace("/access-issue");
-	      }
-	  });
+function logMeIn(){
+
+	var success = function(data) {
+		ADfullName = data.fullName;
+		ADLoginID = data.employeeID;
+		ADUsername = data.username;
+		isManager = data.isManager;
+		hasHRDash = data.hasHRDash;
+		addToEmails(data.emailAddresses.mail);
+		addToEmails(data.emailAddresses.targetAddress);
+		userAddress = data.emailAddresses.userAddress;
+		loadPage($("#section").text());  
+	}
+	var error = function(error){
+		window.location.replace("/error-page?code=1002");
+	}
+	
+	logMeInAction(success, error);
 }
 
 function getEnvironment(){
 	var host = $("#env").text();
+	var port = "8080";
+	
 	switch (host) {
 		case "ldunsmycareerdev01":
-			return "ldunsmycareerdev01.duns.uk.sopra";
+			return "ldunsmycareerdev01.duns.uk.sopra:"+port;
 		case "ldunsmycareeruat01":
-			return "mycareer-uat.duns.uk.sopra";
+			return "mycareer-uat.duns.uk.sopra:"+port;
 		case "ldunsmycareer01":
-			return "mycareer.uk.corp.sopra";
+			return "mycareer.uk.corp.sopra:"+port;
 		default:
-			return "localhost";
+			return "localhost:"+port;
 	}
 }
 
@@ -55,22 +58,8 @@ function loadPage(section){
 		});
 }
 
-function getADfullName(){
-	return ADfullName;
-}
-
-function getADLoginID(){
-	return ADLoginID;
-}
-
-function getUserName(){
-	return ADUsername;
-}
-
-function isUserManager(){
-	return isManager;
-}
-
-function userHasHrDash(){
-    return hasHRDash;
+function addToEmails(email){
+	if(jQuery.inArray(email, emails) == -1){
+		emails.push(email);
+	}
 }

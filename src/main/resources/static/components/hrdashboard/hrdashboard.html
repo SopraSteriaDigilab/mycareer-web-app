@@ -1,37 +1,184 @@
-<link rel="stylesheet" href="../components/hrdashboard/hrdashboard.min.css"/>
-<script type="text/javascript" src="../components/hrdashboard/hrdashboard.js"></script>
+<script>
+	loadStyle("components/hrdashboard/hrdashboard");
+	$.when(loadScript("actions/hractions")).done(function(){
+		loadScript("components/hrdashboard/hrdashboard");	
+	});
+</script>
 
 <div class="container">
     
-    <!--Page Header -->
-    <div class="row">
-        <div class="col-md-6">
-            <h2>HR Dashboard</h2>
-        </div>
-        <div class="col-md-6 vertical-centre">
-<!--            <button type="button" class="btn btn-default pull-right" disabled id="">Generate Graphs</button>-->
-        </div>
+	<div class="row">
+    	<div class="col-md-7">
+    		<div class="col-md-6">
+          		<h2>HR Dashboard</h2>
+        	</div>
+      	</div>
+      	<div class="col-md-5 vertical-centre">
+			<a type="button" class="btn btn-default pull-right" href="employeesearch">Employee Search</a>
+		</div>
+	</div>
+  	
+	<div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">    
+	       	
+		<div id="selectpicker-container" class="col-md-6" >
+      		<div class="btn-group" >
+          		<select id="hr-dashboard-selectpicker" class="selectpicker">
+					<option value="overview">MyCareer Overview</option>
+					<option value="sector-breakdown">Super Sector</option>
+					<option value="employee-stats">Total Accounts</option>
+					<option value="objectives-stats">Objectives Overview</option>
+					<option value="feedback-stats">Feedback</option>
+             		<optgroup label="Development Needs">
+						<option value="development-needs-stats">Development Needs Overview</option>
+                  		<option value="development-needs-breakdown">Development Needs Breakdown</option>
+              		</optgroup>  
+          		</select>
+      		</div>
+     	</div>
+     	
     </div>
-    <!--End of Page header-->
-    <br/>
     
-    <!-- Dropdown to select which HR report -->
-    <div class="col-md-12">
-        <div class="btn-group">
-            <select class="selectpicker" title="Please select a report...">
-                <option>MyCareer Overview</option>
-                <option>Super Sector</option>
-                <option>Total Accounts</option>
-                <option>Objectives</option>
-                <option>Feedback</option>
-                <optgroup label="Development Needs">
-                        <option>Development Needs Overview</option>
-                        <option>Development Needs Breakdown</option>
-                </optgroup>  
-            </select>
-        </div>
-        
-        <div class="hr-dashboard"><br/></div>
-    </div><!--End of dropdown row -->
+    <div style="margin-top: 20px; padding-left: 15px; padding-right: 15px;">
+    <!--  <div  id="dashboard-loading-text">
+	    	<div class="row">
+	    		<h4 class="text-center">Loading... This may take a minute.</h4>
+	    	</div>
+	    	<div class="row">
+	    		<div class="center" id="hr-loading-gif"><img src="components/loading.gif"/></div>
+	    	</div>
+    	</div>-->	
+    	<div id="overview-container" class="hr-container" hidden>
+  	    	<table class="table table-striped HRtable" id="hrOverviewTable">
+		        <thead>
+		            <tr>
+		               <th>Overview of MyCareer</th>
+		    	       <th>Number of Users</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr>
+		                <td>Total Accounts Accessed</td>
+		                <td id=account-accessed></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one objective</td>
+		                <td id=users-with-objective></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one development need</td>
+		                <td id=users-with-development-need></td>
+		            </tr>
+		            <tr>
+		                <td>Users with at least one note</td>
+		                <td id=users-with-note></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have clicked a competency</td>
+		                <td id=users-with-competency></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have submitted a feedback request</td>
+		                <td id=users-with-feedback-request></td>
+		            </tr>
+		            <tr>
+		                <td>Users that have received feedback</td>
+		                <td id=users-with-feedback></td>
+		            </tr>
+		        </tbody>
+		    </table>
+    	</div>
+    	<div id="sector-breakdown-container" class="hr-container" hidden>
+    	    <table class="table table-striped" id="sector-breakdown-table">
+		        <thead>
+		            <tr>
+		               <th>Super Sector</th>
+		    	       <th>Employees</th>
+		               <th>No. with Objectives</th>
+		               <th>No. with Development</th>
+		               <th>% with Objectives</th>
+		               <th>% with Development</th>
+		            </tr>
+		        </thead>
+		    </table>
+    	</div>
+    	<div id="employee-stats-container" class="hr-container" hidden>
+ 			<table class="table table-striped" id="employee-stats-table">
+ 				<thead>
+	                <tr>
+	                   <th>Employee ID</th>
+	                   <th>Employee Name</th>
+	                   <th>Company</th>
+	                   <th>Super Sector</th>
+	                   <th>Department</th>
+	                   <th>Last Logged On</th>
+	                   <th>Current Employee</th>
+	                </tr>
+            	</thead>
+ 			</table>
+		</div>
+    	<div id=objectives-stats-container class="hr-container" hidden>
+			<table class="table table-striped" id="objectives-stats-table">
+				<thead>
+					<tr>
+						<th>Employee ID</th>
+						<th>Employee Name</th>
+						<th>Total no of Objectives</th>
+						<th>Objectives Proposed</th>
+						<th>Objectives In-Progress</th>
+						<th>Objectives Complete</th>
+						<th>Company</th>
+						<th>Super Sector</th>
+						<th>Department</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+    	<div id="feedback-stats-container" class="hr-container" hidden>
+			<table class="table table-striped" id="feedback-stats-table">
+				<thead>
+					<tr>
+				    	<th>Employee ID</th>
+				        <th>Employee Name</th>
+				        <th>Total no of Feedback received</th>
+				        <th>Company</th>
+				        <th>Super Sector</th>
+				        <th>Department</th>
+				    </tr>
+				</thead>
+			</table>
+		</div>
+	    <div id="development-needs-stats-container" class="hr-container" hidden>
+	    	<table class="table table-striped" id="development-needs-stats-table">
+		    	<thead>
+					<tr>
+						<th>Employee ID</th>
+						<th>Employee Name</th>
+						<th>Total no of Development Needs</th>
+						<th>Development Needs Proposed</th>
+						<th>Development Needs In-Progress</th>
+						<th>Development Needs Complete</th>
+						<th>Company</th>
+						<th>Super Sector</th>
+						<th>Department</th>
+					</tr>
+				</thead>
+	    	</table>
+	    </div>
+	    <div id="development-needs-breakdown-container" class="hr-container" hidden>
+	    	<table class="table table-striped" id="development-needs-breakdown-table">
+    			<thead>
+	                <tr>
+	                   <th>Employee ID</th>
+	                   <th>Employee Name</th>
+	                   <th>Title</th>
+	                   <th>Category</th>
+	                   <th>Company</th>
+	                   <th>Super Sector</th>
+	                   <th>Department</th>
+	                </tr>
+	            </thead>
+	    	</table>
+	    </div>
+    </div>
     
 </div><!--End of Container -->

@@ -1,88 +1,95 @@
-<link rel="stylesheet" href="../components/myfeedback/myfeedback.min.css"/>
-<script type="text/javascript" src="../components/myfeedback/myfeedback.min.js"></script>
+<script>
+	loadStyle("components/myfeedback/myfeedback");
+	$.when(
+		loadScript("actions/emailactions"),
+		loadScript("actions/myfeedbackactions")
+	).done(function(){
+		loadScript("components/myfeedback/myfeedback");
+	});	
+</script>
 
 <!--Containter for full page -->
 <div class="container">
 
-<!--Page Header -->
+	<!--Page Header -->
 	<div class="row">
-           <div class="col-md-6">
-		     <div class="col-md-6">
-                   <h2>My Feedback</h2>
-               </div>      
-               <div class="col-md-6 vertical-centre">
-            	   <button type="button" class="btn btn-default pull-right" id="request-feedback">Request Feedback</button>
-                   <!-- Below code was added for a story that was descoped for live, but still in the backlog -->
-                   <!--<ul class="nav nav-tabs nav-justified" style='cursor:pointer'>
-                       <li id="general-feeback-list" class="active">
-                           <a data-toggle="tab" data-target="#general-feedback-tab, #generalFeeDescription">General</a></li>
-                       <li id="requested-feeback-list">
-                           <a data-toggle="tab" data-target="#requested-feedback-tab, #requestedFeeDescription">Requested</a></li> 
-                   </ul>-->
-                   
-               </div>
-           </div>
+		<div class="col-md-3">
+			<div class="col-md-12">
+       			<h2>My Feedback</h2>
+    		</div>
+        </div>
+		<div class="col-md-6 vertical-centre">
+             <div id="feedback-tag-loading" class="col-md-12">
+             	<h5 class="text-center">Loading Options...</h5>
+             </div>
+             <div class="col-md-4 feedback-tag-buttons" style="margin-left: -10px" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="send-feedback">Send Feedback</button>
+             </div>
+             <div class="col-md-4 feedback-tag-buttons" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="request-feedback">Request Feedback</button>
+             </div>
+             <div class="col-md-4 feedback-tag-buttons" hidden="true">
+             	<button type="button" class="btn btn-default btn-block" id="pending-request-button">Pending Requests</button>
+             </div>
 
-		<div class="col-md-6 vertical-centre ">
+        </div>
+		<div class="col-md-3 vertical-centre">
 			<button type="button" class="btn btn-default pull-right" id="notes-open">My Notes</button>
 		</div>
 	</div>
 	<!--End of Page Header -->
-    <br/>
     
-	<!-- Accordion sort half - added a test one, setting out layout -->
- 	<div class="col-md-3">
-		<div class="panel-group" id="accordion-Date">
-			<div class="panel panel-default">
-				<div class="panel-heading remove-padding">
-					<div class="panel-title">
-						<div class="row">
-							<div class="col-md-8">
-								<h6><b>Filtered by:</b></h6>
-							</div>
-							<div class="col-md-4">	
-								<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearAllFilters()'><b>Show All</b></h6>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<h6><b><span id="filter-text">No Filters Applied</span></b></h6>
+    
+    <div class="row" style="margin-top: 10px; padding-left: 15px; padding-right: 15px;">
+		<!-- Accordion sort -->
+	 	<div class="col-md-3" style="margin-bottom:0px;">
+			<div class="panel-group" id="accordion-Date" style="margin-bottom:0px;">
+				<div class="panel panel-default">
+					<div class="panel-heading remove-padding">
+						<div class="panel-title">
+							<div class="row">
+								<div class="col-md-8">
+									<h6><b>Filtered by:</b></h6>
+								</div>
+								<div class="col-md-4">	
+									<h6 class="pull-right btn-link" style='cursor:pointer' onClick='clearAllFilters()'><b>Show All</b></h6>
+								</div>
+							
+								<div class="col-md-12">
+									<h6><b><span id="filter-text">No Filters Applied</span></b></h6>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-
-				<div id="collapse-filter" class="panel-collapse collapse in">
-					<div class="panel-body remove-padding" >
-						<div class="row " style="background-color:rgb(245, 245, 245);">
-							<div class="col-md-6">
-								<h5>Date</h5>
-							</div>
-							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('date')">Clear Filter</h6>
-							</div>
-						</div>
-						<div class="row">
-							<div class='col-sm-12'>
-								<div class="form-group">
-								<div class="row">
-									<div class="col-md-6">
-										<h6><b>From:</b></h6>
-									</div>
+	
+					<div id="collapse-filter" class="panel-collapse collapse in">
+						<div class="panel-body remove-padding" >
+							<div class="row " style="background-color:rgb(245, 245, 245);">
+								<div class="col-md-6">
+									<h5>Date</h5>
 								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearDateFilter()">Clear Filter</h6>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-md-3">
+									<h6><b>From:</b></h6>
+								</div>
+								<div class="col-md-9">
 									<div class='input-group date' id='feedback-start-date-picker'>
 										<input type='text' class="form-control" id='feedback-start-date' readonly="readonly" />
 										<span class="input-group-addon"> 
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
-								</div>
+								</div>	
 							</div>
-						</div>
-						<div class="row">
-							<div class='col-sm-12'>
-								<div class="form-group">
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-md-3" style="text-align: right;">
 									<h6><b>To:</b></h6>
+								</div>
+								<div class="col-md-9">
 									<div class='input-group date' id='feedback-end-date-picker'>
 										<input type='text' class="form-control" id='feedback-end-date' readonly="readonly" />
 										<span class="input-group-addon"> 
@@ -91,44 +98,58 @@
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class='col-md-offset-6 col-md-6'>
-								<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+							<div class="row" style="margin-top:10px;">
+								<div class='col-md-offset-6 col-md-6'>
+									<button type="button" class="btn btn-default pull-right" id="submit-date-filter">Submit</button>
+								</div>
 							</div>
-						</div>
-						<br/>
-						<div class="row" style="background-color:rgb(245, 245, 245);">
-							<div class="col-md-6">
-								<h5>Reviewer</h5>
+							<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+								<div class="col-md-6">
+									<h5>Tags</h5>
+								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFeedbackTagFilter()">Clear Filter</h6>
+								</div>
 							</div>
-							<div class="col-md-6">
-								<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearFilter('reviewer')">Clear Filter</h6>
+							<div class="row" id="feedback-tags-dropdown" style="margin-top: 10px;">
+								<div class="col-md-12">
+									<select class="selectpicker tag-filter-dropdown" id="feedback-tag-dropdown" data-width="100%" ></select>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="checkbox" id="general-reviewer-list"></div>
+							<div class="row" style="background-color:rgb(245, 245, 245); margin-top: 10px;">
+								<div class="col-md-6">
+									<h5>Reviewer</h5>
+								</div>
+								<div class="col-md-6">
+									<h6 class="pull-right btn-link" style="cursor:pointer" onClick="clearReviewerFilter()">Clear Filter</h6>
+								</div>
+							</div>
+							<div class="row" id="resizable-reviewers">
+								<div id=reviewers>
+									<div class="checkbox" id="general-reviewer-list" style="font-size:12px"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>					
+			</div>					
+		</div>
+	
+		<!-- List of Feedback -->
+		<div id="feedback-scroll-list" class="col-md-3 scrollable-feedback">
+	        <div class="tab-content">
+	            <div id="general-feedback-tab" class="tab-pane fade in active"></div>
+	        </div><!--end of tab content -->
+		</div><!--end of col-md-3 -->
+	
+		<!-- Section that will show the feedback -->
+		<div id="fedback-descriptions" class="col-md-6" style="padding-right: 0px;">
+	        <div class="tab-content">
+	            <div class="tab-pane fade in active" id="generalFeeDescription"></div>
+	        </div>
+		</div>
 	</div>
-
-	<!-- List of Feedback -->
-	<div id="feedback-scroll-list" class="col-md-3 scrollable-feedback">
-        <div class="tab-content">
-            <div id="general-feedback-tab" class="tab-pane fade in active"></div>
-        </div><!--end of tab content -->
-	</div><!--end of col-md-3 -->
-
-	<!-- Section that will show the feedback -->
-	<div class="col-md-6">
-        <div class="tab-content">
-            <div class="tab-pane fade in active" id="generalFeeDescription"></div>
-        </div>
-	</div>
-    
+	
 </div><!--end of container -->
 
 <!-- Request Feedback Modal -->
@@ -137,14 +158,14 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" id="close-feedback-request-modal" data-dismiss="modal">&times;</button>
+				<button type="button" class="close" id="close-feedback-request-modal" data-toggle="modal">&times;</button>
 				<h4 class="modal-title">Request feedback</h4>
 			</div>
 			<div class="modal-body">
 				<form>
 					<input type="hidden" id="modal-type" value="add">
 					<input type="hidden" id="request-feedback-id" value="0">
-					<div class="form-group" id="to-validate">
+					<div class="form-group" id="request-to-validate">
 						<label for="requesting-to">Email(s)*:</label>
 						<input type="text" class="request-feedback-validate form-control" data-role="tagsinput" autocomplete="off" placeholder="..." id="requestingTo" maxlength="150"/>
 					</div>
@@ -157,8 +178,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" id="cancel" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-default" id="submit-request-feedback">Submit</button>
+				<button type="button" class="btn btn-default pull-left" id="cancelRequestModal" data-toggle="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-request-feedback">Request</button>
 			</div>
 		</div><!-- End of Modal content-->
 	</div>
@@ -195,3 +216,64 @@
         </div>
     </div>
 </div>
+<div id="pop-up-request-feedback-modal"></div>
+
+<!-- Send Feedback Modal -->
+<div id="sendFeedbackModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" id="close-feedback-send-modal" data-toggle="modal">&times;</button>
+				<h4 class="modal-title">Send feedback</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group" id="send-to-validate">
+						<label for="sending-to">Email(s)*:</label>
+						<input type="text" class="form-control" data-role="tagsinput" autocomplete="off" placeholder="..." id="sendingTo" maxlength="150"/>
+					</div>
+                                    
+					<div class="form-group" id="text-validate">
+						<label for="sending-text" class="control-label">Feedback* <span class="max-characters"> (max 5000 characters) </span>: </label>
+						<textarea class="send-feedback-validate form-control" id="sendingText" placeholder="..." maxlength="5000" rows="5" spellcheck="true"></textarea>
+                        <button type="button" class="btn btn-link pull-right" id="view-feedback-suggestion-template" data-target="#feedbackTemplateModal">View Feedback Guide</button>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" id="cancelSendModal" data-toggle="modal">Close</button>
+				<button type="button" class="btn btn-default" id="submit-send-feedback" disabled>Send</button>
+			</div>
+		</div><!-- End of Modal content-->
+	</div>
+</div>
+
+<!--feedback suggestion template Modal -->
+<div id="feedbackTemplateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback Guide</h4>
+            </div>
+            <div class="modal-body">
+            	<div class="row">
+          			<div class="col-md-12"><h5>The following headings may help you to give feedback.</h5>
+                        <ol>
+                            <li>Context</li>
+                            <li>Time Period</li>
+                            <li>What went well?</li>
+                            <li>What could be improved?</li>
+                        </ol>                                                                                                                                   
+                    </div>
+          			<div class="col-md-12"><h5>You can find more information on the <a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/Performancemanagement/Pages/default.aspx" target="_blank">Performance Management page on F2F</a>.(External link required)</h5></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pop-up-send-feedback-modal"></div>

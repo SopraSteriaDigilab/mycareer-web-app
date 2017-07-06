@@ -1,5 +1,12 @@
-<link rel="stylesheet" href="../components/profile/profile.min.css"/>
-<script type="text/javascript" src="../components/profile/profile.min.js"></script>
+<script>
+	loadStyle("components/profile/profile");
+	$.when(
+		loadScript("actions/profileactions"),
+		loadScript("components/print/print")
+	).done(function(){
+		loadScript("components/profile/profile");
+	});
+</script>
 
 <div id="profile-container" class="col-md-4 pull-right profile-right dropdown-toggle" data-toggle="dropdown" style="cursor:pointer">
 	<div class="col-md-9" >
@@ -9,11 +16,20 @@
 		</div>
 	</div>
 	<div class="col-md-3 profile-right" >
-		<div class="pull-right" id="userProfilePicture" ></div>
+		<div class="pull-right" id="userProfilePicture"></div>
 	</div>
 </div>
 
-  <ul class="dropdown-menu pull-right" id="profile-dropdown">
-    <li><a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Performance-Management-Toolkit.aspx"  target="_blank">Performance Management Toolkit</a></li>
-    <li><a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/MyCareer/Lists/MyCareer%20Feedback%20Form/NewForm.aspx?Source=http%3A%2F%2Fportal%2Ecorp%2Esopra%2Fhr%2FHR_UK_SG%2Fmycareerpath%2FMyCareer%2FLists%2FMyCareer%2520Feedback%2520Form%2Foverview%2Easpx" target="_blank">Feedback</a></li>
-  </ul>
+ <ul class="dropdown-menu pull-right" id="profile-dropdown">
+   <li><a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/LE/Pages/Performance-Management-Toolkit.aspx"  target="_blank">Performance Management Toolkit</a></li>
+   <li><a href="http://portal.corp.sopra/hr/HR_UK_SG/mycareerpath/MyCareer/Lists/MyCareer%20Feedback%20Form/NewForm.aspx?Source=http%3A%2F%2Fportal%2Ecorp%2Esopra%2Fhr%2FHR_UK_SG%2Fmycareerpath%2FMyCareer%2FLists%2FMyCareer%2520Feedback%2520Form%2Foverview%2Easpx" target="_blank">Give us feedback on MyCareer</a></li>
+   <li><a id="email" href="#">Add email address</a></li>
+   <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" id="printOption">Print <span class="caret"></span></a>
+ 		<ul class="dropdown-menu">
+          <li class="print"><a  id="objPrintedDocument" href="#">My Objectives</a></li>
+          <li class="print"><a  id="feedPrintedDocument" href="#">My Feedback</a></li>
+          <li class="print"><a  id="devPrintedDocument" href="#">My Development Needs</a></li>
+          <li class="print"><a  id="notesPrintedDocument" href="#">My Notes</a></li>
+       </ul>
+ 	</li>
+ </ul>
