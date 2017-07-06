@@ -44,7 +44,7 @@ function demoDetails(){
 
 function getEnvironment(){
 	var host = $("#env").text();
-	var port = "8080";
+	var port = "";
 	
 	switch (host) {
 		case "ldunsmycareerdev01":
@@ -54,7 +54,7 @@ function getEnvironment(){
 		case "ldunsmycareer01":
 			return "mycareer.uk.corp.sopra:"+port;
 		default:
-			return "localhost:"+port;
+			return "mycareer-rest-my-career.apps.soprasteria-ocp-digilab.co.uk"+port;
 	}
 }
 
